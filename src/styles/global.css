@@ -1,0 +1,22 @@
+/* Reset tối giản */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Đặt font và nền chung */
+body {
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
+  background-color: var(--color-bg);
+  color: var(--color-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+html {
+  overflow-x: hidden;
+  overflow-y: hidden;
+  /* Ngăn cuộn ngang */
+}

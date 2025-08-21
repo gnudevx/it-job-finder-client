@@ -1,0 +1,34 @@
+:root {
+  /* Font family */
+  --font-roboto: 'Roboto', 'Segoe UI', Tahoma, Geneva, sans-serif;
+  --font-poppins: 'Poppins', 'Segoe UI', Tahoma, Geneva, sans-serif;
+
+  /* Sử dụng chung */
+  --font-heading: var(--font-poppins);
+  /* Username, title */
+  --font-body: var(--font-roboto);
+  /* Caption, comment */
+  --font-ui: 'Segoe UI', Tahoma, sans-serif;
+  /* Navbar, label */
+
+  /* Font weight */
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  /* Màu sắc cơ bản */
+  --color-primary: #262626;
+  --color-secondary: #8e8e8e;
+  --color-accent: #0095f6;
+  --color-bg: #ffffff;
+  --color-border: #dbdbdb;
+  --color-footer-item: #737373;
+  /* Kích thước chữ mặc định */
+
+  --fs-base: 14px;
+  --fs-xs: 10px;
+  --fs-sm: 12px;
+  --fs-md: 16px;
+  --fs-lg: 22px;
+}
