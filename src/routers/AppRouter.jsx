@@ -4,6 +4,7 @@ import privateRoutes from "./routerConfig/privateRoutes.js";
 import { RouteWrapper } from "./guards/RouteWrapper";
 import { Suspense } from "react";
 import { Toaster } from "sonner";
+import RootRedirect from "./RootRedirect";
 
 // Component loading riêng
 const LoadingScreen = () => (
@@ -23,6 +24,8 @@ export const AppRouter = () => {
 
             <Suspense fallback={<LoadingScreen />}>
                 <Routes>
+                    <Route path="/" element={<RootRedirect />} />
+
                     {allRoutes.map(({ path, element, guard }) => (
                         <Route
                             key={path}
