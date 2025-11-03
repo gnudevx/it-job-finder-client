@@ -1,0 +1,202 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 63px;
+  background-color: #1f2c3e;
+  color: #fff;
+  padding: 0 24px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.menu-icon {
+  cursor: pointer;
+  font-size: 20px;
+}
+
+// .brand-name {
+//   font-size: 18px;
+//   font-weight: 600;
+//   text-transform: lowercase;
+// }
+.brand-name {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.brand-logo {
+  height: 150px;
+  /* kích thước vừa phải trong header 63px */
+  width: auto;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  /* 👉 đảo màu logo sang trắng nếu logo gốc tối (dễ đọc trên nền #1f2c3e) */
+  transition: transform 0.2s ease;
+}
+
+.brand-logo:hover {
+  transform: scale(1.05);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  .label {
+    font-size: 14px;
+    font-weight: 500;
+    font-family: "Times New Roman", Times, serif;
+  }
+}
+
+.icon-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.badge {
+  position: absolute;
+  top: -4px;
+  right: -6px;
+  background: #e74c3c;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 1px 5px;
+}
+
+.icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  height: 38px;
+  min-width: 38px;
+  border-radius: 20px;
+  /* Bo tròn */
+  background-color: #2c3a4b;
+  /* Màu xanh đậm (tạm lấy từ ảnh) */
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  /* Cỡ icon */
+  gap: 6px;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #4a5a6b;
+    /* Màu khi hover */
+  }
+}
+
+/* * Style riêng cho nút giỏ hàng
+ * Cần 'position: relative' để định vị badge
+ */
+.cart-button {
+  position: relative;
+  width: 42px;
+  /* Cho nó tròn hơn 1 chút */
+  padding: 0;
+  margin-left: 8px;
+
+  /* Style cho cái badge số 0 */
+  .badge {
+    position: absolute;
+    top: -4px;
+    /* Đẩy lên trên */
+    right: -4px;
+    /* Đẩy qua phải */
+    background-color: #e53e3e;
+    /* Màu đỏ */
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    border: 2px solid white;
+    /* Viền trắng như trong hình */
+  }
+}
+
+/* * Wrapper cho menu profile
+ * Cần 'position: relative' để định vị dropdown
+ */
+.profile-menu-wrapper {
+  position: relative;
+  margin-left: 8px;
+  /* Khoảng cách với nút giỏ hàng */
+}
+
+.avatar-icon {
+  font-size: 22px;
+}
+
+.caret-icon {
+  font-size: 14px;
+}
+
+/* * Khung dropdown menu (Hỗ trợ, Đăng xuất)
+ */
+.profile-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  /* Nằm dưới nút 8px */
+  right: 0;
+  background-color: white;
+  border-radius: 8px;
+  border: 1px solid #eee;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  min-width: 200px;
+  z-index: 100;
+  overflow: hidden;
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 8px;
+    /* Padding bên trong khung trắng */
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    font-family: "Times New Roman", Times, serif;
+
+    &:hover {
+      background-color: #f4f4f4;
+      /* Màu khi hover */
+    }
+
+    svg {
+      font-size: 20px;
+      color: #555;
+    }
+  }
+}

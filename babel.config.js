@@ -6,7 +6,7 @@ module.exports = {
         alias: {
           '@': './src',
           '@asset': './src/assets',
-          '@view': './src/views',
+          '@views': './src/views',
           '@viewmodel': './src/viewmodels',
           '@model': './src/models', // hoặc 'services'
           '@router': './src/routers',
