@@ -1,16 +1,22 @@
-import React from 'react';
-const Home = React.lazy(() => import('@view/pages/HomePage/HomePage.jsx'));
-const HomeEmployer = React.lazy(() => import('@views/pages/employers/'));
+import React from "react";
+
+// Candidate (user tin)
+const Home = React.lazy(() => import('@/views/pages/HomePage/HomePage.jsx'));
+
+// Employer (user dung)
+const HomeEmployer = React.lazy(() =>
+  import('@/views/employers/pages/dashboard/dashboard.jsx')
+);
 
 const privateRoutes = [
   {
-    path: '/',
-    element: Home,
+    path: '/home',
+    element: <Home />,
   },
   {
-    path: '/app/dashboard',
-    element: Home,
-  }
+    path: '/dashboard',
+    element: <HomeEmployer />,
+  },
 ];
 
 export default privateRoutes;

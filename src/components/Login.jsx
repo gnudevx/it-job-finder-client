@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { saveToken } from "@/utils/auth";
-import "./Login.css"; 
+import "./Login.css";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
@@ -18,15 +17,21 @@ export default function LoginPage() {
       setError("Vui lòng nhập username và mật khẩu");
       return;
     }
+
     setError("");
     setLoading(true);
 
     setTimeout(() => {
       setLoading(false);
-      if (username === "admin" && password === "123") {
+
+      if (username === "tin" && password === "123") {
+        localStorage.setItem("authToken", "token-tin");
         alert("Đăng nhập thành công!");
-        saveToken("fake-token");
         navigate("/home");
+      } else if (username === "dung" && password === "2003") {
+        localStorage.setItem("authToken", "token-dung");
+        alert("Đăng nhập thành công!");
+        navigate("/employer");
       } else {
         setError("Sai username hoặc mật khẩu");
       }
@@ -54,10 +59,7 @@ export default function LoginPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <span
-            className="toggle-pass"
-            onClick={() => setShowPass((s) => !s)}
-          >
+          <span className="toggle-pass" onClick={() => setShowPass((s) => !s)}>
             {showPass ? "Ẩn" : "Hiện"}
           </span>
         </div>

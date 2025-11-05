@@ -1,42 +1,60 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-// import publicRoutes from "./routerConfig/publicRoutes.js";
-// import privateRoutes from "./routerConfig/privateRoutes.js";
-// import { RouteWrapper } from "./guards/RouteWrapper";
 import { Suspense } from "react";
 import { Toaster } from "sonner";
-import RootRedirect from "./RootRedirect";
+import PropTypes from "prop-types";
 import EmployerApp from "../routers/employer/EmployerApp";
+import LoginPage from "@/components/Login";
+import HomePage from "@/views/pages/HomePage/HomePage";
+import privateRoutes from "./routerConfig/privateRoutes";
+
+// Hàm kiểm tra trạng thái đăng nhập
+const isLoggedIn = () => !!localStorage.getItem("authToken");
+
 // Component loading riêng
 const LoadingScreen = () => (
-    <div className="flex items-center justify-center h-screen text-lg font-medium">
-        Loading...
-    </div>
+  <div className="flex items-center justify-center h-screen text-lg font-medium">
+    Loading...
+  </div>
 );
 
+// Route bảo vệ (chặn người chưa đăng nhập)
+const PrivateRoute = ({ element }) =>
+  isLoggedIn() ? element : <Navigate to="/login" replace />;
+
+PrivateRoute.propTypes = {
+  element: PropTypes.node.isRequired,
+};
+
 export const AppRouter = () => {
-    // Gom chung public + private
-    // const allRoutes = [...publicRoutes, ...privateRoutes];
+  return (
+    <>
+      <Toaster position="top-right" richColors />
+      <Suspense fallback={<LoadingScreen />}>
+        <Routes>
+          {/* Trang mặc định */}
+          <Route path="/" element={<Navigate to="/login" replace />} />
 
-    return (
-        <>
-            {/* Toast thông báo toàn cục */}
-            <Toaster position="top-right" richColors />
+          {/* Trang đăng nhập */}
+          <Route path="/login" element={<LoginPage />} />
 
-            <Suspense fallback={<LoadingScreen />}>
-                <Routes>
-                    {/* Root: tự redirect theo vai trò */}
-                    <Route path="/" element={<RootRedirect />} />
+          {/* Trang home cho user tin */}
+          <Route path="/home" element={<PrivateRoute element={<HomePage />} />} />
 
-                    {/* Portal cho Employer */}
-                    <Route path="/employer/*" element={<EmployerApp />} />
+          {/* Portal cho employer (user dung) */}
+          <Route
+            path="/employer/*"
+            element={<PrivateRoute element={<EmployerApp />} />}
+          />
 
-                    {/* Portal cho Candidate */}
-                    {/* <Route path="/candidate/*" element={<CandidateApp />} /> */}
+          {/* Render tất cả các private routes */}
+          {privateRoutes.map(({ path, element }, idx) => (
+            <Route key={idx} path={path} element={<PrivateRoute element={element} />} />
+          ))}
 
-                    {/* Không tồn tại */}
-                    <Route path="*" element={<Navigate to="/" replace />} />
-                </Routes>
-            </Suspense>
-        </>
-    );
+          {/* Không tồn tại */}
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        </Routes>
+      </Suspense>
+    </>
+  );
 };
