@@ -2,9 +2,10 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { Suspense } from "react";
 import { Toaster } from "sonner";
 import PropTypes from "prop-types";
+import HomePage from "@/views/pages/HomePage/HomePage.jsx";
+import CandidateApp from "../routers/candidate/CandidateApp";
 import EmployerApp from "../routers/employer/EmployerApp";
 import LoginPage from "@/components/Login";
-import HomePage from "@/views/pages/HomePage/HomePage";
 import privateRoutes from "./routerConfig/privateRoutes";
 
 // Hàm kiểm tra trạng thái đăng nhập
@@ -32,13 +33,16 @@ export const AppRouter = () => {
       <Suspense fallback={<LoadingScreen />}>
         <Routes>
           {/* Trang mặc định */}
-          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="/" element={<Navigate to="/home" replace />} />
+          <Route path="/home" element={<HomePage />} />
 
           {/* Trang đăng nhập */}
           <Route path="/login" element={<LoginPage />} />
 
-          {/* Trang home cho user tin */}
-          <Route path="/home" element={<PrivateRoute element={<HomePage />} />} />
+          {/* Trang home cho candidate (user tin) */}
+          <Route 
+            path="/candidate/*" 
+            element={<PrivateRoute element={<CandidateApp />} />} />
 
           {/* Portal cho employer (user dung) */}
           <Route

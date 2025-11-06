@@ -1,7 +1,7 @@
 import React from "react";
 
 // Candidate (user tin)
-const Home = React.lazy(() => import('@/views/pages/HomePage/HomePage.jsx'));
+const HomeCandidate = React.lazy(() => import('@/views/candidates/pages/home/CandidateHome.jsx'));
 
 // Employer (user dung)
 const HomeEmployer = React.lazy(() =>
@@ -11,7 +11,7 @@ const HomeEmployer = React.lazy(() =>
 const privateRoutes = [
   {
     path: '/home',
-    element: <Home />,
+    element: <HomeCandidate />,
   },
   {
     path: '/dashboard',

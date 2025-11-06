@@ -27,7 +27,7 @@ export default function LoginPage() {
       if (username === "tin" && password === "123") {
         localStorage.setItem("authToken", "token-tin");
         alert("Đăng nhập thành công!");
-        navigate("/home");
+        navigate("/candidate/home");
       } else if (username === "dung" && password === "2003") {
         localStorage.setItem("authToken", "token-dung");
         alert("Đăng nhập thành công!");
