@@ -29,8 +29,7 @@ export default function Header({ onToggleSidebar }) {
             {/* --- Center: Navigation --- */}
             <nav className={styles.nav}>
                 <button className={styles.navItem}>Việc làm</button>
-                <button className={styles.navItem}>Hồ sơ</button>
-                <button className={styles.navItem}>Cẩm nang nghề nghiệp</button>
+                <button className={styles.navItem}>Tạo CV</button>
                 <button className={styles.navItem}>Công cụ</button>
             </nav>
 
