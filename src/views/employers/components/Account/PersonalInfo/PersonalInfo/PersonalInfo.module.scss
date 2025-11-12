@@ -1,0 +1,192 @@
+.card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 5px;
+    padding: 24px;
+    margin-bottom: 20px;
+}
+
+.sectionTitle {
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.formGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+
+    label {
+        font-weight: 500;
+        color: #374151;
+    }
+
+    input,
+    .textValue,
+    .phoneInput,
+    select {
+        font-size: 14px;
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        height: 38px;
+        box-sizing: border-box;
+    }
+}
+
+.avatarField {
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    label {
+        font-size: 14px;
+        font-weight: 500;
+        color: #374151;
+    }
+}
+
+/* phần Avatar (giống layout hình bạn gửi) */
+.avatarSection {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* khung avatar tròn */
+.avatarPreview {
+    width: 35x;
+    height: 35px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #f3f4f6;
+    /* xám nhạt */
+    border: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+/* nút "Đổi avatar" — nhẹ, nhỏ gọn */
+.uploadBtn {
+    background: #e2e6eb;
+    border: none;
+    color: #0d110f;
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: 0.2s;
+
+    &:hover {
+        background: #c5cac7;
+    }
+}
+
+.textValue {
+    font-size: 14px;
+    color: #374151;
+    background: #f9fafb;
+    padding: 8px 10px;
+    border-radius: 6px;
+}
+
+/* top row: label at left, buttons at right */
+.rowTop {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* label styling (keeps it small like the screenshot) */
+.phoneLabel {
+    font-size: 13px;
+    color: #374151;
+    font-weight: 500;
+}
+
+
+
+/* style for the small text buttons (right side) */
+.updateBtn,
+.verifyBtn {
+    background: transparent;
+    border: none;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 4px 6px;
+    cursor: pointer;
+    line-height: 1;
+}
+
+/* slightly different greens to match screenshot */
+.updateBtn {
+    color: #10b981;
+    /* green */
+}
+
+.verifyBtn {
+    color: #059669;
+    /* darker green */
+}
+
+/* input below: full width, looks non-editable */
+.phoneInput {
+    width: 100%;
+    border: 1px solid #e6eef0;
+    /* subtle border */
+    background: #f3f7f8;
+    /* light grey / blue as screenshot */
+    color: #374151;
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+}
+
+/* ensure readOnly look consistent (cursor default) */
+.phoneInput[readonly],
+.phoneInput[aria-readonly="true"] {
+    caret-color: transparent;
+    cursor: default;
+}
+
+.actions {
+    margin-top: 16px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+
+    .cancel {
+        background: #e5e7eb;
+    }
+
+    .save {
+        background: #16a34a;
+        color: white;
+    }
+
+    button {
+        padding: 8px 16px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        font-weight: 500;
+    }
+}

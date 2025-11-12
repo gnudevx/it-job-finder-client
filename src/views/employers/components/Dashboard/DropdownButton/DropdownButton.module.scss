@@ -1,0 +1,58 @@
+.dropdownWrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.navBtn {
+    background-color: #2f3e52;
+    border: none;
+    cursor: pointer;
+    padding: 8px 14px;
+    border-radius: 999px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.navBtn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.icon {
+    font-size: 18px;
+}
+
+.label {
+    font-size: 18px;
+    font-weight: 500;
+    font-family: "Times New Roman", Times, serif;
+}
+
+.dropdownMenu {
+    position: absolute;
+    top: 120%;
+    right: 0;
+    width: 320px;
+    background-color: #fff;
+    color: #333;
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    padding: 10px 0;
+    z-index: 1000;
+    animation: dropdownFade 0.2s ease-out;
+}
+
+/* Hiệu ứng mở dropdown */
+@keyframes dropdownFade {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
