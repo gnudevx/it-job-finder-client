@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Header from "@components/employers/Header/Header.jsx";
-import Sidebar from "@components/employers/Sidebar/Sidebar.jsx";
+import Header from "@/components/employers/Header/Header.jsx";
+import Sidebar from "@/components/employers/Sidebar/Sidebar.jsx";
 import { Outlet } from "react-router-dom";
 import styles from "./EmployerLayout.module.scss";
 

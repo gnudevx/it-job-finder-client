@@ -8,25 +8,28 @@
       "@assets/*": [
         "assets/*"
       ],
-      "@view/*": [
+      "@api/*": [
+        "api/*"
+      ],
+      "@views/*": [
         "views/*"
       ],
-      "@viewmodel/*": [
+      "@viewmodels/*": [
         "viewmodels/*"
       ],
-      "@model/*": [
+      "@models/*": [
         "models/*"
       ],
-      "@router/*": [
+      "@routers/*": [
         "routers/*"
       ],
       "@components/*": [
         "components/*"
       ],
-      "@layout/*": [
+      "@layouts/*": [
         "views/layouts/*"
       ],
-      "@page/*": [
+      "@pages/*": [
         "views/pages/*"
       ]
     }

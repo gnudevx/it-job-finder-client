@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "@components/employers/Header/Header.module.scss";
+import styles from "./Header.module.scss";
 import { IoMenuSharp } from "react-icons/io5";
 import { BsPencilSquare } from "react-icons/bs";
 import { TbReportSearch } from "react-icons/tb";
@@ -7,14 +7,14 @@ import { BiMessageSquareDots } from "react-icons/bi";
 import { FaRegLightbulb } from "react-icons/fa";
 // import { FaBell } from "react-icons/fa6";
 import { HiShoppingCart } from "react-icons/hi2";
-import { NavButton } from "@components/employers/NavButton/NavButton.jsx";
-import { DropdownButton } from "@components/employers/DropdownButton/DropdownButton.jsx";
-import { InsightDropdownContent } from "@components/employers/InsightDropdownContent/InsightDropdownContent.jsx";
-import NotificationDropdown from "@components/employers/DropdownButton/NotificationDropdown.jsx";
+import { NavButton } from "@/views/employers/components/Dashboard/NavButton/NavButton.jsx";
+import { DropdownButton } from "@/views/employers/components/Dashboard/DropdownButton/DropdownButton.jsx";
+import { InsightDropdownContent } from "@/views/employers/components/Dashboard/InsightDropdownContent/InsightDropdownContent.jsx";
+import NotificationDropdown from "@/views/employers/components/Dashboard/DropdownButton/NotificationDropdown.jsx";
 import PropTypes from "prop-types";
 import { FaUserCircle } from "react-icons/fa";
 import { IoCaretDown, IoHelpCircleOutline, IoLogOutOutline } from "react-icons/io5";
-import logoHIDEIT from "../../../assets/Logo_HireIT.png";
+import logoHIDEIT from "@assets/Logo_HireIT.png";
 export default function Header({ onToggleSidebar }) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     return (
