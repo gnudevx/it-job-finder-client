@@ -8,7 +8,11 @@ import {
     BarChart,
     UserCheck,
     ClipboardList, // <-- Icon mới cho "Tin tuyển dụng"
-    ChevronDown   // <-- Icon mới cho mũi tên sub-menu
+    ChevronDown,   // <-- Icon mới cho mũi tên sub-menu
+    History,
+    Settings,
+    Bell,
+    MessageSquareDot
 } from "lucide-react";
 import styles from "./Sidebar.module.scss";
 import PropTypes from "prop-types";
@@ -20,15 +24,11 @@ const menuItems = [
     { name: "Bảng tin", icon: Home, to: "dashboard" },
     { name: "HireIT Insights", icon: BarChart, to: "insights" },
     { name: "HireIT Rewards", icon: Gift, to: "rewards" },
-
     // Thêm một đường phân cách
     { type: "divider" },
-
     { name: "Chiến dịch tuyển dụng", icon: Briefcase, to: "campaigns" },
-
     // Mục mới "Tin tuyển dụng"
     { name: "Tin tuyển dụng", icon: ClipboardList, to: "jobs" },
-
     // Mục "Quản lý CV" được cập nhật với 'children'
     {
         name: "Quản lý CV",
@@ -39,10 +39,15 @@ const menuItems = [
             { name: "Quản lý yêu cầu kết nối CV", to: "cvs-management/candidate-connection" }
         ]
     },
-
-    { type: "divider" },
-
     { name: "Theo dõi đơn hàng", icon: UserCheck, to: "orders" },
+    { type: "divider" },
+    { name: "Lịch sử hoạt động", icon: History, to: "account/activities" },
+    { name: "Cài đặt tài khoản", icon: Settings, to: "account/settings" },
+    { type: "divider" },
+    { name: "Thông báo hệ thống", icon: Bell, to: "system-notification" },
+    { type: "divider" },
+    { name: "Hộp thư hỗ trợ", icon: MessageSquareDot, to: "support-box" },
+    { type: "divider" },
 ];
 
 

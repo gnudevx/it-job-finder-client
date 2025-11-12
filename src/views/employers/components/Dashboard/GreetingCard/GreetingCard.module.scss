@@ -1,0 +1,89 @@
+.greetingCard {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #dbf9fa, #5fbcf1);
+    border: 1px solid #dff5e8;
+    border-radius: 16px;
+    padding: 28px 32px;
+    box-shadow: 0 6px 16px rgba(0, 177, 79, 0.08);
+    transition: box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+
+    &:hover {
+        box-shadow: 0 8px 24px rgba(0, 177, 79, 0.15);
+    }
+}
+
+.left {
+    flex: 1;
+}
+
+h2 {
+    font-size: 22px;
+    color: #1c1c1c;
+    margin-bottom: 6px;
+
+    span {
+        color: #5d98e4;
+        font-weight: 600;
+    }
+}
+
+p {
+    color: #555;
+    font-size: 15px;
+    margin-bottom: 16px;
+    line-height: 1.5;
+}
+
+.progressWrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.progressBar {
+    width: 200px;
+    height: 8px;
+    background: #e0f3e8;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.progressFill {
+    height: 100%;
+    background: linear-gradient(90deg, #00b14f, #00d67a);
+    border-radius: 6px;
+}
+
+.progressText {
+    font-size: 14px;
+    color: #4f8be6;
+    font-weight: 600;
+    min-width: 40px;
+}
+
+.right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pointsBadge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #fff;
+    border: 1px solid #dff5e8;
+    padding: 10px 14px;
+    border-radius: 12px;
+    color: #4a88e6;
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(0, 177, 79, 0.08);
+
+    svg {
+        color: #4a88e6;
+    }
+}

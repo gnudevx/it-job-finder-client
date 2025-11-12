@@ -1,0 +1,150 @@
+.container {
+    width: 100%; // chiếm full width parent
+    max-width: none; // bỏ giới hạn
+    margin: 0 auto;
+    padding: 20px; // hoặc tùy chỉnh
+}
+
+.form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0; // đảm bảo không có khoảng cách giữa các phần
+    background: #fff;
+    overflow: hidden;
+
+    /* header title */
+    .header {
+        margin-bottom: 12px;
+
+        h3 {
+            margin: 0;
+            font-weight: 600;
+            font-size: 18px;
+            color: #111827;
+        }
+    }
+
+    /* card chứa tabs + nội dung */
+    .content {
+        background: var(--card-bg);
+        box-shadow: var(--shadow);
+        border: 1px solid #e8eef2;
+        padding: 18px 20px;
+    }
+
+    /* Tabs bar (khiên nhỏ trên cùng) */
+    .tabs {
+        display: flex;
+        width: 100%;
+        align-items: center;
+    }
+
+    /* từng tab nhỏ */
+    .tab {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        justify-content: center;
+        padding: 12px 18px;
+        background: #fff;
+        min-width: 280px;
+        cursor: pointer;
+        width: 100%;
+
+        &.active {
+            color: var(--green-strong);
+            background: #fafafa;
+            /* very light green */
+            position: relative;
+            border-left: 2px solid #e6eef5;
+            border-right: 2px solid #e6eef5;
+            border-top: 2px solid #e6eef5;
+            border-bottom: 2px solid #66ace9;
+
+            .icon-box {
+                background-color: #cfd9e7;
+                color: var(--green-strong);
+                /* vòng tròn nhẹ */
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 36px;
+                height: 36px;
+            }
+        }
+
+
+        .tabTitle {
+            display: flex;
+            align-items: flex-start; // cho icon nằm đầu trên
+            gap: 10px;
+        }
+
+
+        & .icon-box {
+            display: flex;
+            color: var(--green-strong);
+            align-items: center;
+            justify-content: center;
+            background-color: transparent;
+            min-width: 36px;
+            min-height: 36px;
+            flex-shrink: 0;
+        }
+
+        .tabText {
+            display: flex;
+            flex-direction: column;
+            color: #064e3b;
+
+            span {
+                font-weight: 800;
+                font-size: 15px;
+                color: inherit;
+
+                .tab:hover &,
+                .tab.active & {
+                    color: var(--green-strong);
+                }
+            }
+
+            p {
+                white-space: nowrap;
+                font-size: 12px;
+                margin-top: 3px;
+            }
+
+        }
+    }
+
+    /* check mark on right */
+    .check {
+        margin-left: 8px;
+        color: var(--green-strong);
+        font-weight: 700;
+    }
+
+    /* content inside card (centered column layout) */
+    .innerCard {
+        margin-top: 8px;
+        background: #ffffff;
+        border-radius: 10px;
+        border: 1px solid #f1f5f9;
+        padding: 28px;
+        box-shadow: none;
+    }
+
+    /* when CompanyDetail is shown, ensure spacing */
+    .detailWrap {
+        margin-top: 12px;
+    }
+
+    /* small helper */
+    .center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}

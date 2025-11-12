@@ -1,0 +1,106 @@
+.container {
+
+    .field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+
+
+        label {
+            font-weight: 500;
+            color: #374151;
+        }
+
+        input,
+        .textValue,
+        .phoneInput,
+        select {
+            font-size: 14px;
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            height: 38px;
+            box-sizing: border-box;
+        }
+    }
+
+    .avatarField {
+        flex-direction: row;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        label {
+            font-size: 18px;
+            font-weight: 500;
+            color: #374151;
+        }
+    }
+
+    /* phần Avatar (giống layout hình bạn gửi) */
+    .avatarSection {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    /* khung avatar tròn */
+    .avatarPreview {
+        width: 35x;
+        height: 35px;
+        border-radius: 50%;
+        overflow: hidden;
+        background-color: #f3f4f6;
+        /* xám nhạt */
+        border: 1px solid #e5e7eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+}
+
+.contactInfo {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    /* mỗi infoItem nằm 1 hàng */
+    gap: 30px;
+    /* khoảng cách giữa các hàng */
+
+    .infoItem {
+        display: flex;
+        align-items: center;
+        /* icon + text nằm giữa theo chiều dọc */
+        gap: 10px;
+        /* khoảng cách giữa icon và text */
+    }
+
+    .iconWrapper {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: #e0e7ff;
+        /* nền tròn */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .icon {
+        font-size: 16px;
+        /* kích thước icon */
+        color: #1e40af;
+    }
+
+    .value {
+        font-size: 15px;
+        color: #1e40af;
+    }
+}

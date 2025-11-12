@@ -1,7 +1,7 @@
 .layout-container {
     display: flex;
     flex-direction: column;
-    height: 100dvh;
+    height: 100vh;
     overflow: visible;
     align-items: stretch;
 }
@@ -50,6 +50,7 @@ header {
     min-height: 0;
     transition: all 0.3s ease;
     z-index: 1;
+    transition: flex 0.3s ease, width 0.3s ease, margin 0.3s ease;
 }
 
 /* Page container là nơi cuộn thực sự */
@@ -61,6 +62,7 @@ header {
     padding: 24px;
     background-color: #f9f9f9;
     min-height: 0;
+    padding-left: 180px;
 }
 
 html,
