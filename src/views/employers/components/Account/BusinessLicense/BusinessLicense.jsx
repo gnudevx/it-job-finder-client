@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import styles from "./BusinessLicense.module.scss";
+import FormLabel from "@components/common/FormLabel/FormLabel.jsx";
+import FileUpload from "@components/common/FileUpload/FileUpload.jsx";
+
 import { Dot } from "lucide-react";
 
 export default function BusinessLicense() {
-    const [file, setFile] = useState(null);
+    const [files, setFiles] = useState([]);
 
-    const handleFileChange = (e) => {
-        const selected = e.target.files[0];
-        if (selected) setFile(selected);
-    };
+    // const handleFileChange = (e) => {
+    //     const selected = e.target.files[0];
+    //     if (selected) setFile(selected);
+    // };
 
     return (
         <div className={styles.wrapper}>
@@ -23,33 +26,13 @@ export default function BusinessLicense() {
             <div className={styles.uploadSection}>
                 {/* Cột trái */}
                 <div className={styles.left}>
-                    <label className={styles.label}>
-                        Giấy đăng ký doanh nghiệp hoặc Giấy tờ tương đương khác <span>*</span>
-                    </label>
+                    <FormLabel text="Giấy đăng ký doanh nghiệp hoặc Giấy tờ tương đương khác" required />
 
-                    <div
-                        className={`${styles.uploadBox} ${file ? styles.hasFile : ""}`}
-                        onClick={() => document.getElementById("uploadFile").click()}
-                    >
-                        {file ? (
-                            <div className={styles.fileInfo}>
-                                <p>{file.name}</p>
-                                <small>{(file.size / 1024 / 1024).toFixed(2)} MB</small>
-                            </div>
-                        ) : (
-                            <div className={styles.placeholder}>
-                                <p>Chọn hoặc kéo file vào đây</p>
-                                <small>Dung lượng tối đa 5MB, định dạng: jpeg, jpg, png, pdf</small>
-                            </div>
-                        )}
-                    </div>
-
-                    <input
-                        id="uploadFile"
-                        type="file"
-                        accept=".jpeg,.jpg,.png,.pdf"
-                        onChange={handleFileChange}
-                        hidden
+                    <FileUpload
+                        files={files}
+                        onChange={setFiles}
+                        accept=".jpg,.png"
+                        note="Dung lượng tối đa 5MB, định dạng: jpeg, jpg, png, pdf"
                     />
 
                     <div className={styles.warning}>

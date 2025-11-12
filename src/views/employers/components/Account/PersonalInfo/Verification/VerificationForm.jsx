@@ -17,6 +17,7 @@ export default function VerificationForm() {
 
             <div className={styles.verifySection}>
                 <p className={styles.subTitle}>Xác thực thông tin</p>
+
                 <div className={styles.optionList}>
                     <div className={styles.option}>
                         <Circle size={15} />

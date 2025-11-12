@@ -1,0 +1,38 @@
+.contactInfo {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    /* mỗi infoItem nằm 1 hàng */
+    gap: 30px;
+    /* khoảng cách giữa các hàng */
+
+    .infoItem {
+        display: flex;
+        align-items: center;
+        /* icon + text nằm giữa theo chiều dọc */
+        gap: 10px;
+        /* khoảng cách giữa icon và text */
+    }
+
+    .iconWrapper {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: #e0e7ff;
+        /* nền tròn */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .icon {
+        font-size: 16px;
+        /* kích thước icon */
+        color: #1e40af;
+    }
+
+    .value {
+        font-size: 15px;
+        color: #1e40af;
+    }
+}
