@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import CandidateLayout from "@view/candidates/layouts/CandidateLayout.jsx";
+import CandidateLayout from "@views/candidates/layouts/CandidateLayout.jsx";
 import candidateRoutes from "../routerConfig/candidateRoutes";
 
 const CandidateApp = () => {
