@@ -5,7 +5,7 @@ const HomeCandidate = React.lazy(() => import('@/views/candidates/pages/home/Can
 
 // Employer (user dung)
 const HomeEmployer = React.lazy(() =>
-  import('@/views/employers/pages/dashboard/dashboard.jsx')
+  import('@/views/employers/pages/dashboard/Dashboard.jsx')
 );
 
 const privateRoutes = [

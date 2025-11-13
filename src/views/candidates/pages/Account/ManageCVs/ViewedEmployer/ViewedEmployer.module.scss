@@ -1,0 +1,77 @@
+.container {
+    padding: 24px;
+    background-color: #f7f8fa;
+    min-height: 100vh;
+
+    h2 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        color: #333;
+    }
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    border-radius: 8px;
+    padding: 16px 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    transition: all 0.2s ease;
+
+    &:hover {
+        background-color: #f9f9f9;
+    }
+}
+
+.logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 6px;
+    object-fit: cover;
+    margin-right: 16px;
+}
+
+.info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.nameLine {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+
+    .name {
+        font-weight: 600;
+        color: #00b14f;
+        font-size: 1em;
+    }
+
+    .position {
+        color: #666;
+        font-size: 0.9em;
+    }
+}
+
+.company {
+    font-size: 1em;
+    color: #444;
+    margin-top: 2px;
+}
+
+.time {
+    color: #888;
+    font-size: 13px;
+    white-space: nowrap;
+}

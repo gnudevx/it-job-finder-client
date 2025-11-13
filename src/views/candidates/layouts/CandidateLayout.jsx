@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "@components/candidates/Header/Header.jsx";
 import { Outlet } from "react-router-dom";
-import styles from "@view/candidates/layouts/CandidateLayout.module.scss";
+import styles from "@views/candidates/layouts/CandidateLayout.module.scss";
 
 export default function CandidateLayout() {
     return (
