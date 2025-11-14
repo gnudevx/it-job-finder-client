@@ -1,19 +1,27 @@
 import React, { useState } from "react";
 import styles from "./CandidateHome.module.scss";
+import FilterBar from "@views/candidates/components/FilterBar/FilterBar.jsx";
 
 export default function HomePage() {
     const [search, setSearch] = useState("");
+    const [filters, setFilters] = useState({});
+
+    const handleFilterChange = (type, value) => {
+        setFilters({ ...filters, [type]: value });
+    };
+
     const jobs = [
         { id: 1, title: "Frontend Developer (ReactJS)", company: "FPT Software", location: "Hà Nội", salary: "20 - 30 triệu", type: "Toàn thời gian" },
         { id: 2, title: "Tester / QA Engineer", company: "VNG Corporation", location: "TP.HCM", salary: "15 - 25 triệu", type: "Hybrid" },
         { id: 3, title: "Data Analyst", company: "Shopee Vietnam", location: "TP.HCM", salary: "18 - 28 triệu", type: "Full-time" },
     ];
 
-    const filtered = jobs.filter(
-        (job) =>
-            job.title.toLowerCase().includes(search.toLowerCase()) ||
-            job.company.toLowerCase().includes(search.toLowerCase())
-    );
+    // Lọc theo filter động
+    const filtered = jobs.filter(job => {
+        return Object.entries(filters).every(([key, value]) => {
+            return job[key]?.toLowerCase().includes(value.toLowerCase());
+        });
+    });
 
     return (
         <div className={styles["home-container"]}>
@@ -29,6 +37,8 @@ export default function HomePage() {
                     <button>Tìm kiếm</button>
                 </div>
             </div>
+
+            <FilterBar onChange={handleFilterChange} />
 
             <div className={styles["jobs-grid"]}>
                 {filtered.map((job) => (

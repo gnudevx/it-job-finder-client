@@ -3,7 +3,7 @@
   align-items: center;
   justify-content: space-between;
   height: 66px;
-  background-color: #ffffff;
+  background-color: #25216b;
   border-bottom: 1px solid #e5e7eb;
   padding: 0 28px;
   font-family: "Inter", "Segoe UI", sans-serif;
@@ -45,7 +45,7 @@
 .brand-text {
   font-size: 18px;
   font-weight: 600;
-  color: #16a34a; // xanh lá TopCV
+  color: #20dfb9; // xanh lá TopCV
 }
 
 .nav {
@@ -59,14 +59,14 @@
   border: none;
   font-size: 16px;
   font-weight: 500;
-  color: #374151;
+  color: #d9d7d7;
   cursor: pointer;
   transition: color 0.2s, border-bottom 0.2s;
   padding-bottom: 2px;
 
   &:hover {
-    color: #16a34a;
-    border-bottom: 2px solid #16a34a;
+    color: #20dfb9;
+    border-bottom: 2px solid #20dfb9;
   }
 }
 
@@ -84,14 +84,14 @@
   cursor: pointer;
 
   &:hover .icon {
-    color: #16a34a;
+    color: #20dfb9;
   }
 }
 
 .icon {
   width: 22px;
   height: 22px;
-  color: #4b5563;
+  color: #d9d7d7;
 }
 
 .badge {
@@ -117,25 +117,25 @@
   transition: background 0.2s;
 
   &:hover {
-    background: #f3f4f6;
+    background: #6d778c;
   }
 }
 
 .avatarIcon {
-  color: #374151;
+  color: #d9d7d7;
   width: 22px;
   height: 22px;
 }
 
 .username {
   font-size: 14px;
-  color: #111827;
+  color: #d9d7d7;
   font-weight: 500;
 }
 
 .caretIcon {
   width: 16px;
-  color: #6b7280;
+  color: #d9d7d7;
 }
 
 .profileDropdown {
@@ -177,7 +177,7 @@
 
         &:hover {
           background: #f3f6ff;
-          color: #16a34a;
+          color: #20dfb9;
         }
       }
     }
@@ -236,7 +236,7 @@
       transition: color 0.2s;
 
       &:hover {
-        color: #16a34a;
+        color: #20dfb9;
       }
     }
 
@@ -249,7 +249,7 @@
 
     .open {
       transform: rotate(90deg);
-      color: #16a34a;
+      color: #20dfb9;
     }
 
     .subList {
