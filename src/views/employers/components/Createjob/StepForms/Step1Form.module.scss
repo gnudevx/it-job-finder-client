@@ -1,0 +1,125 @@
+/* Step1Form.module.scss */
+
+.formContent {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    /* Khoảng cách giữa các hàng */
+}
+
+/* Kiểu chung cho một trường (field) */
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    /* Khoảng cách giữa label và input */
+    width: 100%;
+}
+
+/* Phần tiêu đề của label (gồm text và char count) */
+.labelHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+}
+
+.charCount {
+    font-size: 13px;
+    font-weight: 400;
+    color: #888;
+}
+
+/* Kiểu chung cho input và select */
+.formContent input[type="text"],
+.formContent input[type="number"],
+.formContent select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    /* Viền xám nhạt */
+    border-radius: 6px;
+    font-size: 14px;
+    box-sizing: border-box;
+    /* Quan trọng */
+    background-color: #fff;
+
+    &:focus {
+        outline: none;
+        border-color: #00b14f;
+        /* Màu xanh khi focus */
+        box-shadow: 0 0 0 1px #00b14f;
+    }
+
+    &::placeholder {
+        color: #9ca3af;
+    }
+
+    &:disabled {
+        background-color: #f3f4f6;
+        cursor: not-allowed;
+    }
+}
+
+/* Bố cục hàng (chia 2 cột) */
+.row {
+    display: flex;
+    gap: 24px;
+    width: 100%;
+}
+
+.fieldHalf {
+    flex: 1;
+    min-width: 0;
+    /* Cho phép co giãn */
+}
+
+/* Checkbox "Thỏa thuận" */
+.checkboxLabel {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #555;
+    cursor: pointer;
+
+    input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+    }
+}
+
+/* Hàng nhập lương (Từ - Đến - VND) */
+.salaryRow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    /* Dấu gạch ngang */
+    .salaryDash {
+        font-weight: 600;
+        color: #888;
+        margin: 0 4px;
+    }
+
+    /* Đơn vị tiền tệ (VND) */
+    .salaryCurrency {
+        flex-basis: 90px;
+        /* Độ rộng cố định */
+        flex-shrink: 0;
+    }
+
+    /* Khi bị disabled (check Thỏa thuận) */
+    &.disabled {
+
+        input,
+        select {
+            background-color: #f3f4f6;
+            border-color: #e5e7eb;
+        }
+    }
+}

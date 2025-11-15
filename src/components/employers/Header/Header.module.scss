@@ -58,8 +58,8 @@
 }
 
 .icon {
-  width: 20px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
   cursor: pointer;
 }
 
@@ -89,7 +89,7 @@
   color: white;
   border: none;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 18px;
   /* Cỡ icon */
   gap: 6px;
   transition: background-color 0.2s;
@@ -121,9 +121,8 @@
     /* Màu đỏ */
     color: white;
     border-radius: 50%;
-    width: 18px;
-    height: 18px;
-    font-size: 12px;
+    width: 15px;
+    height: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -179,7 +178,7 @@
     padding: 10px 12px;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 10px;
     color: #333;
     font-family: "Times New Roman", Times, serif;
 

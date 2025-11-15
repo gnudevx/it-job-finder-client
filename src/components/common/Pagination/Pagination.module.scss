@@ -1,0 +1,38 @@
+/* =============== Phân trang =============== */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    margin-top: 20px;
+
+    .pageButton {
+        border: 1px solid #e5e7eb;
+        border-radius: 6px;
+        background: #fff;
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
+        color: #374151;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &:hover:not(:disabled) {
+            background-color: #f3f4f6;
+        }
+
+        &:disabled {
+            color: #d1d5db;
+            cursor: not-allowed;
+        }
+
+        &.active {
+            background-color: #10b981;
+            color: #fff;
+            border-color: #10b981;
+        }
+    }
+}

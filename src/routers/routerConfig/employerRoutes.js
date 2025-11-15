@@ -8,6 +8,9 @@ import AccountAcctivities from "@views/employers/pages/AccountActivities/Account
 import PhoneVerify from "@views/employers/components/Account/PhoneVerify/PhoneVerify.jsx";
 import SystemNotification from "@/views/employers/pages/SystemNotification/SystemNotification.jsx";
 import SupportBox from "@/views/employers/pages/SupportBox/SupportBox.jsx";
+import CreateJob from "@/views/employers/pages/CreateJob/CreateJob.jsx";
+import JobManagementPage from "@/views/employers/pages/JobManagementPage/JobManagementPage";
+import CampaignsPage from "@/views/employers/pages/CampaignsPage/CampaignsPage";
 
 // import CompanyInfo from "@/views/employers/components/CompanyInfo/CompanyInfo";
 const employerRoutes = [
@@ -17,6 +20,10 @@ const employerRoutes = [
     { path: "account/activities/*", element: <AccountAcctivities />, meta: { title: "Activities" } },
     { path: "system-notification", element: <SystemNotification />, meta: { title: "Activities" } },
     { path: "support-box/*", element: <SupportBox />, meta: { title: "SupportBox" } },
+    { path: "jobs/create", element: <CreateJob />, meta: { title: "CreateJob" } },
+    { path: "jobs/", element: <JobManagementPage />, meta: { title: "JobManagementPage" } },
+    { path: "recruitment-campaigns", element: <CampaignsPage />, meta: { title: "recruitment-campaigns" } },
+
     {
         path: "account/settings/*",
         element: <AccountSettings />,

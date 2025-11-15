@@ -34,16 +34,19 @@ export default function Dashboard() {
             title: "Đăng tin tuyển dụng",
             btnText: "Thử ngay",
             imageUrl: "https://cdn-icons-png.flaticon.com/512/1048/1048953.png",
+            link: "/employer/jobs/create", // 👈 thêm dòng này
         },
         {
             title: "Tìm kiếm CV",
             btnText: "Thử ngay",
             imageUrl: "https://cdn-icons-png.flaticon.com/512/3135/3135687.png",
+            link: "/employer/search-cv",
         },
         {
             title: "Mua dịch vụ",
             btnText: "Thử ngay",
             imageUrl: "https://cdn-icons-png.flaticon.com/512/1828/1828884.png",
+            link: "/employer/services",
         },
     ];
     const isLastStepDisabled = () => {
@@ -85,6 +88,7 @@ export default function Dashboard() {
                             title={item.title}
                             btnText={item.btnText}
                             imageUrl={item.imageUrl}
+                            link={item.link} // 👈 thêm prop link
                         />
                     ))}
                 </div>

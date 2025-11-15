@@ -1,0 +1,116 @@
+/* === PAGE WRAP === */
+.pageWrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    height: 100%;
+    width: 100%;
+    background-color: #dde0e6;
+    overflow: hidden;
+    /* ❌ Không scroll ở đây */
+}
+
+/* === 3-COLUMN CONTAINER === */
+.container {
+    display: flex;
+    flex: 1;
+    align-items: start;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    background-color: #fff;
+    height: 100%;
+    /* ✅ full chiều cao */
+    overflow: hidden;
+    /* ❌ Không scroll */
+    border-radius: 10px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+}
+
+/* === SIDEBAR TRÁI === */
+.leftSidebar {
+    padding-top: 10px;
+    flex: 0 0 clamp(200px, 18%, 250px);
+    border-right: 1px solid #eee;
+    background: #fff;
+    height: 100%;
+    overflow-y: auto;
+    /* có thể scroll riêng nếu dài */
+
+}
+
+/* === PHẦN GIỮA === */
+.body {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 100%;
+    overflow: hidden;
+    /* ❌ không scroll */
+    background: transparent;
+}
+
+/* === HEADER KHÔNG SCROLL === */
+.header {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f9fafb;
+    border-bottom: 1px solid #eee;
+}
+
+/* === FORM AREA SCROLL DUY NHẤT === */
+.formArea {
+    flex: 1;
+    /* chiếm phần còn lại */
+    min-height: 0;
+    /* bắt buộc để overflow-y hoạt động */
+    overflow-y: auto;
+    /* ✅ chỉ phần này được scroll */
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    box-sizing: border-box;
+
+    &::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 8px;
+    }
+}
+
+/* === PREVIEW PHẢI === */
+.rightPreview {
+    flex: 0 0 clamp(280px, 22%, 350px);
+    border-left: 1px solid #eee;
+    background: #fff;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-width: 400px;
+    padding-right: 10px;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 1200px) {
+    .rightPreview {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .leftSidebar {
+        border-right: none;
+        border-bottom: 1px solid #eee;
+    }
+}
