@@ -3,11 +3,9 @@
   min-height: 100vh;
   padding: 2rem;
 
-  // ====== Thanh tiêu đề + tìm kiếm ======
   .top-section {
     display: grid;
     justify-content: center;
-    flex-wrap: wrap;
     gap: 1rem;
     margin-bottom: 2rem;
     background-color: #25216b;
@@ -20,7 +18,6 @@
       font-size: 2rem;
       font-weight: 700;
       color: #20dfb9;
-      letter-spacing: -0.3px;
     }
 
     .search-box {
@@ -29,25 +26,13 @@
       border: 1px solid #d1d5db;
       border-radius: 9999px;
       padding: 0.4rem 0.75rem 0.4rem 1rem;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-      transition: all 0.2s ease;
-
-      &:focus-within {
-        border-color: #16a34a;
-        box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15);
-      }
 
       input {
         border: none;
         outline: none;
         flex: 1;
         font-size: 0.95rem;
-        color: #111827;
         background: transparent;
-
-        &::placeholder {
-          color: #9ca3af;
-        }
       }
 
       button {
@@ -58,99 +43,11 @@
         padding: 0.45rem 1rem;
         cursor: pointer;
         font-weight: 500;
-        font-size: 0.9rem;
-        transition: background-color 0.2s ease;
 
         &:hover {
           background-color: #15803d;
         }
       }
-    }
-  }
-
-  // ====== Lưới hiển thị việc làm ======
-  .jobs-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
-    gap: 1.5rem;
-
-    .job-card {
-      background-color: #fff;
-      border: 1px solid #e5e7eb;
-      border-radius: 1rem;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-      padding: 1.25rem;
-      transition: all 0.25s ease;
-      cursor: pointer;
-
-      &:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        border-color: #a7f3d0;
-      }
-
-      .job-header {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        margin-bottom: 0.75rem;
-
-        img {
-          width: 44px;
-          height: 44px;
-          border-radius: 0.5rem;
-          object-fit: cover;
-          background-color: #f9fafb;
-          border: 1px solid #e5e7eb;
-        }
-
-        .job-title {
-          font-weight: 600;
-          color: #1c1952;
-          font-size: 1rem;
-          line-height: 1.3;
-        }
-      }
-
-      .company-name {
-        font-size: 0.9rem;
-        color: #6b7280;
-        margin-bottom: 0.75rem;
-      }
-
-      .job-meta {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 0.9rem;
-
-        .salary {
-          font-weight: 600;
-          color: #16a34a;
-        }
-
-        .location {
-          color: #4b5563;
-        }
-      }
-    }
-  }
-
-  // ====== Responsive nhỏ gọn cho mobile ======
-  @media (max-width: 768px) {
-    padding: 1rem;
-
-    .top-section {
-      flex-direction: column;
-      align-items: stretch;
-
-      .search-box {
-        width: 100%;
-      }
-    }
-
-    .jobs-grid {
-      grid-template-columns: 1fr;
     }
   }
 }

@@ -13,6 +13,7 @@ const CandidateApp = () => {
                 <Route path="" element={<Navigate to="home" replace />} />
                 {/* fallback */}
                 <Route path="*" element={<Navigate to="home" replace />} />
+                
             </Route>
         </Routes>
     );

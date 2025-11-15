@@ -1,20 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./PersonalInfo.module.scss";
+import usePersonalInfo from "@/hooks/usePersonalInfo";
 
 export default function PersonalInfo() {
-    const [formData, setFormData] = useState({
-        fullName: "Nguyễn Tín",
-        phone: "",
-        email: "22110434@student.hcmute.edu.vn",
-    });
+    const { formData, updateField, save } = usePersonalInfo();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        updateField(name, value);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        save();
         alert("Lưu thông tin thành công!");
     };
 
@@ -52,7 +50,7 @@ export default function PersonalInfo() {
                         placeholder="Nhập số điện thoại"
                     />
 
-                    {/* Email */}
+                    {/* Email - cố định */}
                     <label htmlFor="email">Email</label>
                     <input
                         id="email"

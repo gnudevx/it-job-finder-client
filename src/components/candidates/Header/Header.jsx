@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Bell, User, ChevronDown, ChevronRight } from "lucide-react";
+import { User, ChevronDown, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import styles from "@components/candidates/Header/Header.module.scss";
 import logo from "@/assets/Logo_HireIT.png";
+import NotificationDropdown from "@/views/candidates/components/Header/DropdownButton/NotificationDropdown.jsx";
 
 export default function Header() {
     const [showDropdown, setShowDropdown] = useState(false);
@@ -78,9 +79,8 @@ export default function Header() {
 
             {/* --- Right: Icons + Profile --- */}
             <div className={styles["header-right"]}>
-                <div className={styles.iconWrapper}>
-                    <Bell className={styles.icon} />
-                </div>
+
+                <NotificationDropdown />
 
                 {/* 🔹 Profile Dropdown */}
                 <div

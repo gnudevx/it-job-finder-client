@@ -1,24 +1,22 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./ChangePassword.module.scss";
+import useChangePassword from "@/hooks/useChangePassword";
 
 export default function ChangePassword() {
-    const [formData, setFormData] = useState({
-        email: "22110434@student.hcmute.edu.vn",
-        currentPassword: "",
-        newPassword: "",
-        confirmPassword: "",
-    });
+    const { formData, updateField, changePassword } = useChangePassword();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        updateField(name, value);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (formData.newPassword !== formData.confirmPassword) {
-            alert("Mật khẩu mới và xác nhận không khớp!");
+        const result = changePassword();
+
+        if (!result.ok) {
+            alert(result.message);
             return;
         }
 
@@ -31,15 +29,11 @@ export default function ChangePassword() {
                 <h2>Thay đổi mật khẩu đăng nhập</h2>
 
                 <form onSubmit={handleSubmit} className={styles.form}>
+                    
                     {/* Email */}
                     <div className={styles.formGroup}>
                         <label>Email đăng nhập</label>
-                        <input
-                            type="email"
-                            name="email"
-                            value={formData.email}
-                            disabled
-                        />
+                        <input type="email" value={formData.email} disabled />
                     </div>
 
                     {/* Mật khẩu hiện tại */}
@@ -68,7 +62,7 @@ export default function ChangePassword() {
                         />
                     </div>
 
-                    {/* Nhập lại mật khẩu mới */}
+                    {/* Xác nhận */}
                     <div className={styles.formGroup}>
                         <label>Nhập lại mật khẩu mới</label>
                         <input

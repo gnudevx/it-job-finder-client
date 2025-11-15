@@ -13,6 +13,7 @@ export default function LoginPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (!username || !password) {
       setError("Vui lòng nhập username và mật khẩu");
       return;
@@ -24,17 +25,28 @@ export default function LoginPage() {
     setTimeout(() => {
       setLoading(false);
 
-      if (username === "tin" && password === "123") {
+      // Lấy mật khẩu đã lưu cho candidate (mock)
+      const savedCandidatePassword =
+        localStorage.getItem("mock_password") || "123456";
+
+      // ===== CANDIDATE LOGIN =====
+      if (username === "tin" && password === savedCandidatePassword) {
         localStorage.setItem("authToken", "token-tin");
         alert("Đăng nhập thành công!");
         navigate("/candidate/home");
-      } else if (username === "dung" && password === "2003") {
+        return;
+      }
+
+      // ===== EMPLOYER LOGIN (giữ nguyên) =====
+      if (username === "dung" && password === "2003") {
         localStorage.setItem("authToken", "token-dung");
         alert("Đăng nhập thành công!");
         navigate("/employer");
-      } else {
-        setError("Sai username hoặc mật khẩu");
+        return;
       }
+
+      // Nếu không khớp
+      setError("Sai username hoặc mật khẩu");
     }, 1000);
   };
 
@@ -43,6 +55,7 @@ export default function LoginPage() {
       <form className="login-card" onSubmit={handleSubmit}>
         <h2 className="title">Đăng nhập</h2>
 
+        {/* Username */}
         <div className="input-group">
           <input
             type="text"
@@ -52,6 +65,7 @@ export default function LoginPage() {
           />
         </div>
 
+        {/* Password */}
         <div className="input-group">
           <input
             type={showPass ? "text" : "password"}
@@ -59,13 +73,18 @@ export default function LoginPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <span className="toggle-pass" onClick={() => setShowPass((s) => !s)}>
+          <span
+            className="toggle-pass"
+            onClick={() => setShowPass((s) => !s)}
+          >
             {showPass ? "Ẩn" : "Hiện"}
           </span>
         </div>
 
+        {/* Error */}
         {error && <p className="error">{error}</p>}
 
+        {/* Submit */}
         <button type="submit" disabled={loading}>
           {loading ? "Đang xử lý..." : "Đăng nhập"}
         </button>

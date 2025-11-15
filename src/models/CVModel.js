@@ -1,0 +1,1 @@
+export { default as CVBuilder } from "./components/CVBuilder/CVBuilder.jsx";

@@ -1,38 +1,35 @@
-import React, { useState } from "react";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./SavedJobs.module.scss";
+import JobCard from "@/components/candidates/JobCard/JobCard";
+import { mockJobList } from "@/models/mockJobList";
+import useFavorites from "@/hooks/useFavorites";
 
 export default function SavedJobs() {
-    const [search] = useState("");
-    const jobs = [
-        { id: 1, title: "Frontend Developer (ReactJS)", company: "FPT Software", location: "Hà Nội", salary: "20 - 30 triệu", type: "Toàn thời gian" },
-        { id: 2, title: "Tester / QA Engineer", company: "VNG Corporation", location: "TP.HCM", salary: "15 - 25 triệu", type: "Hybrid" },
-        { id: 3, title: "Data Analyst", company: "Shopee Vietnam", location: "TP.HCM", salary: "18 - 28 triệu", type: "Full-time" },
-    ];
+    const navigate = useNavigate();
+    const { favorites, toggleFavorite, isFavorite } = useFavorites();
 
-    const filtered = jobs.filter(
-        (job) =>
-            job.title.toLowerCase().includes(search.toLowerCase()) ||
-            job.company.toLowerCase().includes(search.toLowerCase())
-    );
+    const savedJobs = mockJobList.filter(job => favorites.includes(job.id));
 
     return (
-        <div className={styles["home-container"]}>
+        <div className={styles.wrapper}>
+            <h2 className={styles.title}>⭐ Công việc đã lưu</h2>
 
-            <div className={styles["jobs-grid"]}>
-                {filtered.map((job) => (
-                    <div key={job.id} className={styles["job-card"]}>
-                        <div className={styles["job-header"]}>
-                            <img src="/logo192.png" alt={job.company} />
-                            <div className={styles["job-title"]}>{job.title}</div>
-                        </div>
-                        <div className={styles["company-name"]}>{job.company}</div>
-                        <div className={styles["job-meta"]}>
-                            <span className={styles.salary}>{job.salary}</span>
-                            <span className={styles.location}>{job.location}</span>
-                        </div>
-                    </div>
-                ))}
-            </div>
+            {savedJobs.length === 0 ? (
+                <p className={styles.empty}>Bạn chưa lưu công việc nào.</p>
+            ) : (
+                <div className={styles.jobsGrid}>
+                    {savedJobs.map(job => (
+                        <JobCard
+                            key={job.id}
+                            job={job}
+                            isFavorite={isFavorite(job.id)}
+                            onToggleFavorite={toggleFavorite}
+                            onClick={() => navigate(`/candidate/job/${job.id}`)}
+                        />
+                    ))}
+                </div>
+            )}
         </div>
     );
 }

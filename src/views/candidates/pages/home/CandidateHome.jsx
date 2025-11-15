@@ -1,25 +1,63 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./CandidateHome.module.scss";
 import FilterBar from "@views/candidates/components/FilterBar/FilterBar.jsx";
+import { mockJobList } from "@/models/mockJobList";
+import useFavorites from "@/hooks/useFavorites";
+import JobCard from "@/components/candidates/JobCard/JobCard.jsx";
 
 export default function HomePage() {
+    const { favorites, toggleFavorite } = useFavorites(); // 🔥 FIXED
     const [search, setSearch] = useState("");
     const [filters, setFilters] = useState({});
+    const navigate = useNavigate();
 
     const handleFilterChange = (type, value) => {
         setFilters({ ...filters, [type]: value });
     };
 
-    const jobs = [
-        { id: 1, title: "Frontend Developer (ReactJS)", company: "FPT Software", location: "Hà Nội", salary: "20 - 30 triệu", type: "Toàn thời gian" },
-        { id: 2, title: "Tester / QA Engineer", company: "VNG Corporation", location: "TP.HCM", salary: "15 - 25 triệu", type: "Hybrid" },
-        { id: 3, title: "Data Analyst", company: "Shopee Vietnam", location: "TP.HCM", salary: "18 - 28 triệu", type: "Full-time" },
-    ];
+    const jobs = mockJobList;
 
-    // Lọc theo filter động
-    const filtered = jobs.filter(job => {
+    const normalizeText = (str) => {
+        return str
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/\./g, "")
+            .replace(/\s+/g, "")
+            .toLowerCase();
+    };
+
+    const handleSearchSubmit = () => {
+        setFilters({ ...filters, keyword: search });
+    };
+
+    const filtered = jobs.filter((job) => {
+        const keyword = filters.keyword?.toLowerCase() || "";
+
+        const searchMatch =
+            (job.title?.toLowerCase() || "").includes(keyword) ||
+            (job.company?.toLowerCase() || "").includes(keyword);
+
+        if (!searchMatch) return false;
+
         return Object.entries(filters).every(([key, value]) => {
-            return job[key]?.toLowerCase().includes(value.toLowerCase());
+            if (!value || key === "keyword") return true;
+
+            if (key === "experience") {
+                return Number(job.experience) >= Number(value);
+            }
+
+            if (key === "salaryLevel") {
+                const salary = parseInt(job.salary.replace(/\D/g, ""));
+                if (!salary) return true;
+                return salary >= Number(value);
+            }
+
+            if (key === "location") {
+                return normalizeText(job.location).includes(normalizeText(value));
+            }
+
+            return job[key]?.toLowerCase().includes(String(value).toLowerCase());
         });
     });
 
@@ -33,8 +71,9 @@ export default function HomePage() {
                         placeholder="Tìm kiếm việc làm..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
+                        onKeyDown={(e) => e.key === "Enter" && handleSearchSubmit()}
                     />
-                    <button>Tìm kiếm</button>
+                    <button onClick={handleSearchSubmit}>Tìm kiếm</button>
                 </div>
             </div>
 
@@ -42,17 +81,13 @@ export default function HomePage() {
 
             <div className={styles["jobs-grid"]}>
                 {filtered.map((job) => (
-                    <div key={job.id} className={styles["job-card"]}>
-                        <div className={styles["job-header"]}>
-                            <img src="/logo192.png" alt={job.company} />
-                            <div className={styles["job-title"]}>{job.title}</div>
-                        </div>
-                        <div className={styles["company-name"]}>{job.company}</div>
-                        <div className={styles["job-meta"]}>
-                            <span className={styles.salary}>{job.salary}</span>
-                            <span className={styles.location}>{job.location}</span>
-                        </div>
-                    </div>
+                    <JobCard
+                        key={job.id} // 🔥 FIXED
+                        job={job}
+                        isFavorite={favorites.includes(job.id)} // 🔥 FIXED
+                        onToggleFavorite={toggleFavorite}
+                        onClick={() => navigate(`/candidate/job/${job.id}`)}
+                    />
                 ))}
             </div>
         </div>
