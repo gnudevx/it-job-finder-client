@@ -1,0 +1,136 @@
+:export {
+    --muted: #6b7280;
+    --accent: #16a34a
+}
+
+
+.campaignCell {
+    padding: 24px 20px;
+    border-bottom: 1px solid #f3f6f8;
+    display: flex;
+    align-items: center;
+}
+
+
+.leftCol {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+
+.info {
+    display: flex;
+    flex-direction: column
+}
+
+
+.id {
+    font-weight: 700;
+    color: #0f172a;
+}
+
+
+.title {
+    color: #0f172a;
+    opacity: 0.9;
+    margin-top: 4px;
+}
+
+
+.subtitle {
+    color: var(--muted);
+    margin-top: 6px;
+    font-size: 13px
+}
+
+
+.optimizeCell {
+    padding: 24px 20px;
+    border-bottom: 1px solid #f3f6f8;
+    color: var(--accent);
+    font-weight: 700;
+    display: flex;
+    align-items: center
+}
+
+
+.postCell {
+    padding: 24px 20px;
+    border-bottom: 1px solid #f3f6f8;
+
+
+}
+
+
+.postTag {
+    display: inline-block;
+    background: #ecfdf5;
+    color: var(--accent);
+    padding: 6px 8px;
+    border-radius: 6px;
+    font-weight: 600
+}
+
+
+.cvCell {
+    padding: 24px 20px;
+    border-bottom: 1px solid #f3f6f8;
+}
+
+
+.cvTitle {
+    font-weight: 700
+}
+
+
+.cvActions {
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px
+}
+
+
+.badge {
+    background: #f1f5f9;
+    color: var(--muted);
+    padding: 6px 8px;
+    border-radius: 999px;
+    font-size: 12px
+}
+
+
+.linkBtn {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer
+}
+
+
+.linkText {
+    font-size: 13px
+}
+
+
+.filterCell,
+.serviceCell {
+    padding: 24px 20px;
+    border-bottom: 1px solid #f3f6f8;
+    display: flex;
+    align-items: center
+}
+
+
+.ghostBtn {
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer
+}

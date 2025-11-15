@@ -1,0 +1,143 @@
+.section {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.sectionHeaderGreen {
+    color: #16a34a;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.formGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-height: 70px; // đảm bảo các field cao đồng đều
+}
+
+.label {
+    font-weight: 500;
+    color: #333;
+    font-size: 14px;
+}
+
+.inputText,
+.inputDate,
+.inputEmail,
+.select,
+.quantityInput {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s ease;
+    width: 100%;
+    height: 40px; // đặt chiều cao cố định cho đồng đều
+    box-sizing: border-box;
+
+    &:focus {
+        border-color: #16a34a;
+    }
+}
+
+.emailHint {
+    font-size: 13px;
+    color: #666;
+}
+
+.fullWidth {
+    grid-column: 1 / -1;
+}
+
+.quantityControl {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 40px; // đồng bộ với inputText
+
+    .quantityButton {
+        width: 40px;
+        height: 40px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        background-color: #f9f9f9;
+        font-size: 18px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+
+        &:hover {
+            background-color: #16a34a;
+            color: #fff;
+            border-color: #16a34a;
+        }
+    }
+
+    .quantityInput {
+        flex: 1;
+        text-align: center;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+        height: 40px;
+        box-sizing: border-box;
+    }
+}
+
+.infoIcon {
+    font-size: 13px;
+    color: #999;
+    margin-left: 4px;
+    cursor: help;
+}
+
+.navigation {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.buttonPrimary,
+.buttonSecondary {
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.buttonPrimary {
+    background-color: #16a34a;
+    color: #fff;
+    border: none;
+
+    &:hover {
+        background-color: #15803d;
+    }
+}
+
+.buttonSecondary {
+    background-color: #e5e7eb;
+    color: #333;
+    border: none;
+
+    &:hover {
+        background-color: #d1d5db;
+    }
+}

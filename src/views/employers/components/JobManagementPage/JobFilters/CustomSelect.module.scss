@@ -1,0 +1,54 @@
+/* CustomSelect.module.scss */
+.selectGroup {
+    position: relative; // 🎯 bắt buộc để ul.options position absolute
+    font-size: 14px;
+    cursor: pointer;
+    width: 300px;
+
+    .icon {
+        margin-right: 6px;
+        display: flex;
+        align-items: center;
+    }
+
+    .selectButton {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid #dcdcdc;
+        border-radius: 6px;
+        padding: 0 10px;
+        height: 40px;
+        background: white;
+    }
+
+    .caret {
+        margin-left: 5px;
+    }
+
+    .options {
+        position: absolute;
+        top: 100%; // xổ xuống ngay dưới button
+        left: 0;
+        width: 100%; // full width
+        border: 1px solid #dcdcdc;
+        border-radius: 6px;
+        background: #fff;
+        list-style: none;
+        margin: 2px 0 0 0;
+        padding: 0;
+        max-height: 200px;
+        overflow-y: auto;
+        z-index: 1000;
+
+        li {
+            padding: 8px 10px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: #f0f8ff;
+                color: blue;
+            }
+        }
+    }
+}

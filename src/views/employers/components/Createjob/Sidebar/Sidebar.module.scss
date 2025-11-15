@@ -1,0 +1,105 @@
+.sidebarCard {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 14px;
+
+    .title {
+        font-weight: 600;
+        color: #4f46e5;
+        font-size: 18px;
+        margin-bottom: 8px;
+    }
+
+    .stepsList {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        flex: 1;
+        overflow-y: auto;
+        /* scroll riêng nếu danh sách bước dài */
+        scrollbar-width: thin;
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            /* Quan trọng: để Header và Subitems nằm dọc */
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.25s;
+
+            &:hover {
+                background: #f3f4f6;
+            }
+
+            .stepHeader {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 0;
+                /* Đảm bảo không có padding thừa */
+            }
+
+            .index {
+                /* Container cho icon/số bước */
+                min-width: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                .number {
+                    font-weight: 600;
+                    color: #6b7280;
+                }
+            }
+
+            .label {
+                color: #374151;
+                font-size: 15px;
+                flex-grow: 1;
+                /* Cho phép label chiếm hết không gian */
+            }
+
+            .progress {
+                color: #16a34a;
+                /* Màu xanh lá cây cho tiến độ */
+                font-size: 14px;
+                font-weight: 600;
+            }
+        }
+
+        .active {
+            background: #e6f7e9;
+            /* Màu nền xanh lá nhạt cho bước active (giống hình) */
+            // border-left: 4px solid #4f46e5; /* Bỏ border-left nếu không cần */
+
+            .index {
+                .activeNumber {
+                    /* Số bước active */
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 50%;
+                    background-color: #16a34a;
+                    /* Màu nền xanh lá cho số */
+                    color: white;
+                    /* Màu chữ trắng */
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-weight: 600;
+                    font-size: 14px;
+                }
+            }
+
+            .label {
+                color: #16a34a;
+                /* Màu chữ xanh lá đậm cho bước active */
+                font-weight: 600;
+            }
+        }
+
+
+    }
+}
