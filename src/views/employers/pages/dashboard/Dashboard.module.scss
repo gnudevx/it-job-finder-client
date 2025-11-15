@@ -1,9 +1,11 @@
 .dashboard {
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 28px;
     padding: 24px 36px;
     background-color: #f9fafb;
+
 }
 
 /* Mỗi section chung style */

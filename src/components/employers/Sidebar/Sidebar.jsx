@@ -6,7 +6,6 @@ import {
     Briefcase,
     FileText,
     BarChart,
-    UserCheck,
     ClipboardList, // <-- Icon mới cho "Tin tuyển dụng"
     ChevronDown,   // <-- Icon mới cho mũi tên sub-menu
     History,
@@ -26,7 +25,7 @@ const menuItems = [
     { name: "HireIT Rewards", icon: Gift, to: "rewards" },
     // Thêm một đường phân cách
     { type: "divider" },
-    { name: "Chiến dịch tuyển dụng", icon: Briefcase, to: "campaigns" },
+    { name: "Chiến dịch tuyển dụng", icon: Briefcase, to: "recruitment-campaigns" },
     // Mục mới "Tin tuyển dụng"
     { name: "Tin tuyển dụng", icon: ClipboardList, to: "jobs" },
     // Mục "Quản lý CV" được cập nhật với 'children'
@@ -39,7 +38,6 @@ const menuItems = [
             { name: "Quản lý yêu cầu kết nối CV", to: "cvs-management/candidate-connection" }
         ]
     },
-    { name: "Theo dõi đơn hàng", icon: UserCheck, to: "orders" },
     { type: "divider" },
     { name: "Lịch sử hoạt động", icon: History, to: "account/activities" },
     { name: "Cài đặt tài khoản", icon: Settings, to: "account/settings" },
@@ -148,6 +146,7 @@ export default function Sidebar({ isCollapsed }) {
                     return (
                         <NavLink
                             key={item.to}
+                            end
                             to={item.to}
                             className={({ isActive }) =>
                                 `${styles["menu-item"]} ${isActive ? styles.active : ""}`
