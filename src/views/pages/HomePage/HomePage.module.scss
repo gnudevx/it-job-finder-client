@@ -2,139 +2,101 @@
     font-family: Arial, sans-serif;
     background-color: #f9fafb;
     color: #333;
+}
 
-    /* Header */
-    .homepage .header {
+/* Header */
+.header {
     background: #fff;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
+    padding: 10px 0;
+}
 
-    .header-container {
+.headerContainer {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 12px 20px;
     display: flex;
-    align-items: center;
+    align-items: center;   
     justify-content: space-between;
-    }
+}
 
-    .logo-section {
+.logoSection {
     display: flex;
     align-items: center;
     gap: 8px;
-    }
+}
 
-    .logo {
-    height: 40px;
+.logo {
+    max-height: 100px;
     width: auto;
     object-fit: contain;
-    }
+}
 
-    .brand {
-    font-size: 18px;
-    font-weight: bold;
-    color: #0071c2;
-    }
-
-    /* Tìm kiếm trong header */
-    .search-section {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    }
-
-    .search-input {
-    padding: 8px 12px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    width: 250px;
-    outline: none;
-    }
-
-    .search-input:focus {
-    border-color: #0071c2;
-    }
-
-    .search-button {
-    background: #0071c2;
-    color: white;
-    border: none;
-    padding: 8px 14px;
-    border-radius: 6px;
-    cursor: pointer;
-    }
-
-    .search-button:hover {
-    background: #005fa3;
-    }
-
-    /* Đăng nhập / đăng ký */
-    .auth-section {
+/* Auth */
+.authSection {
     display: flex;
     align-items: center;
     gap: 10px;
-    }
+}
 
-    .login-btn {
+.loginBtn {
     background: none;
     border: none;
     color: #333;
     cursor: pointer;
-    }
+}
 
-    .login-btn:hover {
+.loginBtn:hover {
     color: #0071c2;
-    }
+}
 
-    .register-btn {
+.registerBtn {
     border: 1px solid #0071c2;
     background: none;
     color: #0071c2;
     padding: 6px 12px;
     border-radius: 6px;
     cursor: pointer;
-    }
+}
 
-    .register-btn:hover {
+.registerBtn:hover {
     background: #eef7ff;
-    }
+}
 
-    /* Hero Section */
-    .hero {
+/* Hero */
+.hero {
     background: linear-gradient(90deg, #2563eb, #4338ca);
     color: white;
     text-align: center;
     padding: 80px 20px;
-    }
+}
 
-    .hero-title {
+.heroTitle {
     font-size: 36px;
     font-weight: bold;
     margin-bottom: 10px;
-    }
+}
 
-    .hero-subtitle {
+.heroSubtitle {
     font-size: 18px;
     color: #dbeafe;
     margin-bottom: 25px;
-    }
+}
 
-    .hero-search {
+.heroSearch {
     display: flex;
     justify-content: center;
-    gap: 0;
-    }
+}
 
-    .hero-input {
+.heroInput {
     width: 360px;
     padding: 12px;
     border: none;
     border-radius: 6px 0 0 6px;
     outline: none;
     color: #333;
-    }
+}
 
-    .hero-button {
+.heroButton {
     background: #f97316;
     color: white;
     border: none;
@@ -142,33 +104,33 @@
     border-radius: 0 6px 6px 0;
     font-weight: bold;
     cursor: pointer;
-    }
+}
 
-    .hero-button:hover {
+.heroButton:hover {
     background: #ea580c;
-    }
+}
 
-    /* Categories */
-    .categories {
+/* Categories */
+.categories {
     max-width: 1000px;
     margin: 60px auto;
     text-align: center;
-    }
+}
 
-    .section-title {
+.sectionTitle {
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 24px;
     color: #111;
-    }
+}
 
-    .category-grid {
+.categoryGrid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px;
-    }
+}
 
-    .category-card {
+.categoryCard {
     background: #fff;
     padding: 20px;
     border-radius: 10px;
@@ -176,19 +138,18 @@
     cursor: pointer;
     font-weight: 500;
     transition: transform 0.2s, box-shadow 0.2s;
-    }
+}
 
-    .category-card:hover {
+.categoryCard:hover {
     transform: translateY(-4px);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    }
+}
 
-    /* Footer */
-    .footer {
+/* Footer */
+.footer {
     background: #111827;
     color: #9ca3af;
     text-align: center;
     padding: 20px;
     margin-top: 60px;
-    }
 }

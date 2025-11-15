@@ -57,6 +57,7 @@ export default function MyCVs() {
   return (
     <div className={styles.container}>
       {/* CV đã tạo */}
+      <h2 className={styles.manageCV}>Quản lý CV của bạn</h2>
       <div className={styles.card}>
         <div className={styles.cardHeader}>
           <h3>CV đã tạo trên hệ thống</h3>
