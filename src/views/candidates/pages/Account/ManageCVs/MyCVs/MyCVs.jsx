@@ -56,7 +56,6 @@ export default function MyCVs() {
 
   return (
     <div className={styles.container}>
-      {/* CV đã tạo */}
       <h2 className={styles.manageCV}>Quản lý CV của bạn</h2>
       <div className={styles.card}>
         <div className={styles.cardHeader}>
@@ -71,7 +70,6 @@ export default function MyCVs() {
         <CVList data={cvs} onDelete={removeCV} />
       </div>
 
-      {/* CV Upload */}
       <div className={styles.card}>
         <div className={styles.cardHeader}>
           <h3>CV đã tải lên (PDF)</h3>
@@ -105,6 +103,10 @@ export default function MyCVs() {
                 cv={cv}
                 onView={handleViewPDF}
                 onDelete={removeUploadedCV}
+                onSelect={(cv) => {
+                  localStorage.setItem("selectedCV", JSON.stringify(cv));
+                  alert("Đã chọn CV: " + cv.name);
+                }}
               />
             ))
           )}

@@ -34,3 +34,52 @@ h2 {
   border: none;
   cursor: pointer;
 }
+
+.modalOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.modal {
+    background: #fff;
+    width: 450px;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+.select, .textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0 18px 0;
+    border: 1px solid #ccc;
+    box-sizing: border-box; 
+    border-radius: 6px;
+}
+
+.modalActions {
+    display: flex;
+    justify-content: space-between;
+}
+
+.submitBtn {
+    background: #007bff;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}
+
+.cancelBtn {
+    background: #ccc;
+    padding: 10px 16px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}

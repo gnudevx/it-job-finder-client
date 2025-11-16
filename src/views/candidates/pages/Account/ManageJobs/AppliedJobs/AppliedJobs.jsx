@@ -1,14 +1,25 @@
 import React, { useState } from "react";
 import styles from "./AppliedJobs.module.scss";
+import { mockJobList } from "@/models/mockJobList";
+import JobCard from "@/components/candidates/JobCard/JobCard.jsx"; 
+import { useNavigate } from "react-router-dom";
+import useFavorites from "@/hooks/useFavorites";
 
 export default function AppliedJobs() {
     const [search] = useState("");
-    const jobs = [
-        { id: 1, title: "Frontend Developer (ReactJS)", company: "FPT Software", location: "Hà Nội", salary: "20 - 30 triệu", type: "Toàn thời gian" },
-        { id: 2, title: "Tester / QA Engineer", company: "VNG Corporation", location: "TP.HCM", salary: "15 - 25 triệu", type: "Hybrid" },
-    ];
+    const navigate = useNavigate();
+    const { isFavorite, toggleFavorite } = useFavorites();
 
-    const filtered = jobs.filter(
+    // Lấy danh sách ứng tuyển
+    const applied = JSON.parse(localStorage.getItem("appliedJobs") || "[]");
+
+    // Join dữ liệu từ mockJobList để lấy full thông tin job
+    const appliedJobDetails = applied
+        .map((app) => mockJobList.find((j) => j.id === app.jobId))
+        .filter(Boolean); // loại bỏ job không tồn tại
+
+    // Lọc theo search
+    const filtered = appliedJobDetails.filter(
         (job) =>
             job.title.toLowerCase().includes(search.toLowerCase()) ||
             job.company.toLowerCase().includes(search.toLowerCase())
@@ -16,20 +27,21 @@ export default function AppliedJobs() {
 
     return (
         <div className={styles["home-container"]}>
+            <h2 className={styles.heading}>Danh sách công việc đã ứng tuyển</h2>
 
             <div className={styles["jobs-grid"]}>
+                {filtered.length === 0 && (
+                    <p>Bạn chưa ứng tuyển công việc nào.</p>
+                )}
+
                 {filtered.map((job) => (
-                    <div key={job.id} className={styles["job-card"]}>
-                        <div className={styles["job-header"]}>
-                            <img src="/logo192.png" alt={job.company} />
-                            <div className={styles["job-title"]}>{job.title}</div>
-                        </div>
-                        <div className={styles["company-name"]}>{job.company}</div>
-                        <div className={styles["job-meta"]}>
-                            <span className={styles.salary}>{job.salary}</span>
-                            <span className={styles.location}>{job.location}</span>
-                        </div>
-                    </div>
+                    <JobCard
+                        key={job.id}
+                        job={job}
+                        isFavorite={isFavorite(job.id)}
+                        onToggleFavorite={toggleFavorite}
+                        onClick={() => navigate(`/candidate/job/${job.id}`)}
+                    />
                 ))}
             </div>
         </div>

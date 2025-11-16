@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { User, ChevronDown, ChevronRight } from "lucide-react";
+import { User, ChevronDown, ChevronRight, MessageSquareMore } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import styles from "@components/candidates/Header/Header.module.scss";
 import logo from "@/assets/Logo_HireIT.png";
@@ -71,7 +71,17 @@ export default function Header() {
                 </button>
                 <button
                     className={styles.navItem}
-                    onClick={() => handleNavigate("/candidate/account/recommendjobs")}
+                    onClick={() => {
+                        const selectedCV = localStorage.getItem("selectedCV");
+
+                        if (!selectedCV) {
+                            // ❗ Chưa chọn CV → chuyển về CV của tôi
+                            navigate("/candidate/account/mycvs");
+                        } else {
+                            // ✅ Có CV rồi → sang trang gợi ý việc làm
+                            navigate("/candidate/account/recommendjobs");
+                        }
+                    }}
                 >
                     Gợi ý việc làm
                 </button>
@@ -81,6 +91,13 @@ export default function Header() {
             <div className={styles["header-right"]}>
 
                 <NotificationDropdown />
+
+                <div
+                    className={styles.iconWrapper}
+                    onClick={() => navigate("/candidate/messages")}
+                >
+                    <MessageSquareMore className={styles.icon} />
+                </div>
 
                 {/* 🔹 Profile Dropdown */}
                 <div
@@ -120,7 +137,19 @@ export default function Header() {
                                         <li onClick={() => handleNavigate("/candidate/account/appliedjobs")}>
                                             Việc làm đã ứng tuyển
                                         </li>
-                                        <li onClick={() => handleNavigate("/candidate/account/recommendjobs")}>
+                                        <li
+                                            onClick={() => {
+                                                const selectedCV = localStorage.getItem("selectedCV");
+
+                                                if (!selectedCV) {
+                                                    navigate("/candidate/account/mycvs");
+                                                } else {
+                                                    navigate("/candidate/account/recommendjobs");
+                                                }
+
+                                                setShowDropdown(false);
+                                            }}
+                                        >
                                             Gợi ý việc làm
                                         </li>
                                     </ul>
