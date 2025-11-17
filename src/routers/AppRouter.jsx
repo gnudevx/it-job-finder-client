@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import HomePage from "@/views/pages/HomePage/HomePage.jsx";
 import CandidateApp from "../routers/candidate/CandidateApp";
 import EmployerApp from "../routers/employer/EmployerApp";
-import LoginPage from "@/components/Login/Login.jsx";
+import LoginPage from "@/views/pages/Login/Login.jsx";
 import privateRoutes from "./routerConfig/privateRoutes";
 
 // Hàm kiểm tra trạng thái đăng nhập

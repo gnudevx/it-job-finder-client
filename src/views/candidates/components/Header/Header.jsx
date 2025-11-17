@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import { User, ChevronDown, ChevronRight, MessageSquareMore } from "lucide-react";
+import { ChevronDown, ChevronRight, MessageSquareMore, Briefcase, FileText, UserCog, Settings } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import styles from "@/views/candidates/components/Header/Header.module.scss";
 import logo from "@/assets/Logo_HireIT.png";
+import logo_candidate from "@/assets/logo_candidate.jpg"
 import NotificationDropdown from "@/views/candidates/components/Header/DropdownButton/NotificationDropdown.jsx";
 
 export default function Header() {
@@ -10,7 +11,8 @@ export default function Header() {
     const [openSections, setOpenSections] = useState({
         jobs: false,
         cv: false,
-        settings: false,
+        peronal_settings: false,
+        general_settings: false,
     });
 
     const dropdownRef = useRef(null);
@@ -105,7 +107,7 @@ export default function Header() {
                     ref={profileRef}
                     onClick={() => setShowDropdown((prev) => !prev)}
                 >
-                    <User className={styles.avatarIcon} />
+                    <img src={ logo_candidate } alt="" className={styles.avatarIcon}/>
                     <span className={styles.username}>Ứng viên</span>
                     <ChevronDown className={styles.caretIcon} />
 
@@ -119,13 +121,16 @@ export default function Header() {
                                 {/* --- Quản lý việc làm --- */}
                                 <div className={styles["dropdown-section"]}>
                                     <h4 onClick={() => toggleSection("jobs")}>
-                                        Quản lý việc làm
+                                        <span className={styles.h4Left}>
+                                            <Briefcase className={styles.sectionIcon} />
+                                            Quản lý việc làm
+                                        </span>
+
                                         <ChevronRight
-                                            className={`${styles.arrowIcon} ${
-                                                openSections.jobs ? styles.open : ""
-                                            }`}
+                                            className={`${styles.arrowIcon} ${openSections.jobs ? styles.open : ""}`}
                                         />
                                     </h4>
+
                                     <ul
                                         className={`${styles.subList} ${
                                             openSections.jobs ? styles.show : ""
@@ -158,13 +163,16 @@ export default function Header() {
                                 {/* --- Quản lý CV --- */}
                                 <div className={styles["dropdown-section"]}>
                                     <h4 onClick={() => toggleSection("cv")}>
-                                        Quản lý CV
+                                        <span className={styles.h4Left}>
+                                            <FileText className={styles.sectionIcon} />
+                                            Quản lý CV
+                                        </span>
+
                                         <ChevronRight
-                                            className={`${styles.arrowIcon} ${
-                                                openSections.cv ? styles.open : ""
-                                            }`}
+                                            className={`${styles.arrowIcon} ${openSections.cv ? styles.open : ""}`}
                                         />
                                     </h4>
+
                                     <ul
                                         className={`${styles.subList} ${
                                             openSections.cv ? styles.show : ""
@@ -184,17 +192,22 @@ export default function Header() {
 
                                 {/* --- Cài đặt cá nhân --- */}
                                 <div className={styles["dropdown-section"]}>
-                                    <h4 onClick={() => toggleSection("settings")}>
-                                        Cài đặt cá nhân
+                                    <h4 onClick={() => toggleSection("peronal_settings")}>
+                                        <span className={styles.h4Left}>
+                                            <UserCog className={styles.sectionIcon} />
+                                            Cài đặt cá nhân
+                                        </span>
+                                    
                                         <ChevronRight
                                             className={`${styles.arrowIcon} ${
-                                                openSections.settings ? styles.open : ""
+                                                openSections.peronal_settings ? styles.open : ""
                                             }`}
                                         />
                                     </h4>
+
                                     <ul
                                         className={`${styles.subList} ${
-                                            openSections.settings ? styles.show : ""
+                                            openSections.peronal_settings ? styles.show : ""
                                         }`}
                                     >
                                         <li onClick={() => handleNavigate("/candidate/account")}>
@@ -202,6 +215,35 @@ export default function Header() {
                                         </li>
                                         <li onClick={() => handleNavigate("/candidate/account/changepassword")}>
                                             Đổi mật khẩu
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                {/* --- Cài đặt chung --- */}
+                                <div className={styles["dropdown-section"]}>
+                                    <h4 onClick={() => toggleSection("general_settings")}>
+                                        <span className={styles.h4Left}>
+                                            <Settings className={styles.sectionIcon} />
+                                            Cài đặt chung
+                                        </span>
+                                    
+                                        <ChevronRight
+                                            className={`${styles.arrowIcon} ${
+                                                openSections.general_settings ? styles.open : ""
+                                            }`}
+                                        />
+                                    </h4>
+
+                                    <ul
+                                        className={`${styles.subList} ${
+                                            openSections.general_settings ? styles.show : ""
+                                        }`}
+                                    >
+                                        <li onClick={() => handleNavigate("/candidate/account/notifications")}>
+                                            Cài đặt thông báo
+                                        </li>
+                                        <li onClick={() => handleNavigate("/candidate/account/security")}>
+                                            Cài đặt bảo mật
                                         </li>
                                     </ul>
                                 </div>

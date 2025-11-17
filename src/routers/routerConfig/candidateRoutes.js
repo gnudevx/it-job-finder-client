@@ -10,6 +10,8 @@ import MyCVs from "@/views/candidates/pages/Account/ManageCVs/MyCVs/MyCVs";
 import ConnectedEmployer from "@/views/candidates/pages/Account/ManageCVs/ConnectedEmployer/ConnectedEmployer";
 import ViewedEmployer from "@/views/candidates/pages/Account/ManageCVs/ViewedEmployer/ViewedEmployer";
 import JobDetail from "@views/candidates/pages/JobDetail/JobDetail.jsx";
+import NotificationSettings from "@/views/candidates/pages/Account/GeneralSettings/NotificationSettings/NotificationSettings.jsx";
+import SecuritySettings from "@/views/candidates/pages/Account/GeneralSettings/SecuritySettings/SecuritySettings.jsx";
 
 const candidateRoutes = [
     { path: "home", element: <CandidateHome />, meta: { title: "Home", icon: "home" } },
@@ -23,6 +25,8 @@ const candidateRoutes = [
     { path: "account", element: <PersonalInfo />, meta: { title: "Home", icon: "home" } },
     { path: "account/changepassword", element: <ChangePassword />, meta: { title: "Home", icon: "home" } },
     { path: "job/:id", element: <JobDetail /> },
+    { path: "account/notifications", element: <NotificationSettings />},
+    { path: "account/security", element: <SecuritySettings />} ,
 ];
 
 export default candidateRoutes;

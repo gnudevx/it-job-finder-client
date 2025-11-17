@@ -79,8 +79,6 @@
 .iconWrapper {
   position: relative;
   display: flex;
-  align-items: center;
-  justify-content: center;
   cursor: pointer;
 
   &:hover .icon {
@@ -121,35 +119,39 @@
   }
 }
 
-.avatarIcon {
+.username,
+.caretIcon {
   color: #d9d7d7;
-  width: 22px;
-  height: 22px;
+}
+
+.avatarIcon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .username {
   font-size: 14px;
-  color: #d9d7d7;
   font-weight: 500;
 }
 
 .caretIcon {
   width: 16px;
-  color: #d9d7d7;
 }
 
 .profileDropdown {
   position: absolute;
   top: 110%;
   right: 0;
-  background: #ffffff;
+  background: #fff;
   border: 1px solid #e5e7eb;
   border-radius: 10px;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
-  width: 260px;
+  width: 400px;
   padding: 10px 0 12px;
   z-index: 999;
-  font-size: 14px;
+  font-size: 16px;
   animation: fadeIn 0.2s ease-in-out;
 
   .dropdown-section {
@@ -157,16 +159,32 @@
     font-family: "Times New Roman", Times, serif;
 
     h4 {
-      font-size: 16px;
+      font-size: 18px;
       font-weight: bold;
-      color: #000000;
+      color: #000;
       margin: 10px 0 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: color 0.2s;
+
+      &:hover {
+        color: #20dfb9;
+      }
+    }
+
+    .h4Left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     ul {
       list-style: none;
       padding: 0;
       margin: 0;
+      padding-left: 22px;
 
       li {
         padding: 8px 10px;
@@ -186,6 +204,30 @@
       border-bottom: 1px solid #f3f4f6;
       padding-bottom: 10px;
       margin-bottom: 6px;
+    }
+
+    .arrowIcon {
+      width: 16px;
+      height: 16px;
+      color: #6b7280;
+      transition: transform 0.25s ease;
+    }
+
+    .arrowIcon.open {
+      transform: rotate(90deg);
+      color: #20dfb9;
+    }
+
+    .subList {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.25s ease, opacity 0.25s ease;
+
+      &.show {
+        max-height: 500px;
+        opacity: 1;
+      }
     }
   }
 
@@ -225,49 +267,8 @@
   }
 }
 
-.profileDropdown {
-  // (giữ nguyên phần cũ)
-  .dropdown-section {
-    h4 {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
-      transition: color 0.2s;
-
-      &:hover {
-        color: #20dfb9;
-      }
-    }
-
-    .arrowIcon {
-      width: 16px;
-      height: 16px;
-      color: #6b7280;
-      transition: transform 0.25s ease;
-    }
-
-    .open {
-      transform: rotate(90deg);
-      color: #20dfb9;
-    }
-
-    .subList {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.25s ease, opacity 0.25s ease;
-      opacity: 0;
-    }
-
-    .show {
-      max-height: 500px;
-      opacity: 1;
-    }
-  }
-}
-
-.iconWrapper{
-  .icon{
+.iconWrapper {
+  .icon {
     color: white;
   }
 }
