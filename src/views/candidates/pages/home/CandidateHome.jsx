@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./CandidateHome.module.scss";
 import FilterBar from "@views/candidates/components/FilterBar/FilterBar.jsx";
-import { mockJobList } from "@/models/mockJobList";
+import { mockJobList } from "@/models/jobs/mockJobList";
 import useFavorites from "@/hooks/useFavorites";
-import JobCard from "@/components/candidates/JobCard/JobCard.jsx";
+import JobCard from "@/views/candidates/components/JobCard/JobCard.jsx";
 
 export default function HomePage() {
     const { favorites, toggleFavorite } = useFavorites(); // 🔥 FIXED

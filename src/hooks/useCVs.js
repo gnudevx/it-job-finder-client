@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getCVs, saveCV, deleteCV } from "@/services/cvService";
+import { getCVs, saveCV, deleteCV } from "@/api/cvService";
 
 export default function useCVs() {
   const [cvs, setCVs] = useState([]);

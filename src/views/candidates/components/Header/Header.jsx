@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { User, ChevronDown, ChevronRight, MessageSquareMore } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import styles from "@components/candidates/Header/Header.module.scss";
+import styles from "@/views/candidates/components/Header/Header.module.scss";
 import logo from "@/assets/Logo_HireIT.png";
 import NotificationDropdown from "@/views/candidates/components/Header/DropdownButton/NotificationDropdown.jsx";
 

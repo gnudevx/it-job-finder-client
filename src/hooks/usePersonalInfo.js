@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { loadPersonalInfo, savePersonalInfo } from "../services/personalInfoService";
+import { loadPersonalInfo, savePersonalInfo } from "@/api/personalInfoService";
 
 export default function usePersonalInfo() {
     const [formData, setFormData] = useState({

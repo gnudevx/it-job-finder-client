@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./AppliedJobs.module.scss";
-import { mockJobList } from "@/models/mockJobList";
-import JobCard from "@/components/candidates/JobCard/JobCard.jsx"; 
+import { mockJobList } from "@/models/jobs/mockJobList";
+import JobCard from "@/views/candidates/components/JobCard/JobCard.jsx"; 
 import { useNavigate } from "react-router-dom";
 import useFavorites from "@/hooks/useFavorites";
 

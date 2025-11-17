@@ -4,11 +4,11 @@ import { PlusCircle, Upload } from "lucide-react";
 
 import useCVs from "@/hooks/useCVs";
 import CVList from "@/views/candidates/components/CVList/CVList.jsx";
-import CVModal from "@/components/candidates/CVModal/CVModal.jsx";
+import CVModal from "@/views/candidates/components/CVModal/CVModal.jsx";
 import CVBuilder from "@/views/candidates/components/CVBuilder/CVBuilder.jsx";
 import useUploadedCVs from "@/hooks/useUploadedCVs";
 
-import UploadedCVItem from "@/components/candidates/UploadedCVItem/UploadedCVItem.jsx";
+import UploadedCVItem from "@/views/candidates/components/UploadedCVItem/UploadedCVItem.jsx";
 
 export default function MyCVs() {
   const fileInputRef = useRef(null);

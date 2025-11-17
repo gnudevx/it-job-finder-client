@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-import { mockJobList } from "@/models/mockJobList";
+import { mockJobList } from "@/models/jobs/mockJobList";
 import styles from "./JobDetail.module.scss";
 import useFavorites from "@/hooks/useFavorites";
 

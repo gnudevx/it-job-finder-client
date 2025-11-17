@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getCurrentPassword, saveNewPassword } from "@/services/changePasswordService";
+import { getCurrentPassword, saveNewPassword } from "@/api/changePasswordService";
 
 export default function useChangePassword() {
     const [formData, setFormData] = useState({

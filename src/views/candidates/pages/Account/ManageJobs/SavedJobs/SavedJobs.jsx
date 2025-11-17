@@ -1,8 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./SavedJobs.module.scss";
-import JobCard from "@/components/candidates/JobCard/JobCard";
-import { mockJobList } from "@/models/mockJobList";
+import JobCard from "@/views/candidates/components/JobCard/JobCard";
+import { mockJobList } from "@/models/jobs/mockJobList";
 import useFavorites from "@/hooks/useFavorites";
 
 export default function SavedJobs() {

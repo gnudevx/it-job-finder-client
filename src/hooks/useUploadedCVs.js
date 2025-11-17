@@ -3,7 +3,7 @@ import {
   getUploadedCVs,
   saveUploadedCV,
   deleteUploadedCV,
-} from "@/services/cvUploadService";
+} from "@/api/cvUploadService";
 
 export default function useUploadedCVs() {
   const [uploadedCVs, setUploadedCVs] = useState([]);

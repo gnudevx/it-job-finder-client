@@ -1,5 +1,5 @@
 import React from "react";
-import Header from "@components/candidates/Header/Header.jsx";
+import Header from "@/views/candidates/components/Header/Header.jsx";
 import { Outlet } from "react-router-dom";
 import styles from "@views/candidates/layouts/CandidateLayout.module.scss";
 
