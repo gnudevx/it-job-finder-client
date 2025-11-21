@@ -1,12 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./RecommendJobs.module.scss";
+import JobCard from "@/views/candidates/components/JobCard/JobCard.jsx";
+import Pagination from "@/components/common/Pagination/Pagination.jsx";
+import { getJobDetail } from "@/api/jobService";
 
 export default function RecommendJobs() {
     const [loading, setLoading] = useState(false);
     const [results, setResults] = useState(null);
+    const [page, setPage] = useState(1);
+    const [pageJobsDetail, setPageJobsDetail] = useState([]);
+    const limit = 5;
+
     const navigate = useNavigate();
 
+    // ==============================
+    // 1) Gọi API /recommend
+    // ==============================
     useEffect(() => {
         const selectedCV = JSON.parse(localStorage.getItem("selectedCV") || "null");
 
@@ -31,7 +41,7 @@ export default function RecommendJobs() {
                 const data = await res.json();
                 setResults(data);
             } catch (err) {
-                console.error("Error during recommend:", err);
+                console.error("Lỗi khi gọi API Recommend:", err);
             } finally {
                 setLoading(false);
             }
@@ -40,32 +50,72 @@ export default function RecommendJobs() {
         fetchRecommend();
     }, [navigate]);
 
+    // ==============================
+    // 2) Khi đổi trang → fetch detail của 5 job
+    // ==============================
+    useEffect(() => {
+        if (!results) return;
+
+        const start = (page - 1) * limit;
+        const currentJobs = results.recommendations.slice(start, start + limit);
+
+        const fetchDetails = async () => {
+            try {
+                const detailPromises = currentJobs.map((job) =>
+                    getJobDetail(job.id).catch(() => null)
+                );
+
+                const detailedList = await Promise.all(detailPromises);
+                setPageJobsDetail(detailedList.filter(Boolean));
+            } catch (e) {
+                console.error("Lỗi load detail:", e);
+            }
+        };
+
+        fetchDetails();
+    }, [page, results]);
+
+    // ==============================
+    // 3) Render
+    // ==============================
+    if (loading) return <p className={styles.loading}>Đang phân tích CV...</p>;
+    if (!results) return null;
+
+    const totalJobs = results.recommendations.length;
+    const totalPages = Math.ceil(totalJobs / limit);
+
+    const goJobDetail = (id) => navigate(`/candidate/job/${id}`);
+
     return (
         <div className={styles.container}>
             <h2 className={styles.title}>Gợi ý việc làm</h2>
 
-            {loading && <p className={styles.loading}>Đang phân tích CV...</p>}
+            <h3 className={styles.sectionTitle}>Kỹ năng tìm thấy:</h3>
+            <div className={styles.skills}>{results.skills_found.join(", ")}</div>
 
-            {!loading && results && (
-                <>
-                    <h3 className={styles.sectionTitle}>Kỹ năng tìm thấy:</h3>
-                    <div className={styles.skills}>
-                        {results.skills_found.join(", ")}
-                    </div>
+            <h3 className={styles.sectionTitle}>
+                Danh sách việc làm phù hợp ({totalJobs})
+            </h3>
 
-                    <h3 className={styles.sectionTitle}>Top việc làm phù hợp:</h3>
-                    <ul className={styles.jobList}>
-                        {results.recommendations.map((job) => (
-                            <li className={styles.jobItem} key={job.title}>
-                                <div className={styles.jobTitle}>{job.title}</div>
-                                <div className={styles.jobScore}>
-                                    match: {job.score.toFixed(3)}
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
-                </>
-            )}
+            <div className={styles.jobList}>
+                {pageJobsDetail.map((job) => (
+                    <JobCard
+                        key={job._id}
+                        job={{
+                            id: job._id,
+                            title: job.title,
+                            company: job.company || "Công ty đang cập nhật",
+                            salary: job.salary_raw || "Thoả thuận",
+                            location: job.location?.name || "Không rõ",
+                        }}
+                        isFavorite={false}
+                        onToggleFavorite={() => {}}
+                        onClick={() => goJobDetail(job._id)}
+                    />
+                ))}
+            </div>
+
+            <Pagination page={page} totalPages={totalPages} onChange={setPage} />
         </div>
     );
 }

@@ -1,40 +1,79 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { mockJobList } from "@/models/jobs/mockJobList";
 import styles from "./JobDetail.module.scss";
 import useFavorites from "@/hooks/useFavorites";
+import { getJobDetail } from "@/api/jobService";
 
 export default function JobDetail() {
     const { id } = useParams();
     const { toggleFavorite, isFavorite } = useFavorites();
 
-    const job = mockJobList.find((j) => j.id === Number(id));
-    if (!job) return <div>Không tìm thấy tin tuyển dụng.</div>;
+    const [job, setJob] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-    // ------- Apply states -------
+    // ============ APPLY STATE (đưa lên trên!) ===============
     const [showApplyForm, setShowApplyForm] = useState(false);
-    const [selectedCV, setSelectedCV] = useState(null);
+    const [selectedCV, setSelectedCV] = useState("");
     const [note, setNote] = useState("");
 
-    // Lấy danh sách CV
-    const storedCVs = JSON.parse(localStorage.getItem("myCVs") || "[]");
-    const myCVs =
-        storedCVs.length === 0
-            ? [
-                  { id: 1, name: "CV_Default_1.pdf" },
-                  { id: 2, name: "CV_Default_2.pdf" },
-              ]
-            : storedCVs;
+    const defaultCVs = [
+        { id: 1, name: "CV_Default_1.pdf" },
+        { id: 2, name: "CV_Default_2.pdf" },
+    ];
 
-    if (storedCVs.length === 0) {
+    const [myCVs] = useState(() => {
+        const stored = JSON.parse(localStorage.getItem("myCVs") || "[]");
+        return stored.length > 0 ? stored : defaultCVs;
+    });
+
+    useEffect(() => {
         localStorage.setItem("myCVs", JSON.stringify(myCVs));
-    }
+    }, [myCVs]);
 
-    // -----------------------------
-    // Kiểm tra job đã ứng tuyển chưa
-    // -----------------------------
+
+    // ============ FETCH JOB ============
+    useEffect(() => {
+        const fetchJob = async () => {
+            try {
+                const data = await getJobDetail(id);
+
+                const formatted = {
+                    id: data._id,
+                    title: data.title,
+                    deadline: data.deadline,
+                    description: data.description,
+                    requirements: Array.isArray(data.requirements)
+                        ? data.requirements.join("\n")
+                        : data.requirements,
+                    benefits: Array.isArray(data.benefits)
+                        ? data.benefits.join("\n")
+                        : data.benefits,
+                    work_location_detail: data.work_location_detail,
+                    working_time: data.working_time,
+                    link: data.link,
+                };
+
+                setJob(formatted);
+            } catch (error) {
+                console.error("Lỗi tải job:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchJob();
+    }, [id]);
+
+
+    // ====== RETURN SECTION ======
+    if (loading) return <div>Đang tải...</div>;
+    if (!job) return <div>Không tìm thấy tin tuyển dụng.</div>;
+
+    const { title, deadline, description, requirements, benefits, work_location_detail, working_time, link } = job;
+
+    // applied
     const appliedJobs = JSON.parse(localStorage.getItem("appliedJobs") || "[]");
-    const hasApplied = appliedJobs.some((j) => j.jobId === job.id);
+    const hasApplied = appliedJobs.some((j) => j.jobId === id);
 
     const handleSubmitApplication = () => {
         if (!selectedCV) {
@@ -42,10 +81,10 @@ export default function JobDetail() {
             return;
         }
 
-        const newAppliedJobs = [
+        const newApplied = [
             ...appliedJobs,
             {
-                jobId: job.id,
+                jobId: id,
                 title: job.title,
                 cv: selectedCV,
                 note,
@@ -53,7 +92,7 @@ export default function JobDetail() {
             },
         ];
 
-        localStorage.setItem("appliedJobs", JSON.stringify(newAppliedJobs));
+        localStorage.setItem("appliedJobs", JSON.stringify(newApplied));
 
         alert("Ứng tuyển thành công!");
         setShowApplyForm(false);
@@ -61,26 +100,20 @@ export default function JobDetail() {
 
     return (
         <div className={styles.container}>
-
             <div className={styles.titleRow}>
-                <h1>{job.title}</h1>
+                <h1>{title}</h1>
 
-                <button
-                    className={styles.favBtn}
-                    onClick={() => toggleFavorite(job.id)}
-                >
-                    {isFavorite(job.id) ? "💖 Bỏ lưu" : "🤍 Lưu việc"}
+                <button className={styles.favBtn} onClick={() => toggleFavorite(id)}>
+                    {isFavorite(id) ? "💖 Bỏ lưu" : "🤍 Lưu việc"}
                 </button>
             </div>
 
-            <div className={styles.deadline}>
-                Hạn nộp hồ sơ: {job.deadline}
-            </div>
+            <div className={styles.deadline}>Hạn nộp hồ sơ: {deadline}</div>
 
             <section>
                 <h2>Mô tả công việc</h2>
                 <ul>
-                    {job.description.map((item, idx) => (
+                    {(description || "").split("\n").map((item, idx) => (
                         <li key={idx}>{item}</li>
                     ))}
                 </ul>
@@ -89,7 +122,7 @@ export default function JobDetail() {
             <section>
                 <h2>Yêu cầu ứng viên</h2>
                 <ul>
-                    {job.requirements.map((item, idx) => (
+                    {(requirements || "").split("\n").map((item, idx) => (
                         <li key={idx}>{item}</li>
                     ))}
                 </ul>
@@ -98,7 +131,7 @@ export default function JobDetail() {
             <section>
                 <h2>Quyền lợi</h2>
                 <ul>
-                    {job.benefits.map((item, idx) => (
+                    {(benefits || "").split("\n").map((item, idx) => (
                         <li key={idx}>{item}</li>
                     ))}
                 </ul>
@@ -106,26 +139,25 @@ export default function JobDetail() {
 
             <section>
                 <h2>Địa điểm làm việc</h2>
-                {job.work_location_detail.map((loc, idx) => (
+                {(work_location_detail || "").split("\n").map((loc, idx) => (
                     <p key={idx}>{loc}</p>
                 ))}
             </section>
 
             <section>
                 <h2>Thời gian làm việc</h2>
-                {job.working_time.map((t, idx) => (
+                {(working_time || "").split("\n").map((t, idx) => (
                     <p key={idx}>{t}</p>
                 ))}
             </section>
 
             <section>
-                <h2>Cách thức ứng tuyển</h2>
-                <p>{job.applyGuide}</p>
+                <h2>Link gốc</h2>
+                <a href={link} target="_blank" rel="noreferrer">
+                    Mở bài đăng trên TopCV
+                </a>
             </section>
 
-            {/* ======================== */}
-            {/* BUTTON ỨNG TUYỂN */}
-            {/* ======================== */}
             <button
                 className={styles.applyBtn}
                 disabled={hasApplied}
@@ -134,19 +166,15 @@ export default function JobDetail() {
                 {hasApplied ? "Đã ứng tuyển" : "Ứng tuyển ngay"}
             </button>
 
-            {/* ======================== */}
-            {/* APPLY POPUP */}
-            {/* ======================== */}
             {showApplyForm && (
                 <div className={styles.modalOverlay}>
                     <div className={styles.modal}>
-                        <h2>Ứng tuyển: {job.title}</h2>
+                        <h2>Ứng tuyển: {title}</h2>
 
-                        {/* Chọn CV */}
-                        <label>Chọn CV để ứng tuyển</label>
+                        <label>Chọn CV</label>
                         <select
-                            value={selectedCV || ""}
                             className={styles.select}
+                            value={selectedCV}
                             onChange={(e) => setSelectedCV(e.target.value)}
                         >
                             <option value="">-- Chọn CV --</option>
@@ -157,26 +185,18 @@ export default function JobDetail() {
                             ))}
                         </select>
 
-                        {/* Ghi chú */}
-                        <label>Ghi chú (không bắt buộc):</label>
+                        <label>Ghi chú</label>
                         <textarea
                             className={styles.textarea}
                             value={note}
                             onChange={(e) => setNote(e.target.value)}
-                            placeholder="Ví dụ: Tôi có thể bắt đầu công việc ngay..."
                         />
 
                         <div className={styles.modalActions}>
-                            <button
-                                className={styles.submitBtn}
-                                onClick={handleSubmitApplication}
-                            >
-                                Nộp hồ sơ ứng tuyển
+                            <button className={styles.submitBtn} onClick={handleSubmitApplication}>
+                                Nộp hồ sơ
                             </button>
-                            <button
-                                className={styles.cancelBtn}
-                                onClick={() => setShowApplyForm(false)}
-                            >
+                            <button className={styles.cancelBtn} onClick={() => setShowApplyForm(false)}>
                                 Hủy
                             </button>
                         </div>

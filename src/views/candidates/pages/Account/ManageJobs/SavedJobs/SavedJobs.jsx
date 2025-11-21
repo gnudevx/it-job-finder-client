@@ -1,15 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./SavedJobs.module.scss";
 import JobCard from "@/views/candidates/components/JobCard/JobCard";
-import { mockJobList } from "@/models/jobs/mockJobList";
+import { getAllJobs } from "@/api/jobService";
 import useFavorites from "@/hooks/useFavorites";
 
 export default function SavedJobs() {
     const navigate = useNavigate();
     const { favorites, toggleFavorite, isFavorite } = useFavorites();
 
-    const savedJobs = mockJobList.filter(job => favorites.includes(job.id));
+    const [jobs, setJobs] = useState([]);
+
+    useEffect(() => {
+        const fetchJobs = async () => {
+            const data = await getAllJobs();
+
+            const formatted = data.map(job => ({
+                id: job._id,
+                title: job.title,
+                company: job.group_id?.name || "Không rõ",
+                salary: job.salary_raw || "Thoả thuận",
+                location: job.location?.name || "Không rõ",
+                experience: job.experience,
+            }));
+
+            setJobs(formatted);
+        };
+
+        fetchJobs();
+    }, []);
+
+    const savedJobs = jobs.filter(job => favorites.includes(job.id));
 
     return (
         <div className={styles.wrapper}>

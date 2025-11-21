@@ -8,12 +8,13 @@
 .header {
     background: #fff;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    padding: 10px 0;
+    height: 4rem;
 }
 
 .headerContainer {
-    max-width: 1200px;
-    margin: 0 auto;
+    max-width: 1000px;
+    height: 100%;
+    margin: auto;
     display: flex;
     align-items: center;   
     justify-content: space-between;
@@ -26,7 +27,7 @@
 }
 
 .logo {
-    max-height: 100px;
+    height: 175px;
     width: auto;
     object-fit: contain;
 }

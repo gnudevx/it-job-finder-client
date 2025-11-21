@@ -92,3 +92,23 @@
 .rightArrow {
   right: 0;
 }
+
+.option {
+    padding: 8px 14px;
+    margin-right: 8px;
+    border-radius: 20px;
+    background: #f2f2f2;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.option:hover {
+    background: #e6e6e6;
+}
+
+.active {
+    background: #007bff;
+    color: white;
+    border-color: #007bff;
+}

@@ -1,22 +1,50 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./CandidateHome.module.scss";
 import FilterBar from "@views/candidates/components/FilterBar/FilterBar.jsx";
-import { mockJobList } from "@/models/jobs/mockJobList";
 import useFavorites from "@/hooks/useFavorites";
 import JobCard from "@/views/candidates/components/JobCard/JobCard.jsx";
+import { getAllJobs } from "@/api/jobService";
+import Pagination from "@/components/common/Pagination/Pagination";
 
 export default function HomePage() {
-    const { favorites, toggleFavorite } = useFavorites(); // 🔥 FIXED
+    const { favorites, toggleFavorite } = useFavorites();
     const [search, setSearch] = useState("");
     const [filters, setFilters] = useState({});
+    const [jobs, setJobs] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const jobsPerPage = 20;
+
     const navigate = useNavigate();
 
-    const handleFilterChange = (type, value) => {
-        setFilters({ ...filters, [type]: value });
-    };
+    // 🟦 Load job từ backend khi vào trang
+    useEffect(() => {
+        const fetchJobs = async () => {
+            try {
+                const data = await getAllJobs();
 
-    const jobs = mockJobList;
+                const formatted = data.map(job => ({
+                    id: job._id,
+                    title: job.title,
+                    company: job.group_id?.name || "Không rõ",
+                    salary: job.salary_raw || "Thoả thuận",
+                    location: job.location?.name || "Không rõ",
+                    experience: job.experience,
+                }));
+
+                setJobs(formatted);
+            } catch (error) {
+                console.error("Error loading jobs:", error);
+            }
+        };
+
+        fetchJobs();
+    }, []);
+
+    const handleFilterChange = (type, value) => {
+        setFilters(prev => ({ ...prev, [type]: value }));
+        setCurrentPage(1); // reset về trang 1 khi lọc
+    };
 
     const normalizeText = (str) => {
         return str
@@ -29,8 +57,10 @@ export default function HomePage() {
 
     const handleSearchSubmit = () => {
         setFilters({ ...filters, keyword: search });
+        setCurrentPage(1); // reset khi search
     };
 
+    // 🟦 Lọc job như cũ — (đặt trước pagination)
     const filtered = jobs.filter((job) => {
         const keyword = filters.keyword?.toLowerCase() || "";
 
@@ -61,6 +91,12 @@ export default function HomePage() {
         });
     });
 
+    // 🟦 Pagination logic (đặt dưới filtered)
+    const totalPages = Math.ceil(filtered.length / jobsPerPage);
+    const indexOfLast = currentPage * jobsPerPage;
+    const indexOfFirst = indexOfLast - jobsPerPage;
+    const currentJobs = filtered.slice(indexOfFirst, indexOfLast);
+
     return (
         <div className={styles["home-container"]}>
             <div className={styles["top-section"]}>
@@ -78,18 +114,30 @@ export default function HomePage() {
             </div>
 
             <FilterBar onChange={handleFilterChange} />
+            <div className={styles.totalJobs}>
+                Tổng số việc làm: {filtered.length}
+            </div>
 
             <div className={styles["jobs-grid"]}>
-                {filtered.map((job) => (
+                {currentJobs.map((job) => (
                     <JobCard
-                        key={job.id} // 🔥 FIXED
+                        key={job.id}
                         job={job}
-                        isFavorite={favorites.includes(job.id)} // 🔥 FIXED
+                        isFavorite={favorites.includes(job.id)}
                         onToggleFavorite={toggleFavorite}
                         onClick={() => navigate(`/candidate/job/${job.id}`)}
                     />
                 ))}
             </div>
+
+            {/* 🟩 Thanh phân trang */}
+            {totalPages > 1 && (
+                <Pagination
+                    page={currentPage}
+                    totalPages={totalPages}
+                    onChange={(newPage) => setCurrentPage(newPage)}
+                />
+            )}
         </div>
     );
 }

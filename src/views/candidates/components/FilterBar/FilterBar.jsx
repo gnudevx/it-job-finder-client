@@ -41,6 +41,8 @@ export default function FilterBar({ onChange }) {
     };
 
     const [activeFilter, setActiveFilter] = useState("experience");
+    const [selectedFilters, setSelectedFilters] = useState({});
+
     const scrollRef = useRef(null);
 
     const scrollLeft = () => (scrollRef.current.scrollLeft -= 150);
@@ -53,7 +55,13 @@ export default function FilterBar({ onChange }) {
                 <span>Lọc theo:</span>
                 <select
                     value={activeFilter}
-                    onChange={(e) => setActiveFilter(e.target.value)}
+                    onChange={(e) => {
+                        const newKey = e.target.value;
+                        setActiveFilter(newKey);
+
+                        // Reset filter cũ về rỗng trước khi áp dụng filter mới
+                        onChange(activeFilter, ""); 
+                    }}
                 >
                     {filterTypes.map((f) => (
                         <option key={f.key} value={f.key}>
@@ -73,8 +81,19 @@ export default function FilterBar({ onChange }) {
                     {quickOptions[activeFilter].map((op) => (
                         <button
                             key={op}
-                            className={styles.option}
-                            onClick={() => onChange(activeFilter, convertValue(activeFilter, op))}
+                            className={`${styles.option} ${
+                                selectedFilters[activeFilter] === op ? styles.active : ""
+                            }`}
+                            onClick={() => {
+                                const v = op === "Toàn quốc" ? "" : convertValue(activeFilter, op);
+
+                                setSelectedFilters(prev => ({
+                                    ...prev,
+                                    [activeFilter]: op
+                                }));
+
+                                onChange(activeFilter, v);
+                            }}
                         >
                             {op}
                         </button>
