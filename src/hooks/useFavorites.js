@@ -1,25 +1,36 @@
 import { useState, useEffect } from "react";
 
-export default function useFavorites() {
+export default function useFavorites(authToken) {
+    // Nếu không có token → guest → không cho lưu
+    const storageKey = authToken ? `favorites_${authToken}` : null;
+
     const [favorites, setFavorites] = useState(() => {
-        const saved = localStorage.getItem("favorites");
+        if (!storageKey) return [];
+        const saved = localStorage.getItem(storageKey);
         return saved ? JSON.parse(saved) : [];
     });
 
     useEffect(() => {
-        localStorage.setItem("favorites", JSON.stringify(favorites));
-    }, [favorites]);
+        if (storageKey) {
+            localStorage.setItem(storageKey, JSON.stringify(favorites));
+        }
+    }, [favorites, storageKey]);
 
     const toggleFavorite = (jobId) => {
-        setFavorites((prev) => {
-            if (prev.includes(jobId)) {
-                return prev.filter((id) => id !== jobId);
-            }
-            return [...prev, jobId];
-        });
+        if (!storageKey) {
+            alert("Bạn cần đăng nhập để lưu việc!");
+            return;
+        }
+
+        setFavorites((prev) =>
+            prev.includes(jobId)
+                ? prev.filter((id) => id !== jobId)
+                : [...prev, jobId]
+        );
     };
 
-    const isFavorite = (jobId) => favorites.includes(jobId);
+    const isFavorite = (jobId) =>
+        storageKey ? favorites.includes(jobId) : false;
 
     return { favorites, toggleFavorite, isFavorite };
 }

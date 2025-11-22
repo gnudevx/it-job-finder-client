@@ -1,0 +1,92 @@
+.header {
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: space-between;
+  height: 66px;
+  background-color: #25216b;
+  padding: 0 28px;
+  font-family: "Inter", "Segoe UI", sans-serif;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* LEFT */
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.brand-logo {
+  height: 48px;     // vẫn giữ kích thước gốc
+  width: auto;
+  padding: 20px;
+}
+
+
+/* NAV CENTER */
+.nav {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.navItem {
+  background: none;
+  border: none;
+  font-size: 16px;
+  font-weight: 500;
+  color: #d9d7d7;
+  cursor: pointer;
+  transition: color 0.2s, border-bottom 0.2s;
+  padding-bottom: 2px;
+
+  &:hover {
+    color: #20dfb9;
+    border-bottom: 2px solid #20dfb9;
+  }
+}
+
+/* RIGHT AREA */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* ---- NEW BUTTON DESIGNS ---- */
+
+.loginBtn {
+  background: transparent;
+  color: #20dfb9;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 8px 20px;
+  border-radius: 8px;
+  border: 2px solid #20dfb9;
+  cursor: pointer;
+  transition: all 0.25s;
+
+  &:hover {
+    background: rgba(32, 223, 185, 0.12);
+  }
+}
+
+.registerBtn {
+  background: linear-gradient(135deg, #20dfb9 0%, #18a88f 100%);
+  color: #25216b;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 8px 22px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(32, 223, 185, 0.4);
+  transition: transform 0.25s, box-shadow 0.25s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(32, 223, 185, 0.55);
+  }
+}

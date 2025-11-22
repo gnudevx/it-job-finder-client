@@ -7,7 +7,10 @@ import useFavorites from "@/hooks/useFavorites";
 
 export default function SavedJobs() {
     const navigate = useNavigate();
-    const { favorites, toggleFavorite, isFavorite } = useFavorites();
+
+    // 🔥 Quan trọng: PHẢI TRUYỀN authToken
+    const authToken = localStorage.getItem("authToken");
+    const { favorites, toggleFavorite, isFavorite } = useFavorites(authToken);
 
     const [jobs, setJobs] = useState([]);
 
@@ -30,6 +33,7 @@ export default function SavedJobs() {
         fetchJobs();
     }, []);
 
+    // 🔥 Lọc job đã lưu
     const savedJobs = jobs.filter(job => favorites.includes(job.id));
 
     return (
@@ -47,6 +51,7 @@ export default function SavedJobs() {
                             isFavorite={isFavorite(job.id)}
                             onToggleFavorite={toggleFavorite}
                             onClick={() => navigate(`/candidate/job/${job.id}`)}
+                            authToken={authToken}
                         />
                     ))}
                 </div>

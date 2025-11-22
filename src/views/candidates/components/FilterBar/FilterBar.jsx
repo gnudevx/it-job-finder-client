@@ -7,14 +7,12 @@ export default function FilterBar({ onChange }) {
         { key: "location", label: "Địa điểm" },
         { key: "salaryLevel", label: "Mức lương" },
         { key: "experience", label: "Kinh nghiệm" },
-        { key: "type", label: "Hình thức" },
     ];
 
     const quickOptions = {
         location: ["Hà Nội", "TP. Hồ Chí Minh", "Đà Nẵng", "Toàn quốc"],
         salaryLevel: ["Dưới 10 triệu", "10 - 20 triệu", "20 - 30 triệu", "Trên 30 triệu"],
         experience: ["Chưa có kinh nghiệm", "1 năm trở xuống", "1 năm", "2 năm", "3 năm", "Từ 4–5 năm"],
-        type: ["Full-time", "Part-time", "Hybrid", "Remote"],
     };
 
     const convertValue = (key, value) => {

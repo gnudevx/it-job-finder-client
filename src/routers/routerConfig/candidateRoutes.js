@@ -1,5 +1,5 @@
 import React from "react";
-import CandidateHome from "@views/candidates/pages/home/CandidateHome.jsx";
+import HomePage from "@views/pages/HomePage/HomePage.jsx";
 import Profile from "@views/candidates/pages/profile/Profile.jsx";
 import SavedJobs from "@/views/candidates/pages/Account/ManageJobs/SavedJobs/SavedJobs.jsx";
 import AppliedJobs from "@views/candidates/pages/Account/ManageJobs/AppliedJobs/AppliedJobs.jsx";
@@ -14,7 +14,7 @@ import NotificationSettings from "@/views/candidates/pages/Account/GeneralSettin
 import SecuritySettings from "@/views/candidates/pages/Account/GeneralSettings/SecuritySettings/SecuritySettings.jsx";
 
 const candidateRoutes = [
-    { path: "home", element: <CandidateHome />, meta: { title: "Home", icon: "home" } },
+    { path: "home", element: <HomePage />, meta: { title: "Home", icon: "home" } },
     { path: "profile", element: <Profile />, meta: { title: "Profile" } },
     { path: "account/savedjobs", element: <SavedJobs />, meta: { title: "Home", icon: "home" } },
     { path: "account/appliedjobs", element: <AppliedJobs />, meta: { title: "Home", icon: "home" } },

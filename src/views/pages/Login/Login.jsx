@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Login.css";
+import styles from "./Login.module.scss";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
@@ -25,11 +25,9 @@ export default function LoginPage() {
     setTimeout(() => {
       setLoading(false);
 
-      // Lấy mật khẩu đã lưu cho candidate (mock)
       const savedCandidatePassword =
         localStorage.getItem("mock_password") || "123456";
 
-      // ===== CANDIDATE LOGIN =====
       if (username === "tin" && password === savedCandidatePassword) {
         localStorage.setItem("authToken", "token-tin");
         alert("Đăng nhập thành công!");
@@ -37,7 +35,6 @@ export default function LoginPage() {
         return;
       }
 
-      // ===== EMPLOYER LOGIN (giữ nguyên) =====
       if (username === "dung" && password === "2003") {
         localStorage.setItem("authToken", "token-dung");
         alert("Đăng nhập thành công!");
@@ -45,18 +42,16 @@ export default function LoginPage() {
         return;
       }
 
-      // Nếu không khớp
       setError("Sai username hoặc mật khẩu");
     }, 1000);
   };
 
   return (
-    <div className="login-container">
-      <form className="login-card" onSubmit={handleSubmit}>
-        <h2 className="title">Đăng nhập</h2>
+    <div className={styles.loginContainer}>
+      <form className={styles.loginCard} onSubmit={handleSubmit}>
+        <h2 className={styles.title}>Đăng nhập</h2>
 
-        {/* Username */}
-        <div className="input-group">
+        <div className={styles.inputGroup}>
           <input
             type="text"
             placeholder="Username"
@@ -65,8 +60,7 @@ export default function LoginPage() {
           />
         </div>
 
-        {/* Password */}
-        <div className="input-group">
+        <div className={styles.inputGroup}>
           <input
             type={showPass ? "text" : "password"}
             placeholder="Mật khẩu"
@@ -74,17 +68,15 @@ export default function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
           />
           <span
-            className="toggle-pass"
+            className={styles.togglePass}
             onClick={() => setShowPass((s) => !s)}
           >
             {showPass ? "Ẩn" : "Hiện"}
           </span>
         </div>
 
-        {/* Error */}
-        {error && <p className="error">{error}</p>}
+        {error && <p className={styles.error}>{error}</p>}
 
-        {/* Submit */}
         <button type="submit" disabled={loading}>
           {loading ? "Đang xử lý..." : "Đăng nhập"}
         </button>

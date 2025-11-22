@@ -1,12 +1,12 @@
 import React from "react";
-import Header from "@/views/candidates/components/Header/Header.jsx";
+import HeaderWrapper from "@views/candidates/components/Header/HeaderWrapper.jsx";
 import { Outlet } from "react-router-dom";
-import styles from "@views/candidates/layouts/CandidateLayout.module.scss";
+import styles from "@views/candidates/layouts/CandidateLayout/CandidateLayout.module.scss";
 
 export default function CandidateLayout() {
     return (
         <div className={styles["layout-container"]}>
-            <Header />
+            <HeaderWrapper />
 
             <div className={styles["content-wrapper"]}>
                 <div className={styles["main-content"]}>

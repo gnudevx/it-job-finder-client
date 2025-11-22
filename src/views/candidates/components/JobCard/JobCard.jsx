@@ -3,25 +3,34 @@ import PropTypes from "prop-types";
 import { Heart, HeartOff } from "lucide-react";
 import styles from "./JobCard.module.scss";
 
-export default function JobCard({ job, isFavorite, onToggleFavorite, onClick }) {
+export default function JobCard({
+    job,
+    isFavorite,
+    onToggleFavorite,
+    onClick,
+    authToken
+}) {
     return (
         <div className={styles.card} onClick={onClick}>
             <div className={styles.topRow}>
                 <img src="/logo192.png" alt={job.company} className={styles.logo} />
 
-                <button
-                    className={styles.favoriteBtn}
-                    onClick={(e) => {
-                        e.stopPropagation();  // NGĂN mở job detail khi bấm tim
-                        onToggleFavorite(job.id);
-                    }}
-                >
-                    {isFavorite ? (
-                        <HeartOff size={20} color="red" />
-                    ) : (
-                        <Heart size={20} />
-                    )}
-                </button>
+                {/* CHỈ CHO LOGIN USER BẤM TIM */}
+                {authToken && (
+                    <button
+                        className={styles.favoriteBtn}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onToggleFavorite(job.id);
+                        }}
+                    >
+                        {isFavorite ? (
+                            <HeartOff size={20} color="red" />
+                        ) : (
+                            <Heart size={20} />
+                        )}
+                    </button>
+                )}
             </div>
 
             <div className={styles.title}>{job.title}</div>
@@ -40,4 +49,5 @@ JobCard.propTypes = {
     isFavorite: PropTypes.bool,
     onToggleFavorite: PropTypes.func,
     onClick: PropTypes.func,
+    authToken: PropTypes.string
 };

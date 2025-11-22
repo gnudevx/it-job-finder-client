@@ -6,7 +6,12 @@ import { getJobDetail } from "@/api/jobService";
 
 export default function JobDetail() {
     const { id } = useParams();
-    const { toggleFavorite, isFavorite } = useFavorites();
+
+    // Lấy authToken từ localStorage
+    const authToken = localStorage.getItem("authToken");
+
+    // Truyền token vào hook
+    const { toggleFavorite, isFavorite } = useFavorites(authToken);
 
     const [job, setJob] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -103,9 +108,14 @@ export default function JobDetail() {
             <div className={styles.titleRow}>
                 <h1>{title}</h1>
 
-                <button className={styles.favBtn} onClick={() => toggleFavorite(id)}>
-                    {isFavorite(id) ? "💖 Bỏ lưu" : "🤍 Lưu việc"}
-                </button>
+                {authToken && (
+                    <button
+                        className={styles.favBtn}
+                        onClick={() => toggleFavorite(id)}
+                    >
+                        {isFavorite(id) ? "💖 Bỏ lưu" : "🤍 Lưu việc"}
+                    </button>
+                )}
             </div>
 
             <div className={styles.deadline}>Hạn nộp hồ sơ: {deadline}</div>
