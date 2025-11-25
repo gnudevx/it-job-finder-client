@@ -1,6 +1,5 @@
-// HEADER BASE
-
-.header {
+/* ROOT WRAPPER — prevent CSS leak */
+.headerCandidate {
   display: flex;
   position: relative;
   align-items: center;
@@ -10,230 +9,234 @@
   padding: 0 28px;
   font-family: "Inter", "Segoe UI", sans-serif;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-}
 
-.header-left {
-  display: flex;
-  align-items: center;
-}
-
-.brand-logo {
-  height: 48px;     
-  width: auto;
-  padding: 20px;
-}
-
-.nav {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  gap: 24px;
-}
-.navItem {
-  background: none;
-  border: none;
-  font-size: 16px;
-  font-weight: 500;
-  color: #e2e2e2;
-  cursor: pointer;
-  transition: 0.25s ease;
-  padding-bottom: 2px;
-
-  &:hover {
-    color: #20dfb9;
-    border-bottom: 2px solid #20dfb9;
-  }
-}
-
-/* ===========================
-   RIGHT AREA
-=========================== */
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-}
-
-.iconWrapper {
-  position: relative;
-  display: flex;
-  cursor: pointer;
-  padding: 6px;
-  border-radius: 8px;
-  transition: background 0.25s;
-
-  &:hover {
-    background: #323b7a;
+  /* ===========================
+     LEFT
+  =========================== */
+  .header-left {
+    display: flex;
+    align-items: center;
   }
 
-  &:hover .icon {
-    color: #20dfb9;
+  .brand-logo {
+    height: 48px;
+    width: auto;
+    padding: 20px;
   }
-}
 
-.icon {
-  width: 22px;
-  height: 22px;
-  color: #d9d7d7;
-}
-
-/* ===========================
-   PROFILE BUTTON
-=========================== */
-.profileWrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  padding: 6px 12px;
-  border-radius: 10px;
-  transition: background 0.25s ease;
-
-  &:hover {
-    background: #323b7a;
+  /* ===========================
+     CENTER NAV
+  =========================== */
+  .nav {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 24px;
   }
-}
 
-.avatarIcon {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  object-fit: cover;
-}
+  .navItem {
+    background: none;
+    border: none;
+    font-size: 16px;
+    font-weight: 500;
+    color: #e2e2e2;
+    cursor: pointer;
+    transition: 0.25s ease;
+    padding-bottom: 2px;
 
-.username {
-  font-size: 15px;
-  font-weight: 500;
-  color: #e2e2e2;
-}
+    &:hover {
+      color: #20dfb9;
+      border-bottom: 2px solid #20dfb9;
+    }
+  }
 
-.caretIcon {
-  width: 16px;
-  color: #d9d7d7;
-}
+  /* ===========================
+     RIGHT
+  =========================== */
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
 
-/* ===========================
-   DROPDOWN MENU
-=========================== */
-.profileDropdown {
-  position: absolute;
-  top: 110%;
-  right: 0;
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
-  width: 360px;
-  padding: 12px 0 14px;
-  z-index: 1000;
-  animation: fadeIn 0.2s ease;
+  .iconWrapper {
+    position: relative;
+    display: flex;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 8px;
+    transition: background 0.25s;
 
-  .dropdown-section {
-    padding: 0 18px 10px;
-
-    h4 {
-      font-size: 17px;
-      font-weight: 600;
-      color: #0f172a;
-      margin: 10px 0 6px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
-      transition: color 0.25s ease;
-
-      &:hover {
-        color: #20dfb9;
-      }
+    &:hover {
+      background: #323b7a;
     }
 
-    .h4Left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    &:hover .icon {
+      color: #20dfb9;
     }
+  }
 
-    .sectionIcon {
-      width: 18px;
-      height: 18px;
-      color: #475569;
+  .icon {
+    width: 22px;
+    height: 22px;
+    color: #d9d7d7;
+  }
+
+  /* ===========================
+     PROFILE BUTTON
+  =========================== */
+  .profileWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 10px;
+    transition: background 0.25s ease;
+
+    &:hover {
+      background: #323b7a;
     }
+  }
 
-    ul {
-      list-style: none;
-      padding-left: 22px;
-      margin: 0;
+  .avatarIcon {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
 
-      li {
-        padding: 8px 10px;
-        border-radius: 6px;
-        color: #374151;
+  .username {
+    font-size: 15px;
+    font-weight: 500;
+    color: #e2e2e2;
+  }
+
+  .caretIcon {
+    width: 16px;
+    color: #d9d7d7;
+  }
+
+  /* ===========================
+     DROPDOWN MENU
+  =========================== */
+  .profileDropdown {
+    position: absolute;
+    top: 110%;
+    right: 0;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    width: 360px;
+    padding: 12px 0 14px;
+    z-index: 1000;
+    animation: fadeIn 0.2s ease;
+
+    .dropdown-section {
+      padding: 0 18px 10px;
+
+      h4 {
+        font-size: 17px;
+        font-weight: 600;
+        color: #0f172a;
+        margin: 10px 0 6px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         cursor: pointer;
-        transition: 0.25s;
+        transition: color 0.25s ease;
 
         &:hover {
-          background: #f3f6ff;
           color: #20dfb9;
+        }
+      }
+
+      .h4Left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .sectionIcon {
+        width: 18px;
+        height: 18px;
+        color: #475569;
+      }
+
+      ul {
+        list-style: none;
+        padding-left: 22px;
+        margin: 0;
+
+        li {
+          padding: 8px 10px;
+          border-radius: 6px;
+          color: #374151;
+          cursor: pointer;
+          transition: 0.25s;
+
+          &:hover {
+            background: #f3f6ff;
+            color: #20dfb9;
+          }
+        }
+      }
+
+      &:not(:last-child) {
+        border-bottom: 1px solid #f3f4f6;
+        padding-bottom: 12px;
+        margin-bottom: 8px;
+      }
+
+      .arrowIcon {
+        width: 16px;
+        height: 16px;
+        color: #6b7280;
+        transition: transform 0.25s ease;
+
+        &.open {
+          transform: rotate(90deg);
+          color: #20dfb9;
+        }
+      }
+
+      .subList {
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition: max-height 0.25s ease, opacity 0.25s ease;
+
+        &.show {
+          max-height: 500px;
+          opacity: 1;
         }
       }
     }
 
-    &:not(:last-child) {
-      border-bottom: 1px solid #f3f4f6;
-      padding-bottom: 12px;
-      margin-bottom: 8px;
-    }
+    .logout-button {
+      margin: 10px 14px 0;
+      width: calc(100% - 28px);
+      background: #fef2f2;
+      color: #dc2626;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      padding: 10px 0;
+      cursor: pointer;
+      transition: background 0.25s;
 
-    .arrowIcon {
-      width: 16px;
-      height: 16px;
-      color: #6b7280;
-      transition: transform 0.25s ease;
-
-      &.open {
-        transform: rotate(90deg);
-        color: #20dfb9;
+      &:hover {
+        background: #fde8e8;
       }
-    }
-
-    .subList {
-      max-height: 0;
-      overflow: hidden;
-      opacity: 0;
-      transition: max-height 0.25s ease, opacity 0.25s ease;
-
-      &.show {
-        max-height: 500px;
-        opacity: 1;
-      }
-    }
-  }
-
-  /* LOGOUT BUTTON */
-  .logout-button {
-    margin: 10px 14px 0;
-    width: calc(100% - 28px);
-    background: #fef2f2;
-    color: #dc2626;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    padding: 10px 0;
-    cursor: pointer;
-    transition: background 0.25s;
-
-    &:hover {
-      background: #fde8e8;
     }
   }
 }
 
-/* ===========================
-   ANIMATIONS
-=========================== */
+/* ANIMATIONS */
 @keyframes fadeIn {
   from {
     opacity: 0;

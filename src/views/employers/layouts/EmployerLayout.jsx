@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import HeaderWrapper from "@/views/candidates/components/Header/HeaderWrapper.jsx";
+import Header from "@components/employers/Header/Header.jsx";
 import Sidebar from "@/components/employers/Sidebar/Sidebar.jsx";
 import { Outlet } from "react-router-dom";
 import styles from "./EmployerLayout.module.scss";
@@ -9,7 +9,7 @@ export default function EmployerLayout() {
     return (
         <div className={styles["layout-container"]}>
             {/* Header nằm trên cùng */}
-            <HeaderWrapper onToggleSidebar={() => setIsCollapsed((prev) => !prev)} />
+            <Header onToggleSidebar={() => setIsCollapsed((prev) => !prev)} />
 
             <div className={styles["content-wrapper"]}>
                 {/* Sidebar bên trái */}

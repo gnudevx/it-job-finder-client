@@ -1,0 +1,185 @@
+.authContainer {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;   
+  padding: 60px 0;
+  background: #3d37b0;
+  overflow-y: auto;
+  animation: fadeIn 0.8s ease;
+}
+
+.authCard {
+  width: 440px;
+  background: #fff;
+  padding: 2rem 2.2rem;
+  border-radius: 14px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  animation: slideUp 0.7s ease forwards;
+}
+
+/* Title – Subtitle */
+
+.title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  color: #25216b;
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  text-align: center;
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 28px;
+}
+
+/* Input Fields */
+
+.inputGroup {
+  position: relative;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.inputGroup input {
+  width: 100%;
+  height: 48px;
+  padding: 0 1rem;
+  padding-right: 3rem; 
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+  font-size: 1rem;
+  transition: border 0.25s ease, box-shadow 0.25s ease;
+  box-sizing: border-box;
+}
+
+.inputGroup input:focus {
+  border-color: #2575fc;
+  box-shadow: 0 0 6px rgba(37, 117, 252, 0.35);
+}
+
+.togglePass {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9rem;
+  color: #2575fc;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Error text */
+
+.error {
+  color: red;
+  text-align: center;
+  font-size: 0.9rem;
+  margin-top: -4px;
+  margin-bottom: 10px;
+  animation: shake 0.3s ease;
+}
+
+/* Main Button */
+
+.submitBtn {
+  width: 100%;
+  background: #25216b;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.25s, transform 0.25s;
+
+  &:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+/* Social Login */
+
+.orLine {
+  text-align: center;
+  margin: 20px 0;
+  color: #999;
+}
+
+.socialButtons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+
+  button {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .google {
+    background: white;
+    border: 1px solid #ddd;
+  }
+
+  .facebook {
+    background: #1877f2;
+    color: white;
+  }
+
+  .linkedin {
+    background: #0a66c2;
+    color: white;
+  }
+}
+
+/* Switch Login/Register */
+
+.switchLine {
+  text-align: center;
+  margin-top: 22px;
+  color: #555;
+
+  span {
+    color: #00b14f;
+    font-weight: 500;
+    cursor: pointer;
+  }
+}
+
+/* Animations */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+}

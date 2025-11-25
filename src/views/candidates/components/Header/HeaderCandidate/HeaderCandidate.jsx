@@ -48,7 +48,7 @@ export default function HeaderCandidate() {
     }, []);
 
     return (
-        <header className={styles.header}>
+        <header className={styles.headerCandidate}>
             {/* Left */}
             <div className={styles["header-left"]}>
                 <img src={logo} alt="Logo" className={styles["brand-logo"]} />

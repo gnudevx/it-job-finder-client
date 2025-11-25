@@ -6,7 +6,8 @@ import PropTypes from "prop-types";
 import HomePage from "@/views/pages/HomePage/HomePage";
 import CandidateApp from "../routers/candidate/CandidateApp";
 import EmployerApp from "../routers/employer/EmployerApp";
-import LoginPage from "@/views/pages/Login/Login.jsx";
+import LoginPage from "@/views/pages/Authentication/Login.jsx";
+import RegisterPage from "@/views/pages/Authentication/Register.jsx";
 
 import GuestLayout from "@/views/candidates/layouts/GuestLayout/GuestLayout";
 import privateRoutes from "./routerConfig/privateRoutes";
@@ -43,6 +44,7 @@ export const AppRouter = () => {
           </Route>
 
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
 
           {/* Candidate */}
           <Route
