@@ -1,5 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect, useRef, useState, useContext } from 'react';
 import { IoChevronDown, IoChevronForwardSharp } from 'react-icons/io5';
 import styles from './StepForms.module.scss';
 
@@ -9,18 +8,19 @@ import Step3Form from './Step3Form';
 import Step4Form from './Step4Form';
 
 import ConfirmPublishModal from "./ConfirmPublishModal";
+import { CreateJobContext } from '@views/employers/pages/CreateJob/CreateJobContext';
+import PropTypes from 'prop-types';
 
-export default function StepForms({
-    openSteps,
-    onToggleStep,
-    steps,
-    form,
-    onChange,
-    onNext,
-    onFieldBlur,
-    onSaveDraft,
-    onPublish
-}) {
+export default function StepForms({ steps }) {
+    const {
+        form,
+        updateField,
+        validatedFields,
+        openSteps,
+        toggleStep,
+        handleFieldBlur,
+        handlePublish
+    } = useContext(CreateJobContext);
 
     const sectionRefs = useRef([]);
     const [showConfirm, setShowConfirm] = useState(false);
@@ -41,7 +41,8 @@ export default function StepForms({
 
     const handleConfirmPublish = () => {
         setShowConfirm(false);
-        onPublish();   // gọi API publish
+        handlePublish(); // <--- gọi thực sự
+        console.log("Publish confirmed");
     };
 
     return (
@@ -56,7 +57,7 @@ export default function StepForms({
                     >
                         <div
                             className={`${styles.accordionHeader} ${isOpen ? styles.active : ''}`}
-                            onClick={() => onToggleStep(index)}
+                            onClick={() => toggleStep(index)}
                         >
                             <div className={styles.headerLeft}>
                                 <span className={styles.stepNumber}>{index + 1}</span>
@@ -70,10 +71,10 @@ export default function StepForms({
 
                         {isOpen && (
                             <div className={styles.accordionBody}>
-                                {index === 0 && <Step1Form form={form} onChange={onChange} onNext={onNext} onFieldBlur={onFieldBlur} />}
-                                {index === 1 && <Step2Form form={form} onChange={onChange} onNext={onNext} onBlur={onFieldBlur} />}
-                                {index === 2 && <Step3Form form={form} onChange={onChange} onNext={onNext} onBlur={onFieldBlur} />}
-                                {index === 3 && <Step4Form form={form} onChange={onChange} onBlur={onFieldBlur} />}
+                                {index === 0 && <Step1Form form={form} onChange={updateField} onBlur={handleFieldBlur} validatedFields={validatedFields} />}
+                                {index === 1 && <Step2Form form={form} onChange={updateField} onBlur={handleFieldBlur} validatedFields={validatedFields} />}
+                                {index === 2 && <Step3Form form={form} onChange={updateField} onBlur={handleFieldBlur} validatedFields={validatedFields} />}
+                                {index === 3 && <Step4Form form={form} onChange={updateField} onBlur={handleFieldBlur} validatedFields={validatedFields} />}
                             </div>
                         )}
                     </div>
@@ -81,7 +82,7 @@ export default function StepForms({
             })}
 
             <div className={styles.btnWrapper}>
-                <button className={styles.draftButton} onClick={onSaveDraft}>
+                <button className={styles.draftButton} onClick={() => console.log("Save draft")}>
                     Lưu nháp
                 </button>
 
@@ -90,7 +91,6 @@ export default function StepForms({
                 </button>
             </div>
 
-            {/* MODAL */}
             <ConfirmPublishModal
                 open={showConfirm}
                 onClose={() => setShowConfirm(false)}
@@ -101,13 +101,5 @@ export default function StepForms({
 }
 
 StepForms.propTypes = {
-    openSteps: PropTypes.array.isRequired,
-    onToggleStep: PropTypes.func.isRequired,
-    steps: PropTypes.array.isRequired,
-    form: PropTypes.object.isRequired,
-    onChange: PropTypes.func.isRequired,
-    onNext: PropTypes.func,
-    onFieldBlur: PropTypes.func,
-    onSaveDraft: PropTypes.func.isRequired,
-    onPublish: PropTypes.func.isRequired
+    steps: PropTypes.arrayOf(PropTypes.string).isRequired
 };

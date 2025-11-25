@@ -3,7 +3,7 @@ import styles from "./ConfirmPublishModal.module.scss";
 import PropTypes from 'prop-types';
 export default function ConfirmPublishModal({ open, onClose, onConfirm }) {
     if (!open) return null;
-
+    console.log("onPublish:", onConfirm);
     return (
         <div className={styles.overlay}>
             <div className={styles.modal}>

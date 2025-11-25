@@ -1,0 +1,1 @@
+khi ở http://localhost:3000/employer/jobs/create -> hoàn thành thì mình sẽ kiểm duyệt tin trước khi mình đăng

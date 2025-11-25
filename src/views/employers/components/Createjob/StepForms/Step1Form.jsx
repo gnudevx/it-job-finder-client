@@ -1,15 +1,90 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext, useEffect, useState } from 'react';
 import styles from './Step1Form.module.scss';
 import CreatableSelect from 'react-select/creatable';
-export default function Step1Form({ form, onChange, onFieldBlur }) {
+import { CreateJobContext } from '@views/employers/pages/CreateJob/CreateJobContext';
+import axios from 'axios';
+export default function Step1Form() {
+    const {
+        form,
+        updateField,
+        handleFieldBlur,
+        validatedFields
+    } = useContext(CreateJobContext);
+
+    // 1. State để lưu dữ liệu gốc từ API
+    const [metaData, setMetaData] = useState([]);
+
+    // 2. State cho danh sách options của Domain (Kiến thức ngành)
+    const [domainOptions, setDomainOptions] = useState([]);
+
     const titleLength = form.title?.length || 0;
     const isNegotiable = form.salaryNegotiable || false;
-    const domainOptions = [
-        { value: "ecommerce", label: "Thương mại điện tử" },
-        { value: "finance", label: "Tài chính (Fintech)" },
-        { value: "education", label: "Giáo dục (Edutech)" },
-    ];
+
+    // 3. Gọi API khi component load lần đầu
+    useEffect(() => {
+        const fetchSpecializations = async () => {
+            try {
+                // Thay URL này bằng đường dẫn API thực tế của bạn
+                const res = await axios.get('/employer/api/specialization');
+                console.log("sadsadsads", res)
+                // Giả sử API trả về { data: [...] } hoặc mảng trực tiếp
+                const rawData = res.data.data || res.data;
+                setMetaData(rawData);
+
+                // cần load lại domainOptions ngay lập tức
+                if (form.specialization) {
+                    const selectedSpec = rawData.find(item => item.code === form.specialization);
+                    if (selectedSpec) {
+                        const formattedDomains = selectedSpec.domains.map(d => ({
+                            value: d.code,
+                            label: d.name
+                        }));
+                        setDomainOptions(formattedDomains);
+                    }
+                }
+            } catch (error) {
+                console.error("Lỗi lấy dữ liệu chuyên môn:", error);
+            }
+        };
+
+        fetchSpecializations();
+    }, [form.specialization]); // Thêm form.specialization vào dependency để reload khi edit
+
+    // 4. Hàm xử lý khi thay đổi Vị trí chuyên môn
+    const handleSpecializationChange = (e) => {
+        const selectedCode = e.target.value;
+
+        // Cập nhật giá trị vào Form Context
+        updateField('specialization', selectedCode);
+
+        // Reset lại kiến thức ngành (vì đổi chuyên môn thì kiến thức cũ k còn đúng)
+        updateField('domainKnowledge', []);
+
+        // Tìm và cập nhật danh sách gợi ý cho Domain
+        const selectedSpecData = metaData.find(item => item.code === selectedCode);
+
+        if (selectedSpecData && selectedSpecData.domains) {
+            // Map dữ liệu từ API sang format {value, label} của react-select
+            const nextOptions = selectedSpecData.domains.map(d => ({
+                value: d.code,
+                label: d.name
+            }));
+            setDomainOptions(nextOptions);
+        } else {
+            setDomainOptions([]);
+        }
+    };
+    const formatCurrency = (value) => {
+        if (!value) return "";
+        return Number(value).toLocaleString('en-US'); // 1,000,000
+    };
+    const handleMoneyChange = (e, field) => {
+        let raw = e.target.value.replace(/,/g, ''); // xoá dấu phẩy
+        if (!/^\d*$/.test(raw)) return; // chỉ cho nhập số
+        if (raw.length > 10) return;    // tối đa 10 chữ số (999 triệu)
+
+        updateField(field, raw); // lưu raw (không format)
+    };
     return (
         <div className={styles.formContent}>
             {/* Tiêu đề tin */}
@@ -21,11 +96,13 @@ export default function Step1Form({ form, onChange, onFieldBlur }) {
                 <input
                     type="text"
                     value={form.title}
-                    onChange={(e) => onChange('title', e.target.value)}
-                    onBlur={() => onFieldBlur('title')}
-                    placeholder="VD: Nhân Viên Kinh Doanh Bất Động Sản - Dự Án Chung Cư Cao Cấp"
+                    onChange={(e) => updateField('title', e.target.value)}
+                    onBlur={() => handleFieldBlur('title')}
+                    placeholder="VD: Nhân Viên Kinh Doanh Bất Động Sản"
                     maxLength={50}
+                    className={!validatedFields.title ? styles.inputError : ''}
                 />
+                {!validatedFields.title && <div className={styles.errorText}> *Tiêu đề không được để trống</div>}
             </label>
 
             {/* Vị trí chuyên môn */}
@@ -33,15 +110,19 @@ export default function Step1Form({ form, onChange, onFieldBlur }) {
                 <div className={styles.labelHeader}><span>Vị trí chuyên môn *</span></div>
                 <select
                     value={form.specialization}
-                    onChange={(e) => onChange('specialization', e.target.value)}
-                    onBlur={() => onFieldBlur('specialization')}
+                    onChange={handleSpecializationChange} // Dùng hàm xử lý mới
+                    onBlur={() => handleFieldBlur('specialization')}
+                    className={!validatedFields.specialization ? styles.inputError : ''}
                 >
                     <option value="">Chọn vị trí chuyên môn</option>
-                    <option value="it-software">IT - Phần mềm</option>
-                    <option value="it-hardware">IT - Phần cứng</option>
-                    <option value="design">Thiết kế</option>
-                    <option value="business-development">Kinh doanh</option>
+                    {/* Render danh sách từ API metaData */}
+                    {metaData.map((spec) => (
+                        <option key={spec.code} value={spec.code}>
+                            {spec.name}
+                        </option>
+                    ))}
                 </select>
+                {!validatedFields.specialization && <div className={styles.errorText}>Vui lòng chọn vị trí chuyên môn</div>}
             </label>
 
             {/* Kiến thức ngành */}
@@ -49,23 +130,28 @@ export default function Step1Form({ form, onChange, onFieldBlur }) {
                 <div className={styles.labelHeader}><span>Kiến thức ngành</span></div>
                 <CreatableSelect
                     isMulti
-                    options={domainOptions}
+                    options={domainOptions} // Sử dụng state domainOptions đã lọc
+
+                    // Logic hiển thị value: Phải map từ string code sang object {value, label}
                     value={domainOptions.filter(opt => form.domainKnowledge?.includes(opt.value))}
-                    onChange={(selected) => {
-                        onChange("domainKnowledge", selected.map(opt => opt.value));
-                    }}
-                    placeholder="Chọn hoặc nhập kiến thức ngành..."
+
+                    onChange={(selected) => updateField("domainKnowledge", selected.map(opt => opt.value))}
+
+                    placeholder={form.specialization ? "Chọn hoặc nhập kiến thức ngành..." : "Vui lòng chọn Vị trí chuyên môn trước"}
+                    isDisabled={!form.specialization} // Disable nếu chưa chọn chuyên môn
+
                     className={styles.select}
+                    formatCreateLabel={(inputValue) => `Tạo mới: "${inputValue}"`}
                 />
             </div>
-
             {/* Cấp bậc */}
             <label className={styles.field}>
                 <div className={styles.labelHeader}><span>Cấp bậc *</span></div>
                 <select
                     value={form.level}
-                    onChange={(e) => onChange('level', e.target.value)}
-                    onBlur={() => onFieldBlur('level')}
+                    onChange={(e) => updateField('level', e.target.value)}
+                    onBlur={() => handleFieldBlur('level')}
+                    className={!validatedFields.level ? styles.inputError : ''}
                 >
                     <option value="">Chọn cấp bậc</option>
                     <option value="intern">Thực tập sinh</option>
@@ -74,6 +160,7 @@ export default function Step1Form({ form, onChange, onFieldBlur }) {
                     <option value="senior">Senior</option>
                     <option value="manager">Trưởng nhóm / Quản lý</option>
                 </select>
+                {!validatedFields.level && <div className={styles.errorText}>Vui lòng chọn cấp bậc</div>}
             </label>
 
             {/* Loại công việc + Lương */}
@@ -82,8 +169,9 @@ export default function Step1Form({ form, onChange, onFieldBlur }) {
                     <div className={styles.labelHeader}><span>Loại công việc *</span></div>
                     <select
                         value={form.jobType}
-                        onChange={(e) => onChange('jobType', e.target.value)}
-                        onBlur={() => onFieldBlur('jobType')}
+                        onChange={(e) => updateField('jobType', e.target.value)}
+                        onBlur={() => handleFieldBlur('jobType')}
+                        className={!validatedFields.jobType ? styles.inputError : ''}
                     >
                         <option value="">Chọn</option>
                         <option value="fulltime">Toàn thời gian</option>
@@ -91,6 +179,7 @@ export default function Step1Form({ form, onChange, onFieldBlur }) {
                         <option value="internship">Thực tập</option>
                         <option value="remote">Remote</option>
                     </select>
+                    {!validatedFields.jobType && <div className={styles.errorText}>Vui lòng chọn loại công việc</div>}
                 </label>
 
                 <div className={`${styles.field} ${styles.fieldHalf}`}>
@@ -100,8 +189,8 @@ export default function Step1Form({ form, onChange, onFieldBlur }) {
                             <input
                                 type="checkbox"
                                 checked={isNegotiable}
-                                onChange={(e) => onChange('salaryNegotiable', e.target.checked)}
-                                onBlur={() => onFieldBlur('salary')}
+                                onChange={(e) => updateField('salaryNegotiable', e.target.checked)}
+                                onBlur={() => handleFieldBlur('salary')}
                             />
                             Thỏa thuận
                         </label>
@@ -109,24 +198,23 @@ export default function Step1Form({ form, onChange, onFieldBlur }) {
 
                     <div className={`${styles.salaryRow} ${isNegotiable ? styles.disabled : ''}`}>
                         <input
-                            type="number"
-                            value={form.salaryFrom}
-                            onChange={(e) => onChange('salaryFrom', e.target.value)}
-                            onBlur={() => onFieldBlur('salary')}
+                            type="text"
+                            value={formatCurrency(form.salaryFrom)}
+                            onChange={(e) => handleMoneyChange(e, 'salaryFrom')}
+                            onBlur={() => handleFieldBlur('salary')}
                             disabled={isNegotiable}
                         />
-                        <span className={styles.salaryDash}>–</span>
                         <input
-                            type="number"
-                            value={form.salaryTo}
-                            onChange={(e) => onChange('salaryTo', e.target.value)}
-                            onBlur={() => onFieldBlur('salary')}
+                            type="text"
+                            value={formatCurrency(form.salaryTo)}
+                            onChange={(e) => handleMoneyChange(e, 'salaryTo')}
+                            onBlur={() => handleFieldBlur('salary')}
                             disabled={isNegotiable}
                         />
                         <select
                             className={styles.salaryCurrency}
                             value={form.salaryCurrency || 'VND'}
-                            onChange={(e) => onChange('salaryCurrency', e.target.value)}
+                            onChange={(e) => updateField('salaryCurrency', e.target.value)}
                             disabled={isNegotiable}
                         >
                             <option>VND</option>
@@ -138,9 +226,3 @@ export default function Step1Form({ form, onChange, onFieldBlur }) {
         </div>
     );
 }
-
-Step1Form.propTypes = {
-    form: PropTypes.object.isRequired,
-    onChange: PropTypes.func.isRequired,
-    onFieldBlur: PropTypes.func.isRequired,
-};
