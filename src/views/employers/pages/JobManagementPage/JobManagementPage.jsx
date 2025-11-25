@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./JobManagementPage.module.scss";
 import JobFilters from "@views/employers/components/JobManagementPage/JobFilters/JobFilters";
 import JobTable from "@views/employers/components/JobManagementPage/JobTable/JobTable";
+import axios from "axios";
 
 export default function JobManagementPage() {
     // State lưu bộ lọc
@@ -13,26 +14,28 @@ export default function JobManagementPage() {
         runningService: false
     });
 
-    // State lưu danh sách tin (mock)
-    const [jobs] = useState([
-        {
-            id: 1953110,
-            title: "Ádasdsads",
-            campaign: "Ádasdsads",
-            visibility: "hidden",
-            approval: "pending",
-            latestDisplay: null,
-            totalDisplay: null,
-            service: null,
+    // State lưu danh sách tin
+    const [jobs, setJobs] = useState([]);
+
+    useEffect(() => {
+        fetchJobs();
+    }, []);
+
+    const fetchJobs = async () => {
+        try {
+            const res = await axios.get(
+                `/employer/jobs?employer_id=64e2b9b2d3f4a7c1e3b12345`
+            );
+            console.log(res.data.data)
+            setJobs(res.data.data);
+        } catch (err) {
+            console.error(err);
         }
-    ]);
+    };
 
     return (
         <div className={styles.wrapper}>
-            {/* Header Filters */}
             <JobFilters filters={filters} setFilters={setFilters} />
-
-            {/* Job Table */}
             <JobTable jobs={jobs} />
         </div>
     );

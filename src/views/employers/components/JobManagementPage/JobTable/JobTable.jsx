@@ -29,8 +29,29 @@ export default function JobTable({ jobs }) {
                                 <div className={styles.jobName}>{job.title}</div>
 
                                 <div className={styles.tags}>
-                                    <span className={styles.hidden}>Không hiển thị</span>
-                                    <span className={styles.pending}>Chưa yêu cầu duyệt</span>
+                                    {job.visibility === "visible" && (
+                                        <span className={styles.visible}>Đang hiển thị</span>
+                                    )}
+
+                                    {job.visibility === "hidden" && (
+                                        <span className={styles.hidden}>Không hiển thị</span>
+                                    )}
+
+                                    {job.visibility === "expired" && (
+                                        <span className={styles.expired}>Đã hết hạn hiển thị</span>
+                                    )}
+
+                                    {job.approvalStatus === "pending" && (
+                                        <span className={styles.pending}>Chưa yêu cầu duyệt</span>
+                                    )}
+
+                                    {job.approvalStatus === "approved" && (
+                                        <span className={styles.approved}>Đã duyệt</span>
+                                    )}
+
+                                    {job.approvalStatus === "rejected" && (
+                                        <span className={styles.rejected}>Bị từ chối</span>
+                                    )}
                                 </div>
 
                                 <div className={styles.campaign}>
