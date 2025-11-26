@@ -7,13 +7,14 @@ import PersonalInfo from "@/views/employers/components/Account/PersonalInfo/Pers
 import BusinessLicense from "@views/employers/components/Account/BusinessLicense/BusinessLicense.jsx";
 import Settings from "@views/employers/components/Account/Settings/Settings.jsx";
 import Company from "@views/employers/components/CompanyInfo/CompanyInfo.jsx";
-import { IoLockClosed, IoDocument } from "react-icons/io5";
+import { IoLockClosed } from "react-icons/io5";
+import { IoDocumentAttach } from "react-icons/io5";
 import { IoMdPerson, IoIosBusiness, IoIosSettings } from "react-icons/io";
 export default function Account() {
     const tabs = [
         { icon: IoLockClosed, key: "password", label: "Đổi mật khẩu", path: "/employer/account/settings/password" },
         { icon: IoMdPerson, key: "personal", label: "Thông tin cá nhân", path: "/employer/account/settings/personal" },
-        { icon: IoDocument, key: "license", label: "Giấy đăng ký doanh nghiệp", path: "/employer/account/settings/license" },
+        { icon: IoDocumentAttach, key: "license", label: "Giấy đăng ký doanh nghiệp", path: "/employer/account/settings/license" },
         { icon: IoIosBusiness, key: "companyinfo", label: "Thông tin công ty", path: "/employer/account/settings/company-info" },
         { icon: IoIosSettings, key: "settings", label: "Cài đặt", path: "/employer/account/settings/cv-applied" },
     ];
