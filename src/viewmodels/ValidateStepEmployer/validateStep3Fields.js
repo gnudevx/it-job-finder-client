@@ -1,8 +1,7 @@
 // Step3.validate.js
 export function validateStep3Fields(form) {
     const ageValid =
-        !form.ageRange ||
-        /^[0-9]{1,2}\s*-\s*[0-9]{1,2}$/.test(form.ageRange.trim()); // dạng 22-30
+        /^\s*\d{1,2}\s*-\s*\d{1,2}\s*$/.test(form.ageRange);
 
     return {
         education: !!form.education,

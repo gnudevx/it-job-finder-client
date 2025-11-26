@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import PropTypes from "prop-types";
 import Select from "react-select";
 import styles from "./Step3Form.module.scss";
-
-export default function Step3Form({ form, onChange, onBlur }) {
+import { CreateJobContext } from '@views/employers/pages/CreateJob/CreateJobContext';
+export default function Step3Form() {
+    const { form, updateField, handleFieldBlur } = useContext(CreateJobContext);
     // Dữ liệu mẫu
     const skillOptions = [
         { value: "ReactJS", label: "ReactJS" },
@@ -29,7 +30,7 @@ export default function Step3Form({ form, onChange, onBlur }) {
         if (newLang && !languageOptions.some((opt) => opt.value === newLang)) {
             const newOption = { value: newLang, label: newLang };
             setLanguageOptions([...languageOptions, newOption]);
-            onChange("languages", [...(form.languages || []), newOption]);
+            updateField("languages", [...(form.languages || []), newOption]);
         }
     };
 
@@ -41,8 +42,8 @@ export default function Step3Form({ form, onChange, onBlur }) {
                     <div className={styles.label}>Học vấn tối thiểu *</div>
                     <select
                         value={form.education || ""}
-                        onChange={(e) => onChange("education", e.target.value)}
-                        onBlur={() => onBlur("education")}
+                        onChange={(e) => updateField('education', e.target.value)}
+                        onBlur={() => handleFieldBlur("education")}
                     >
                         <option value="">-- Chọn học vấn --</option>
                         <option value="Trung cấp">Trung cấp</option>
@@ -56,8 +57,8 @@ export default function Step3Form({ form, onChange, onBlur }) {
                     <div className={styles.label}>Số năm kinh nghiệm *</div>
                     <select
                         value={form.experience || ""}
-                        onChange={(e) => onChange("experience", e.target.value)}
-                        onBlur={() => onBlur("experience")}
+                        onChange={(e) => updateField("experience", e.target.value)}
+                        onBlur={() => handleFieldBlur("experience")}
                     >
                         <option value="">-- Chọn kinh nghiệm --</option>
                         <option value="Dưới 1 năm">Dưới 1 năm</option>
@@ -74,7 +75,7 @@ export default function Step3Form({ form, onChange, onBlur }) {
                     <div className={styles.label}>Giới tính</div>
                     <select
                         value={form.gender || ""}
-                        onChange={(e) => onChange("gender", e.target.value)}
+                        onChange={(e) => updateField('gender', e.target.value)}
                     >
                         <option value="">-- Chọn giới tính --</option>
                         <option value="Nam">Nam</option>
@@ -89,8 +90,8 @@ export default function Step3Form({ form, onChange, onBlur }) {
                         type="text"
                         placeholder="VD: 22-30"
                         value={form.ageRange || ""}
-                        onChange={(e) => onChange("ageRange", e.target.value)}
-                        onBlur={() => onBlur("ageRange")}
+                        onChange={(e) => updateField('ageRange', e.target.value)}
+                        onBlur={() => handleFieldBlur("ageRange")}
                     />
                 </label>
             </div>
@@ -102,9 +103,11 @@ export default function Step3Form({ form, onChange, onBlur }) {
                     isMulti
                     options={skillOptions}
                     value={form.mustHaveSkills || []}
-                    onChange={(selected) => onChange("mustHaveSkills", selected)}
+                    onChange={(selected) => updateField("mustHaveSkills", selected)}
+                    onBlur={() => handleFieldBlur("mustHaveSkills")}
                     placeholder="Chọn kỹ năng cần có..."
                     className={styles.select}
+                    menuPortalTarget={document.body}
                 />
             </div>
 
@@ -115,9 +118,10 @@ export default function Step3Form({ form, onChange, onBlur }) {
                     isMulti
                     options={skillOptions}
                     value={form.optionalSkills || []}
-                    onChange={(selected) => onChange("optionalSkills", selected)}
+                    onChange={(selected) => updateField("optionalSkills", selected)}
                     placeholder="Chọn kỹ năng nên có..."
                     className={styles.select}
+                    menuPortalTarget={document.body}
                 />
             </div>
 
@@ -137,9 +141,11 @@ export default function Step3Form({ form, onChange, onBlur }) {
                     isMulti
                     options={languageOptions}
                     value={form.languages || []}
-                    onChange={(selected) => onChange("languages", selected)}
+                    onChange={(selected) => updateField("languages", selected)}
+                    onBlur={() => handleFieldBlur("languages")}
                     placeholder="Chọn ngoại ngữ..."
                     className={styles.select}
+                    menuPortalTarget={document.body}
                 />
             </div>
         </section>
