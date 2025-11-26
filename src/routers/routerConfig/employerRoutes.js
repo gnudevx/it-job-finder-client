@@ -23,7 +23,7 @@ const employerRoutes = [
     { path: "jobs/create", element: <CreateJob />, meta: { title: "CreateJob" } },
     { path: "jobs/", element: <JobManagementPage />, meta: { title: "JobManagementPage" } },
     { path: "recruitment-campaigns", element: <CampaignsPage />, meta: { title: "recruitment-campaigns" } },
-
+    { path: "jobs/edit/:jobId", element: <CreateJob />, meta: { title: "Edit Job" } },
     {
         path: "account/settings/*",
         element: <AccountSettings />,

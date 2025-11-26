@@ -1,14 +1,50 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { useState, useEffect, useContext } from "react";
 import styles from "./Step2Form.module.scss";
-import FieldTextArea from "@components/common/FieldTextArea/FieldTextArea.jsx"
+import FieldTextArea from "@components/common/FieldTextArea/FieldTextArea.jsx";
 import Select from "react-select";
-export default function Step2Form({ form, onChange, onBlur }) {
-    const cityOptions = [
-        { value: "hcm", label: "TP. Hồ Chí Minh" },
-        { value: "hn", label: "Hà Nội" },
-        { value: "dn", label: "Đà Nẵng" },
-    ];
+import axios from "axios";
+import { CreateJobContext } from '@views/employers/pages/CreateJob/CreateJobContext';
+
+export default function Step2Form() {
+    const { form, updateField, handleFieldBlur } = useContext(CreateJobContext);
+
+    const [provinces, setProvinces] = useState([]);
+    const [districts, setDistricts] = useState([]);
+    const [wards, setWards] = useState([]);
+
+    // --- Load provinces khi mount ---
+    useEffect(() => {
+        axios.get('/employer/api/locations/provinces')
+            .then(res => setProvinces(res.data))
+            .catch(err => console.error(err));
+    }, []);
+
+    // --- Load districts khi chọn province ---
+    useEffect(() => {
+        if (!form.province) {
+            setDistricts([]);
+            setWards([]);
+            updateField('district', '');
+            updateField('ward', '');
+            return;
+        }
+        axios.get(`/employer/api/locations/districts/${form.province}`)
+            .then(res => setDistricts(res.data))
+            .catch(err => console.error(err));
+    }, [form.province]);
+
+    // --- Load wards khi chọn district ---
+    useEffect(() => {
+        if (!form.district) {
+            setWards([]);
+            updateField('ward', '');
+            return;
+        }
+        axios.get(`/employer/api/locations/wards/${form.district}`)
+            .then(res => setWards(res.data))
+            .catch(err => console.error(err));
+    }, [form.district]);
+
     return (
         <section className={styles.section}>
             {/* Mô tả công việc */}
@@ -17,8 +53,8 @@ export default function Step2Form({ form, onChange, onBlur }) {
                 name="jobDescription"
                 placeholder="Nhập nội dung"
                 value={form.jobDescription}
-                onChange={onChange}
-                onBlur={onBlur}
+                onChange={updateField}
+                onBlur={() => handleFieldBlur('jobDescription')}
             />
 
             {/* Yêu cầu ứng viên */}
@@ -27,8 +63,8 @@ export default function Step2Form({ form, onChange, onBlur }) {
                 name="requirements"
                 placeholder="Nhập nội dung"
                 value={form.requirements}
-                onChange={onChange}
-                onBlur={onBlur}
+                onChange={updateField}
+                onBlur={() => handleFieldBlur('requirements')}
             />
 
             {/* Quyền lợi ứng viên */}
@@ -37,28 +73,59 @@ export default function Step2Form({ form, onChange, onBlur }) {
                 name="benefits"
                 placeholder="Nhập nội dung"
                 value={form.benefits}
-                onChange={onChange}
-                onBlur={onBlur}
+                onChange={updateField}
+                onBlur={() => handleFieldBlur('benefits')}
             />
 
             {/* Địa điểm làm việc */}
             <div className={styles.group}>
                 <label className={styles.label}>Địa điểm làm việc *</label>
                 <div className={styles.locationRow}>
+                    {/* Province */}
                     <Select
-                        options={cityOptions}
-                        value={cityOptions.find(opt => opt.value === form.city)}
-                        onChange={(selected) => onChange("city", selected.value)}
-                        onBlur={() => onBlur("city")}
+                        options={provinces.map(p => ({ value: p.code, label: p.name }))}
+                        value={provinces.map(p => ({ value: p.code, label: p.name }))
+                            .find(opt => opt.value === form.province)}
+                        onChange={(selected) => {
+                            updateField('province', selected.value);
+                        }}
+                        onBlur={() => handleFieldBlur('province')}
+                        placeholder="Chọn tỉnh/thành phố"
+                        menuPortalTarget={document.body}
                     />
 
+                    {/* District */}
+                    <Select
+                        options={districts.map(d => ({ value: d.code, label: d.name }))}
+                        value={districts.map(d => ({ value: d.code, label: d.name }))
+                            .find(opt => opt.value === form.district)}
+                        onChange={selected => updateField('district', selected.value)}
+                        onBlur={() => handleFieldBlur('district')}
+                        placeholder="Chọn quận/huyện"
+                        isDisabled={!form.province}
+                        menuPortalTarget={document.body}
+                    />
+
+                    {/* Ward */}
+                    <Select
+                        options={wards.map(w => ({ value: w.code, label: w.name }))}
+                        value={wards.map(w => ({ value: w.code, label: w.name }))
+                            .find(opt => opt.value === form.ward)}
+                        onChange={selected => updateField('ward', selected.value)}
+                        onBlur={() => handleFieldBlur('ward')}
+                        placeholder="Chọn phường/xã"
+                        isDisabled={!form.district}
+                        menuPortalTarget={document.body}
+                    />
+
+                    {/* Address chi tiết */}
                     <input
                         type="text"
                         name="address"
                         placeholder="Nhập địa điểm cụ thể..."
                         value={form.address}
-                        onChange={(e) => onChange("address", e.target.value)}
-                        onBlur={() => onBlur("address")}
+                        onChange={(e) => updateField('address', e.target.value)}
+                        onBlur={() => handleFieldBlur('address')}
                     />
                 </div>
             </div>
@@ -70,7 +137,13 @@ export default function Step2Form({ form, onChange, onBlur }) {
                     <select
                         name="dayFrom"
                         value={form.dayFrom}
-                        onChange={(e) => onChange("dayFrom", e.target.value)}
+                        onChange={(e) =>
+                            updateField("workingTime", {
+                                ...form.workingTime,
+                                dayFrom: e.target.value,
+                            })
+                        }
+                        onBlur={() => handleFieldBlur("dayFrom")}
                     >
                         {renderDays()}
                     </select>
@@ -80,7 +153,13 @@ export default function Step2Form({ form, onChange, onBlur }) {
                     <select
                         name="dayTo"
                         value={form.dayTo}
-                        onChange={(e) => onChange("dayTo", e.target.value)}
+                        onChange={(e) =>
+                            updateField("workingTime", {
+                                ...form.workingTime,
+                                dayTo: e.target.value,
+                            })
+                        }
+                        onBlur={() => handleFieldBlur("dayTo")}
                     >
                         {renderDays()}
                     </select>
@@ -89,14 +168,27 @@ export default function Step2Form({ form, onChange, onBlur }) {
                         type="time"
                         name="timeFrom"
                         value={form.timeFrom}
-                        onChange={(e) => onChange("timeFrom", e.target.value)}
+                        onChange={(e) =>
+                            updateField("workingTime", {
+                                ...form.workingTime,
+                                timeFrom: e.target.value,
+                            })
+                        }
+                        onBlur={() => handleFieldBlur("timeFrom")}
                     />
 
                     <input
                         type="time"
                         name="timeTo"
                         value={form.timeTo}
-                        onChange={(e) => onChange("timeTo", e.target.value)}
+                        onChange={(e) =>
+                            updateField("workingTime", {
+                                ...form.workingTime,
+                                timeTo: e.target.value,
+                            })
+                        }
+
+                        onBlur={() => handleFieldBlur("timeTo")}
                     />
                 </div>
             </div>
@@ -104,30 +196,8 @@ export default function Step2Form({ form, onChange, onBlur }) {
     );
 }
 
-/* ---------------------------------------
-   COMPONENT TÁI SỬ DỤNG
---------------------------------------- */
+// Render days
 function renderDays() {
     const days = ["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "Chủ nhật"];
-    return days.map((d) => <option key={d} value={d}>{d}</option>);
+    return days.map(d => <option key={d} value={d}>{d}</option>);
 }
-
-/* ---------------------------------------
-   PROP TYPES
---------------------------------------- */
-
-Step2Form.propTypes = {
-    form: PropTypes.shape({
-        jobDescription: PropTypes.string,
-        requirements: PropTypes.string,
-        benefits: PropTypes.string,
-        city: PropTypes.string,
-        address: PropTypes.string,
-        dayFrom: PropTypes.string,
-        dayTo: PropTypes.string,
-        timeFrom: PropTypes.string,
-        timeTo: PropTypes.string,
-    }).isRequired,
-    onChange: PropTypes.func.isRequired,
-    onBlur: PropTypes.func, // bạn cần validate từng field
-};

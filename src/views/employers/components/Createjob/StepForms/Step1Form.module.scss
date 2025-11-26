@@ -14,6 +14,10 @@
     gap: 8px;
     /* Khoảng cách giữa label và input */
     width: 100%;
+
+    .errorText {
+        color: red;
+    }
 }
 
 /* Phần tiêu đề của label (gồm text và char count) */
@@ -120,6 +124,7 @@
         select {
             background-color: #f3f4f6;
             border-color: #e5e7eb;
+            font-size: small;
         }
     }
 }

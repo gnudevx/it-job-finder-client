@@ -38,7 +38,7 @@ export default function JobFilters({ filters, setFilters }) {
                     <CiSearch className={styles.icon} />
                     <input
                         type="text"
-                        placeholder="Tìm kiếm tin tuyển dụng theo tiêu đề hoặc mã tin"
+                        placeholder="Tìm kiếm tin tuyển dụng theo tiêu đề"
                         value={filters.search}
                         onChange={update("search")}
                     />

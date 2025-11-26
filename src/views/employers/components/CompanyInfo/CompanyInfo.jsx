@@ -50,7 +50,7 @@ export default function CompanyInfo() {
                                 <span>
                                     Tìm kiếm thông tin công ty
                                 </span>
-                                <p>Dành cho doanh nghiệp đã có trên TopCV</p>
+                                <p>Dành cho doanh nghiệp đã có trên HireIT</p>
                             </div>
                         </div>
                     </div>
