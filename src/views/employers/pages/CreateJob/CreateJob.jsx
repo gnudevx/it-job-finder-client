@@ -17,7 +17,7 @@ export default function CreateJob() {
     ];
 
     return (
-        <CreateJobProvider isEditing={true} jobId={jobId}>
+        <CreateJobProvider isEditing={false} jobId={jobId}>
             <div className={styles.pageWrap}>
                 <div className={styles.container}>
                     <aside className={styles.leftSidebar}>

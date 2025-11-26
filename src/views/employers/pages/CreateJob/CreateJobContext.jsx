@@ -31,10 +31,25 @@ export const CreateJobProvider = ({ children, isEditing = false, jobId = null })
     };
 
     const [form, setForm] = useState({
-        title: '', specialization: '', level: '', jobType: '', salaryFrom: '', salaryTo: '', salaryType: '', workingType: '', experience: '',
-        jobDescription: '', requirements: '', benefits: '', workingTime: { dayFrom: '', dayTo: '', timeFrom: '', timeTo: '' }, province: '', district: '', ward: '', address: '', domainKnowledge: [],
-        education: '', experienceLevel: '', gender: '', ageRange: '', portfolioRequired: false, mustHaveSkills: [], optionalSkills: [], languages: [],
-        applicationDeadline: '', quantity: '', receiverName: '', receiverPhone: '', receiverEmail: '', receiverAddress: '', allowOnlineApply: true,
+        title: '', specialization: '',
+        level: '', jobType: '',
+        salaryFrom: '',
+        salaryTo: '',
+        salaryType: '',
+        workingType: '',
+        experience: '',
+        jobDescription: '',
+        requirements: '',
+        benefits: '',
+        workingTime: { dayFrom: '', dayTo: '', timeFrom: '', timeTo: '' },
+        province: '', district: '', ward: '', address: '',
+        domainKnowledge: [],
+        education: '',
+        experienceLevel: '',
+        gender: '',
+        ageRange: '',
+        portfolioRequired: false, mustHaveSkills: [], optionalSkills: [], languages: [],
+        applicationDeadline: '', quantity: '', receiverName: '', receiverPhone: '', receiverEmail: '', allowOnlineApply: true,
     });
 
     const [validatedFields, setValidatedFields] = useState({});
@@ -60,7 +75,13 @@ export const CreateJobProvider = ({ children, isEditing = false, jobId = null })
         else if (step === 4) result = validateStep4(form)[fieldName];
         setValidatedFields(prev => ({ ...prev, [fieldName]: result }));
     };
-
+    const [initialPublishStatus, setInitialPublishStatus] = useState("draft");
+    const [originalJob, setOriginalJob] = useState(null);
+    useEffect(() => {
+        if (isEditing && originalJob) {
+            setInitialPublishStatus(originalJob.publishStatus);
+        }
+    }, [isEditing, originalJob]);
     const handleSubmitJob = async (type = "publish") => {
         const stepValidations = [validateStep1(form), validateStep2(form), validateStep3(form), validateStep4(form)];
         const allValidation = Object.assign({}, ...stepValidations);
@@ -84,11 +105,39 @@ export const CreateJobProvider = ({ children, isEditing = false, jobId = null })
             visibility: "hidden",
             ...(type === "draft" && { approvalStatus: "pending" })
         };
+        if (!isEditing) {
+            // Tạo mới
+            payload.publishStatus = type === "publish" ? "pending" : "draft";
+        } else {
+            // Chỉnh sửa
+            payload.publishStatus =
+                initialPublishStatus === "draft" ? "draft" : "pending";
+        }
 
         try {
-            const res = await axios.post('/employer/api/jobs/create', payload, { withCredentials: true });
-            if (res.data.success) toast.success(`🎉 ${type === "publish" ? "Đăng tin" : "Lưu nháp"} thành công! ID: ${res.data.job._id}`);
-            else toast.error("Có lỗi xảy ra: " + res.data.message || "Unknown error");
+            let res;
+
+            if (isEditing && jobId) {
+                // UPDATE JOB
+                res = await axios.put(`/employer/jobs/edit/${jobId}`, payload, {
+                    withCredentials: true,
+                });
+            } else {
+                // CREATE JOB
+                res = await axios.post(`/employer/jobs/create`, payload, {
+                    withCredentials: true,
+                });
+            }
+            console.log("asdasdsad: ", res.data)
+            if (res.data.success) {
+                toast.success(
+                    isEditing
+                        ? "Cập nhật tin thành công!"
+                        : `🎉 ${type === "publish" ? "Đăng tin" : "Lưu nháp"} thành công!`
+                );
+            } else {
+                toast.error(res.data.message || "Có lỗi xảy123123 ra");
+            }
         } catch (err) {
             console.error(err);
             toast.error("Có lỗi xảy ra, vui lòng thử lại!");
@@ -96,30 +145,73 @@ export const CreateJobProvider = ({ children, isEditing = false, jobId = null })
     };
 
     useEffect(() => {
-        if (!isEditing || !jobId) return;
+        if (!jobId) return;
         let cancelled = false;
         const fetchJobDetail = async () => {
             setLoading(true);
             try {
-                const res = await axios.get(`/employer/api/jobs/${jobId}`);
-                if (cancelled) return;
-                if (res.data?.success) {
-                    const job = res.data.job;
-                    setForm(prev => ({
-                        ...prev,
-                        title: job.title || "", specialization: job.specialization || "", level: job.level || "", jobType: job.jobType || "",
-                        salaryFrom: job.salaryFrom || "", salaryTo: job.salaryTo || "", salaryType: job.salaryType || "", workingType: job.workingType || "", experience: job.experience || "",
-                        jobDescription: job.jobDescription || "", requirements: job.requirements || "", benefits: job.benefits || "",
+                const res = await axios.get(`/employer/jobs/edit/${jobId}`);
+
+                if (res.data) {
+
+                    const job = res.data;
+                    console.log("hi", res, job.province, job.district, job.ward);
+                    const mappedForm = {
+                        title: job.title || "",
+                        specialization: job.specialization || "",
+                        level: job.level || "",
+                        jobType: job.jobType || "",
+                        salaryNegotiable: job.salary_raw === "Thỏa thuận",
+
+                        salaryFrom: job.salary_raw === "Thỏa thuận" ? "" : (job.salaryFrom || ""),
+                        salaryTo: job.salary_raw === "Thỏa thuận" ? "" : (job.salaryTo || ""),
+                        salaryCurrency: job.currency_unit || "VND",
+                        workingType: job.workingType || "",
+                        experience: job.experience || "",
+                        jobDescription: Array.isArray(job.jobDescription)
+                            ? job.jobDescription.join("\n")
+                            : (job.jobDescription || ""),
+                        requirements: Array.isArray(job.requirements)
+                            ? job.requirements.join("\n")
+                            : (job.requirements || ""),
+                        benefits: Array.isArray(job.benefits)
+                            ? job.benefits.join("\n")
+                            : (job.benefits || ""),
+                        // benefits: job.benefits || "",
                         workingTime: job.workingTime || { dayFrom: '', dayTo: '', timeFrom: '', timeTo: '' },
-                        province: job.province || "", district: job.district || "", ward: job.ward || "", address: job.address || "", domainKnowledge: job.domainKnowledge || [],
-                        education: job.education || "", experienceLevel: job.experienceLevel || "", gender: job.gender || "", ageRange: job.ageRange || "", portfolioRequired: job.portfolioRequired ?? false,
-                        mustHaveSkills: job.mustHaveSkills?.map(s => ({ value: s, label: s })) || [],
-                        optionalSkills: job.optionalSkills?.map(s => ({ value: s, label: s })) || [],
-                        languages: job.languages?.map(l => ({ value: l, label: l })) || [],
-                        applicationDeadline: job.applicationDeadline || "", quantity: job.quantity || "",
-                        receiverName: job.receiverName || "", receiverPhone: job.receiverPhone || "", receiverEmail: job.receiverEmail || "", receiverAddress: job.receiverAddress || "",
+                        province: job.province || "",
+                        district: job.district || "",
+                        ward: job.ward || "",
+                        address: job.work_location_detail || "",
+                        domainKnowledge: job.domainKnowledge || [],
+                        education: job.education || "",
+                        experienceLevel: job.experienceLevel || "",
+                        gender: job.gender || "",
+                        ageRange: job.ageRange || "",
+                        portfolioRequired: job.portfolioRequired ?? false,
+
+                        // Map kỹ năng/ngôn ngữ cho đúng định dạng React-Select
+                        mustHaveSkills: Array.isArray(job.mustHaveSkills)
+                            ? job.mustHaveSkills.map(s => (typeof s === 'object' ? s : { value: s, label: s }))
+                            : [],
+                        optionalSkills: Array.isArray(job.optionalSkills)
+                            ? job.optionalSkills.map(s => (typeof s === 'object' ? s : { value: s, label: s }))
+                            : [],
+                        languages: Array.isArray(job.languages)
+                            ? job.languages.map(l => (typeof l === 'object' ? l : { value: l, label: l }))
+                            : [],
+
+                        applicationDeadline: job.applicationDeadline || "",
+                        quantity: job.quantity || "",
+                        receiverName: job.receiverName || "",
+                        receiverPhone: job.receiverPhone || "",
+                        receiverEmail: job.receiverEmail || "",
+                        receiverAddress: job.receiverAddress || "",
                         allowOnlineApply: job.allowOnlineApply ?? true,
-                    }));
+                    };
+                    setOriginalJob(job);
+                    // 2. Cập nhật State Form
+                    setForm(prev => ({ ...prev, ...mappedForm }));
                     setCurrentStep(0);
                 }
             } catch (err) { console.error(err); }
@@ -128,6 +220,23 @@ export const CreateJobProvider = ({ children, isEditing = false, jobId = null })
         fetchJobDetail();
         return () => { cancelled = true; };
     }, [isEditing, jobId]);
+    useEffect(() => {
+        // chỉ tự validate automatic nếu đang edit hoặc khi jobId tồn tại
+        if (!isEditing && !jobId) return;
+
+        // tránh validate trên form rỗng ban đầu (optional)
+        const shouldSkip = Object.values(form).every(v =>
+            v === '' || (Array.isArray(v) && v.length === 0)
+        );
+        if (shouldSkip) return;
+
+        const v1 = validateStep1(form);
+        const v2 = validateStep2(form);
+        const v3 = validateStep3(form);
+        const v4 = validateStep4(form);
+        setValidatedFields({ ...v1, ...v2, ...v3, ...v4 });
+    }, [form, isEditing, jobId]);
+
 
     return (
         <CreateJobContext.Provider value={{

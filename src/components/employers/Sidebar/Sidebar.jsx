@@ -54,7 +54,6 @@ export default function Sidebar({ isCollapsed }) {
     const [openSubMenuId, setOpenSubMenuId] = useState("");
     // Hàm xử lý khi bấm vào menu cha
     const handleSubMenuToggle = (id) => {
-        console.log("Đang toggle menu:", id);
         setOpenSubMenuId(prevId => (prevId === id ? "" : id));
     };
     return (
