@@ -19,7 +19,7 @@ export default function StepForms({ steps }) {
         openSteps,
         toggleStep,
         handleFieldBlur,
-        handleSubmitJob
+        handleSubmitJob, isEditing
     } = useContext(CreateJobContext);
 
     const sectionRefs = useRef([]);
@@ -35,18 +35,17 @@ export default function StepForms({ steps }) {
         }
     }, [openSteps]);
 
+
     const handleSubmit = () => {
         setShowConfirm(true);
     };
     const handleDraftSubmit = () => {
         handleSubmitJob("draft");
-        console.log("draft confirmed");
     }
 
     const handleConfirmPublish = () => {
         setShowConfirm(false);
         handleSubmitJob("publish");
-        console.log("Publish confirmed");
     }
 
 
@@ -87,12 +86,14 @@ export default function StepForms({ steps }) {
             })}
 
             <div className={styles.btnWrapper}>
-                <button className={styles.draftButton} onClick={handleDraftSubmit}>
-                    Lưu nháp
-                </button>
 
+                {!isEditing && (
+                    <button className={styles.draftButton} onClick={handleDraftSubmit}>
+                        Lưu nháp
+                    </button>
+                )}
                 <button className={styles.submitButton} onClick={handleSubmit}>
-                    Hoàn thành
+                    {isEditing ? "Cập nhật" : "Hoàn thành"}
                 </button>
             </div>
 

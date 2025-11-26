@@ -1,6 +1,5 @@
 export function fakePublishAPI(form) {
     return new Promise((resolve) => {
-        console.log("📌 Gửi form lên server (fake)...", form);
 
         setTimeout(() => {
             resolve({

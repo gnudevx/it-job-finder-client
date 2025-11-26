@@ -77,7 +77,10 @@ export default function JobTable({ jobs, setJobs }) {
                             </td>
 
                             <td className={styles.iconCol}>
-                                <Edit size={19} onClick={() => handleEdit(job._id)} />
+                                <div className={styles.iconWrapper}>
+                                    <Edit size={19} onClick={() => handleEdit(job._id)} />
+                                    <span className={styles.tooltip}>Cập nhật tin</span>
+                                </div>
                                 <PauseCircle size={19} />
                                 <div className={styles.newTag}>
                                     <ArrowUpCircle size={19} />
