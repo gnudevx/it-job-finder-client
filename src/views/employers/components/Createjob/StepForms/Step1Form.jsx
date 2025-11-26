@@ -24,31 +24,27 @@ export default function Step1Form() {
     useEffect(() => {
         const fetchSpecializations = async () => {
             try {
-                // Thay URL này bằng đường dẫn API thực tế của bạn
                 const res = await axios.get('/employer/api/specialization');
-                console.log("sadsadsads", res)
-                // Giả sử API trả về { data: [...] } hoặc mảng trực tiếp
                 const rawData = res.data.data || res.data;
                 setMetaData(rawData);
 
-                // cần load lại domainOptions ngay lập tức
+                // Nếu đang edit, set domainOptions dựa trên specialization trong form
                 if (form.specialization) {
-                    const selectedSpec = rawData.find(item => item.code === form.specialization);
-                    if (selectedSpec) {
-                        const formattedDomains = selectedSpec.domains.map(d => ({
-                            value: d.code,
-                            label: d.name
-                        }));
+                    const selectedSpec = rawData.find(s => s.code === form.specialization);
+                    if (selectedSpec?.domains) {
+                        const formattedDomains = selectedSpec.domains.map(d => ({ value: d.code, label: d.name }));
                         setDomainOptions(formattedDomains);
+
+                        // Map domainKnowledge từ form sang {value,label}
+                        updateField('domainKnowledge', form.domainKnowledge || []);
                     }
                 }
-            } catch (error) {
-                console.error("Lỗi lấy dữ liệu chuyên môn:", error);
+            } catch (err) {
+                console.error("Lỗi lấy chuyên môn:", err);
             }
         };
-
         fetchSpecializations();
-    }, [form.specialization]); // Thêm form.specialization vào dependency để reload khi edit
+    }, [form.specialization]);
 
     // 4. Hàm xử lý khi thay đổi Vị trí chuyên môn
     const handleSpecializationChange = (e) => {

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import styles from './CreateJob.module.scss';
 import Preview from '@views/employers/components/Createjob/Preview/Preview.jsx';
 import Sidebar from '@views/employers/components/Createjob/Sidebar/Sidebar.jsx';
@@ -6,6 +7,8 @@ import StepForms from '@views/employers/components/Createjob/StepForms/StepForms
 import { CreateJobProvider } from './CreateJobContext';
 
 export default function CreateJob() {
+    const { jobId } = useParams();   // <--- phải đặt ở đây
+
     const steps = [
         'Thông tin chung',
         'Mô tả công việc',
@@ -14,7 +17,7 @@ export default function CreateJob() {
     ];
 
     return (
-        <CreateJobProvider>
+        <CreateJobProvider isEditing={true} jobId={jobId}>
             <div className={styles.pageWrap}>
                 <div className={styles.container}>
                     <aside className={styles.leftSidebar}>

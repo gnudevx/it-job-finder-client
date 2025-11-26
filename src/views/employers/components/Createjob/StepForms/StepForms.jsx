@@ -19,7 +19,7 @@ export default function StepForms({ steps }) {
         openSteps,
         toggleStep,
         handleFieldBlur,
-        handlePublish
+        handleSubmitJob
     } = useContext(CreateJobContext);
 
     const sectionRefs = useRef([]);
@@ -38,12 +38,17 @@ export default function StepForms({ steps }) {
     const handleSubmit = () => {
         setShowConfirm(true);
     };
+    const handleDraftSubmit = () => {
+        handleSubmitJob("draft");
+        console.log("draft confirmed");
+    }
 
     const handleConfirmPublish = () => {
         setShowConfirm(false);
-        handlePublish(); // <--- gọi thực sự
+        handleSubmitJob("publish");
         console.log("Publish confirmed");
-    };
+    }
+
 
     return (
         <div className={styles.accordionWrap}>
@@ -82,7 +87,7 @@ export default function StepForms({ steps }) {
             })}
 
             <div className={styles.btnWrapper}>
-                <button className={styles.draftButton} onClick={() => console.log("Save draft")}>
+                <button className={styles.draftButton} onClick={handleDraftSubmit}>
                     Lưu nháp
                 </button>
 
