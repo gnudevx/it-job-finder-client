@@ -1,0 +1,42 @@
+.uploadBox {
+    border: 2px dashed #d1d5db;
+    border-radius: 8px;
+    padding: 25px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.2s;
+    background: #fafafa;
+
+    &:hover {
+        background: #f3f4f6;
+    }
+
+    .placeholder {
+        color: #6b7280;
+
+        p {
+            margin: 0;
+            font-weight: 500;
+        }
+
+        small {
+            font-size: 13px;
+        }
+    }
+
+    .fileInfo {
+        p {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        small {
+            color: #6b7280;
+        }
+    }
+
+    &.hasFile {
+        border-color: #22c55e;
+        background: #ecfdf5;
+    }
+}

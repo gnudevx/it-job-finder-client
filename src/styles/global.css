@@ -15,8 +15,10 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-html {
-  overflow-x: hidden;
-  overflow-y: hidden;
-  /* Ngăn cuộn ngang */
+
+html,
+body,
+#root {
+  height: 100%;
+  overflow: hidden;
 }

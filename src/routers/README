@@ -1,0 +1,6 @@
+EmployerLayout: layout chung (header + sidebar + <Outlet />) — được dùng một lần cho cả portal employer.
+
+EmployerApp: “router con” cho /employer/*. -> Ở đây gắn layout và định nghĩa route con.
+
+employerRoutes.js: danh sách route con (dashboard, jobs, profile, ...). 
+-> Mỗi item chứa path, element (và thường có thêm meta như title, permission, icon).

@@ -1,0 +1,95 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.wrapper h4 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #111827;
+    margin: 0;
+    padding: 0;
+}
+
+.searchBox {
+    display: flex;
+    align-items: center; // giúp icon & input ngang hàng
+    gap: 8px; // khoảng cách giữa icon và input
+    padding: 10px 14px;
+    border: 1px solid #e6eef5;
+    border-radius: 8px;
+    background: #fff;
+    width: 100%;
+    transition: border-color .2s ease;
+
+    &:focus-within {
+        border-color: var(--green-strong); // đổi màu border khi input focus
+    }
+
+    .iconBox {
+        position: absolute;
+        left: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--muted);
+        pointer-events: none; // để click vẫn focus input
+    }
+
+    .input {
+        padding: 10px 12px 10px 34px; // chừa chỗ cho icon
+        font-size: 14px;
+    }
+}
+
+
+
+.list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); // 2 cột
+    gap: 16px; // khoảng cách giữa các card
+    max-height: 450px; // giới hạn chiều cao
+    overflow-y: auto; // scroll khi nhiều dữ liệu
+    padding: 8px 0;
+}
+
+@media (max-width: 768px) {
+    .list {
+        grid-template-columns: 1fr; // 1 cột
+    }
+}
+
+.card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 10px 10px;
+    transition: box-shadow 0.2s;
+
+    &:hover {
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.08);
+    }
+
+    h4 {
+        margin: 0;
+        font-size: 16px;
+        color: #333;
+    }
+
+    button {
+        background: #00b14f;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 6px 12px;
+        cursor: pointer;
+        font-size: 14px;
+
+        &:hover {
+            background: #009344;
+        }
+    }
+}

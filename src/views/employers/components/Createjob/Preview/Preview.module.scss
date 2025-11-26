@@ -1,0 +1,55 @@
+.previewCard {
+    background: white;
+    padding-left: 10px;
+    padding-top: 10px;
+    border-radius: 10px;
+    width: 100%;
+    box-shadow: 0 4px 10px rgba(2, 6, 23, 0.04);
+}
+
+
+.badge {
+    color: #065f46;
+    font-weight: 700;
+    font-size: 12px;
+}
+
+.title {
+    margin: 8px 0;
+}
+
+.meta {
+    color: #6b7280;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.chips {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.chip {
+    background: #eefaf1;
+    padding: 6px 8px;
+    border-radius: 999px;
+    font-size: 12px;
+}
+
+
+.snippet {
+    color: #374151;
+    font-size: 14px;
+}
+
+.viewBtn {
+    margin-top: 12px;
+    width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    background: transparent;
+    cursor: pointer;
+}

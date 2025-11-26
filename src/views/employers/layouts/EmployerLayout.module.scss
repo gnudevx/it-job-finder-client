@@ -1,0 +1,75 @@
+.layout-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    align-items: stretch;
+    overflow: hidden;
+}
+
+/* Header */
+header {
+    height: 64px;
+    background-color: white;
+    border-bottom: 1px solid #eee;
+    flex-shrink: 0;
+    // z-index: 10;
+}
+
+/* Wrapper chứa sidebar + main */
+.content-wrapper {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    transition: all 0.3s ease;
+    overflow: visible;
+    /* bắt buộc để con scroll được */
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background-color: #fff;
+    border-right: 1px solid #eee;
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex-shrink: 0;
+}
+
+.sidebar.collapsed {
+    width: 60px;
+    /* ✅ sidebar co lại */
+}
+
+/* Main */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    /* chặn scroll ở layer này */
+    min-height: 0;
+    transition: all 0.3s ease;
+    z-index: 1;
+    transition: flex 0.3s ease, width 0.3s ease, margin 0.3s ease;
+}
+
+.page-container {
+    flex: 1;
+    overflow-y: auto;
+    /* chỉ phần này scroll */
+    overflow-x: hidden;
+    background-color: #f9f9f9;
+    min-height: 0;
+}
+
+html,
+body,
+#root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    /* khóa cuộn toàn trang */
+    background-color: #f9fafb;
+    /* hoặc màu nền chung */
+}

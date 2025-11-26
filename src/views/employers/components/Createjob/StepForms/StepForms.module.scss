@@ -1,0 +1,160 @@
+.accordionWrap {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.accordionItem {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #fff;
+    overflow: hidden;
+    transition: all 0.25s ease;
+}
+
+.accordionHeader {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 16px;
+    cursor: pointer;
+    background: #f9fafb;
+    transition: background 0.2s;
+    font-weight: 500;
+    justify-content: space-between;
+
+    &:hover {
+        background: #f3f4f6;
+    }
+
+    &.active {
+        background: #e0e7ff;
+        border-color: #6366f1;
+    }
+
+    .headerLeft {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .arrowIcon {
+        font-size: 1.3rem;
+        color: #4b5563;
+        transition: transform 0.25s ease;
+    }
+
+    &.active .arrowIcon {
+        transform: rotate(180deg);
+        color: #374151;
+    }
+}
+
+.accordionHeader.active {
+    background: #e0f2fe;
+    color: #0369a1;
+}
+
+.stepNumber {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #0369a1;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.stepLabel {
+    flex: 1;
+}
+
+.accordionBody {
+    padding: 16px 20px;
+    background: #fff;
+    border-top: 1px solid #e5e7eb;
+}
+
+.stepNav {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.prev,
+.next,
+.submit {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+}
+
+.prev {
+    background: #f3f4f6;
+}
+
+.next {
+    background: #0369a1;
+    color: #fff;
+}
+
+.submit {
+    background: #16a34a;
+    color: #fff;
+}
+
+
+.btnWrapper {
+    /* Quan trọng: Sử dụng Flexbox để điều chỉnh vị trí */
+    display: flex;
+
+    /* Đẩy các item (nút) về cuối container (bên phải) */
+    justify-content: flex-end;
+
+    /* Tạo khoảng cách giữa hai nút */
+    gap: 20px;
+
+    /* Căn lề dưới theo yêu cầu của bạn (100px) */
+    padding-bottom: 100px;
+
+    /* Đảm bảo container này có độ rộng cần thiết nếu cần */
+    width: 100%;
+}
+
+/* Định kiểu cho nút "Lưu nháp" */
+.draftButton {
+    /* Kích thước cơ bản */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+
+    /* Màu sắc: Nền sáng (xanh lá nhạt/trắng) */
+    background-color: #E6F7E8;
+    /* Màu xanh lá nhạt hơn */
+    color: #18A427;
+    /* Màu chữ xanh lá đậm */
+}
+
+/* Định kiểu cho nút "Hoàn thành" */
+.submitButton {
+    /* Kích thước cơ bản */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+
+    /* Màu sắc: Nền xanh lá đậm */
+    background-color: #18A427;
+    /* Màu xanh lá đậm */
+    color: white;
+    /* Màu chữ trắng */
+}

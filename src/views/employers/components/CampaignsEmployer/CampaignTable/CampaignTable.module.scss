@@ -1,0 +1,41 @@
+:export {
+    --muted: #6b7280
+}
+
+.campaignRow {
+    display: contents;
+}
+
+.campaignRow:hover>* {
+    background: #f3f4f6;
+}
+
+.card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+    overflow: hidden;
+    width: 100%;
+}
+
+
+.cardHeader {
+    padding: 14px 20px;
+    border-bottom: 1px solid #eff3f6;
+    font-weight: 600;
+}
+
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 82px 1fr 1fr 160px 140px;
+    align-items: stretch;
+}
+
+
+.colHeader {
+    padding: 16px 20px;
+    border-bottom: 1px solid #f3f6f8;
+    font-weight: 600;
+    background: #fff;
+}

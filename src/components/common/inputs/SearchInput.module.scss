@@ -1,0 +1,46 @@
+.searchLayout__header-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #ffffff;
+  opacity: 0.8;
+  padding: 12px;
+  border-radius: 20px;
+  border: 1px solid #d1d5db;
+}
+
+.searchLayout__header-search input {
+  padding-left: 25px;
+  width: 100%;
+  background-color: #ffffff;
+  border: none;
+  outline: none;
+  font-size: var(--fs-md);
+}
+
+.searchLayout__header-searchIcon {
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none; // Không cản trở click
+  color: #979595
+}
+
+
+.searchLayout__header-loading {
+  font-size: 14px;
+  animation: spin 1s linear infinite;
+}
+
+.searchLayout__header-close {
+  font-size: 16px;
+  cursor: pointer;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
