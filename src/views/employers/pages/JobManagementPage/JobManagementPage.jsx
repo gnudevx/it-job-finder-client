@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import styles from "./JobManagementPage.module.scss";
-import JobFilters from "@/views/employers/components/JobManagementPage/JobFilters/JobFilters";
-import JobTable from "@/views/employers/components/JobManagementPage/JobTable/JobTable";
+import JobFilters from "@views/employers/components/JobManagementPage/JobFilters/JobFilters";
+import JobTable from "@views/employers/components/JobManagementPage/JobTable/JobTable";
 import axios from "axios";
 
 export default function JobManagementPage() {

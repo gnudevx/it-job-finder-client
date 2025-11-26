@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import styles from './CreateJob.module.scss';
-import Preview from '@/views/employers/components/Createjob/Preview/Preview.jsx';
+import Preview from '@views/employers/components/Createjob/Preview/Preview.jsx';
 import Sidebar from '@views/employers/components/Createjob/Sidebar/Sidebar.jsx';
 import StepForms from '@views/employers/components/Createjob/StepForms/StepForms.jsx';
 import { CreateJobProvider } from './CreateJobContext';
