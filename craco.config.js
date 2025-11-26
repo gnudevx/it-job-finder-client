@@ -15,4 +15,8 @@ module.exports = {
       '@api': path.resolve(__dirname, 'src/api'),
     },
   },
+
+  devServer: {
+    allowedHosts: "all", // <== Fix lỗi
+  }
 };
