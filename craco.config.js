@@ -5,7 +5,7 @@ module.exports = {
     alias: {
       '@': path.resolve(__dirname, 'src'),
       '@assets': path.resolve(__dirname, 'src/assets'),
-      '@/views': path.resolve(__dirname, 'src/views'),
+      '@views': path.resolve(__dirname, 'src/views'),
       '@viewmodels': path.resolve(__dirname, 'src/viewmodels'),
       '@models': path.resolve(__dirname, 'src/models'),
       '@routers': path.resolve(__dirname, 'src/routers'),
@@ -17,6 +17,6 @@ module.exports = {
   },
 
   devServer: {
-    allowedHosts: "all", // <== Fix lỗi
+    allowedHosts: "all", 
   }
 };
