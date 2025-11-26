@@ -4,13 +4,14 @@ import styles from "./SavedJobs.module.scss";
 import JobCard from "@/views/candidates/components/JobCard/JobCard";
 import { getAllJobs } from "@/api/jobService";
 import useFavorites from "@/hooks/useFavorites";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function SavedJobs() {
     const navigate = useNavigate();
 
     // 🔥 Quan trọng: PHẢI TRUYỀN authToken
-    const authToken = localStorage.getItem("authToken");
-    const { favorites, toggleFavorite, isFavorite } = useFavorites(authToken);
+    const { authToken } = useAuth();
+    const { favorites, toggleFavorite, isFavorite } = useFavorites();
 
     const [jobs, setJobs] = useState([]);
 
@@ -50,7 +51,7 @@ export default function SavedJobs() {
                             job={job}
                             isFavorite={isFavorite(job.id)}
                             onToggleFavorite={toggleFavorite}
-                            onClick={() => navigate(`/candidate/job/${job.id}`)}
+                            onClick={() => navigate(`/job/${job.id}`)}
                             authToken={authToken}
                         />
                     ))}

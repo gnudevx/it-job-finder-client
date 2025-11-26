@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import EmployerLayout from "@views/employers/layouts/EmployerLayout.jsx";
+import EmployerLayout from "@/views/employers/layouts/EmployerLayout.jsx";
 import employerRoutes from "../routerConfig/employerRoutes";
 const EmployerApp = () => {
     return (

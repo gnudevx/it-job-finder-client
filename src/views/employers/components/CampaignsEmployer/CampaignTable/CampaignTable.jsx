@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './CampaignTable.module.scss';
-import CampaignRow from '@views/employers/components/CampaignsEmployer/CampaignRow/CampaignRow';
+import CampaignRow from '@/views/employers/components/CampaignsEmployer/CampaignRow/CampaignRow';
 
 
 const mock = [

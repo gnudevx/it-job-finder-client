@@ -28,7 +28,7 @@ export default function SecuritySettings() {
 
                     <div>
                         <div className={styles.settingLabel}>
-                            Cho phép đăng nhập từ thiết bị mới
+                            Đăng nhập từ thiết bị mới
                         </div>
                         <div className={styles.settingDesc}>
                             Nhận cảnh báo khi tài khoản đăng nhập từ thiết bị lạ.

@@ -2,11 +2,11 @@ import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import styles from "./AccountSettings.module.scss";
 import AccountTabs from "@/components/employers/AccountSidebar/AccountSidebar.jsx";
-import ChangePassword from "@views/employers/components/Account/ChangePassword/ChangePassword.jsx";
+import ChangePassword from "@/views/employers/components/Account/ChangePassword/ChangePassword.jsx";
 import PersonalInfo from "@/views/employers/components/Account/PersonalInfo/PersonalInfo/PersonalInfo.jsx";
-import BusinessLicense from "@views/employers/components/Account/BusinessLicense/BusinessLicense.jsx";
-import Settings from "@views/employers/components/Account/Settings/Settings.jsx";
-import Company from "@views/employers/components/CompanyInfo/CompanyInfo.jsx";
+import BusinessLicense from "@/views/employers/components/Account/BusinessLicense/BusinessLicense.jsx";
+import Settings from "@/views/employers/components/Account/Settings/Settings.jsx";
+import Company from "@/views/employers/components/CompanyInfo/CompanyInfo.jsx";
 import { IoLockClosed, IoDocument } from "react-icons/io5";
 import { IoMdPerson, IoIosBusiness, IoIosSettings } from "react-icons/io";
 export default function Account() {

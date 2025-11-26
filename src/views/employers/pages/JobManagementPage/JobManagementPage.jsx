@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./JobManagementPage.module.scss";
-import JobFilters from "@views/employers/components/JobManagementPage/JobFilters/JobFilters";
-import JobTable from "@views/employers/components/JobManagementPage/JobTable/JobTable";
+import JobFilters from "@/views/employers/components/JobManagementPage/JobFilters/JobFilters";
+import JobTable from "@/views/employers/components/JobManagementPage/JobTable/JobTable";
 
 export default function JobManagementPage() {
     // State lưu bộ lọc

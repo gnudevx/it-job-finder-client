@@ -1,15 +1,14 @@
 import React from "react";
-import HomePage from "@views/pages/HomePage/HomePage.jsx";
-import Profile from "@views/candidates/pages/profile/Profile.jsx";
+import HomePage from "@/views/pages/HomePage/HomePage.jsx";
+import Profile from "@/views/candidates/pages/profile/Profile.jsx";
 import SavedJobs from "@/views/candidates/pages/Account/ManageJobs/SavedJobs/SavedJobs.jsx";
-import AppliedJobs from "@views/candidates/pages/Account/ManageJobs/AppliedJobs/AppliedJobs.jsx";
-import RecommendJobs from "@views/candidates/pages/Account/ManageJobs/RecommendJobs/RecommendJobs.jsx";
-import PersonalInfo from "@views/candidates/pages/Account/PersonalSettings/PersonalInfo/PersonalInfo.jsx";
-import ChangePassword from "@views/candidates/pages/Account/PersonalSettings/ChangePassword/ChangePassword.jsx";
+import AppliedJobs from "@/views/candidates/pages/Account/ManageJobs/AppliedJobs/AppliedJobs.jsx";
+import RecommendJobs from "@/views/candidates/pages/Account/ManageJobs/RecommendJobs/RecommendJobs.jsx";
+import PersonalInfo from "@/views/candidates/pages/Account/PersonalSettings/PersonalInfo/PersonalInfo.jsx";
+import ChangePassword from "@/views/candidates/pages/Account/PersonalSettings/ChangePassword/ChangePassword.jsx";
 import MyCVs from "@/views/candidates/pages/Account/ManageCVs/MyCVs/MyCVs";
 import ConnectedEmployer from "@/views/candidates/pages/Account/ManageCVs/ConnectedEmployer/ConnectedEmployer";
 import ViewedEmployer from "@/views/candidates/pages/Account/ManageCVs/ViewedEmployer/ViewedEmployer";
-import JobDetail from "@views/candidates/pages/JobDetail/JobDetail.jsx";
 import NotificationSettings from "@/views/candidates/pages/Account/GeneralSettings/NotificationSettings/NotificationSettings.jsx";
 import SecuritySettings from "@/views/candidates/pages/Account/GeneralSettings/SecuritySettings/SecuritySettings.jsx";
 
@@ -24,7 +23,6 @@ const candidateRoutes = [
     { path: "account/viewedemployer", element: <ViewedEmployer />, meta: { title: "Home", icon: "home" } },
     { path: "account", element: <PersonalInfo />, meta: { title: "Home", icon: "home" } },
     { path: "account/changepassword", element: <ChangePassword />, meta: { title: "Home", icon: "home" } },
-    { path: "job/:id", element: <JobDetail /> },
     { path: "account/notifications", element: <NotificationSettings />},
     { path: "account/security", element: <SecuritySettings />} ,
 ];

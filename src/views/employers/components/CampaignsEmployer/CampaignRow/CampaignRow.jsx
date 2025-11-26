@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './CampaignRow.module.scss';
-import ToggleSwitch from '@views/employers/components/CampaignsEmployer/ToggleSwitch/ToggleSwitch';
+import ToggleSwitch from '@/views/employers/components/CampaignsEmployer/ToggleSwitch/ToggleSwitch';
 import PropTypes from 'prop-types';
 
 

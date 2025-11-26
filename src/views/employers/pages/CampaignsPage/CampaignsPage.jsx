@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './CampaignsPage.module.scss';
-import FilterBar from '@views/employers/components/CampaignsEmployer/FilterBar/FilterBar';
-import CampaignTable from '@views/employers/components/CampaignsEmployer/CampaignTable/CampaignTable';
+import FilterBar from '@/views/employers/components/CampaignsEmployer/FilterBar/FilterBar';
+import CampaignTable from '@/views/employers/components/CampaignsEmployer/CampaignTable/CampaignTable';
 
 
 const CampaignsPage = () => {

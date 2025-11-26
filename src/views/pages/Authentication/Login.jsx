@@ -4,8 +4,11 @@ import styles from "./Authentication.module.scss";
 
 import { FcGoogle } from "react-icons/fc";
 import { loginWithGoogle } from "@/utils/googleAuth";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function LoginPage() {
+  const { setAuthToken, setUserId } = useAuth();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
@@ -35,8 +38,12 @@ export default function LoginPage() {
         return;
       }
 
-      // Lưu token
+      // Lưu vào context + localStorage
+      setAuthToken(data.token);
       localStorage.setItem("authToken", data.token);
+
+      localStorage.setItem("userId", data.user._id);
+      setUserId(data.user._id);
 
       alert("Đăng nhập thành công!");
 
@@ -52,12 +59,8 @@ export default function LoginPage() {
     }
   };
 
-  // GOOGLE LOGIN
-
   const handleGoogleLogin = () => {
     loginWithGoogle(async (code) => {
-      console.log("GOOGLE CODE:", code);
-
       try {
         const res = await fetch("http://localhost:5000/api/auth/google", {
           method: "POST",
@@ -66,10 +69,14 @@ export default function LoginPage() {
         });
 
         const data = await res.json();
-        console.log("SERVER RESPONSE:", data);
 
         if (data.success) {
+          setAuthToken(data.token);
           localStorage.setItem("authToken", data.token);
+
+          localStorage.setItem("userId", data.user._id);
+          setUserId(data.user._id);
+
           alert("Đăng nhập Google thành công!");
           navigate("/candidate/home");
         } else {

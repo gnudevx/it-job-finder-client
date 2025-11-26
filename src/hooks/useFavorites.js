@@ -1,20 +1,22 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-export default function useFavorites(authToken) {
-    // Nếu không có token → guest → không cho lưu
-    const storageKey = authToken ? `favorites_${authToken}` : null;
+export default function useFavorites() {
+    // 👉 Lấy userId trực tiếp từ localStorage
+    const userId = localStorage.getItem("userId");
 
-    const [favorites, setFavorites] = useState(() => {
-        if (!storageKey) return [];
-        const saved = localStorage.getItem(storageKey);
-        return saved ? JSON.parse(saved) : [];
-    });
+    const storageKey = userId ? `favorites_${userId}` : null;
+
+    const [favorites, setFavorites] = useState([]);
 
     useEffect(() => {
-        if (storageKey) {
-            localStorage.setItem(storageKey, JSON.stringify(favorites));
+        if (!storageKey) {
+            setFavorites([]);
+            return;
         }
-    }, [favorites, storageKey]);
+
+        const saved = JSON.parse(localStorage.getItem(storageKey)) || [];
+        setFavorites(saved);
+    }, [storageKey]);
 
     const toggleFavorite = (jobId) => {
         if (!storageKey) {
@@ -22,15 +24,18 @@ export default function useFavorites(authToken) {
             return;
         }
 
-        setFavorites((prev) =>
-            prev.includes(jobId)
-                ? prev.filter((id) => id !== jobId)
-                : [...prev, jobId]
-        );
+        const updated = favorites.includes(jobId)
+            ? favorites.filter(id => id !== jobId)
+            : [...favorites, jobId];
+
+        setFavorites(updated);
+        localStorage.setItem(storageKey, JSON.stringify(updated));
     };
 
-    const isFavorite = (jobId) =>
-        storageKey ? favorites.includes(jobId) : false;
+    const isFavorite = (jobId) => {
+        if (!storageKey) return false;
+        return favorites.includes(jobId);
+    };
 
     return { favorites, toggleFavorite, isFavorite };
 }

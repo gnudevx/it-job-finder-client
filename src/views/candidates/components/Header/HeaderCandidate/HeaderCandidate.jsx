@@ -8,7 +8,6 @@ import styles from "@/views/candidates/components/Header/HeaderCandidate/HeaderC
 import logo from "@/assets/Logo_HireIT_Header.png";
 import logo_candidate from "@/assets/logo_candidate.jpg";
 import NotificationDropdown from "@/views/candidates/components/Header/DropdownButton/NotificationDropdown.jsx";
-
 import { clearToken } from "@/utils/auth.js";
 
 export default function HeaderCandidate() {

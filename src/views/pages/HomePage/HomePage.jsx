@@ -2,17 +2,18 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./HomePage.module.scss";
 
-import FilterBar from "@views/candidates/components/FilterBar/FilterBar.jsx";
+import FilterBar from "@/views/candidates/components/FilterBar/FilterBar.jsx";
 import useFavorites from "@/hooks/useFavorites";
 import JobCard from "@/views/candidates/components/JobCard/JobCard.jsx";
 import { getAllJobs } from "@/api/jobService";
 import Pagination from "@/components/common/Pagination/Pagination";
+import { useAuth } from "@/contexts/AuthContext.jsx";
 
 export default function HomePage() {
-    const authToken = localStorage.getItem("authToken");
+    const { authToken } = useAuth();
 
     // ❗ ĐÃ LOẠI favorites để tránh ESLint error
-    const { toggleFavorite, isFavorite } = useFavorites(authToken);
+    const { toggleFavorite, isFavorite } = useFavorites();
 
     const [search, setSearch] = useState("");
     const [filters, setFilters] = useState({});
@@ -124,7 +125,7 @@ export default function HomePage() {
             <div className={styles["jobs-grid"]}>
                 {currentJobs.map((job) => (
                     <JobCard
-                        key={job.id}       // ❗ ĐÃ THÊM KEY — FIX ESLINT
+                        key={job.id}
                         job={job}
                         isFavorite={isFavorite(job.id)}
                         onToggleFavorite={toggleFavorite}

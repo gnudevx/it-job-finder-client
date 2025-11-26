@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import styles from './CreateJob.module.scss';
 
-import Preview from '@views/employers/components/Createjob/Preview/Preview.jsx';
-import Sidebar from '@views/employers/components/Createjob/Sidebar/Sidebar.jsx';
-import StepForms from '@views/employers/components/Createjob/StepForms/StepForms.jsx';
+import Preview from '@/views/employers/components/Createjob/Preview/Preview.jsx';
+import Sidebar from '@/views/employers/components/Createjob/Sidebar/Sidebar.jsx';
+import StepForms from '@/views/employers/components/Createjob/StepForms/StepForms.jsx';
 
 import { validateStep1 } from "@/viewmodels/ValidateStepEmployer/validateStep1Fields";
 import { validateStep2 } from "@/viewmodels/ValidateStepEmployer/validateStep2Fields";
