@@ -7,7 +7,7 @@ import { loginWithGoogle } from "@/utils/googleAuth";
 import { useAuth } from "@/contexts/AuthContext";
 
 export default function LoginPage() {
-  const { setAuthToken, setUserId } = useAuth();
+  const { setAuthToken, setUser } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -47,7 +47,7 @@ export default function LoginPage() {
       localStorage.setItem("userId", user._id);
 
       setAuthToken(token);
-      setUserId(user._id);
+      setUser(user._id);
 
       alert("Đăng nhập thành công!");
 
@@ -81,7 +81,7 @@ export default function LoginPage() {
           localStorage.setItem("authToken", data.token);
 
           localStorage.setItem("userId", data.user._id);
-          setUserId(data.user._id);
+          setUser(data.user._id);
 
           alert("Đăng nhập Google thành công!");
           navigate("/candidate/home");
