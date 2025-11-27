@@ -4,24 +4,29 @@ import PropTypes from "prop-types";
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [authToken, setAuthToken] = useState(null);
-  const [userId, setUserId] = useState(null);
-  const [initialized, setInitialized] = useState(false);
+  const [authToken, setAuthToken] = useState(localStorage.getItem("authToken"));
+  const [userId, setUserId] = useState(localStorage.getItem("userId"));
 
   useEffect(() => {
-    const token = localStorage.getItem("authToken");
-    const uid = localStorage.getItem("userId");
+    if (authToken) localStorage.setItem("authToken", authToken);
+    else localStorage.removeItem("authToken");
 
-    setAuthToken(token || null);
-    setUserId(uid || null);
-    setInitialized(true);
-  }, []);
+    if (userId) localStorage.setItem("userId", userId);
+    else localStorage.removeItem("userId");
+  }, [authToken, userId]);
 
-  if (!initialized) return null;
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem("user") || "null")
+  );
+
+  useEffect(() => {
+    if (user) localStorage.setItem("user", JSON.stringify(user));
+    else localStorage.removeItem("user");
+  }, [user]);
 
   return (
     <AuthContext.Provider
-      value={{ authToken, setAuthToken, userId, setUserId, initialized }}
+      value={{ authToken, setAuthToken, user, setUser, userId, setUserId }}
     >
       {children}
     </AuthContext.Provider>

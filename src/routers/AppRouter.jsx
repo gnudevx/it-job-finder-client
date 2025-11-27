@@ -11,16 +11,22 @@ import RegisterPage from "@/views/pages/Authentication/Register.jsx";
 import GuestLayout from "@/views/candidates/layouts/GuestLayout/GuestLayout";
 import privateRoutes from "./routerConfig/privateRoutes";
 import JobDetail from "@/views/candidates/pages/JobDetail/JobDetail";
-
-const isLoggedIn = () => !!localStorage.getItem("authToken");
+import { useAuth } from "@/contexts/AuthContext";
+import RootRedirect from "./RootRedirect";
 const LoadingScreen = () => (
   <div className="flex items-center justify-center h-screen text-lg font-medium">
     Loading...
   </div>
 );
 
-const PrivateRoute = ({ element }) =>
-  isLoggedIn() ? element : <Navigate to="/login" replace />;
+const PrivateRoute = ({ element }) => {
+  const { authToken } = useAuth();
+
+  if (authToken === null || authToken === undefined)
+    return <Navigate to="/login" replace />;
+
+  return element;
+};
 
 PrivateRoute.propTypes = {
   element: PropTypes.node.isRequired,
@@ -36,7 +42,7 @@ export const AppRouter = () => {
 
           {/* Guest layout */}
           <Route element={<GuestLayout />}>
-            <Route path="/" element={<Navigate to="/home" replace />} />
+            <Route path="/" element={<RootRedirect />} />
             <Route path="/home" element={<HomePage />} />
             <Route path="/job/:id" element={<JobDetail />} />
           </Route>

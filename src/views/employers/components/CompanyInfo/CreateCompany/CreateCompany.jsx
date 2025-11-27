@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import styles from "./CreateCompany.module.scss";
-
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
+import companyService from "@/services/companyService";
 export default function CreateCompany({ selectedCompany, onSaveComplete }) {
     const [form, setForm] = useState({
         taxCode: "",
@@ -14,7 +14,8 @@ export default function CreateCompany({ selectedCompany, onSaveComplete }) {
         phone: "",
         email: "",
         description: "",
-        type: "enterprise",
+        type: "",
+        field: "",
     });
 
     useEffect(() => {
@@ -24,28 +25,29 @@ export default function CreateCompany({ selectedCompany, onSaveComplete }) {
                 companyName: selectedCompany.name || "",
                 website: selectedCompany.website || "",
                 size: selectedCompany.size || "",
+                field: selectedCompany.field || "",
                 address: selectedCompany.address || "",
                 phone: selectedCompany.phone || "",
                 email: selectedCompany.email || "",
                 description: selectedCompany.description || "",
-                type: selectedCompany.type || "enterprise",
+                type: selectedCompany.type || "",
             });
         }
     }, [selectedCompany]);
 
     const handleChange = (key) => (e) => setForm((s) => ({ ...s, [key]: e.target.value }));
 
-    const handleSave = () => {
+    const handleSave = async () => {
         if (!form.companyName || !form.email) {
             alert("Vui lòng nhập Tên công ty và Email!");
             return;
         }
 
-        const savedCompany = {
-            id: selectedCompany?.id || Date.now().toString(),
-            name: form.companyName,
+        const payload = {
             taxCode: form.taxCode,
+            companyName: form.companyName,
             website: form.website,
+            field: form.field,
             size: form.size,
             address: form.address,
             phone: form.phone,
@@ -54,7 +56,22 @@ export default function CreateCompany({ selectedCompany, onSaveComplete }) {
             type: form.type,
         };
 
-        if (onSaveComplete) onSaveComplete(savedCompany);
+        try {
+            let res;
+            if (selectedCompany?._id) {
+                // UPDATE
+                res = await companyService.update(selectedCompany._id, payload);
+            } else {
+                // CREATE
+                res = await companyService.create(payload);
+            }
+
+            if (onSaveComplete) onSaveComplete(res.company);
+            alert(selectedCompany ? "Cập nhật thành công!" : "Tạo công ty thành công!");
+        } catch (err) {
+            console.error(err);
+            alert(err?.response?.data?.message || "Lỗi khi lưu dữ liệu");
+        }
     };
 
     return (
