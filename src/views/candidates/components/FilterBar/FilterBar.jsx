@@ -7,12 +7,16 @@ export default function FilterBar({ onChange }) {
         { key: "location", label: "Địa điểm" },
         { key: "salaryLevel", label: "Mức lương" },
         { key: "experience", label: "Kinh nghiệm" },
+        { key: "skills", label: "Chuyên môn" },
+        { key: "createDate", label: "Ngày đăng" },
     ];
 
     const quickOptions = {
         location: ["Hà Nội", "TP. Hồ Chí Minh", "Đà Nẵng", "Toàn quốc"],
         salaryLevel: ["Dưới 10 triệu", "10 - 20 triệu", "20 - 30 triệu", "Trên 30 triệu"],
         experience: ["Chưa có kinh nghiệm", "1 năm trở xuống", "1 năm", "2 năm", "3 năm", "Từ 4–5 năm"],
+        skills: ["SQL", "Python", "Java", "Node.js", "React", "DevOps"],
+        createDate: ["Hôm nay", "3 ngày qua", "7 ngày qua", "14 ngày qua"],
     };
 
     const convertValue = (key, value) => {
@@ -31,6 +35,13 @@ export default function FilterBar({ onChange }) {
                 if (value.includes("2 năm")) return 2;
                 if (value.includes("3 năm")) return 3;
                 if (value.includes("4") || value.includes("5")) return 4;
+                return "";
+
+            case "createDate":
+                if (value.includes("Hôm nay")) return 1;
+                if (value.includes("3")) return 3;
+                if (value.includes("7")) return 7;
+                if (value.includes("14")) return 14;
                 return "";
 
             default:
@@ -56,7 +67,6 @@ export default function FilterBar({ onChange }) {
                     onChange={(e) => {
                         const newKey = e.target.value;
                         setActiveFilter(newKey);
-
                         // Reset filter cũ về rỗng trước khi áp dụng filter mới
                         onChange(activeFilter, ""); 
                     }}
