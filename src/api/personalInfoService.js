@@ -1,17 +1,29 @@
-const STORAGE_KEY = "personal_info";
+import axios from "axios";
 
-export const loadPersonalInfo = () => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (!saved) {
-        return {
-            fullName: "Nguyễn Tín",
-            phone: "",
-            email: "22110434@student.hcmute.edu.vn",
-        };
-    }
-    return JSON.parse(saved);
+const API = "http://localhost:5000";
+
+export const loadPersonalInfo = async () => {
+  const token = localStorage.getItem("authToken");
+  if (!token) throw new Error("Token không tồn tại");
+
+  const res = await axios.get(`${API}/api/candidates/profile`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return res.data.data;
 };
 
-export const savePersonalInfo = (data) => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+export const savePersonalInfo = async (data) => {
+  const token = localStorage.getItem("authToken");
+  if (!token) throw new Error("Token không tồn tại");
+
+  const res = await axios.put(`${API}/api/candidates/profile`, data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return res.data.data;
 };

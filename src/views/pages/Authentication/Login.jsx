@@ -33,31 +33,37 @@ export default function LoginPage() {
 
       const data = await res.json();
 
-      if (!res.ok) {
-        setError(data.error || "Đăng nhập thất bại");
+      // Backend trả accessToken chứ không phải token
+      const token = data?.accessToken;
+      const user = data?.user;
+
+      if (!res.ok || !token || !user) {
+        setError(data.message || "Đăng nhập thất bại");
         return;
       }
 
-      // Lưu vào context + localStorage
-      setAuthToken(data.token);
-      localStorage.setItem("authToken", data.token);
+      // Lưu token + userId
+      localStorage.setItem("authToken", token);
+      localStorage.setItem("userId", user._id);
 
-      localStorage.setItem("userId", data.user._id);
-      setUserId(data.user._id);
+      setAuthToken(token);
+      setUserId(user._id);
 
       alert("Đăng nhập thành công!");
 
-      // Điều hướng theo role
-      if (data.user.role === "employer") {
+      // Nếu có phân quyền thì kiểm tra
+      if (user.role === "employer") {
         navigate("/employer");
       } else {
         navigate("/candidate/home");
       }
+
     } catch (err) {
       console.error("Login error:", err);
       setError("Không thể kết nối server");
     }
   };
+
 
   const handleGoogleLogin = () => {
     loginWithGoogle(async (code) => {

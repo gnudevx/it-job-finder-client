@@ -19,7 +19,7 @@ export default function SavedJobs() {
         const fetchJobs = async () => {
             const data = await getAllJobs();
 
-            const formatted = data.map(job => ({
+            const formatted = data.data.map(job => ({
                 id: job._id,
                 title: job.title,
                 company: job.group_id?.name || "Không rõ",
