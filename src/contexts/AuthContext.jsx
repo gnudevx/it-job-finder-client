@@ -1,42 +1,40 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { getUserInfoAPI } from "@/api/userService";
+// import { getUserInfoAPI } from "@/api/userService";
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [authToken, setAuthToken] = useState(null);
-  const [user, setUser] = useState(null);
+  const [authToken, setAuthToken] = useState(localStorage.getItem("authToken"));
+  const [userId, setUserId] = useState(localStorage.getItem("userId"));
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem("user") || "null")
+  );
+  
   const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("authToken");
-    setAuthToken(token || null);
-
-    async function loadUser() {
-      if (!token) {
-        setInitialized(true);
-        return;
-      }
-
-      try {
-        const data = await getUserInfoAPI();
-        setUser(data);
-        localStorage.setItem("user", JSON.stringify(data));
-      } catch (err) {
-        console.error("Cannot load user!", err);
-        setUser(null);
-      } finally {
-        setInitialized(true);
-      }
-    }
-
-    loadUser();
+    setInitialized(true);
   }, []);
+
+  useEffect(() => {
+    if (authToken) localStorage.setItem("authToken", authToken);
+    else localStorage.removeItem("authToken");
+
+    if (userId) localStorage.setItem("userId", userId);
+    else localStorage.removeItem("userId");
+  }, [authToken, userId]);
+
+  
+
+  useEffect(() => {
+    if (user) localStorage.setItem("user", JSON.stringify(user));
+    else localStorage.removeItem("user");
+  }, [user]);
 
   return (
     <AuthContext.Provider
-      value={{ authToken, setAuthToken, user, setUser, initialized }}
+      value={{ authToken, setAuthToken, user, setUser, userId, setUserId, initialized }}
     >
       {children}
     </AuthContext.Provider>

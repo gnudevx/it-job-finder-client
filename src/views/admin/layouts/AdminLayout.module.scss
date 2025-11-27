@@ -1,0 +1,66 @@
+/* Layout tổng */
+.layoutContainer {
+  width: 100%;
+  min-height: 100vh;
+  background: #f3f4f6;
+}
+
+/* ===========================
+   SIDEBAR
+=========================== */
+.sidebar {
+  position: fixed;
+  top: 60px; /* chạy dưới header */
+  left: 0;
+  bottom: 0;
+  width: 260px;
+  background: #1f2937;
+  color: #fff;
+  transition: width 0.25s ease;
+  z-index: 150; /* dưới header */
+}
+
+.sidebarCollapsed {
+  width: 70px;
+}
+
+/* ===========================
+   HEADER
+=========================== */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  z-index: 200;
+}
+
+.headerCollapsed {
+  left: 0;
+}
+
+/* ===========================
+   MAIN CONTENT
+=========================== */
+.main {
+  margin-left: 260px;
+  padding-top: 60px; /* tránh header */
+  transition: margin-left 0.25s ease;
+}
+
+.mainCollapsed {
+  margin-left: 70px;
+}
+
+.pageContainer {
+  padding: 24px;
+}
+
+.sidebarCollapsed .title {
+  display: none;
+}

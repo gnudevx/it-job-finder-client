@@ -5,9 +5,9 @@ import styles from "./Authentication.module.scss";
 import { FcGoogle } from "react-icons/fc";
 import { loginWithGoogle } from "@/utils/googleAuth";
 import { useAuth } from "@/contexts/AuthContext";
-
+import authService from '@/services/authService';
 export default function LoginPage() {
-  const { setAuthToken, setUser } = useAuth();
+  const { setAuthToken, setUserId, setUser } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,42 +25,19 @@ export default function LoginPage() {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+      const data = await authService.login({ email, password });
+      console.log("Login data:", data);
+      // data.user có thông tin người dùng
+      setUserId(data.user._id);
+      setAuthToken(data.accessToken);
+      setUser(data.user)
+      alert(data.message);
 
-      const data = await res.json();
-
-      // Backend trả accessToken chứ không phải token
-      const token = data?.accessToken;
-      const user = data?.user;
-
-      if (!res.ok || !token || !user) {
-        setError(data.message || "Đăng nhập thất bại");
-        return;
-      }
-
-      // Lưu token + userId
-      localStorage.setItem("authToken", token);
-      localStorage.setItem("userId", user._id);
-
-      setAuthToken(token);
-      setUser(user._id);
-
-      alert("Đăng nhập thành công!");
-
-      // Nếu có phân quyền thì kiểm tra
-      if (user.role === "employer") {
-        navigate("/employer");
-      } else {
-        navigate("/candidate/home");
-      }
-
+      if (data.user.role === "employer") navigate("/employer/");
+      else navigate("/candidate/home");
     } catch (err) {
       console.error("Login error:", err);
-      setError("Không thể kết nối server");
+      setError(err.response?.data?.message || "Không thể kết nối server");
     }
   };
 

@@ -12,38 +12,6 @@
     padding: 0;
 }
 
-.searchBox {
-    display: flex;
-    align-items: center; // giúp icon & input ngang hàng
-    gap: 8px; // khoảng cách giữa icon và input
-    padding: 10px 14px;
-    border: 1px solid #e6eef5;
-    border-radius: 8px;
-    background: #fff;
-    width: 100%;
-    transition: border-color .2s ease;
-
-    &:focus-within {
-        border-color: var(--green-strong); // đổi màu border khi input focus
-    }
-
-    .iconBox {
-        position: absolute;
-        left: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--muted);
-        pointer-events: none; // để click vẫn focus input
-    }
-
-    .input {
-        padding: 10px 12px 10px 34px; // chừa chỗ cho icon
-        font-size: 14px;
-    }
-}
-
-
 
 .list {
     display: grid;

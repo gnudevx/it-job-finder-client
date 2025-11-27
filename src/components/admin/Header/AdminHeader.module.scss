@@ -1,0 +1,21 @@
+.headerInner {
+  height: 60px;
+  width: 100%;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.menuBtn {
+  font-size: 22px;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-left: 12px;
+}

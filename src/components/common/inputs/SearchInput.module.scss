@@ -1,41 +1,62 @@
 .searchLayout__header-search {
-  position: relative;
+  /* Layout chính: Flexbox */
   display: flex;
   align-items: center;
-  gap: 8px;
+  /* Căn giữa dọc */
+  gap: 10px;
+  /* Khoảng cách giữa icon và input */
+
+  /* Style của cái khung bao ngoài */
   background-color: #ffffff;
-  opacity: 0.8;
-  padding: 12px;
-  border-radius: 20px;
+  padding: 8px 16px;
+  /* Chỉnh độ dày của thanh search tại đây */
+  border-radius: 10px;
   border: 1px solid #d1d5db;
 }
 
+/* Style cho input */
 .searchLayout__header-search input {
-  padding-left: 25px;
-  width: 100%;
-  background-color: #ffffff;
-  border: none;
-  outline: none;
-  font-size: var(--fs-md);
+  flex: 1;
+
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent;
+  border-radius: 0;
+  /* Style chữ */
+  font-size: 14px;
+  color: #333;
+  padding: 0;
+  margin: 0;
 }
 
+.searchLayout__header-search input:focus {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Style cho Icon Search */
 .searchLayout__header-searchIcon {
-  position: absolute;
-  left: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none; // Không cản trở click
-  color: #979595
+  /* Xóa hết mớ position absolute cũ đi */
+  color: #979595;
+  flex-shrink: 0;
+  /* Không cho icon bị méo khi màn hình nhỏ */
+  cursor: default;
 }
 
+/* Style icon loading và close */
+.searchLayout__header-loading,
+.searchLayout__header-close {
+  flex-shrink: 0;
+  color: #979595;
+}
 
 .searchLayout__header-loading {
-  font-size: 14px;
   animation: spin 1s linear infinite;
 }
 
 .searchLayout__header-close {
-  font-size: 16px;
   cursor: pointer;
 }
 
