@@ -65,6 +65,7 @@ export default function JobDetail() {
                     education: data.education,
                     quantity: data.quantity,
                     jobType: data.jobType,
+                    createdAt: data.createdAt,
                 };
 
                 setJob(formatted);
@@ -82,7 +83,7 @@ export default function JobDetail() {
     if (!job) return <div>Không tìm thấy tin tuyển dụng.</div>;
 
     const { title, deadline, description, requirements, benefits, 
-        work_location_detail, working_time, link, level, education, quantity, jobType  } = job;
+        work_location_detail, working_time, link, level, education, quantity, jobType, createdAt  } = job;
 
     // Check applied
     const appliedJobs = JSON.parse(localStorage.getItem("appliedJobs") || "[]");
@@ -128,8 +129,12 @@ export default function JobDetail() {
                     )}
                 </div>
 
+                <p className={styles.postDate}>
+                    Ngày đăng: <strong>{new Date(createdAt).toLocaleDateString("vi-VN")}</strong>
+                </p>
+
                 <p className={styles.deadline}>
-                    Hạn nộp hồ sơ: <strong>{deadline}</strong>
+                    Hạn nộp hồ sơ: <strong>{new Date(deadline).toLocaleDateString("vi-VN")}</strong>
                 </p>
 
                 <section className={styles.section}>

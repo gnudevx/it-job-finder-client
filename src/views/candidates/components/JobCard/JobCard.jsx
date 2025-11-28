@@ -31,7 +31,18 @@ export default function JobCard({
             </div>
 
             <div className={styles.title}>{job.title}</div>
-            <div className={styles.company}>{job.company}</div>
+            <div className={styles.companyRow}>
+                <div className={styles.company}>{job.company}</div>
+
+                {job.createdAt && (
+                    <div className={styles.postDate}>
+                        Ngày đăng:{" "}
+                        <strong>
+                            {new Date(job.createdAt).toLocaleDateString("vi-VN")}
+                        </strong>
+                    </div>
+                )}
+            </div>
 
             <div className={styles.meta}>
                 <span className={styles.salary}>{job.salary}</span>

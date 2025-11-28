@@ -35,6 +35,7 @@ export default function HomePage() {
                     salary: job.salary_raw || "Thoả thuận",
                     location: job.location?.name || "Không rõ",
                     experience: job.experience,
+                    createdAt: job.createdAt || job.updatedAt || null
                 }));
 
                 setJobs(formatted);
@@ -89,6 +90,14 @@ export default function HomePage() {
 
             if (key === "location") {
                 return normalizeText(job.location).includes(normalizeText(value));
+            }
+
+            if (key === "createDate") {
+                // value là số ngày
+                const jobDate = new Date(job.createdAt);
+                const now = new Date();
+                const diffDays = Math.floor((now - jobDate) / (1000 * 60 * 60 * 24));
+                return diffDays < Number(value);
             }
 
             return job[key]?.toLowerCase().includes(String(value).toLowerCase());
