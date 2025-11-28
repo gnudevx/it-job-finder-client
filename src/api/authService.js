@@ -1,14 +1,11 @@
 import axios from "axios";
 
 const API =
-  process.env.REACT_APP_API_URL || "http://localhost:5000";
+  process.env.REACT_APP_API_URL || "http://localhost:5000/api";
 
 // LOGIN
 export const login = async ({ email, password }) => {
-  const res = await axios.post(`${API}/auth/login`, {
-    email,
-    password,
-  });
+  const res = await axios.post(`${API}/auth/login`, { email, password });
   return res.data;
 };
 
@@ -42,7 +39,7 @@ export const logoutRequest = async () => {
       await axios.post(`${API}/auth/logout`, { refreshToken });
     }
   } catch (e) {
-    // server error không quan trọng
+    console.error("Logout error:", e);
   }
 
   localStorage.removeItem("authToken");

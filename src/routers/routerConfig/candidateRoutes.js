@@ -1,7 +1,7 @@
 import React from "react";
 import HomePage from "@/views/pages/HomePage/HomePage.jsx";
 import Profile from "@/views/candidates/pages/profile/Profile.jsx";
-import SavedJobs from "@/views/candidates/pages/Account/ManageJobs/SavedJobs/SavedJobs.jsx";
+import FavoritesJobs from "@/views/candidates/pages/Account/ManageJobs/FavoritesJobs/FavoritesJobs.jsx";
 import AppliedJobs from "@/views/candidates/pages/Account/ManageJobs/AppliedJobs/AppliedJobs.jsx";
 import RecommendJobs from "@/views/candidates/pages/Account/ManageJobs/RecommendJobs/RecommendJobs.jsx";
 import PersonalInfo from "@/views/candidates/pages/Account/PersonalSettings/PersonalInfo/PersonalInfo.jsx";
@@ -15,7 +15,7 @@ import SecuritySettings from "@/views/candidates/pages/Account/GeneralSettings/S
 const candidateRoutes = [
     { path: "home", element: <HomePage />, meta: { title: "Home", icon: "home" } },
     { path: "profile", element: <Profile />, meta: { title: "Profile" } },
-    { path: "account/savedjobs", element: <SavedJobs />, meta: { title: "Home", icon: "home" } },
+    { path: "account/favoritesjobs", element: <FavoritesJobs />, meta: { title: "Home", icon: "home" } },
     { path: "account/appliedjobs", element: <AppliedJobs />, meta: { title: "Home", icon: "home" } },
     { path: "account/recommendjobs", element: <RecommendJobs />, meta: { title: "Home", icon: "home" } },
     { path: "account/mycvs", element: <MyCVs />, meta: { title: "Home", icon: "home" } },

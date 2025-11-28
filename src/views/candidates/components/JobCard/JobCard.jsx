@@ -12,9 +12,12 @@ export default function JobCard({
     return (
         <div className={styles.card} onClick={onClick}>
             <div className={styles.topRow}>
-                <img src="/logo192.png" alt={job.company} className={styles.logo} />
+                <img
+                    src="/logo192.png"
+                    alt={job.company}
+                    className={styles.logo}
+                />
 
-                {/* Luôn hiển thị nút tim */}
                 <button
                     className={styles.favoriteBtn}
                     onClick={(e) => {
@@ -31,6 +34,7 @@ export default function JobCard({
             </div>
 
             <div className={styles.title}>{job.title}</div>
+
             <div className={styles.companyRow}>
                 <div className={styles.company}>{job.company}</div>
 
@@ -56,5 +60,5 @@ JobCard.propTypes = {
     job: PropTypes.object.isRequired,
     isFavorite: PropTypes.bool,
     onToggleFavorite: PropTypes.func,
-    onClick: PropTypes.func
+    onClick: PropTypes.func,
 };

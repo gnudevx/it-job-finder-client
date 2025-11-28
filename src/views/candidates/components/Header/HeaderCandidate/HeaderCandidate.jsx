@@ -106,7 +106,7 @@ export default function HeaderCandidate() {
                                     </h4>
 
                                     <ul className={`${styles.subList} ${openSections.jobs ? styles.show : ""}`}>
-                                        <li onClick={() => navigate("/candidate/account/savedjobs")}>Việc làm đã lưu</li>
+                                        <li onClick={() => navigate("/candidate/account/favoritesjobs")}>Việc làm đã lưu</li>
                                         <li onClick={() => navigate("/candidate/account/appliedjobs")}>Việc làm đã ứng tuyển</li>
                                         <li
                                             onClick={() => {

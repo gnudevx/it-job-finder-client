@@ -38,7 +38,13 @@ export default function HomePage() {
                     createdAt: job.createdAt || job.updatedAt || null
                 }));
 
-                setJobs(formatted);
+                const sorted = formatted.sort((a, b) => {
+                    const dateA = new Date(a.createdAt);
+                    const dateB = new Date(b.createdAt);
+                    return dateB - dateA; // mới nhất lên đầu
+                });
+
+                setJobs(sorted);
             } catch (error) {
                 console.error("Error loading jobs:", error);
             }
