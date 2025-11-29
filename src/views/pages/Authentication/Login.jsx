@@ -34,6 +34,7 @@ export default function LoginPage() {
       alert(data.message);
 
       if (data.user.role === "employer") navigate("/employer/");
+      else if (data.user.role == "admin") navigate("/admin");
       else navigate("/candidate/home");
     } catch (err) {
       console.error("Login error:", err);
