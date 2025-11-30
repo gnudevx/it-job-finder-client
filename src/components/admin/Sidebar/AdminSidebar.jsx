@@ -12,6 +12,10 @@ export default function AdminSidebar({ isCollapsed }) {
           {!isCollapsed && "Trang Chủ"}
         </NavLink>
 
+        <NavLink to="/admin/manage/recruiment" className={styles.link}>
+          {!isCollapsed && "Quản lý tin tuyển dụng"}
+        </NavLink>
+
         <NavLink to="/admin/notification/candidate" className={styles.link}>
           {!isCollapsed && "Thông Báo Candidate"}
         </NavLink>

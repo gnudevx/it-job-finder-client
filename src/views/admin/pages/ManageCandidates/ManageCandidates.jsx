@@ -6,31 +6,40 @@ export default function ManageCandidates() {
   const [candidates, setCandidates] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchCandidates = async () => {
-      const token = localStorage.getItem("authToken"); // token sau login
-      try {
-        const data = await adminService.AllCandidates(token);
-
-        if (data.success) {
-          setCandidates(data.data);
-        } else {
-          console.error("API error:", data.message);
-        }
-      } catch (error) {
-        console.error("Error loading candidates:", error);
-      } finally {
-        setLoading(false);
+  const fetchCandidates = async () => {
+    setLoading(true);
+    try {
+      const res = await adminService.AllCandidates();
+      if (res.success) {
+        setCandidates(res.data);
       }
-    };
+    } catch (err) {
+      console.error("Error loading candidates:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchCandidates();
   }, []);
 
+  const handleDelete = async (id) => {
+    if (!confirm("Bạn có chắc muốn xóa ứng viên này?")) return;
+    try {
+      await adminService.DeleteCandidate(id);
+      setCandidates(candidates.filter((c) => c._id !== id));
+    } catch (err) {
+      console.error("Error deleting candidate:", err);
+    }
+  };
 
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Quản Lý Candidate</h1>
+      <button className={styles.addBtn} onClick={() => window.location.href="/admin/manage/candidates/add"}>
+        Thêm Ứng Viên
+      </button>
 
       <div className={styles.box}>
         {loading ? (
@@ -50,9 +59,9 @@ export default function ManageCandidates() {
                 <th>Avatar</th>
                 <th>Ngày tham gia</th>
                 <th>Cập nhật gần nhất</th>
+                <th>Hành động</th>
               </tr>
             </thead>
-
             <tbody>
               {candidates.map((c) => (
                 <tr key={c._id}>
@@ -61,13 +70,7 @@ export default function ManageCandidates() {
                   <td>{c.phone}</td>
                   <td>{c.address}</td>
                   <td>{c.birthday ? new Date(c.birthday).toLocaleDateString("vi-VN") : "—"}</td>
-                  <td>
-                    {c.gender === "male"
-                      ? "Nam"
-                      : c.gender === "female"
-                      ? "Nữ"
-                      : "Khác"}
-                  </td>
+                  <td>{c.gender === "male" ? "Nam" : c.gender === "female" ? "Nữ" : "Khác"}</td>
                   <td>
                     {c.avatar ? (
                       <img
@@ -80,6 +83,16 @@ export default function ManageCandidates() {
                   </td>
                   <td>{new Date(c.createdAt).toLocaleString("vi-VN")}</td>
                   <td>{new Date(c.updatedAt).toLocaleString("vi-VN")}</td>
+                  <td>
+                    <div className={styles.actionBtns}>
+                      <button className={styles.editBtn} onClick={() => window.location.href=`/admin/manage/candidates/${c._id}`}>
+                        Sửa
+                      </button>
+                      <button className={styles.deleteBtn} onClick={() => handleDelete(c._id)}>
+                        Xóa
+                      </button>
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>
