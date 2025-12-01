@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./SearchCompany.module.scss";
 import PropTypes from "prop-types";
-import companyService from '@/services/companyService.js'
+import companyService from '@/api/companyService.js'
 // import { Search } from "lucide-react";
 import { SearchInput } from "@components/common/inputs/SearchInput.jsx";
 

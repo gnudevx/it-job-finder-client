@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import adminService from "@/services/adminService";
+import adminService from "@/api/adminService";
 import styles from "./CandidateForm.module.scss";
 import PropTypes from "prop-types";
 

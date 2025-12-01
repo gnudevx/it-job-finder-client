@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import CandidateForm from "./CandidateForm";
-import adminService from "@/services/adminService";
+import adminService from "@/api/adminService";
 
 export default function EditCandidatePage() {
   const { id } = useParams();

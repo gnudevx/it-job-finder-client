@@ -1,26 +1,48 @@
 import { useEffect, useState } from "react";
-import {
-  getUploadedCVs,
-  saveUploadedCV,
-  deleteUploadedCV,
-} from "@/api/cvUploadService";
+import * as resumeAPI from "@/api/resumeService";
 
 export default function useUploadedCVs() {
   const [uploadedCVs, setUploadedCVs] = useState([]);
 
+  // Load danh sách CV từ server khi mount
   useEffect(() => {
-    setUploadedCVs(getUploadedCVs());
+    const fetchCVs = async () => {
+      try {
+        const data = await resumeAPI.getResumes();
+        setUploadedCVs(
+          data.map((cv) => ({
+            id: cv._id,
+            name: cv.fileName,
+            url: cv.fileUrl,
+            size: cv.size || 0, // bạn có thể thêm nếu backend trả size
+          }))
+        );
+      } catch (err) {
+        console.error("Lỗi load CV:", err);
+      }
+    };
+
+    fetchCVs();
   }, []);
 
   const addUploadedCV = (cv) => {
-    saveUploadedCV(cv);
-    setUploadedCVs(getUploadedCVs());
+    setUploadedCVs((prev) => [...prev, cv]);
   };
 
-  const removeUploadedCV = (id) => {
-    deleteUploadedCV(id);
-    setUploadedCVs(getUploadedCVs());
+  const removeUploadedCV = async (id) => {
+    try {
+      await resumeAPI.deleteResume(id); // xoá trên backend
+      setUploadedCVs((prev) => prev.filter((cv) => cv.id !== id));
+      alert("Xoá CV thành công!");
+    } catch (err) {
+      console.error("Xoá CV thất bại:", err);
+      alert("Xoá CV thất bại, thử lại");
+    }
   };
 
-  return { uploadedCVs, addUploadedCV, removeUploadedCV };
+  return {
+    uploadedCVs,
+    addUploadedCV,
+    removeUploadedCV,
+  };
 }

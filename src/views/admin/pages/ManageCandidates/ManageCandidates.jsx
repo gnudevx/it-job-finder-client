@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "./ManageCandidates.module.scss";
-import adminService from "@/services/adminService";
+import adminService from "@/api/adminService";
 
 export default function ManageCandidates() {
   const [candidates, setCandidates] = useState([]);

@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import styles from "./JobDetail.module.scss";
 import useFavorites from "@/hooks/useFavorites";
 import { getJobDetail } from "@/api/jobService";
+import { getResumes } from "@/api/resumeService";
+import { applyJob, getMyAppliedJobs } from "@/api/applicationsService";
 
 export default function JobDetail() {
     const mockCompany = {
@@ -27,19 +29,28 @@ export default function JobDetail() {
     const [selectedCV, setSelectedCV] = useState("");
     const [note, setNote] = useState("");
 
-    const defaultCVs = [
-        { id: 1, name: "CV_Default_1.pdf" },
-        { id: 2, name: "CV_Default_2.pdf" },
-    ];
-
-    const [myCVs] = useState(() => {
-        const stored = JSON.parse(localStorage.getItem("myCVs") || "[]");
-        return stored.length > 0 ? stored : defaultCVs;
-    });
+    const [myCVs, setMyCVs] = useState([]);
+    const [hasApplied, setHasApplied] = useState(false);
 
     useEffect(() => {
-        localStorage.setItem("myCVs", JSON.stringify(myCVs));
-    }, [myCVs]);
+    const fetchCVs = async () => {
+        try {
+        const res = await getResumes();
+        if (Array.isArray(res)) {
+            const cvs = res.map((cv) => ({
+            id: cv._id,
+            name: cv.fileName,
+            url: cv.fileUrl,
+            }));
+            setMyCVs(cvs);
+        }
+        } catch (err) {
+        console.error("Lỗi tải CV:", err);
+        }
+    };
+
+    fetchCVs();
+    }, []);
 
     // Fetch job
     useEffect(() => {
@@ -79,42 +90,56 @@ export default function JobDetail() {
         fetchJob();
     }, [id]);
 
+    useEffect(() => {
+    const fetchApplied = async () => {
+        try {
+        const applications = await getMyAppliedJobs(authToken);
+
+        // applications là array trực tiếp từ axiosClient
+        const applied = applications.some(
+            (app) => String(app.jobId._id) === String(id)
+        );
+
+        setHasApplied(applied);
+        } catch (err) {
+        console.error("Error fetching applied jobs:", err);
+        }
+    };
+
+    fetchApplied();
+    }, [id, authToken]);
+
     if (loading) return <div>Đang tải...</div>;
     if (!job) return <div>Không tìm thấy tin tuyển dụng.</div>;
 
     const { title, deadline, description, requirements, benefits, 
         work_location_detail, working_time, link, level, education, quantity, jobType, createdAt  } = job;
 
-    // Check applied
-    const appliedJobs = JSON.parse(localStorage.getItem("appliedJobs") || "[]");
-    const hasApplied = appliedJobs.some((j) => j.jobId === id);
-
-    const handleSubmitApplication = () => {
+    const handleSubmitApplication = async () => {
         if (!selectedCV) {
             alert("Vui lòng chọn CV để ứng tuyển!");
             return;
         }
 
-        const newApplied = [
-            ...appliedJobs,
-            {
-                jobId: id,
-                title: job.title,
-                cv: selectedCV,
-                note,
-                date: new Date().toISOString(),
-            },
-        ];
+        try {
+            await applyJob({
+                jobId: job.id,
+                resumeId: selectedCV,
+                coverLetter: note,
+                token: authToken,
+            });
 
-        localStorage.setItem("appliedJobs", JSON.stringify(newApplied));
-
-        alert("Ứng tuyển thành công!");
-        setShowApplyForm(false);
+            alert("Ứng tuyển thành công!");
+            setShowApplyForm(false);
+        } catch (err) {
+            console.error(err);
+            alert("Ứng tuyển thất bại. Vui lòng thử lại.");
+        }
     };
 
     return (
         <div className={styles.pageContainer}>
-            {/* ================== LEFT CONTENT ================== */}
+            {/* LEFT CONTENT */}
             <div className={styles.leftColumn}>
                 <div className={styles.jobHeader}>
                     <h1 className={styles.title}>{title}</h1>
@@ -173,7 +198,7 @@ export default function JobDetail() {
                 </button>
             </div>
 
-            {/* ================== RIGHT SIDEBAR ================== */}
+            {/* RIGHT SIDEBAR */}
             <div className={styles.rightColumn}>
                 <div className={styles.companyInfo}>
                     <div className={styles.companyTop}>
@@ -298,8 +323,8 @@ export default function JobDetail() {
                         >
                             <option value="">-- Chọn CV --</option>
                             {myCVs.map((cv) => (
-                                <option key={cv.id} value={cv.name}>
-                                    {cv.name}
+                                <option key={cv.id} value={cv.id}> {/* value = _id */}
+                                {cv.name}
                                 </option>
                             ))}
                         </select>

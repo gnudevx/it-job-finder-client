@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./FavoritesJobs.module.scss";
-import JobCard from "@/views/candidates/components/JobCard/JobCard";
+import JobCard from "@/views/candidates/components/JobCard/JobCard.jsx";
 import { getAllJobs } from "@/api/jobService";
 import useFavorites from "@/hooks/useFavorites";
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "./ManageEmployers.module.scss";
-import adminService from "@/services/adminService";
+import adminService from "@/api/adminService";
 
 export default function ManageEmployers() {
   const [employers, setEmployers] = useState([]);
