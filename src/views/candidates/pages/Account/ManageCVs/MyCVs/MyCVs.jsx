@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./MyCVs.module.scss";
 import { PlusCircle, Upload } from "lucide-react";
 
@@ -13,6 +14,7 @@ import UploadedCVItem from "@/views/candidates/components/UploadedCVItem/Uploade
 
 export default function MyCVs() {
   const fileInputRef = useRef(null);
+  const navigate = useNavigate();
   const [showCVBuilder, setShowCVBuilder] = useState(false);
 
   const { uploadedCVs, addUploadedCV, removeUploadedCV } = useUploadedCVs();
@@ -49,6 +51,11 @@ export default function MyCVs() {
 
   const handleViewPDF = (id) => {
     window.open(`http://localhost:5000/api/resumes/${id}/view`, "_blank");
+  };
+
+  const handleSelectCV = (cv) => {
+    // Khi user chọn CV để recommend
+    navigate("/candidate/account/recommendjobs", { state: { cv } });
   };
 
   return (
@@ -101,7 +108,7 @@ export default function MyCVs() {
                 onView={() => handleViewPDF(cv.id)}
                 onDelete={() => removeUploadedCV(cv.id)}
                 onSelect={() => {
-                  localStorage.setItem("selectedCV", JSON.stringify(cv));
+                  handleSelectCV(cv);
                   alert("Đã chọn CV: " + cv.name);
                 }}
               />
