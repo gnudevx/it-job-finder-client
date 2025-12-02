@@ -1,24 +1,36 @@
-// contexts/EmployerProgressContext.jsx
-import React, { createContext, useState, useContext, useEffect } from "react";
-import { getEmployerSteps, updateEmployerStep } from "@/utils/stepProgress";
+import React, { createContext, useState, useContext } from "react";
 import PropTypes from "prop-types";
+import getEmployerProgress from "@/services/employerSerivce.js";
+
 const EmployerProgressContext = createContext();
 
 export function EmployerProgressProvider({ children }) {
-    const [steps, setSteps] = useState(getEmployerSteps());
+    const [steps, setSteps] = useState({
+        phoneVerified: false,
+        companyInfoUpdated: false,
+        licenseUploaded: false,
+    });
 
-    useEffect(() => {
-        // mỗi lần mount lấy từ localStorage (phòng trường hợp user đã có sẵn)
-        setSteps(getEmployerSteps());
-    }, []);
+    // Fetch trạng thái từ backend (gọi 1 lần sau khi đăng nhập)
+    const fetchSteps = async () => {
+        try {
+            const res = await getEmployerProgress.getEmployerProgressService();
 
+            // backend trả { steps: {...} }
+            console.log("fetchSteps success", res.steps);
+            setSteps(res.steps);
+        } catch (err) {
+            console.error("fetchSteps failed", err);
+        }
+    };
+
+    // Cho phép component update một field bất kỳ
     const setStep = (key, val = true) => {
-        updateEmployerStep(key, val);           // persist vào localStorage
-        setSteps((s) => ({ ...s, [key]: val })); // cập nhật context state
+        setSteps((prev) => ({ ...prev, [key]: val }));
     };
 
     return (
-        <EmployerProgressContext.Provider value={{ steps, setStep }}>
+        <EmployerProgressContext.Provider value={{ steps, setStep, fetchSteps }}>
             {children}
         </EmployerProgressContext.Provider>
     );

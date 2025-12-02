@@ -13,6 +13,7 @@ module.exports = {
       '@layouts': path.resolve(__dirname, 'src/views/layouts'),
       '@pages': path.resolve(__dirname, 'src/views/pages'),
       '@api': path.resolve(__dirname, 'src/api'),
+      '@utils': path.resolve(__dirname, 'src/utils'),
     },
   },
 };

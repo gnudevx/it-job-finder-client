@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styles from "./Dashboard.module.scss";
 import GreetingCard from "@/views/employers/components/Dashboard/GreetingCard/GreetingCard.jsx";
 import ProgressCard from "@/views/employers/components/Dashboard/ProgressCard/ProgressCard.jsx";
@@ -6,19 +6,18 @@ import ExploreCard from "@/views/employers/components/Dashboard/ExploreCard/Expl
 import SectionTitle from "@/views/employers/components/Dashboard/SectionTitle/SectionTitle.jsx";
 import EmployerMemberCard from "@/views/employers/components/Dashboard/EmployerMemberCard/EmployerMemberCard.jsx";
 import { defaultEmployer } from "@/models/EmployerModel.js";
-import { getEmployerSteps } from "@/utils/stepProgress.js";
+import { useEmployerProgress } from "@/contexts/EmployerProgressContext";
 export default function Dashboard() {
-    const [steps, setSteps] = useState(getEmployerSteps());
+    const { steps, fetchSteps } = useEmployerProgress();
+    useEffect(() => {
+        fetchSteps();
+    }, []);
     const actions = [
         { title: "Xác thực số điện thoại", link: "/employer/account/phone-verify", completed: steps.phoneVerified },
         { title: "Cập nhật thông tin công ty", link: "/employer/account/settings/company-info", completed: steps.companyInfoUpdated },
-        { title: "Cập nhật Giấy đăng ký doanh nghiệp", link: "/employer/account/settings/license", completed: false },
+        { title: "Cập nhật Giấy đăng ký doanh nghiệp", link: "/employer/account/settings/license", completed: steps.licenseUploaded },
         { title: "Đăng tin tuyển dụng đầu tiên", link: "#", completed: false, disabled: true },
     ];
-    useEffect(() => {
-        // Mỗi khi dashboard mount lại (vd quay lại từ trang khác)
-        setSteps(getEmployerSteps());
-    }, []);
     const employer = {
         ...defaultEmployer,
         id: "771778",

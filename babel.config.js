@@ -12,6 +12,7 @@ module.exports = {
           '@router': './src/routers',
           '@components': './src/views/components',
           '@layout': './src/views/layouts',
+          '@utils': './src/utils',
         },
       },
     ],

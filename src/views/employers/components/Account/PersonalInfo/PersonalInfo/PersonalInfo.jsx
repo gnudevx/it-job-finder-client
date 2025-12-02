@@ -1,8 +1,58 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import VerificationForm from "../Verification/VerificationForm";
 import styles from "./PersonalInfo.module.scss";
 import avt from "@assets/logo.jpg"
+import employerService from "@/services/employerSerivce.js"
+
 export default function PersonalInfoForm() {
+    const [form, setForm] = useState({
+        fullName: "",
+        gender: "",
+        phone: "",
+        avatar: "",
+    });
+    const [user, setUser] = useState()
+    useEffect(() => {
+        const fetchMe = async () => {
+            try {
+                const res = await employerService.getMe();
+                setUser(res.user);
+            } catch (err) {
+                console.error(err);
+            }
+        };
+
+        fetchMe();
+    }, []);
+    useEffect(() => {
+        if (user) {
+            setForm({
+                fullName: user.fullName || "",
+                gender: user.gender === "Nam" ? "male" : user.gender === "Nữ" ? "female" : "other",
+                phone: user.phone || "",
+                avatar: user.avatar || "",
+            });
+        }
+    }, [user]);
+    const handleChange = (key) => (e) => {
+        setForm((s) => ({ ...s, [key]: e.target.value }));
+    };
+
+    const handleSave = async () => {
+        try {
+            const res = await employerService.update(user.userID, form);
+
+            // cập nhật user trong context luôn
+            setUser(res.user);
+
+            alert("Cập nhật thông tin thành công!");
+        } catch (err) {
+            console.error(err);
+            alert("Không thể cập nhật thông tin!");
+        }
+    };
+
+    if (!user) return <p>Đang tải...</p>;
     return (
         <>
             <VerificationForm />
@@ -28,15 +78,15 @@ export default function PersonalInfoForm() {
 
                     <div className={styles.field}>
                         <label>Họ và tên</label>
-                        <input type="text" value="Dũng Nguyễn Đức" />
+                        <input type="text" value={form.fullName} onChange={handleChange("fullName")} />
                     </div>
 
                     <div className={styles.field}>
                         <label>Giới tính</label>
-                        <select>
-                            <option>Nam</option>
-                            <option>Nữ</option>
-                            <option>Khác</option>
+                        <select value={form.gender} onChange={handleChange("gender")}>
+                            <option value="male">Nam</option>
+                            <option value="female">Nữ</option>
+                            <option value="Khác">Khác</option>
                         </select>
                     </div>
                     <div className={styles.field}>
@@ -52,7 +102,7 @@ export default function PersonalInfoForm() {
                         <input
                             className={styles.phoneInput}
                             type="text"
-                            value="0389355132"
+                            value={form.phone}
                             readOnly
                             aria-readonly="true"
                         />
@@ -62,7 +112,7 @@ export default function PersonalInfoForm() {
 
                 <div className={styles.actions}>
                     <button className={styles.cancel}>Hủy</button>
-                    <button className={styles.save}>Lưu</button>
+                    <button className={styles.save} onClick={handleSave}>Lưu</button>
                 </div>
             </div>
         </>

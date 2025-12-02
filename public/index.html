@@ -7,6 +7,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#000000" />
   <meta name="description" content="Web site created using create-react-app" />
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src * 'self' data: blob:;
+    script-src * 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://www.google.com data:;
+    connect-src *;
+    img-src * data:;
+    style-src * 'unsafe-inline';
+    frame-src * https://www.google.com https://www.gstatic.com;
+  " />
   <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
