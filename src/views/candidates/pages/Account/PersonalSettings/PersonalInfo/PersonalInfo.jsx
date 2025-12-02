@@ -1,70 +1,91 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./PersonalInfo.module.scss";
 import usePersonalInfo from "@/hooks/usePersonalInfo";
 
 export default function PersonalInfo() {
-    const { formData, updateField, save } = usePersonalInfo();
+  const { formData, updateField, save } = usePersonalInfo();
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        updateField(name, value);
-    };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    updateField(name, value);
+  };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        save();
-        alert("Lưu thông tin thành công!");
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setMessage("");
+    setLoading(true);
 
-    return (
-        <div className={styles.container}>
-            <div className={styles.card}>
-                <h2>Cài đặt thông tin cá nhân</h2>
-                <p className={styles.note}>
-                    <span className={styles.required}>*</span> Các thông tin bắt buộc
-                </p>
+    try {
+      await save();
+      setMessage("Lưu thông tin thành công!");
+    } catch (error) {
+      setMessage(error.message || "Có lỗi xảy ra. Vui lòng thử lại.");
+    }
 
-                <form onSubmit={handleSubmit} className={styles.form}>
-                    {/* Họ và tên */}
-                    <label htmlFor="fullName">
-                        Họ và tên <span className={styles.required}>*</span>
-                    </label>
-                    <input
-                        id="fullName"
-                        name="fullName"
-                        type="text"
-                        value={formData.fullName}
-                        onChange={handleChange}
-                        required
-                        placeholder="Nhập họ và tên"
-                    />
+    setLoading(false);
+  };
 
-                    {/* Số điện thoại */}
-                    <label htmlFor="phone">Số điện thoại</label>
-                    <input
-                        id="phone"
-                        name="phone"
-                        type="text"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        placeholder="Nhập số điện thoại"
-                    />
+  return (
+    <div className={styles.container}>
+      <div className={styles.card}>
+        <h2>Cài đặt thông tin cá nhân</h2>
+        <p className={styles.note}>
+          <span className={styles.required}>*</span> Các thông tin bắt buộc
+        </p>
 
-                    {/* Email - cố định */}
-                    <label htmlFor="email">Email</label>
-                    <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        value={formData.email}
-                        disabled
-                    />
+        {message && (
+          <div
+            className={
+              message.includes("thành công") ? styles.success : styles.error
+            }
+          >
+            {message}
+          </div>
+        )}
 
-                    <button type="submit" className={styles.saveBtn}>
-                        Lưu
-                    </button>
-                </form>
-            </div>
-        </div>
-    );
+        <form onSubmit={handleSubmit} className={styles.form}>
+          {/* Họ và tên */}
+          <label htmlFor="fullName">
+            Họ và tên <span className={styles.required}>*</span>
+          </label>
+          <input
+            id="fullName"
+            name="fullName"
+            type="text"
+            value={formData.fullName}
+            onChange={handleChange}
+            required
+            placeholder="Nhập họ và tên"
+          />
+
+          {/* Số điện thoại */}
+          <label htmlFor="phone">Số điện thoại</label>
+          <input
+            id="phone"
+            name="phone"
+            type="text"
+            value={formData.phone}
+            onChange={handleChange}
+            placeholder="Nhập số điện thoại"
+          />
+
+          {/* Email */}
+          <label htmlFor="email">Email</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            value={formData.email}
+            disabled
+          />
+
+          <button type="submit" className={styles.saveBtn} disabled={loading}>
+            {loading ? "Đang lưu..." : "Lưu"}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
 }

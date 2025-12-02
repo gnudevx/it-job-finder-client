@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./ChangePassword.module.scss";
-import accountService from "@/services/accountService.js"
+import accountService from "@/api/accountService.js"
 import { toast } from "sonner";
 export default function ChangePassword() {
     const [form, setForm] = useState({

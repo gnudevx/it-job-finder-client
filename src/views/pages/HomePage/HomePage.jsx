@@ -28,16 +28,23 @@ export default function HomePage() {
             try {
                 const data = await getAllJobs();
 
-                const formatted = data.map(job => ({
+                const formatted = data.data.map(job => ({
                     id: job._id,
                     title: job.title,
                     company: job.group_id?.name || "Không rõ",
                     salary: job.salary_raw || "Thoả thuận",
                     location: job.location?.name || "Không rõ",
                     experience: job.experience,
+                    createdAt: job.createdAt || job.updatedAt || null
                 }));
 
-                setJobs(formatted);
+                const sorted = formatted.sort((a, b) => {
+                    const dateA = new Date(a.createdAt);
+                    const dateB = new Date(b.createdAt);
+                    return dateB - dateA; // mới nhất lên đầu
+                });
+
+                setJobs(sorted);
             } catch (error) {
                 console.error("Error loading jobs:", error);
             }
@@ -89,6 +96,14 @@ export default function HomePage() {
 
             if (key === "location") {
                 return normalizeText(job.location).includes(normalizeText(value));
+            }
+
+            if (key === "createDate") {
+                // value là số ngày
+                const jobDate = new Date(job.createdAt);
+                const now = new Date();
+                const diffDays = Math.floor((now - jobDate) / (1000 * 60 * 60 * 24));
+                return diffDays < Number(value);
             }
 
             return job[key]?.toLowerCase().includes(String(value).toLowerCase());

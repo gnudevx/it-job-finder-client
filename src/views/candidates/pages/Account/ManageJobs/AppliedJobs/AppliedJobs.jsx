@@ -1,49 +1,73 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./AppliedJobs.module.scss";
-import { mockJobList } from "@/models/jobs/mockJobList";
 import JobCard from "@/views/candidates/components/JobCard/JobCard.jsx"; 
 import { useNavigate } from "react-router-dom";
 import useFavorites from "@/hooks/useFavorites";
+import { getMyAppliedJobs } from "@/api/applicationsService";
 
 export default function AppliedJobs() {
-    const [search] = useState("");
-    const navigate = useNavigate();
-    const { isFavorite, toggleFavorite } = useFavorites();
+  const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [search] = useState("");
+  const navigate = useNavigate();
+  const authToken = localStorage.getItem("authToken");
+  const { isFavorite, toggleFavorite } = useFavorites(authToken);
 
-    // Lấy danh sách ứng tuyển
-    const applied = JSON.parse(localStorage.getItem("appliedJobs") || "[]");
+  useEffect(() => {
+    const fetchAppliedJobs = async () => {
+      try {
+        const appliedJobs = await getMyAppliedJobs(authToken);
 
-    // Join dữ liệu từ mockJobList để lấy full thông tin job
-    const appliedJobDetails = applied
-        .map((app) => mockJobList.find((j) => j.id === app.jobId))
-        .filter(Boolean); // loại bỏ job không tồn tại
+        const jobDetails = appliedJobs.map((app) => {
+          const job = app.jobId;
+          return {
+            id: job._id,
+            title: job.title,
+            company: job.group_id?.name || "Không rõ",
+            salary: job.salary_raw || "Thoả thuận",
+            location: job.location?.name || "Không rõ",
+            experience: job.experience,
+            createdAt: job.createdAt,
+          };
+        }).filter(Boolean);
 
-    // Lọc theo search
-    const filtered = appliedJobDetails.filter(
-        (job) =>
-            job.title.toLowerCase().includes(search.toLowerCase()) ||
-            job.company.toLowerCase().includes(search.toLowerCase())
-    );
+        setJobs(jobDetails);
+      } catch (err) {
+        console.error("Lỗi tải công việc đã ứng tuyển:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    return (
-        <div className={styles["home-container"]}>
-            <h2 className={styles.heading}>Danh sách công việc đã ứng tuyển</h2>
+    fetchAppliedJobs();
+  }, [authToken]);
 
-            <div className={styles["jobs-grid"]}>
-                {filtered.length === 0 && (
-                    <p>Bạn chưa ứng tuyển công việc nào.</p>
-                )}
+  // Lọc theo search
+  const filtered = jobs.filter(
+    (job) =>
+      job.title.toLowerCase().includes(search.toLowerCase()) ||
+      (job.company && job.company.toLowerCase().includes(search.toLowerCase()))
+  );
 
-                {filtered.map((job) => (
-                    <JobCard
-                        key={job.id}
-                        job={job}
-                        isFavorite={isFavorite(job.id)}
-                        onToggleFavorite={toggleFavorite}
-                        onClick={() => navigate(`/candidate/job/${job.id}`)}
-                    />
-                ))}
-            </div>
-        </div>
-    );
+  if (loading) return <p>Đang tải danh sách công việc đã ứng tuyển...</p>;
+
+  return (
+    <div className={styles["home-container"]}>
+      <h2 className={styles.heading}>Danh sách công việc đã ứng tuyển</h2>
+
+      <div className={styles["jobs-grid"]}>
+        {filtered.length === 0 && <p>Bạn chưa ứng tuyển công việc nào.</p>}
+
+        {filtered.map((job) => (
+          <JobCard
+            key={job.id}
+            job={job}
+            isFavorite={isFavorite(job.id)}
+            onToggleFavorite={() => toggleFavorite(job.id)}
+            onClick={() => navigate(`/job/${job.id}`)}
+          />
+        ))}
+      </div>
+    </div>
+  );
 }

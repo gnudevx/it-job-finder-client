@@ -1,4 +1,4 @@
-import axiosClient from './axiosClient';
+import axiosClient from '../api/axiosClient';
 
 const authService = {
   login: (loginSchema) => axiosClient.post('/api/auth/login', loginSchema),

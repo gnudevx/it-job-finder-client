@@ -5,7 +5,7 @@ import CreateCompany from "./CreateCompany/CreateCompany.jsx";
 import CompanyDetail from "./CompanyDetail/CompanyDetail.jsx";
 import { useEmployerProgress } from "@/contexts/EmployerProgressContext";
 import { Search, CirclePlus } from "lucide-react";
-import companyService from "@/services/companyService.js"
+import companyService from "@/api/companyService.js"
 export default function CompanyInfo() {
     const { setStep } = useEmployerProgress();
 

@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import HomePage from "@/views/pages/HomePage/HomePage";
 import CandidateApp from "../routers/candidate/CandidateApp";
 import EmployerApp from "../routers/employer/EmployerApp";
+import AdminApp from "./admin/AdminApp";
 import LoginPage from "@/views/pages/Authentication/Login.jsx";
 import RegisterPage from "@/views/pages/Authentication/Register.jsx";
 import GuestLayout from "@/views/candidates/layouts/GuestLayout/GuestLayout";
@@ -60,6 +61,12 @@ export const AppRouter = () => {
           <Route
             path="/employer/*"
             element={<PrivateRoute element={<EmployerApp />} />}
+          />
+
+          {/* Admin */}
+          <Route
+            path="/admin/*"
+            element={<PrivateRoute element={<AdminApp />} />}
           />
 
           {/* Private routes khác */}

@@ -16,4 +16,8 @@ module.exports = {
       '@utils': path.resolve(__dirname, 'src/utils'),
     },
   },
+
+  devServer: {
+    allowedHosts: "all", 
+  }
 };

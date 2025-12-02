@@ -1,41 +1,43 @@
 import { useEffect, useState } from "react";
+import { getMyFavorites, addFavorite, removeFavorite } from "@/api/favoriteService";
 
 export default function useFavorites() {
-    // 👉 Lấy userId trực tiếp từ localStorage
-    const userId = localStorage.getItem("userId");
-
-    const storageKey = userId ? `favorites_${userId}` : null;
-
     const [favorites, setFavorites] = useState([]);
 
+    // 🔥 Load danh sách favorites từ DB khi login
     useEffect(() => {
-        if (!storageKey) {
-            setFavorites([]);
-            return;
+        async function load() {
+            try {
+                const res = await getMyFavorites();
+
+                const ids = res.data.data.map(item => item.jobID._id);
+                setFavorites(ids);
+            } catch (err) {
+                console.log("Not logged in or cannot load favorites");
+                setFavorites([]);
+            }
         }
+        load();
+    }, []);
 
-        const saved = JSON.parse(localStorage.getItem(storageKey)) || [];
-        setFavorites(saved);
-    }, [storageKey]);
+    // Toggle yêu thích
+    const toggleFavorite = async (jobID) => {
+        try {
+            if (favorites.includes(jobID)) {
+                await removeFavorite(jobID);
 
-    const toggleFavorite = (jobId) => {
-        if (!storageKey) {
-            alert("Bạn cần đăng nhập để lưu việc!");
-            return;
+                setFavorites(prev => prev.filter(id => id !== jobID));
+            } else {
+                await addFavorite(jobID);
+
+                setFavorites(prev => [...prev, jobID]);
+            }
+        } catch (err) {
+            alert("Bạn cần đăng nhập để lưu công việc!");
         }
-
-        const updated = favorites.includes(jobId)
-            ? favorites.filter(id => id !== jobId)
-            : [...favorites, jobId];
-
-        setFavorites(updated);
-        localStorage.setItem(storageKey, JSON.stringify(updated));
     };
 
-    const isFavorite = (jobId) => {
-        if (!storageKey) return false;
-        return favorites.includes(jobId);
-    };
+    const isFavorite = (jobID) => favorites.includes(jobID);
 
     return { favorites, toggleFavorite, isFavorite };
 }

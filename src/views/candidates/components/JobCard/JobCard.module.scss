@@ -52,11 +52,6 @@
   color: #1f2937;
 }
 
-.company {
-  color: #6b7280;
-  font-size: 0.9rem;
-}
-
 .meta {
   display: flex;
   justify-content: space-between;
@@ -69,4 +64,21 @@
   .location {
     color: #4b5563;
   }
+}
+
+.companyRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+.company {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.postDate {
+  font-size: 13px;
+  color: #666;
 }

@@ -1,17 +1,6 @@
-const PASSWORD_KEY = "mock_password";
+import client from "./client";
 
-// Lấy mật khẩu hiện tại
-export const getCurrentPassword = () => {
-    const saved = localStorage.getItem(PASSWORD_KEY);
-    if (!saved) {
-        // nếu chưa có → tạo mật khẩu mặc định
-        localStorage.setItem(PASSWORD_KEY, "123456");
-        return "123456";
-    }
-    return saved;
-};
-
-// Lưu mật khẩu mới
-export const saveNewPassword = (newPassword) => {
-    localStorage.setItem(PASSWORD_KEY, newPassword);
+export const changePasswordAPI = async (payload) => {
+  const res = await client.put("/user/change-password", payload);
+  return res?.data || res;
 };

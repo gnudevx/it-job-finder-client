@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import styles from "./CreateCompany.module.scss";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
-import companyService from "@/services/companyService";
+import companyService from "@/api/companyService";
 export default function CreateCompany({ selectedCompany, onSaveComplete }) {
     const [form, setForm] = useState({
         taxCode: "",

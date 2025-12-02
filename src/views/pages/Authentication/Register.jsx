@@ -14,8 +14,9 @@ export default function RegisterPage() {
 
   const navigate = useNavigate();
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
+    setError("");
 
     if (!fullname || !email || !pass || !confirm) {
       setError("Vui lòng nhập đầy đủ thông tin");
@@ -27,10 +28,34 @@ export default function RegisterPage() {
       return;
     }
 
-    // Fake register
-    localStorage.setItem("mock_password", pass);
-    alert("Đăng ký thành công!");
-    navigate("/login");
+    try {
+      const res = await fetch("http://localhost:5000/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullname,
+          email,
+          password: pass,
+        }),
+        credentials: "include" // để browser nhận cookie từ backend
+      });
+
+      const data = await res.json();
+
+      if (!data.success) {
+        setError(data.message || "Đăng ký thất bại");
+        return;
+      }
+
+      // Nếu backend đã set cookie → FE không cần lưu token
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      alert("Đăng ký thành công!");
+      navigate("/candidate/home");
+
+    } catch (e) {
+      setError("Lỗi kết nối server");
+    }
   };
 
   return (
@@ -90,25 +115,32 @@ export default function RegisterPage() {
         <div className={styles.orLine}>Hoặc đăng nhập bằng</div>
 
         <div className={styles.socialButtons}>
-          <button className={styles.google}
-          onClick={() => {
-            loginWithGoogle(async (code) => {
-              const res = await fetch("http://localhost:5000/api/auth/google", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ code })
+          <button
+            className={styles.google}
+            onClick={() => {
+              loginWithGoogle(async (code) => {
+                const res = await fetch("http://localhost:5000/api/auth/google", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ code }),
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                  localStorage.setItem("authToken", data.authToken);
+                  localStorage.setItem("refreshToken", data.refreshToken);
+
+                  alert("Đăng ký bằng Google thành công!");
+                  navigate("/candidate/home");
+                } else {
+                  alert("Google login failed");
+                }
               });
-
-              const data = await res.json();
-
-              if (data.success) {
-                localStorage.setItem("authToken", data.token);
-                alert("Đăng ký bằng Google thành công!");
-                navigate("/candidate/home");
-              }
-            });
-          }}>
-          <FcGoogle /> Google</button>
+            }}
+          >
+            <FcGoogle /> Google
+          </button>
         </div>
 
         <p className={styles.switchLine}>

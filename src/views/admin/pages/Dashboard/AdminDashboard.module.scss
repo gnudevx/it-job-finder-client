@@ -1,0 +1,11 @@
+.dashboard {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f3f4f6; // gray-100
+}
+
+.mainContent {
+  flex: 1;
+  padding: 24px;
+  transition: all 0.25s ease;
+}

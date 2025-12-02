@@ -9,7 +9,7 @@ const privateRoutes = [
   {
     path: '/dashboard',
     element: <HomeEmployer />,
-  },
+  }
 ];
 
 export default privateRoutes;

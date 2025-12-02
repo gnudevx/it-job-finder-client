@@ -34,12 +34,14 @@ export default function LoginPage() {
       alert(data.message);
 
       if (data.user.role === "employer") navigate("/employer/");
+      else if (data.user.role == "admin") navigate("/admin");
       else navigate("/candidate/home");
     } catch (err) {
       console.error("Login error:", err);
       setError(err.response?.data?.message || "Không thể kết nối server");
     }
   };
+
 
   const handleGoogleLogin = () => {
     loginWithGoogle(async (code) => {
@@ -57,7 +59,7 @@ export default function LoginPage() {
           localStorage.setItem("authToken", data.token);
 
           localStorage.setItem("userId", data.user._id);
-          setUserId(data.user._id);
+          setUser(data.user._id);
 
           alert("Đăng nhập Google thành công!");
           navigate("/candidate/home");

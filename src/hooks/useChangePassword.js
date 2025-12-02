@@ -1,46 +1,37 @@
-import { useState, useEffect } from "react";
-import { getCurrentPassword, saveNewPassword } from "@/api/changePasswordService";
+import { useState } from "react";
+import { changePasswordAPI } from "@/api/changePasswordService";
 
 export default function useChangePassword() {
-    const [formData, setFormData] = useState({
-        email: "22110434@student.hcmute.edu.vn",
-        currentPassword: "",
-        newPassword: "",
-        confirmPassword: "",
-    });
+  const [formData, setFormData] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
 
-    const [storedPassword, setStoredPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-    // Load mật khẩu mock từ localStorage
-    useEffect(() => {
-        setStoredPassword(getCurrentPassword());
-    }, []);
+  const updateField = (name, value) =>
+    setFormData((prev) => ({ ...prev, [name]: value }));
 
-    const updateField = (name, value) => {
-        setFormData((prev) => ({ ...prev, [name]: value }));
-    };
+  const changePassword = async () => {
+    const { currentPassword, newPassword, confirmPassword } = formData;
 
-    const changePassword = () => {
-        if (formData.currentPassword !== storedPassword) {
-            return { ok: false, message: "Mật khẩu hiện tại không chính xác!" };
-        }
+    if (newPassword !== confirmPassword)
+      return { ok: false, message: "Mật khẩu mới và xác nhận không khớp!" };
 
-        if (formData.newPassword !== formData.confirmPassword) {
-            return { ok: false, message: "Mật khẩu mới và xác nhận không khớp!" };
-        }
+    if (newPassword.length < 6)
+      return { ok: false, message: "Mật khẩu mới phải ít nhất 6 ký tự!" };
 
-        if (formData.newPassword.length < 6) {
-            return { ok: false, message: "Mật khẩu mới phải ít nhất 6 ký tự!" };
-        }
+    setLoading(true);
+    try {
+      await changePasswordAPI({ currentPassword, newPassword });
+      return { ok: true };
+    } catch (err) {
+      return { ok: false, message: err?.message || "Đổi mật khẩu thất bại!" };
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        saveNewPassword(formData.newPassword);
-
-        return { ok: true };
-    };
-
-    return {
-        formData,
-        updateField,
-        changePassword,
-    };
+  return { formData, updateField, changePassword, loading };
 }

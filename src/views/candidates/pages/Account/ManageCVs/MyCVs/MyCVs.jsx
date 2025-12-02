@@ -7,6 +7,7 @@ import CVList from "@/views/candidates/components/CVList/CVList.jsx";
 import CVModal from "@/views/candidates/components/CVModal/CVModal.jsx";
 import CVBuilder from "@/views/candidates/components/CVBuilder/CVBuilder.jsx";
 import useUploadedCVs from "@/hooks/useUploadedCVs";
+import { uploadResume } from "@/api/resumeService";
 
 import UploadedCVItem from "@/views/candidates/components/UploadedCVItem/UploadedCVItem.jsx";
 
@@ -19,14 +20,6 @@ export default function MyCVs() {
 
   const handleUploadClick = () => fileInputRef.current.click();
 
-  const fileToBase64 = (file) =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -35,23 +28,27 @@ export default function MyCVs() {
       return;
     }
 
-    const base64 = await fileToBase64(file);
+    try {
+      const response = await uploadResume(file); // gửi lên backend
 
-    addUploadedCV({
-      id: Date.now(),
-      name: file.name,
-      size: file.size,
-      data: base64,
-    });
+      addUploadedCV({
+        id: response.data.resume._id, // dùng ID từ DB
+        name: response.data.resume.fileName,
+        size: file.size,
+        url: response.data.resume.fileUrl,
+      });
 
-    fileInputRef.current.value = null;
+      alert("Upload CV thành công!");
+    } catch (err) {
+      console.error(err);
+      alert("Upload thất bại, thử lại sau.");
+    } finally {
+      fileInputRef.current.value = null;
+    }
   };
 
-  const handleViewPDF = (dataUrl) => {
-    const win = window.open("");
-    win.document.write(
-      `<iframe width="100%" height="100%" src="${dataUrl}"></iframe>`
-    );
+  const handleViewPDF = (id) => {
+    window.open(`http://localhost:5000/api/resumes/${id}/view`, "_blank");
   };
 
   return (
@@ -101,9 +98,9 @@ export default function MyCVs() {
               <UploadedCVItem
                 key={cv.id}
                 cv={cv}
-                onView={handleViewPDF}
-                onDelete={removeUploadedCV}
-                onSelect={(cv) => {
+                onView={() => handleViewPDF(cv.id)}
+                onDelete={() => removeUploadedCV(cv.id)}
+                onSelect={() => {
                   localStorage.setItem("selectedCV", JSON.stringify(cv));
                   alert("Đã chọn CV: " + cv.name);
                 }}
