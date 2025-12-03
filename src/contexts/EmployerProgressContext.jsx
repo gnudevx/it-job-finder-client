@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext } from "react";
 import PropTypes from "prop-types";
-import getEmployerProgress from "@/services/employerSerivce.js";
+import getEmployerProgress from "@/api/employerSerivce.js";
 
 const EmployerProgressContext = createContext();
 

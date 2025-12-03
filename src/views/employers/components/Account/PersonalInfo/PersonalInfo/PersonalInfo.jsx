@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import VerificationForm from "../Verification/VerificationForm";
 import styles from "./PersonalInfo.module.scss";
 import avt from "@assets/logo.jpg"
-import employerService from "@/services/employerSerivce.js"
+import employerService from "@/api/employerSerivce.js"
 
 export default function PersonalInfoForm() {
     const [form, setForm] = useState({

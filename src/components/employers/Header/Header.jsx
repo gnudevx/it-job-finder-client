@@ -15,7 +15,23 @@ import PropTypes from "prop-types";
 import { FaUserCircle } from "react-icons/fa";
 import { IoCaretDown, IoHelpCircleOutline, IoLogOutOutline } from "react-icons/io5";
 import logoHIDEIT from "@assets/Logo_HireIT.png";
+import authService from "@/services/authService";
+import { useNavigate } from "react-router-dom";
 export default function Header({ onToggleSidebar }) {
+    const navigate = useNavigate();
+    const handleLogout = async () => {
+        try {
+            await authService.logoutRequest();   // 👈 gọi API logout
+        } catch (error) {
+            console.error("Logout error:", error);
+        }
+
+        // Xóa token, điều hướng về login
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("refreshToken");
+
+        navigate("/login");    // 👈 chuyển trang
+    };
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     return (
         <header className={styles["header"]}>
@@ -65,7 +81,7 @@ export default function Header({ onToggleSidebar }) {
                                     <IoHelpCircleOutline />
                                     <span>Hỗ trợ</span>
                                 </li>
-                                <li>
+                                <li onClick={handleLogout} className={styles.logoutItem}>
                                     <IoLogOutOutline />
                                     <span>Đăng xuất</span>
                                 </li>

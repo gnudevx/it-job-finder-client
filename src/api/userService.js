@@ -1,6 +1,18 @@
-import client from "./client";
+import axiosClient from '../services/axiosClient';
 
-export const getUserInfoAPI = async () => {
-  const res = await client.get("/user/personal-info");
-  return res.data;
+const userService = {
+  getMe: () => axiosClient.get('/users/me'),
+  getStories: () => axiosClient.get(`/users/getStories`),
+  getPostsByUserId: (page, pageSize) => {
+    return axiosClient.get(`/users/getPosts/`, {
+      params: { page, pageSize },
+    });
+  },
+  getPostsByUserIdCursor: (lastId, pageSize) => {
+    return axiosClient.get(`/users/getPostsByCursor/`, {
+      params: { lastId, pageSize },
+    });
+  },
 };
+
+export default userService;

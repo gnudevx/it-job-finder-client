@@ -1,4 +1,4 @@
-import axiosClient from "./axiosClient";
+import axiosClient from "@/services/axiosClient.js";
 
 export default {
     update: (data) => axiosClient.put("/employer/account/settings/personal", data),

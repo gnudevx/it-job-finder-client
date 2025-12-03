@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./PhoneVerify.module.scss";
-import employerPhoneApi from "@/services/employerPhoneApiService.js";
-import Employer from "@/services/employerSerivce";
+import employerPhoneApi from "@/api/employerPhoneApiService.js";
+import Employer from "@/api/employerSerivce";
 
 export default function PhoneVerify() {
     const [phone, setPhone] = useState("");

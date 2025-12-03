@@ -1,5 +1,5 @@
 // src/api/employerPhoneApi.js
-import axiosClient from "./axiosClient";
+import axiosClient from "@/services/axiosClient.js";
 
 const employerPhoneApiService = {
     verifyPhone: (data) => {
