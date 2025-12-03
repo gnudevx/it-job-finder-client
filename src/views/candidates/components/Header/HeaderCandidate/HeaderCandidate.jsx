@@ -8,7 +8,7 @@ import styles from "@/views/candidates/components/Header/HeaderCandidate/HeaderC
 import logo from "@/assets/Logo_HireIT_Header.png";
 import logo_candidate from "@/assets/logo_candidate.jpg";
 import NotificationDropdown from "@/views/candidates/components/Header/DropdownButton/NotificationDropdown.jsx";
-import { clearToken } from "@/utils/auth.js";
+import authService from "@/services/authService";
 
 export default function HeaderCandidate() {
     const [showDropdown, setShowDropdown] = useState(false);
@@ -45,6 +45,20 @@ export default function HeaderCandidate() {
         document.addEventListener("click", handleClickOutside);
         return () => document.removeEventListener("click", handleClickOutside);
     }, []);
+
+    const handleLogout = async () => {
+        try {
+            await authService.logoutRequest();   // 👈 gọi API logout
+        } catch (error) {
+            console.error("Logout error:", error);
+        }
+
+        // Xóa token, điều hướng về login
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("refreshToken");
+
+        navigate("/login");    // 👈 chuyển trang
+    };
 
     return (
         <header className={styles.headerCandidate}>
@@ -176,10 +190,7 @@ export default function HeaderCandidate() {
                                 {/* Đăng xuất */}
                                 <button
                                     className={styles["logout-button"]}
-                                    onClick={() => {
-                                        clearToken();
-                                        navigate("/login");
-                                    }}
+                                    onClick={handleLogout}
                                 >
                                     <span>Đăng xuất</span>
                                 </button>

@@ -28,7 +28,7 @@ export default function HomePage() {
             try {
                 const data = await getAllJobs();
 
-                const formatted = data.data.map(job => ({
+                const formatted = data.map(job => ({
                     id: job._id,
                     title: job.title,
                     company: job.group_id?.name || "Không rõ",
