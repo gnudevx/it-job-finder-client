@@ -1,0 +1,73 @@
+.form {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.section label {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    display: block;
+}
+
+.typeGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.typeBtn {
+    border: 1px solid #ccc;
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-size: 14px;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.active {
+    border-color: #3b82f6;
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.recipientTabs {
+    display: flex;
+    gap: 8px;
+}
+
+.activeTab {
+    background: white;
+    border: 1px solid #ccc;
+}
+
+.input {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.sendBtn {
+    margin-top: 10px;
+    background: #2563eb;
+    color: white;
+    padding: 10px 12px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+}

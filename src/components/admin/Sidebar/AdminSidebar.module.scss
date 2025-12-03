@@ -1,73 +1,93 @@
 .sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+
   width: 260px;
-  min-height: 100vh;
-  background: #1f2937;
-  color: #fff;
-  /* SỬA Ở ĐÂY: Xóa padding ngang, chỉ giữ padding dọc nếu cần */
+  background: #93beff;
   padding: 20px 0;
-  border-right: 1px solid rgba(255, 255, 255, 0.08);
-  overflow: hidden;
-  transition: width 0.25s ease;
   display: flex;
-  /* Thêm flex để bố cục dọc tốt hơn */
   flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: width 0.25s ease;
 }
 
 .collapsed {
   width: 70px;
 }
 
-.title {
-  font-size: 15px;
-  font-weight: 700;
-  margin-bottom: 20px;
-  color: #e5e7eb;
-  /* THÊM Ở ĐÂY: Vì sidebar mất padding, ta cần bù padding cho tiêu đề */
-  padding: 0 20px;
-  white-space: nowrap;
-  /* Giữ tiêu đề không bị vỡ dòng khi collapse */
+/* KHỐI 1: CĂN GIỮA MENU */
+.menuCenterer {
+  flex: 1;
+  /* Chiếm toàn bộ khoảng trống ở giữa */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* Căn giữa nội dung bên trong (Menu) theo chiều dọc */
+  width: 100%;
+  overflow-y: auto;
+  /* Cho phép scroll nếu màn hình quá bé */
+
+  /* Ẩn thanh scroll cho đẹp (tùy chọn) */
+  &::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+  }
 }
 
 .nav {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  width: 100%;
 }
 
+/* KHỐI 2: NÚT ĐĂNG XUẤT */
+.logoutButton {
+  flex-shrink: 0;
+  /* Không cho phép nút bị co lại */
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  background: none;
+  /* Hoặc thử đổi màu nền để test: background: red; */
+  border: none;
+  cursor: pointer;
+
+  /* Tôi đổi màu chữ sang đậm hơn chút để dễ nhìn trên nền xanh #93beff */
+  color: #333;
+
+  font-size: 15px;
+  width: 100%;
+  text-align: left;
+  /* Đẩy cách menu một chút và thêm gạch ngang mờ */
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 25px;
+}
+
+.logoutButton:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Các style cũ */
 .link {
   display: flex;
   align-items: center;
-  gap: 14px;
-  /* SỬA Ở ĐÂY: Tăng padding bên trong link để bù cho việc bỏ padding ở sidebar */
+  gap: 12px;
   padding: 12px 20px;
-  /* border-radius: 6px;  <-- XÓA hoặc để 0 nếu muốn vuông góc hoàn toàn */
   text-decoration: none;
-  color: #e5e7eb;
+  color: #333;
+  /* Đổi màu chữ đậm hơn cho dễ đọc */
   font-size: 15px;
-  transition: background 0.2s ease;
   width: 100%;
-  overflow: hidden;
-}
-
-.label {
-  flex: 1;
-  min-width: 0;
-
-  overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
-
-  /* Không cần thiết, nhưng không gây hại: */
-  /* display: block; */
-  flex-shrink: 1;
-}
-
-.link:hover {
-  background: #374151;
 }
 
 .active {
-  background: #4b5563;
+  background: #ffffff;
+  color: #0c0c0c;
   font-weight: 600;
 }
 
@@ -76,4 +96,23 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  width: 24px;
+}
+
+.label {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Khi thu nhỏ sidebar */
+.collapsed .logoutButton {
+  justify-content: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.collapsed .label {
+  display: none;
 }
