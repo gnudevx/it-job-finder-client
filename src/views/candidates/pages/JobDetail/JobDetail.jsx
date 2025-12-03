@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styles from "./JobDetail.module.scss";
 import useFavorites from "@/hooks/useFavorites";
+import useApplyJob from "@/hooks/useApplyJob";
 import { getJobDetail } from "@/api/jobService";
-import { getResumes } from "@/api/resumeService";
-import { applyJob, getMyAppliedJobs } from "@/api/applicationsService";
 
 export default function JobDetail() {
     const mockCompany = {
@@ -26,31 +25,16 @@ export default function JobDetail() {
 
     // APPLY FORM
     const [showApplyForm, setShowApplyForm] = useState(false);
-    const [selectedCV, setSelectedCV] = useState("");
-    const [note, setNote] = useState("");
 
-    const [myCVs, setMyCVs] = useState([]);
-    const [hasApplied, setHasApplied] = useState(false);
-
-    useEffect(() => {
-    const fetchCVs = async () => {
-        try {
-        const res = await getResumes();
-        if (Array.isArray(res)) {
-            const cvs = res.map((cv) => ({
-            id: cv._id,
-            name: cv.fileName,
-            url: cv.fileUrl,
-            }));
-            setMyCVs(cvs);
-        }
-        } catch (err) {
-        console.error("Lỗi tải CV:", err);
-        }
-    };
-
-    fetchCVs();
-    }, []);
+    const {
+        myCVs,
+        hasApplied,
+        selectedCV,
+        setSelectedCV,
+        note,
+        setNote,
+        submitApplication,
+    } = useApplyJob(id, authToken);
 
     // Fetch job
     useEffect(() => {
@@ -90,25 +74,6 @@ export default function JobDetail() {
         fetchJob();
     }, [id]);
 
-    useEffect(() => {
-    const fetchApplied = async () => {
-        try {
-        const applications = await getMyAppliedJobs(authToken);
-
-        // applications là array trực tiếp từ axiosClient
-        const applied = applications.some(
-            (app) => String(app.jobId._id) === String(id)
-        );
-
-        setHasApplied(applied);
-        } catch (err) {
-        console.error("Error fetching applied jobs:", err);
-        }
-    };
-
-    fetchApplied();
-    }, [id, authToken]);
-
     if (loading) return <div>Đang tải...</div>;
     if (!job) return <div>Không tìm thấy tin tuyển dụng.</div>;
 
@@ -116,24 +81,12 @@ export default function JobDetail() {
         work_location_detail, working_time, link, level, education, quantity, jobType, createdAt  } = job;
 
     const handleSubmitApplication = async () => {
-        if (!selectedCV) {
-            alert("Vui lòng chọn CV để ứng tuyển!");
-            return;
-        }
-
-        try {
-            await applyJob({
-                jobId: job.id,
-                resumeId: selectedCV,
-                coverLetter: note,
-                token: authToken,
-            });
-
+        const ok = await submitApplication();
+        if (ok) {
             alert("Ứng tuyển thành công!");
             setShowApplyForm(false);
-        } catch (err) {
-            console.error(err);
-            alert("Ứng tuyển thất bại. Vui lòng thử lại.");
+        } else {
+            alert("Ứng tuyển thất bại!");
         }
     };
 
@@ -192,7 +145,13 @@ export default function JobDetail() {
                 <button
                     className={styles.applyBtn}
                     disabled={hasApplied}
-                    onClick={() => !hasApplied && setShowApplyForm(true)}
+                    onClick={() => {
+                        if (!authToken) {
+                            alert("Vui lòng đăng nhập để sử dụng chức năng ứng tuyển!");
+                            return;
+                        }
+                        if (!hasApplied) setShowApplyForm(true);
+                    }}
                 >
                     {hasApplied ? "Đã ứng tuyển" : "Ứng tuyển ngay"}
                 </button>

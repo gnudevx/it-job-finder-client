@@ -33,7 +33,7 @@ export default function useFavorites() {
                 setFavorites(prev => [...prev, jobID]);
             }
         } catch (err) {
-            alert("Bạn cần đăng nhập để lưu công việc!");
+            alert("Bạn cần đăng nhập để thực hiện chức năng này!");
         }
     };
 

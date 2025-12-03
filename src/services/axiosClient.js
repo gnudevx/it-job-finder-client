@@ -15,9 +15,10 @@ axiosClient.interceptors.response.use(
   (response) => response.data,
   async (error) => {
     const originalRequest = error.config;
+    const refreshToken = localStorage.getItem('refreshToken');
 
     // Nếu lỗi là 401 (unauthorized) và chưa thử refresh
-    if (error.response && error.response.status === 401 && !originalRequest._retry) {
+    if (error.response && error.response.status === 401 && !originalRequest._retry && refreshToken) {
       originalRequest._retry = true;
       try {
         // Gọi API refresh token (nó tự lấy từ cookie HttpOnly)
@@ -29,6 +30,8 @@ axiosClient.interceptors.response.use(
         // Nếu refresh cũng fail → logout
         console.error('Refresh token failed:', refreshError);
         window.location.href = '/login';
+        localStorage.removeItem("refreshToken");
+        localStorage.removeItem("authToken");
         return Promise.reject(refreshError);
       }
     }

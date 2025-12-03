@@ -1,58 +1,47 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./RecommendJobs.module.scss";
 import JobCard from "@/views/candidates/components/JobCard/JobCard.jsx";
 import Pagination from "@/components/common/Pagination/Pagination.jsx";
 import { getJobDetail } from "@/api/jobService";
 
 export default function RecommendJobs() {
-    const [loading, setLoading] = useState(false);
+    const [loading] = useState(false);
     const [results, setResults] = useState(null);
     const [page, setPage] = useState(1);
+    const location = useLocation();
+    const navigate = useNavigate();
+    const cv = location.state?.cv;
     const [pageJobsDetail, setPageJobsDetail] = useState([]);
     const limit = 5;
 
-    const navigate = useNavigate();
-
-    // ==============================
-    // 1) Gọi API /recommend
-    // ==============================
+    // Gọi API /recommend
     useEffect(() => {
-        const selectedCV = JSON.parse(localStorage.getItem("selectedCV") || "null");
-
-        if (!selectedCV) {
-            navigate("/candidate/account/mycvs");
-            return;
+        if (!cv) {
+        navigate("/candidate/account/mycvs");
+        return;
         }
 
         const fetchRecommend = async () => {
-            try {
-                setLoading(true);
+        const res = await fetch(cv.url); // cv.url từ DB
+        const blob = await res.blob();
 
-                const blob = await fetch(selectedCV.data).then((res) => res.blob());
-                const formData = new FormData();
-                formData.append("file", blob, selectedCV.name);
+        const formData = new FormData();
+        formData.append("file", blob, cv.name);
 
-                const res = await fetch("http://localhost:8000/recommend", {
-                    method: "POST",
-                    body: formData,
-                });
+        const recommendRes = await fetch("http://localhost:8000/recommend", {
+            method: "POST",
+            body: formData,
+        });
 
-                const data = await res.json();
-                setResults(data);
-            } catch (err) {
-                console.error("Lỗi khi gọi API Recommend:", err);
-            } finally {
-                setLoading(false);
-            }
+        const data = await recommendRes.json();
+        setResults(data);
         };
 
         fetchRecommend();
-    }, [navigate]);
+    }, [cv, navigate]);
 
-    // ==============================
-    // 2) Khi đổi trang → fetch detail của 5 job
-    // ==============================
+    // Khi đổi trang → fetch detail của 5 job
     useEffect(() => {
         if (!results) return;
 
@@ -75,16 +64,14 @@ export default function RecommendJobs() {
         fetchDetails();
     }, [page, results]);
 
-    // ==============================
-    // 3) Render
-    // ==============================
+    // Render
     if (loading) return <p className={styles.loading}>Đang phân tích CV...</p>;
     if (!results) return null;
 
     const totalJobs = results.recommendations.length;
     const totalPages = Math.ceil(totalJobs / limit);
 
-    const goJobDetail = (id) => navigate(`/candidate/job/${id}`);
+    const goJobDetail = (id) => navigate(`/job/${id}`);
 
     return (
         <div className={styles.container}>
