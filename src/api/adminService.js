@@ -1,8 +1,8 @@
-import axiosClient from "./axiosClient";
+import axiosClient from "../services/axiosClient";
 
 const adminService = {
   AllCandidates: () => axiosClient.get('/admin/managing/candidates'),
-  
+
   GetCandidate: (id) => axiosClient.get(`/admin/managing/candidates/${id}`),
 
   // Create candidate

@@ -1,16 +1,136 @@
 .container {
-  padding: 24px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+
+  @media (min-width: 1024px) {
+    grid-template-columns: 2fr 1fr;
+  }
 }
 
 .title {
   font-size: 24px;
-  font-weight: 600;
-  margin-bottom: 20px;
+  font-weight: 700;
+  color: #1f2937;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.box {
-  padding: 20px;
-  border-radius: 8px;
+.form {
   background: #fff;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #374151;
+}
+
+.input,
+.textarea {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 10px 12px;
+  outline: none;
+
+  &:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+  }
+}
+
+.textarea {
+  resize: none;
+}
+
+.btnSubmit {
+  width: 100%;
+  background: #2563eb;
+  color: white;
+  padding: 10px 0;
+  border-radius: 8px;
+  font-weight: 500;
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  align-items: center;
+  cursor: pointer;
+
+  &:hover {
+    background: #1d4ed8;
+  }
+}
+
+.toggleGroup {
+  display: flex;
+  gap: 16px;
+}
+
+.toggleBtn {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: 0.15s;
+
+  &:hover {
+    background: #f3f4f6;
+  }
+}
+
+.toggleActive {
+  border-color: #3b82f6;
+  background: #eff6ff;
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.historyTitle {
+  font-size: 18px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.historyBox {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.historyItem {
+  padding: 16px;
+  border-bottom: 1px solid #f3f4f6;
+  transition: 0.15s;
+
+  &:hover {
+    background: #f9fafb;
+  }
+}
+
+.badge {
+  font-size: 12px;
+  color: #2563eb;
+  background: #eff6ff;
+  padding: 2px 6px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  gap: 4px;
 }

@@ -1,4 +1,4 @@
-import axiosClient from "./axiosClient";
+import axiosClient from "../services/axiosClient";
 
 const accountService = {
     changePassword: (data) =>

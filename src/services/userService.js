@@ -1,4 +1,4 @@
-import axiosClient from '../api/axiosClient';
+import axiosClient from './axiosClient';
 
 const userService = {
   getMe: () => axiosClient.get('/users/me'),
@@ -10,7 +10,7 @@ const userService = {
   },
   getPostsByUserIdCursor: (lastId, pageSize) => {
     return axiosClient.get(`/users/getPostsByCursor/`, {
-      params: { lastId , pageSize },
+      params: { lastId, pageSize },
     });
   },
 };

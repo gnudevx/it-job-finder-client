@@ -12,27 +12,24 @@ export default function AdminLayout() {
 
       {/* HEADER — luôn nằm trên cùng */}
       <div
-        className={`${styles.header} ${
-          isCollapsed ? styles.headerCollapsed : ""
-        }`}
+        className={`${styles.header} ${isCollapsed ? styles.headerCollapsed : ""
+          }`}
       >
         <AdminHeader onToggleSidebar={() => setIsCollapsed(prev => !prev)} />
       </div>
 
       {/* SIDEBAR — nằm dưới header */}
       <aside
-        className={`${styles.sidebar} ${
-          isCollapsed ? styles.sidebarCollapsed : ""
-        }`}
+        className={`${styles.sidebar} ${isCollapsed ? styles.sidebarCollapsed : ""
+          }`}
       >
         <AdminSidebar isCollapsed={isCollapsed} />
       </aside>
 
       {/* MAIN */}
       <main
-        className={`${styles.main} ${
-          isCollapsed ? styles.mainCollapsed : ""
-        }`}
+        className={`${styles.main} ${isCollapsed ? styles.mainCollapsed : ""
+          }`}
       >
         <div className={styles.pageContainer}>
           <Outlet />

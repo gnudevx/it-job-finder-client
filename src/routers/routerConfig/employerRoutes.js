@@ -1,7 +1,7 @@
 import React from "react";
 // const Dashboard = React.lazy(() => import("@view/employers/pages/dashboard/dashboard.jsx"));
 // const Insights = React.lazy(() => import("@view/employers/pages/insights/insights.jsx"));
-import Dashboard from "@/views/employers/pages/dashboard/Dashboard.jsx";
+import Dashboard from "@/views/employers/pages/dashboard/dashboard.jsx";
 import Insights from "@/views/employers/pages/insights/insights.jsx";
 import AccountSettings from "@/views/employers/pages/AccountSetting/AccountSettings.jsx"
 import AccountAcctivities from "@/views/employers/pages/AccountActivities/AccountActivities.jsx";

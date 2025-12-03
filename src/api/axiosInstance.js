@@ -1,5 +1,5 @@
 import axios from "axios";
-import { refreshTokenRequest, logoutRequest } from "./authService";
+import { refreshTokenRequest, logoutRequest } from "../services/authService";
 
 const api = axios.create({
     baseURL: "/api",
@@ -81,7 +81,7 @@ api.interceptors.response.use(
 
                 try {
                     await logoutRequest();
-                } catch (e) {Error}
+                } catch (e) { Error }
 
                 return Promise.reject(err);
             } finally {

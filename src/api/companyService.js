@@ -1,4 +1,4 @@
-import axiosClient from "./axiosClient";
+import axiosClient from "../services/axiosClient";
 
 const companyService = {
     create: (data) => axiosClient.post("/employer/account/settings/company-info", data),

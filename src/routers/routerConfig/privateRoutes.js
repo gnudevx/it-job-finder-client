@@ -2,7 +2,7 @@ import React from "react";
 
 // Employer (user dung)
 const HomeEmployer = React.lazy(() =>
-  import('@/views/employers/pages/dashboard/Dashboard.jsx')
+  import('@/views/employers/pages/dashboard/dashboard.jsx')
 );
 
 const privateRoutes = [

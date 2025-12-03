@@ -1,0 +1,216 @@
+.container {
+    display: flex;
+    gap: 1.5rem;
+    height: calc(100vh - 8rem);
+}
+
+.list {
+    width: 33%;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    &Header {
+        padding: 1rem;
+        border-bottom: 1px solid #f3f4f6;
+
+        h2 {
+            font-weight: 600;
+            color: #111827;
+        }
+    }
+
+    &Body {
+        flex: 1;
+        overflow-y: auto;
+
+        .ticket {
+            padding: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-bottom: 1px solid #f3f4f6;
+
+            &:hover {
+                background: #f9fafb;
+            }
+
+            &.selected {
+                background: #eff6ff;
+            }
+
+            .ticketHeader {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 0.25rem;
+
+                .open {
+                    color: #111827;
+                }
+
+                .resolved {
+                    color: #6b7280;
+                }
+            }
+
+            .statusBadge {
+                font-size: 0.75rem;
+                padding: 0.125rem 0.5rem;
+                border-radius: 9999px;
+
+                &.openBadge {
+                    background: #fef3c7;
+                    color: #b45309;
+                }
+
+                &.resolvedBadge {
+                    background: #d1fae5;
+                    color: #065f46;
+                }
+            }
+
+            .subject {
+                font-size: 0.875rem;
+                font-weight: 500;
+                color: #374151;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .date {
+                font-size: 0.75rem;
+                color: #9ca3af;
+                margin-top: 0.25rem;
+            }
+        }
+    }
+}
+
+.detail {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 1rem;
+    overflow: hidden;
+
+    &Header {
+        display: flex;
+        justify-content: space-between;
+        padding: 1.5rem;
+        border-bottom: 1px solid #f3f4f6;
+
+        h2 {
+            font-weight: 700;
+            color: #111827;
+        }
+
+        p {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-top: 0.25rem;
+        }
+    }
+
+    .resolveBtn {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 500;
+        color: #16a34a;
+        padding: 0.375rem 0.75rem;
+        border-radius: 0.5rem;
+        background: #ecfdf5;
+        cursor: pointer;
+
+        &:hover {
+            background: #d1fae5;
+        }
+    }
+
+    &Body {
+        flex: 1;
+        padding: 1.5rem;
+        background: rgba(243, 244, 246, 0.5);
+
+        .messageBox {
+            display: inline-block;
+            max-width: 80%;
+            background: #fff;
+            padding: 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            color: #111827;
+        }
+    }
+
+    .replyBox {
+        display: flex;
+        gap: 1rem;
+        padding: 1rem;
+        border-top: 1px solid #e5e7eb;
+
+        .input {
+            flex: 1;
+            padding: 0.5rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            outline: none;
+
+            &:focus {
+                box-shadow: 0 0 0 2px #3b82f6;
+                border-color: #3b82f6;
+            }
+        }
+
+        .btnReply {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #2563eb;
+            color: #fff;
+            padding: 0.5rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+
+            &:disabled {
+                background: #d1d5db;
+                cursor: not-allowed;
+            }
+
+            &:hover:not(:disabled) {
+                background: #1e40af;
+            }
+        }
+    }
+
+    .resolvedNotice {
+        padding: 1rem;
+        background: #d1fae5;
+        color: #065f46;
+        text-align: center;
+        font-weight: 500;
+    }
+
+    .emptyDetail {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #9ca3af;
+        text-align: center;
+
+        svg {
+            opacity: 0.2;
+            margin-bottom: 1rem;
+        }
+    }
+}

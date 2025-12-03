@@ -3,10 +3,14 @@
   min-height: 100vh;
   background: #1f2937;
   color: #fff;
-  padding: 20px;
+  /* SỬA Ở ĐÂY: Xóa padding ngang, chỉ giữ padding dọc nếu cần */
+  padding: 20px 0;
   border-right: 1px solid rgba(255, 255, 255, 0.08);
-  transition: all 0.25s ease;
   overflow: hidden;
+  transition: width 0.25s ease;
+  display: flex;
+  /* Thêm flex để bố cục dọc tốt hơn */
+  flex-direction: column;
 }
 
 .collapsed {
@@ -14,43 +18,62 @@
 }
 
 .title {
-  font-size: 24px;
+  font-size: 15px;
   font-weight: 700;
-  margin-bottom: 28px;
-  letter-spacing: 0.5px;
+  margin-bottom: 20px;
   color: #e5e7eb;
+  /* THÊM Ở ĐÂY: Vì sidebar mất padding, ta cần bù padding cho tiêu đề */
+  padding: 0 20px;
   white-space: nowrap;
+  /* Giữ tiêu đề không bị vỡ dòng khi collapse */
 }
 
 .nav {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .link {
-  padding: 10px 0px;
-  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  /* SỬA Ở ĐÂY: Tăng padding bên trong link để bù cho việc bỏ padding ở sidebar */
+  padding: 12px 20px;
+  /* border-radius: 6px;  <-- XÓA hoặc để 0 nếu muốn vuông góc hoàn toàn */
   text-decoration: none;
   color: #e5e7eb;
   font-size: 15px;
-  transition: background 0.2s ease, padding-left 0.2s ease;
-  white-space: nowrap;
+  transition: background 0.2s ease;
+  width: 100%;
   overflow: hidden;
-
-  &:hover {
-    background: #374151;
-    padding-left: 20px;
-  }
-
-  &.active {
-    background: #4b5563;
-    font-weight: 600;
-  }
 }
 
-.collapsed .link {
-  padding: 10px;
-  text-align: center;
-  padding-left: 10px !important;
+.label {
+  flex: 1;
+  min-width: 0;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  /* Không cần thiết, nhưng không gây hại: */
+  /* display: block; */
+  flex-shrink: 1;
+}
+
+.link:hover {
+  background: #374151;
+}
+
+.active {
+  background: #4b5563;
+  font-weight: 600;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
