@@ -9,6 +9,7 @@ import {
   IdCardLanyard,
   Bell,
   LogOut,
+  FolderKanban
 } from "lucide-react";
 
 export default function AdminSidebar({ isCollapsed }) {
@@ -20,6 +21,7 @@ export default function AdminSidebar({ isCollapsed }) {
     { to: "/admin/manage/business-license", label: "Giấy Đăng Ký Doanh Nghiệp", icon: <FileCheck /> },
     { to: "/admin/manage/candidates", label: "Quản Lý Candidate", icon: <Users /> },
     { to: "/admin/manage/employers", label: "Quản Lý Employer", icon: <IdCardLanyard /> },
+    { to: "/admin/manage/SupportTickets", label: "Quản Lý Yêu Cầu Hỗ Trợ", icon: <FolderKanban /> },
   ];
 
   return (
