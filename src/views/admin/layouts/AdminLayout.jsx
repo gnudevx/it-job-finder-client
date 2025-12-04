@@ -16,6 +16,7 @@ export default function AdminLayout() {
     "/admin/manage/business-license": "Giấy Đăng Ký Doanh Nghiệp",
     "/admin/manage/candidates": "Quản Lý Candidate",
     "/admin/manage/employers": "Quản Lý Employer",
+    "/admin/manage/SupportTickets": "Quản Lý Yêu Cầu Hỗ Trợ",
   };
 
   const currentTitle = pageTitles[location.pathname] || "Admin";

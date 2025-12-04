@@ -8,7 +8,7 @@ import ManageRecruiment from "@/views/admin/pages/ManageRecruiments/ManageRecrui
 import ManageEmployers from "@/views/admin/pages/ManageEmployers/ManageEmployers.jsx";
 import CandidateNotification from "@/views/admin/pages/Notifications/Candidate/CandidateNotification.jsx";
 import EmployerNotification from "@/views/admin/pages/Notifications/Employer/EmployerNotification.jsx";
-
+import SupportTickets from "@/views/admin/pages/SupportTickets/SupportTickets.jsx";
 const adminRoutes = [
     { path: "dashboard", element: <AdminDashboard />, meta: { title: "Dashboard" } },
     { path: "manage/recruiment", element: <ManageRecruiment />, meta: { title: "ManageRecruiment" } },
@@ -19,6 +19,7 @@ const adminRoutes = [
     { path: "manage/employers", element: <ManageEmployers />, meta: { title: "ManageEmployers" } },
     { path: "notification/candidate", element: <CandidateNotification />, meta: { title: "CandidateNotification" } },
     { path: "notification/employer", element: <EmployerNotification />, meta: { title: "EmployerNotification" } },
+    { path: "manage/SupportTickets", element: <SupportTickets />, meta: { title: "EmployerNotification" } },
     // {
     //     path: "account/settings/*",
     //     element: <AccountSettings />,
