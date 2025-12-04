@@ -15,7 +15,7 @@ export default function FilterBar({ onChange }) {
         location: ["Hà Nội", "TP. Hồ Chí Minh", "Đà Nẵng", "Toàn quốc"],
         salaryLevel: ["Dưới 10 triệu", "10 - 20 triệu", "20 - 30 triệu", "Trên 30 triệu"],
         experience: ["Chưa có kinh nghiệm", "1 năm trở xuống", "1 năm", "2 năm", "3 năm", "Từ 4–5 năm"],
-        skills: ["SQL", "Python", "Java", "Node.js", "React", "DevOps"],
+        skills: ["SQL", "Python", "Java", "Node.js", "React", "DevOps", "tiếng Anh", "AI"],
         createDate: ["Hôm nay", "3 ngày qua", "7 ngày qua", "14 ngày qua"],
     };
 
@@ -86,27 +86,42 @@ export default function FilterBar({ onChange }) {
                 </button>
 
                 <div className={styles.quickOptions} ref={scrollRef}>
-                    {quickOptions[activeFilter].map((op) => (
+                    {quickOptions[activeFilter].map((op) => {
+                        // Kiểm tra active button
+                        const isActive =
+                        activeFilter === "skills"
+                            ? selectedFilters.skills?.includes(op)
+                            : selectedFilters[activeFilter] === op;
+
+                        return (
                         <button
                             key={op}
-                            className={`${styles.option} ${
-                                selectedFilters[activeFilter] === op ? styles.active : ""
-                            }`}
+                            className={`${styles.option} ${isActive ? styles.active : ""}`}
                             onClick={() => {
-                                const v = op === "Toàn quốc" ? "" : convertValue(activeFilter, op);
+                            setSelectedFilters((prev) => {
+                                if (activeFilter === "skills") {
+                                const prevSelected = prev.skills || [];
+                                const newSelected = prevSelected.includes(op)
+                                    ? prevSelected.filter((s) => s !== op) // bỏ chọn
+                                    : [...prevSelected, op]; // thêm chọn
 
-                                setSelectedFilters(prev => ({
-                                    ...prev,
-                                    [activeFilter]: op
-                                }));
-
-                                onChange(activeFilter, v);
+                                // gửi mảng tên skills về parent
+                                onChange(activeFilter, newSelected);
+                                return { ...prev, skills: newSelected };
+                                } else {
+                                const val = op === "Toàn quốc" ? "" : convertValue(activeFilter, op);
+                                onChange(activeFilter, val);
+                                return { ...prev, [activeFilter]: op };
+                                }
+                            });
                             }}
                         >
                             {op}
                         </button>
-                    ))}
-                </div>
+                        );
+                    })}
+                    </div>
+
 
                 <button className={`${styles.arrowBtn} ${styles.rightArrow}`} onClick={scrollRight}>
                     ›

@@ -17,7 +17,7 @@ export default function SavedJobs() {
             const formatted = data.data.map(job => ({
                 id: job._id,
                 title: job.title,
-                company: job.group_id?.name || "Không rõ",
+                group: job.group_id?.name || "Không rõ",
                 salary: job.salary_raw || "Thoả thuận",
                 location: job.location?.name || "Không rõ",
                 experience: job.experience,

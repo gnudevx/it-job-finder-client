@@ -45,7 +45,7 @@ export default function JobDetail() {
                 const formatted = {
                     id: data._id,
                     title: data.title,
-                    deadline: data.deadline,
+                    deadline: data.applicationDeadline,
                     description: data.description,
                     requirements: Array.isArray(data.requirements)
                         ? data.requirements.join("\n")

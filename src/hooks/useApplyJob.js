@@ -1,4 +1,4 @@
-import { applyJob, getMyAppliedJobs } from "@/api/applicationsService";
+import { applyJob, getMyAppliedJobs } from "@/api/applicationService/candidateApplication";
 import { getResumes } from "@/api/resumeService";
 import { useEffect, useState } from "react";
 

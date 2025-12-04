@@ -1,0 +1,237 @@
+:root {
+  --page-bg: #eef3f6;
+  --card-bg: #fff;
+  --muted: #6b7280;
+  --border: #e6eef0;
+  --header-text: #0f172a;
+  --accent: #16a34a;
+
+  /* Status badges */
+  --st-applied-bg: #f0fdf4;
+  --st-applied-text: #166534;
+
+  --st-reviewed-bg: #eff6ff;
+  --st-reviewed-text: #1e40af;
+
+  --st-interview-bg: #fefce8;
+  --st-interview-text: #854d0e;
+
+  --st-hired-bg: #ecfdf5;
+  --st-hired-text: #047857;
+
+  --st-rejected-bg: #fef2f2;
+  --st-rejected-text: #991b1b;
+}
+
+/* Layout */
+
+.pageWrap {
+  min-height: 100vh;
+  background: var(--page-bg);
+  font-family: Inter, sans-serif;
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 1180px;
+  margin: 22px auto;
+  padding: 0 20px;
+}
+
+.title {
+  font-size: 22px;
+  color: var(--header-text);
+  font-weight: 600;
+  margin-bottom: 18px;
+}
+
+/* Filter Bar */
+
+.filterBar {
+  background: var(--card-bg);
+  padding: 18px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  margin-bottom: 20px;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+/* Search box */
+.searchBox {
+  display: flex;
+  align-items: center;
+  margin-bottom: 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.searchInput {
+  flex: 1;
+  padding: 10px 12px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  background: #fff;
+}
+
+.searchBtn {
+  width: 44px;
+  height: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 18px;
+}
+
+/* Select row */
+.selectsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.select {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  font-size: 14px;
+  background: #fff;
+  min-width: 200px;
+}
+
+.clearBtn {
+  background: #f3f4f6;
+  border: 1px solid var(--border);
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--muted);
+  transition: background 0.2s ease;
+}
+
+.clearBtn:hover {
+  background: #e5e7eb;
+}
+
+/* CV List */
+.cvItem {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  padding: 18px 20px;
+  border-radius: 12px;
+  margin-bottom: 14px;
+
+  display: grid;
+  grid-template-columns: 1fr auto; /* trái 1fr, phải auto */
+  align-items: center;
+  gap: 12px;
+
+  transition: box-shadow 0.18s ease, transform 0.18s ease;
+}
+
+.cvProfile {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cvName {
+  font-size: 16px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.cvJob {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.cvDate {
+  font-size: 14px;
+  color: #475569;
+}
+
+.cvActions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-end;
+}
+
+.saveStatusBtn {
+  padding: 8px 16px;
+  background: #3b82f6; /* màu xanh dương */
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+.saveStatusBtn:hover {
+  filter: brightness(0.9);
+  transform: translateY(-1px);
+}
+
+.saveStatusBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  filter: none;
+  transform: none;
+}
+
+.viewPdfBtn {
+  padding: 8px 16px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+.viewPdfBtn:hover {
+  filter: brightness(0.9);
+  transform: translateY(-1px);
+}
+/* Badges */
+
+.badge {
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.badge.applied {
+  background: var(--st-applied-bg);
+  color: var(--st-applied-text);
+}
+
+.badge.reviewed {
+  background: var(--st-reviewed-bg);
+  color: var(--st-reviewed-text);
+}
+
+.badge.interviewing {
+  background: var(--st-interview-bg);
+  color: var(--st-interview-text);
+}
+
+.badge.hired {
+  background: var(--st-hired-bg);
+  color: var(--st-hired-text);
+}
+
+.badge.rejected {
+  background: var(--st-rejected-bg);
+  color: var(--st-rejected-text);
+}

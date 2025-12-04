@@ -3,7 +3,7 @@ import styles from "./AppliedJobs.module.scss";
 import JobCard from "@/views/candidates/components/JobCard/JobCard.jsx"; 
 import { useNavigate } from "react-router-dom";
 import useFavorites from "@/hooks/useFavorites";
-import { getMyAppliedJobs } from "@/api/applicationsService";
+import { getMyAppliedJobs } from "@/api/applicationService/candidateApplication";
 
 export default function AppliedJobs() {
   const [jobs, setJobs] = useState([]);
@@ -20,14 +20,17 @@ export default function AppliedJobs() {
 
         const jobDetails = appliedJobs.map((app) => {
           const job = app.jobId;
+          console.log(app.updatedAt);
           return {
             id: job._id,
             title: job.title,
-            company: job.group_id?.name || "Không rõ",
+            group: job.group_id?.name || "Không rõ",
             salary: job.salary_raw || "Thoả thuận",
             location: job.location?.name || "Không rõ",
             experience: job.experience,
             createdAt: job.createdAt,
+            status: app.status,
+            updatedAt: app.updatedAt
           };
         }).filter(Boolean);
 
@@ -46,7 +49,7 @@ export default function AppliedJobs() {
   const filtered = jobs.filter(
     (job) =>
       job.title.toLowerCase().includes(search.toLowerCase()) ||
-      (job.company && job.company.toLowerCase().includes(search.toLowerCase()))
+      (job.group && job.group.toLowerCase().includes(search.toLowerCase()))
   );
 
   if (loading) return <p>Đang tải danh sách công việc đã ứng tuyển...</p>;
@@ -65,6 +68,7 @@ export default function AppliedJobs() {
             isFavorite={isFavorite(job.id)}
             onToggleFavorite={() => toggleFavorite(job.id)}
             onClick={() => navigate(`/job/${job.id}`)}
+            showStatusAndUpdate={true}
           />
         ))}
       </div>

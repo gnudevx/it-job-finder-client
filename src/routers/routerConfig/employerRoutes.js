@@ -11,6 +11,7 @@ import SupportBox from "@/views/employers/pages/SupportBox/SupportBox.jsx";
 import CreateJob from "@/views/employers/pages/CreateJob/CreateJob.jsx";
 import JobManagementPage from "@/views/employers/pages/JobManagementPage/JobManagementPage";
 import CampaignsPage from "@/views/employers/pages/CampaignsPage/CampaignsPage";
+import ManageAppliedCV from "@/views/employers/pages/ManageAppliedCV/ManageAppliedCV.jsx"
 
 // import CompanyInfo from "@/views/employers/components/CompanyInfo/CompanyInfo";
 const employerRoutes = [
@@ -24,6 +25,7 @@ const employerRoutes = [
     { path: "jobs/", element: <JobManagementPage />, meta: { title: "JobManagementPage" } },
     { path: "recruitment-campaigns", element: <CampaignsPage />, meta: { title: "recruitment-campaigns" } },
     { path: "jobs/edit/:jobId", element: <CreateJob />, meta: { title: "Edit Job" } },
+    { path: "cvs-management/candidate-connection", element: <ManageAppliedCV />, meta: { title: "Manage Applied CVs" } },
     {
         path: "account/settings/*",
         element: <AccountSettings />,

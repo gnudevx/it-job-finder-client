@@ -66,14 +66,14 @@
   }
 }
 
-.companyRow {
+.groupRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 
-.company {
+.group {
   color: #6b7280;
   font-size: 0.9rem;
 }
@@ -81,4 +81,21 @@
 .postDate {
   font-size: 13px;
   color: #666;
+}
+
+.statusUpdate {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  color: #374151;
+  font-weight: 700;
+
+  p {
+    margin: 0;
+  }
+
+  strong {
+    color: #ae1515;
+  }
 }
