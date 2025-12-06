@@ -6,7 +6,7 @@ import { validateStep1 } from "@/viewmodels/ValidateStepEmployer/validateStep1Fi
 import { validateStep2 } from "@/viewmodels/ValidateStepEmployer/validateStep2Fields";
 import { validateStep3 } from "@/viewmodels/ValidateStepEmployer/validateStep3Fields";
 import { validateStep4 } from "@/viewmodels/ValidateStepEmployer/validateStep4Fields";
-
+import jobApiService from '@api/jobApiService.js';
 export const CreateJobContext = createContext();
 
 const setNestedPath = (obj, path, value) => {
@@ -119,17 +119,13 @@ export const CreateJobProvider = ({ children, isEditing = false, jobId = null })
 
             if (isEditing && jobId) {
                 // UPDATE JOB
-                res = await axios.put(`/employer/jobs/edit/${jobId}`, payload, {
-                    withCredentials: true,
-                });
+                res = await jobApiService.updateJob(jobId, payload);
             } else {
                 // CREATE JOB
-                res = await axios.post(`/employer/jobs/create`, payload, {
-                    withCredentials: true,
-                });
+                res = await jobApiService.createJob(payload);
             }
             console.log("asdasdsad: ", res.data)
-            if (res.data.success) {
+            if (res.success) {
                 toast.success(
                     isEditing
                         ? "Cập nhật tin thành công!"

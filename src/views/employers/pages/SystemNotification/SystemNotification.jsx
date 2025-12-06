@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./SystemNotification.module.scss";
 import NotificationList from "../../components/SystemNotification/NotificationList/NotificationList";
-import { NotificationDetail } from "../../components/SystemNotification/NotificationDetail/NotificationDetail";
+import NotificationDetail from "../../components/SystemNotification/NotificationDetail/NotificationDetail";
 
 export default function SystemNotification() {
     const [selected, setSelected] = useState(null);

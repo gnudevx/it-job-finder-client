@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import VerificationForm from "../Verification/VerificationForm";
+import VerificationForm from "../../../Verification/VerificationForm";
 import styles from "./PersonalInfo.module.scss";
 import avt from "@assets/logo.jpg"
 import employerService from "@/api/employerSerivce.js"

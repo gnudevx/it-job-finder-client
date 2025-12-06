@@ -2,7 +2,7 @@ import React, { useState } from "react"; // <-- Thêm useState
 import { NavLink } from "react-router-dom";
 import {
     Home,
-    Gift,
+    ShoppingCart,
     Briefcase,
     FileText,
     BarChart,
@@ -22,7 +22,7 @@ import avt from "@/assets/logo.jpg";
 const menuItems = [
     { name: "Bảng tin", icon: Home, to: "dashboard" },
     { name: "HireIT Insights", icon: BarChart, to: "insights" },
-    { name: "HireIT Rewards", icon: Gift, to: "rewards" },
+    { name: "Mua dịch vụ", icon: ShoppingCart, to: "buy-services" },
     // Thêm một đường phân cách
     { type: "divider" },
     { name: "Chiến dịch tuyển dụng", icon: Briefcase, to: "recruitment-campaigns" },

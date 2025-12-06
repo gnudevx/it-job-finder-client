@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./EmployerNotification.module.scss";
 
 import NotificationForm from "./NotificationForm";
 import NotificationHistory from "./NotificationHistory";
 import NotificationPreview from "./NotificationPreview";
+
 import PropTypes from "prop-types";
 import { UserRole, NotificationType } from "./types.js";
 
+import notificationApiService from "@/api/notificationApiService.js";
+
 const EmployerNotification = ({ targetAudience }) => {
+
   /** ---------------------------------------
    * BASIC STATE
    ----------------------------------------*/
@@ -18,7 +22,7 @@ const EmployerNotification = ({ targetAudience }) => {
   const [notifType, setNotifType] = useState(NotificationType.SYSTEM);
 
   /** ---------------------------------------
-   * AUDIENCE CONFIG
+   * ROLE CONFIG
    ----------------------------------------*/
   const role =
     targetAudience === "CANDIDATE"
@@ -33,35 +37,58 @@ const EmployerNotification = ({ targetAudience }) => {
    ----------------------------------------*/
   const [history, setHistory] = useState([]);
 
-  const handleSend = () => {
+  /** ---------------------------------------
+   * REALTIME RECEIVE
+   ----------------------------------------*/
+  useEffect(() => {
+    const fetchHistory = async () => {
+      try {
+        const res = await notificationApiService.adminList(1, 50);
+        console.log("History load:", res);
+        setHistory(res.items);
+      } catch (err) {
+        console.error("Load history error:", err);
+      }
+    };
+
+    fetchHistory();
+  }, []);
+
+  /** ---------------------------------------
+   * SEND NOTIFICATION
+   ----------------------------------------*/
+  const handleSend = async () => {
     if (!title.trim() || !message.trim()) {
-      alert("Vui lòng nhập tiêu đề và nội dung thông báo!");
+      alert("Vui lòng nhập tiêu đề và nội dung!");
       return;
     }
 
-    const newNotif = {
-      id: Date.now().toString(),
-      recipientRole: role,
-      recipientId: recipientType === "ALL" ? "ALL" : specificId || "UNKNOWN",
-      type: notifType,
+    const payload = {
       title,
       message,
-      sentAt: new Date().toLocaleString(),
+      type: notifType,
+      recipientRole: role,
+      recipientId: recipientType === "ALL" ? "ALL" : specificId || "UNKNOWN",
     };
 
-    setHistory([newNotif, ...history]);
+    try {
+      const res = await notificationApiService.create(payload);
+      console.log("Sent:", res.data);
 
-    // Reset form
-    setTitle("");
-    setMessage("");
-    setSpecificId("");
+      // reset
+      setTitle("");
+      setMessage("");
+      setSpecificId("");
 
-    alert(`Đã gửi thông báo đến ${audienceLabel}!`);
+    } catch (err) {
+      console.error("Send error:", err);
+    }
   };
 
   return (
     <div className={styles.wrapper}>
-      {/* LEFT SIDE — FORM */}
+
+      {/* LEFT */}
       <div className={styles.left}>
         <h1 className={styles.header}>
           Quản Lý Thông Báo
@@ -79,20 +106,20 @@ const EmployerNotification = ({ targetAudience }) => {
           setSpecificId={setSpecificId}
           notifType={notifType}
           setNotifType={setNotifType}
-          onSend={handleSend}
+          handleSend={handleSend}
         />
       </div>
+
+      {/* PREVIEW */}
       <NotificationPreview
         title={title}
         message={message}
         notifType={notifType}
       />
-      {/* RIGHT SIDE — HISTORY */}
+
+      {/* RIGHT — HISTORY */}
       <div className={styles.right}>
-        <NotificationHistory
-          role={role}
-          history={history}
-        />
+        <NotificationHistory role={role} history={history} />
       </div>
     </div>
   );

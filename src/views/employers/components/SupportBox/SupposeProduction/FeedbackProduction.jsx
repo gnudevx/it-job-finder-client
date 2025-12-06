@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import FileUpload from "@components/common/FileUpload/FileUpload.jsx";
 import FormLabel from "@components/common/FormLabel/FormLabel.jsx";
 import styles from "./FeedbackProduction.module.scss";
+import supportService from "@/api/supportService.js";
 
 export default function FeedbackProduction() {
   const [category, setCategory] = useState("");
@@ -13,8 +14,11 @@ export default function FeedbackProduction() {
     newFiles.splice(index, 1);
     setFiles(newFiles);
   };
-
-  const handleSubmit = (e) => {
+  const handleCategoryChange = (e) => {
+    const text = e.target.options[e.target.selectedIndex].text;
+    setCategory(text);
+  };
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!category) {
@@ -27,13 +31,18 @@ export default function FeedbackProduction() {
       return;
     }
 
-    const formData = new FormData();
-    formData.append("category", category);
-    formData.append("content", content);
-    files.forEach((file) => formData.append("files", file));
+    const fd = new FormData();
+    fd.append("category", category);
+    fd.append("content", content);
+    files.forEach(f => fd.append("files", f));
 
-    console.log("Gửi form:", { category, content, files });
-    alert("Gửi góp ý thành công!");
+    try {
+      await supportService.createFeedback(fd);
+      alert("Gửi góp ý thành công!");
+    } catch (err) {
+      console.error(err);
+      alert("Đã xảy ra lỗi!");
+    }
   };
 
   return (
@@ -49,7 +58,7 @@ export default function FeedbackProduction() {
 
       <div className={styles.field}>
         <FormLabel text="Đối tượng góp ý" required />
-        <select value={category} onChange={(e) => setCategory(e.target.value)}>
+        <select onChange={handleCategoryChange}>
           <option value="">-- Chọn loại báo cáo --</option>
           <option value="UI">Giao diện & trải nghiệm người dùng</option>
           <option value="FeatureEmail">Tính năng kích hoạt tài khoản qua Email</option>

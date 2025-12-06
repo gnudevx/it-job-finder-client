@@ -1,0 +1,694 @@
+/* ---------------------------
+   Layout Container
+---------------------------- */
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    animation: fade-in 0.2s ease;
+    max-height: 600px;
+}
+
+/* Fade-in animation */
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ---------------------------
+   Header Section
+---------------------------- */
+.headerRow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.backButton {
+    padding: 8px;
+    border-radius: 50%;
+    transition: 0.2s;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+
+    &:hover {
+        background: #e5e7eb;
+    }
+}
+
+.backIcon {
+    width: 24px;
+    height: 24px;
+    color: #4b5563;
+}
+
+.pageTitle {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+/* ---------------------------
+   Top Card
+---------------------------- */
+.topCard {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.topCardRow {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    @media (min-width: 768px) {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
+
+.companyInfoRow {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.companyLogo {
+    width: 96px;
+    height: 96px;
+    border-radius: 14px;
+    border: 1px solid #e5e7eb;
+    object-fit: cover;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.companyName {
+    font-size: 22px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.joinInfo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #6b7280;
+    margin-top: 2px;
+    font-size: 14px;
+}
+
+/* Badges */
+.badgeRow {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.statusActive {
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: #d1fae5;
+    color: #047857;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.statusInactive {
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: #fee2e2;
+    color: #b91c1c;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.tierBadge {
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: #dbeafe;
+    color: #1d4ed8;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* ---------------------------
+   Action Buttons
+---------------------------- */
+.actionColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+
+    @media (min-width: 768px) {
+        width: auto;
+    }
+}
+
+.actionRow {
+    display: flex;
+    gap: 8px;
+}
+
+.btnPrimary {
+    padding: 10px 16px;
+    background: #2563eb;
+    color: white;
+    border-radius: 10px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s;
+
+    &:hover {
+        background: #1e40af;
+    }
+}
+
+.btnSecondary {
+    padding: 10px 16px;
+    border: 1px solid #d1d5db;
+    background: white;
+    border-radius: 10px;
+    font-weight: 500;
+    color: #374151;
+    cursor: pointer;
+    transition: 0.2s;
+
+    &:hover {
+        background: #f9fafb;
+    }
+}
+
+.btnDanger {
+    padding: 10px 16px;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 10px;
+    color: #dc2626;
+    font-weight: 500;
+    cursor: pointer;
+
+    &:hover {
+        background: #fee2e2;
+    }
+}
+
+.btnSuccess {
+    padding: 10px 16px;
+    background: #ffffff;
+    border-radius: 10px;
+    color: #0a0881;
+    font-weight: 500;
+    cursor: pointer;
+
+    &:hover {
+        background: #817d7d;
+    }
+}
+
+/* ---------------------------
+   Main Grid Layout
+---------------------------- */
+.mainGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+
+    @media (min-width: 1024px) {
+        grid-template-columns: 2fr 1fr;
+    }
+}
+
+/* ---------------------------
+   Left Column
+---------------------------- */
+.leftCol {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Contact Card */
+.card {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.cardTitle {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1f2937;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f3f4f6;
+    margin-bottom: 16px;
+}
+
+.infoGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+
+    @media (min-width: 768px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    color: #9ca3af;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+}
+
+.value {
+    font-size: 15px;
+    color: #111827;
+}
+
+.creditBalance {
+    font-size: 26px;
+    color: #059669;
+    font-weight: 700;
+}
+
+.descFull {
+    grid-column: span 2;
+}
+
+.description {
+    background: #f9fafb;
+    padding: 12px;
+    font-size: 14px;
+    color: #374151;
+    border-radius: 8px;
+    border: 1px solid #f3f4f6;
+}
+
+/* ---------------------------
+   Job Table
+---------------------------- */
+.jobCard {
+    background: white;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+}
+
+.jobHeader {
+    padding: 24px;
+    border-bottom: 1px solid #f3f4f6;
+    display: flex;
+    justify-content: space-between;
+}
+
+.viewAllBtn {
+    font-size: 14px;
+    color: #2563eb;
+    font-weight: 500;
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.tableWrapper {
+    overflow-x: auto;
+}
+
+.jobTable {
+    width: 100%;
+    border-collapse: collapse;
+
+    th {
+        padding: 14px;
+        background: #f9fafb;
+        font-size: 11px;
+        text-transform: uppercase;
+        color: #6b7280;
+    }
+
+    td {
+        padding: 14px;
+        font-size: 14px;
+        color: #374151;
+        border-top: 1px solid #f3f4f6;
+    }
+}
+
+.jobStatusOpen {
+    background: #d1fae5;
+    color: #065f46;
+    padding: 4px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.jobStatusClosed {
+    background: #e5e7eb;
+    color: #374151;
+    padding: 4px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.emptyJob {
+    text-align: center;
+    padding: 32px;
+    color: #6b7280;
+}
+
+/* ---------------------------
+   AI Analysis Column
+---------------------------- */
+.aiCol {
+    display: flex;
+    flex-direction: column;
+}
+
+/* AI Card */
+.aiCard {
+    position: relative;
+    background: linear-gradient(to bottom, #eef2ff, white);
+    border: 1px solid #e0e7ff;
+    border-radius: 16px;
+    padding: 24px;
+    overflow: hidden;
+}
+
+/* Background Sparkle */
+.sparkleBg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 16px;
+    opacity: 0.1;
+}
+
+.sparkleLarge {
+    width: 90px;
+    height: 90px;
+    color: #4f46e5;
+}
+
+.aiContent {
+    position: relative;
+    z-index: 10;
+}
+
+.aiTitle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #312e81;
+    margin-bottom: 16px;
+}
+
+.aiIcon {
+    width: 20px;
+    height: 20px;
+    color: #4f46e5;
+}
+
+/* Analysis - initial */
+.aiInitial {
+    text-align: center;
+    padding: 24px 0;
+}
+
+.aiDesc {
+    color: #4b5563;
+    font-size: 14px;
+    margin-bottom: 16px;
+}
+
+.aiBtn {
+    width: 100%;
+    padding: 10px 0;
+    background: #4f46e5;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.2s;
+
+    &:hover {
+        background: #4338ca;
+    }
+
+    &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+}
+
+/* Spinner */
+.spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid white;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Analysis Result */
+.aiResult {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    animation: fade-in 0.2s ease;
+}
+
+.scoreBox {
+    background: white;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #e0e7ff;
+    display: flex;
+    justify-content: space-between;
+}
+
+.scoreLabel {
+    font-size: 14px;
+    color: #4b5563;
+    font-weight: 500;
+}
+
+.scoreGood {
+    font-size: 20px;
+    font-weight: 700;
+    color: #059669;
+}
+
+.scoreWarn {
+    font-size: 20px;
+    font-weight: 700;
+    color: #ea580c;
+}
+
+.scoreBad {
+    font-size: 20px;
+    font-weight: 700;
+    color: #dc2626;
+}
+
+.sectionTitle {
+    font-size: 11px;
+    font-weight: 700;
+    color: #312e81;
+    text-transform: uppercase;
+}
+
+.summary {
+    font-size: 14px;
+    color: #374151;
+}
+
+/* Risks */
+.riskBox {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.riskTitle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #991b1b;
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.riskIcon {
+    width: 14px;
+    height: 14px;
+}
+
+.riskList {
+    padding-left: 18px;
+    color: #b91c1c;
+    font-size: 12px;
+
+    li {
+        margin-bottom: 4px;
+    }
+}
+
+/* Recommendations */
+.recommendList {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.recommendItem {
+    display: flex;
+    gap: 8px;
+    background: white;
+    padding: 10px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #374151;
+}
+
+.recommendIcon {
+    width: 16px;
+    height: 16px;
+    color: #059669;
+    margin-top: 2px;
+}
+
+.reanalyzeBtn {
+    width: 100%;
+    font-size: 12px;
+    color: #4f46e5;
+    cursor: pointer;
+    background: none;
+    border: none;
+    margin-top: 8px;
+
+    &:hover {
+        text-decoration: underline;
+        color: #312e81;
+    }
+}
+
+@media (max-width: 1500px) {
+    .container {
+        gap: 12px !important;
+        padding-top: 10px !important;
+    }
+
+    .topCard {
+        padding: 16px !important;
+    }
+
+    .topCardRow {
+        gap: 12px !important;
+    }
+
+    .companyInfoRow {
+        gap: 16px !important;
+    }
+
+    .actionColumn {
+        gap: 6px !important;
+    }
+
+    .leftCol {
+        gap: 16px !important;
+    }
+
+    .card,
+    .jobCard,
+    .aiCard {
+        padding: 16px !important;
+    }
+
+    .cardTitle {
+        margin-bottom: 10px !important;
+        padding-bottom: 8px !important;
+    }
+
+    .infoGrid {
+        gap: 10px !important;
+    }
+
+    .jobHeader {
+        padding: 16px !important;
+    }
+
+    .jobTable th,
+    .jobTable td {
+        padding: 10px !important;
+    }
+
+    .mainGrid {
+        gap: 16px !important;
+    }
+
+    .aiInitial {
+        padding: 16px 0 !important;
+    }
+
+    .aiResult {
+        gap: 12px !important;
+    }
+
+    .recommendList {
+        gap: 6px !important;
+    }
+}
+
+* {
+    --gap: 12px;
+}
+
+.container,
+.topCardRow,
+.companyInfoRow,
+.actionColumn,
+.actionRow,
+.leftCol,
+.mainGrid,
+.infoGrid,
+.recommendList,
+.aiResult {
+    gap: var(--gap) !important;
+}

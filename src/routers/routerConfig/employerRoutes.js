@@ -11,7 +11,11 @@ import SupportBox from "@/views/employers/pages/SupportBox/SupportBox.jsx";
 import CreateJob from "@/views/employers/pages/CreateJob/CreateJob.jsx";
 import JobManagementPage from "@/views/employers/pages/JobManagementPage/JobManagementPage";
 import CampaignsPage from "@/views/employers/pages/CampaignsPage/CampaignsPage";
-
+import NotificationDetail from "@/views/employers/components/SystemNotification/NotificationDetail/NotificationDetail.jsx";
+import VerificationModal from "@/views/employers/components/Verification/VerificationModal.jsx";
+import ProtectedRoute from "../protected/protected";
+import BuyService from "@/views/employers/pages/BuyService/BuyService.jsx";
+import Payment from "@/views/employers/pages/Payment/Payment.jsx";
 // import CompanyInfo from "@/views/employers/components/CompanyInfo/CompanyInfo";
 const employerRoutes = [
     { path: "dashboard", element: <Dashboard />, meta: { title: "Dashboard" } },
@@ -19,17 +23,30 @@ const employerRoutes = [
     { path: "account/phone-verify", element: <PhoneVerify />, meta: { title: "Insights" } },
     { path: "account/activities/*", element: <AccountAcctivities />, meta: { title: "Activities" } },
     { path: "system-notification", element: <SystemNotification />, meta: { title: "Activities" } },
+    { path: "system-notification/:id", element: <NotificationDetail />, meta: { title: "Notification Detail" } },
     { path: "support-box/*", element: <SupportBox />, meta: { title: "SupportBox" } },
-    { path: "jobs/create", element: <CreateJob />, meta: { title: "CreateJob" } },
+    {
+        path: "jobs/create",
+        element: (
+            <ProtectedRoute>
+                <CreateJob />
+            </ProtectedRoute>
+        ),
+        meta: { title: "Create Job" },
+    },
     { path: "jobs/", element: <JobManagementPage />, meta: { title: "JobManagementPage" } },
     { path: "recruitment-campaigns", element: <CampaignsPage />, meta: { title: "recruitment-campaigns" } },
     { path: "jobs/edit/:jobId", element: <CreateJob />, meta: { title: "Edit Job" } },
     {
         path: "account/settings/*",
         element: <AccountSettings />,
+        meta: { title: "Accountsetting" },
         // children: [
         //     { path: "company-info", element: <CompanyInfo /> },
         // ],
     },
+    { path: "employer-verify/", element: <VerificationModal />, meta: { title: "VerificationModal" } },
+    { path: "buy-services/", element: <BuyService />, meta: { title: "BuyService" } },
+    { path: "payment/:pkgId", element: <Payment />, meta: { title: "Payment" } },
 ];
 export default employerRoutes;

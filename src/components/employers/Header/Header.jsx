@@ -16,6 +16,8 @@ import { FaUserCircle } from "react-icons/fa";
 import { IoCaretDown, IoHelpCircleOutline, IoLogOutOutline } from "react-icons/io5";
 import logoHIDEIT from "@assets/Logo_HireIT.png";
 import authService from "@/services/authService";
+import { useEffect } from "react";
+import employerSerivce from "@/api/employerSerivce";
 import { useNavigate } from "react-router-dom";
 export default function Header({ onToggleSidebar }) {
     const navigate = useNavigate();
@@ -28,10 +30,23 @@ export default function Header({ onToggleSidebar }) {
 
         // Xóa token, điều hướng về login
         localStorage.removeItem("authToken");
-        localStorage.removeItem("refreshToken");
 
         navigate("/login");    // 👈 chuyển trang
     };
+    const [currentEmployerId, setCurrentEmployerId] = useState(null);
+
+    useEffect(() => {
+        const fetchEmployerData = async () => {
+            try {
+                const res = await employerSerivce.getMe();
+                // giả sử getEmployerPersonal gọi /employer/account/settings/personal
+                setCurrentEmployerId(res.user._id); // lấy employer._id
+            } catch (err) {
+                console.error("Lấy thông tin employer lỗi:", err);
+            }
+        };
+        fetchEmployerData();
+    }, []);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     return (
         <header className={styles["header"]}>
@@ -47,7 +62,7 @@ export default function Header({ onToggleSidebar }) {
             </div>
 
             <div className={styles["header-right"]}>
-                <NavButton icon={BsPencilSquare} label="Đăng tin" to="/employer/post" />
+                <NavButton icon={BsPencilSquare} label="Đăng tin" to="/employer/jobs/create" />
                 <NavButton icon={TbReportSearch} label="Tìm CV" to="/employer/search" />
                 <NavButton icon={BiMessageSquareDots} label="Connect" to="/employer/connect" />
                 <DropdownButton
@@ -56,7 +71,7 @@ export default function Header({ onToggleSidebar }) {
                     content={<InsightDropdownContent />}
                 />
 
-                <NotificationDropdown />
+                <NotificationDropdown employerId={currentEmployerId} />
 
                 <button className={`${styles["icon-button"]} ${styles["cart-button"]}`}>
                     <HiShoppingCart />

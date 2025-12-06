@@ -100,6 +100,7 @@
     padding: 12px;
     border-bottom: 1px solid #f6f7f8;
     align-items: flex-start;
+    cursor: pointer;
 }
 
 .item:hover {
@@ -138,9 +139,12 @@
 }
 
 .itemText {
-    font-size: 13px;
-    color: #51606a;
-    margin-bottom: 6px;
+    overflow: hidden;
+    text-overflow: ellipsis; // Thêm dấu "..."
+    white-space: nowrap; // Chỉ hiển thị 1 dòng
+    max-width: 300px; // Hoặc tùy chỉnh theo layout
+    font-size: 14px;
+    color: #555;
 }
 
 .itemDate {
