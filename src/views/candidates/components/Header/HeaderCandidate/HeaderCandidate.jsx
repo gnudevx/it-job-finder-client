@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
-    ChevronDown, ChevronRight, MessageSquareMore,
-    Briefcase, FileText, UserCog, Settings
+    ChevronDown, ChevronRight,
+    Briefcase, FileText, UserCog,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import styles from "@/views/candidates/components/Header/HeaderCandidate/HeaderCandidate.module.scss";
 import logo from "@/assets/Logo_HireIT_Header.png";
 import logo_candidate from "@/assets/logo_candidate.jpg";
-import NotificationDropdown from "@/views/candidates/components/Header/DropdownButton/NotificationDropdown.jsx";
+// import NotificationDropdown from "@/views/candidates/components/Header/DropdownButton/NotificationDropdown.jsx";
 import authService from "@/services/authService";
 
 export default function HeaderCandidate() {
@@ -89,11 +89,11 @@ export default function HeaderCandidate() {
 
             {/* Right */}
             <div className={styles["header-right"]}>
-                <NotificationDropdown />
+                {/* <NotificationDropdown /> */}
 
-                <div className={styles.iconWrapper} onClick={() => navigate("/candidate/messages")}>
+                {/* <div className={styles.iconWrapper} onClick={() => navigate("/candidate/messages")}>
                     <MessageSquareMore className={styles.icon} />
-                </div>
+                </div> */}
 
                 {/* PROFILE DROPDOWN */}
                 <div
@@ -120,7 +120,7 @@ export default function HeaderCandidate() {
                                     </h4>
 
                                     <ul className={`${styles.subList} ${openSections.jobs ? styles.show : ""}`}>
-                                        <li onClick={() => navigate("/candidate/account/favoritesjobs")}>Việc làm đã lưu</li>
+                                        <li onClick={() => navigate("/candidate/account/favoritesjobs")}>Việc làm yêu thích</li>
                                         <li onClick={() => navigate("/candidate/account/appliedjobs")}>Việc làm đã ứng tuyển</li>
                                         <li
                                             onClick={() => {
@@ -148,8 +148,8 @@ export default function HeaderCandidate() {
 
                                     <ul className={`${styles.subList} ${openSections.cv ? styles.show : ""}`}>
                                         <li onClick={() => navigate("/candidate/account/mycvs")}>CV của tôi</li>
-                                        <li onClick={() => navigate("/candidate/account/connectedemployer")}>Nhà tuyển dụng muốn kết nối</li>
-                                        <li onClick={() => navigate("/candidate/account/viewedemployer")}>Nhà tuyển dụng xem hồ sơ</li>
+                                        {/* <li onClick={() => navigate("/candidate/account/connectedemployer")}>Nhà tuyển dụng muốn kết nối</li>
+                                        <li onClick={() => navigate("/candidate/account/viewedemployer")}>Nhà tuyển dụng xem hồ sơ</li> */}
                                     </ul>
                                 </div>
 
@@ -171,7 +171,7 @@ export default function HeaderCandidate() {
                                 </div>
 
                                 {/* Cài đặt chung */}
-                                <div className={styles["dropdown-section"]}>
+                                {/* <div className={styles["dropdown-section"]}>
                                     <h4 onClick={() => toggleSection("general_settings")}>
                                         <span className={styles.h4Left}>
                                             <Settings className={styles.sectionIcon} />
@@ -185,7 +185,7 @@ export default function HeaderCandidate() {
                                         <li onClick={() => navigate("/candidate/account/notifications")}>Cài đặt thông báo</li>
                                         <li onClick={() => navigate("/candidate/account/security")}>Cài đặt bảo mật</li>
                                     </ul>
-                                </div>
+                                </div> */}
 
                                 {/* Đăng xuất */}
                                 <button

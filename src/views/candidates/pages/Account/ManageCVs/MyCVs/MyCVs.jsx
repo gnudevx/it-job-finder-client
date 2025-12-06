@@ -1,12 +1,12 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./MyCVs.module.scss";
-import { PlusCircle, Upload } from "lucide-react";
+import { Upload } from "lucide-react";
 
-import useCVs from "@/hooks/useCVs";
-import CVList from "@/views/candidates/components/CVList/CVList.jsx";
-import CVModal from "@/views/candidates/components/CVModal/CVModal.jsx";
-import CVBuilder from "@/views/candidates/components/CVBuilder/CVBuilder.jsx";
+// import useCVs from "@/hooks/useCVs";
+// import CVList from "@/views/candidates/components/CVList/CVList.jsx";
+// import CVModal from "@/views/candidates/components/CVModal/CVModal.jsx";
+// import CVBuilder from "@/views/candidates/components/CVBuilder/CVBuilder.jsx";
 import useUploadedCVs from "@/hooks/useUploadedCVs";
 import { uploadResume } from "@/api/resumeService";
 
@@ -15,10 +15,10 @@ import UploadedCVItem from "@/views/candidates/components/UploadedCVItem/Uploade
 export default function MyCVs() {
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
-  const [showCVBuilder, setShowCVBuilder] = useState(false);
+  // const [showCVBuilder, setShowCVBuilder] = useState(false);
 
   const { uploadedCVs, addUploadedCV, removeUploadedCV } = useUploadedCVs();
-  const { cvs, addCV, removeCV } = useCVs();
+  // const { cvs, addCV, removeCV } = useCVs();
 
   const handleUploadClick = () => fileInputRef.current.click();
 
@@ -61,7 +61,7 @@ export default function MyCVs() {
   return (
     <div className={styles.container}>
       <h2 className={styles.manageCV}>Quản lý CV của bạn</h2>
-      <div className={styles.card}>
+      {/* <div className={styles.card}>
         <div className={styles.cardHeader}>
           <h3>CV đã tạo trên hệ thống</h3>
 
@@ -72,7 +72,7 @@ export default function MyCVs() {
         </div>
 
         <CVList data={cvs} onDelete={removeCV} />
-      </div>
+      </div> */}
 
       <div className={styles.card}>
         <div className={styles.cardHeader}>
@@ -117,11 +117,11 @@ export default function MyCVs() {
         </div>
       </div>
 
-      {showCVBuilder && (
+      {/* {showCVBuilder && (
         <CVModal onClose={() => setShowCVBuilder(false)}>
           <CVBuilder onSave={(data) => { addCV(data); setShowCVBuilder(false); }} />
         </CVModal>
-      )}
+      )} */}
     </div>
   );
 }

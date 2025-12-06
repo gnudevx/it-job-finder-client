@@ -3,11 +3,18 @@
   min-height: 100vh;
 
   .top-section {
-    display: grid;
+    background-image: url("../../../assets/landing_pic.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+
     justify-content: center;
+    align-items: center;
     gap: 1rem;
     margin-bottom: 2rem;
-    background-color: #25216b;
+    background-color: #10b981;
     border-radius: 20px;
     padding: 1rem;
 
@@ -16,7 +23,12 @@
       justify-content: center;
       font-size: 2rem;
       font-weight: 700;
-      color: #20dfb9;
+      color: #2a04b4;
+    }
+
+    .landing-pic {
+      max-width: 75%;
+      margin: auto;
     }
 
     .search-box {
@@ -24,6 +36,8 @@
       background-color: #fff;
       border: 1px solid #d1d5db;
       border-radius: 9999px;
+      width: 600px;      
+
       padding: 0.4rem 0.75rem 0.4rem 1rem;
 
       input {
@@ -57,4 +71,16 @@
     font-weight: 600;
     color: #333;
   }
+
+  .jobs-grid {
+    display: grid;
+    justify-items: center;
+    grid-template-columns: auto auto auto;
+    row-gap: 40px;
+  }
+
+  .pagination {
+    padding-top: 15px;
+  }
 }
+

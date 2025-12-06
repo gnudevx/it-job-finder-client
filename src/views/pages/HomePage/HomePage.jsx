@@ -19,7 +19,7 @@ export default function HomePage() {
     const [filters, setFilters] = useState({});
     const [jobs, setJobs] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const jobsPerPage = 20;
+    const jobsPerPage = 15;
 
     const navigate = useNavigate();
 
@@ -127,7 +127,7 @@ export default function HomePage() {
     return (
         <div className={styles["home-container"]}>
             <div className={styles["top-section"]}>
-                <h1 className={styles.title}>HireIT - Tạo CV, Tìm việc làm hiệu quả</h1>
+                <h1 className={styles.title}>HireIT - Thêm CV, Tìm việc làm hiệu quả</h1>
                 <div className={styles["search-box"]}>
                     <input
                         type="text"
@@ -159,13 +159,15 @@ export default function HomePage() {
                 ))}
             </div>
 
-            {totalPages > 1 && (
-                <Pagination
+            <div className={styles["pagination"]}>
+                {totalPages > 1 && (
+                    <Pagination
                     page={currentPage}
                     totalPages={totalPages}
                     onChange={(newPage) => setCurrentPage(newPage)}
                 />
-            )}
+                )}
+            </div>
         </div>
     );
 }

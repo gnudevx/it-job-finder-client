@@ -18,6 +18,12 @@ export default function JobCard({
         rejected: "Chưa phù hợp"
     };
 
+    const formatSalary = (salaryStr) => {
+        if (!salaryStr) return "";
+        return salaryStr.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    };
+
+
     return (
         <div className={styles.card} onClick={onClick}>
             <div className={styles.topRow}>
@@ -44,7 +50,7 @@ export default function JobCard({
             <div className={styles.title}>{job.title}</div>
                 {showStatusAndUpdate && (
                     <div className={styles.statusUpdate}>
-                        <p>
+                        <p className={styles.status}>
                         Trạng thái: <strong>{STATUS_LABELS[job.status] || "Không rõ"}</strong>
                         </p>
                         <p className={styles.updatedAt}>
@@ -68,7 +74,7 @@ export default function JobCard({
             </div>
 
             <div className={styles.meta}>
-                <span className={styles.salary}>Lương: {job.salary}</span>
+                <span className={styles.salary}>Lương: {formatSalary(job.salary)}</span>
                 <span className={styles.location}>{job.location}</span>
             </div>
         </div>
