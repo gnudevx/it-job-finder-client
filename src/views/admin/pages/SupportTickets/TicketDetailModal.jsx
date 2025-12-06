@@ -3,9 +3,9 @@ import { X, Send, User, ShieldCheck, Paperclip } from "lucide-react";
 import styles from "./TicketDetailModal.module.scss";
 
 const TicketStatus = {
-    OPEN: "OPEN",
-    RESPONDED: "RESPONDED",
-    CLOSED: "CLOSED",
+    PENDING: "PENDING",
+    REVIEWING: "REVIEWING",
+    RESOLVED: "RESOLVED",
 };
 import PropTypes from "prop-types";
 export default function TicketDetailModal({
@@ -25,8 +25,9 @@ export default function TicketDetailModal({
     if (!ticket) return null;
 
     const handleSendReply = () => {
+        console.log("SEND REPLY CLICKED, ticket =", ticket);
         if (!replyContent.trim()) return;
-        onReply(ticket.id, replyContent);
+        onReply(ticket.id || ticket._id, replyContent);
         setReplyContent("");
     };
 
@@ -40,14 +41,14 @@ export default function TicketDetailModal({
                     <div>
                         <h2 className={styles.title}>
                             {ticket.type === "SUPPORT" ? "Yêu cầu hỗ trợ" : "Góp ý sản phẩm"}{" "}
-                            <span className={styles.ticketId}>#{ticket.id.slice(0, 8)}</span>
+                            <span className={styles.ticketId}>#{(ticket.id || ticket._id || "").slice(0, 8)}</span>
                         </h2>
                         <div className={styles.subInfo}>
                             <span
                                 className={
-                                    ticket.status === TicketStatus.OPEN
+                                    ticket.status === TicketStatus.PENDING
                                         ? styles.statusOpen
-                                        : ticket.status === TicketStatus.RESPONDED
+                                        : ticket.status === TicketStatus.REVIEWING
                                             ? styles.statusResponded
                                             : styles.statusClosed
                                 }
@@ -104,9 +105,9 @@ export default function TicketDetailModal({
                                         onStatusChange && onStatusChange(ticket.id, e.target.value)
                                     }
                                 >
-                                    <option value={TicketStatus.OPEN}>OPEN (Chờ xử lý)</option>
-                                    <option value={TicketStatus.RESPONDED}>RESPONDED (Đã trả lời)</option>
-                                    <option value={TicketStatus.CLOSED}>CLOSED (Đóng)</option>
+                                    <option value={TicketStatus.PENDING}>PENDING (Chờ xử lý)</option>
+                                    <option value={TicketStatus.REVIEWING}>REVIEWING (Đang xử lí)</option>
+                                    <option value={TicketStatus.RESOLVED}>RESOLVED (Đã xử lí)</option>
                                 </select>
                             </div>
                         )}
@@ -192,6 +193,7 @@ export default function TicketDetailModal({
 TicketDetailModal.propTypes = {
     ticket: PropTypes.shape({
         id: PropTypes.string.isRequired,
+        _id: PropTypes.string,
         type: PropTypes.oneOf(["SUPPORT", "FEEDBACK"]).isRequired,
         status: PropTypes.oneOf([
             TicketStatus.OPEN,

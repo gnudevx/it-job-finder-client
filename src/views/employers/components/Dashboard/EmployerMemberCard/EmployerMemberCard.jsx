@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import PropTypes from "prop-types";
 import styles from "./EmployerMemberCard.module.scss";
 import { getRankInfo } from "@viewmodels/EmployerViewModel";
-
+import img from "@/assets/logo.jpg";
 export default function EmployerMemberCard({ employer }) {
     const { ranks, current, progress } = getRankInfo(employer.tpPoint);
 
@@ -17,13 +17,13 @@ export default function EmployerMemberCard({ employer }) {
             {/* Header */}
             <div className={styles.header}>
                 <img
-                    src="https://cdn-icons-png.flaticon.com/512/219/219970.png"
+                    src={img}
                     alt="avatar"
                     className={styles.avatar}
                 />
                 <div className={styles.info}>
                     <h2>{employer.name}</h2>
-                    <p className={styles.code}>Mã NTD: {employer.id}</p>
+                    <p className={styles.code}>Mã NTD: {employer._id}</p>
                     <p className={styles.contact}>
                         {employer.email} · {employer.phone}
                     </p>
@@ -106,7 +106,7 @@ export default function EmployerMemberCard({ employer }) {
 EmployerMemberCard.propTypes = {
     employer: PropTypes.shape({
         name: PropTypes.string.isRequired,
-        id: PropTypes.string.isRequired,
+        _id: PropTypes.string.isRequired,
         email: PropTypes.string.isRequired,
         phone: PropTypes.string.isRequired,
         tpPoint: PropTypes.number.isRequired,

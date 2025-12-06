@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Eye } from "lucide-react";
 import styles from "./AdminTicketList.module.scss";
+import PropTypes from "prop-types";
 
 const TicketType = {
     SUPPORT: "SUPPORT",
@@ -13,29 +14,7 @@ const TicketStatus = {
     CLOSED: "CLOSED",
 };
 
-// MOCK DATA nếu bạn muốn test
-const mockTickets = [
-    {
-        id: "1",
-        type: TicketType.SUPPORT,
-        status: TicketStatus.OPEN,
-        title: "Lỗi đăng tin",
-        category: "Tin tuyển dụng",
-        content: "Không thể đăng tin mới.",
-        createdAt: new Date(),
-    },
-    {
-        id: "2",
-        type: TicketType.FEEDBACK,
-        status: TicketStatus.RESPONDED,
-        title: "Góp ý UI",
-        category: "Giao diện",
-        content: "Nên cải thiện màu sắc button.",
-        createdAt: new Date(),
-    },
-];
-import PropTypes from "prop-types";
-export default function AdminTicketList({ tickets = mockTickets, onViewTicket }) {
+export default function AdminTicketList({ tickets, onViewTicket }) {
     const [filterType, setFilterType] = useState("ALL");
     const [filterStatus, setFilterStatus] = useState("ALL");
 
@@ -88,7 +67,7 @@ export default function AdminTicketList({ tickets = mockTickets, onViewTicket })
                             </tr>
                         ) : (
                             filteredTickets.map((ticket) => (
-                                <tr key={ticket.id}>
+                                <tr key={ticket._id}>
                                     <td>
                                         <span
                                             className={
@@ -136,17 +115,21 @@ export default function AdminTicketList({ tickets = mockTickets, onViewTicket })
         </div>
     );
 }
+
 AdminTicketList.propTypes = {
+    onViewTicket: PropTypes.func.isRequired,
     tickets: PropTypes.arrayOf(
         PropTypes.shape({
-            id: PropTypes.string.isRequired,
+            _id: PropTypes.string.isRequired,
             type: PropTypes.oneOf([TicketType.SUPPORT, TicketType.FEEDBACK]).isRequired,
-            status: PropTypes.oneOf([TicketStatus.OPEN, TicketStatus.RESPONDED, TicketStatus.CLOSED]).isRequired,
             title: PropTypes.string,
-            category: PropTypes.string,
             content: PropTypes.string.isRequired,
             createdAt: PropTypes.instanceOf(Date).isRequired,
+            status: PropTypes.oneOf([
+                TicketStatus.OPEN,
+                TicketStatus.RESPONDED,
+                TicketStatus.CLOSED,
+            ]).isRequired,
         })
-    ),
-    onViewTicket: PropTypes.func.isRequired,
+    ).isRequired,
 };

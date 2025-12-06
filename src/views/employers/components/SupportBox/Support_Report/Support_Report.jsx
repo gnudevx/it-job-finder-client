@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import styles from "./Support_Report.module.scss";
 import FileUpload from "@components/common/FileUpload/FileUpload.jsx";
-
+import supportService from "@/api/supportService.js";
 export default function Support_Report() {
     const [formData, setFormData] = useState({
         title: "",
         type: "",
+        typeLabel: "",
         description: "",
         files: [],
     });
@@ -13,7 +14,13 @@ export default function Support_Report() {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+
+        if (name === "type") {
+            const label = e.target.options[e.target.selectedIndex].text;
+            setFormData({ ...formData, type: value, typeLabel: label });
+        } else {
+            setFormData({ ...formData, [name]: value });
+        }
     };
 
     // ✅ Nhận file mới từ component con
@@ -29,20 +36,34 @@ export default function Support_Report() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         if (!formData.title || !formData.type || !formData.description) {
             alert("Vui lòng nhập đầy đủ thông tin!");
             return;
         }
 
+        const fd = new FormData();
+        fd.append("title", formData.title);
+        fd.append("type", formData.type);
+        fd.append("typeLabel", formData.typeLabel);
+        fd.append("description", formData.description);
+        formData.files.forEach(file => fd.append("files", file));
+
         setStatus("loading");
-        await new Promise((res) => setTimeout(res, 1000));
-        console.log("Dữ liệu gửi đi:", formData);
-        setStatus("success");
-        alert("Gửi báo cáo thành công!");
+
+        try {
+            await supportService.createSupport(fd);
+            alert("Gửi báo cáo thành công!");
+            setStatus("success");
+        } catch (err) {
+            console.error(err);
+            alert("Gửi báo cáo thất bại!");
+            setStatus("error");
+        }
     };
 
     return (
-        <div className={styles.reportForm} onSubmit={handleSubmit}>
+        <form className={styles.reportForm} onSubmit={handleSubmit}>
             <h3>Yêu cầu hỗ trợ & Báo cáo vi phạm</h3>
             <p className={styles.desc}>
                 Với mong muốn tiếp nhận và xử lý các phản hồi từ phía nhà tuyển dụng một cách nhanh chóng, HireIT cho ra mắt Hộp thư hỗ trợ để lắng nghe tất cả các phản hồi từ phía Nhà tuyển dụng
@@ -65,6 +86,7 @@ export default function Support_Report() {
                 <label>Loại báo cáo <span>*</span></label>
                 <select name="type" value={formData.type} onChange={handleChange}>
                     <option value="">Chọn loại báo cáo</option>
+                    <option value="employer">Báo cáo nhà tuyển dụng mạo danh</option>
                     <option value="spam">Báo cáo spam / lừa đảo</option>
                     <option value="bug">Lỗi kỹ thuật</option>
                     <option value="other">Khác</option>
@@ -112,6 +134,6 @@ export default function Support_Report() {
             >
                 {status === "loading" ? "Đang gửi..." : "Gửi báo cáo"}
             </button>
-        </div>
+        </form>
     );
 }

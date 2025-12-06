@@ -48,6 +48,8 @@
     padding: 4px 8px;
     border-radius: 4px;
     margin-right: 12px;
+    min-width: 90px;
+    text-align: center;
 
     &.notice {
         background-color: #fef3c7;
@@ -58,6 +60,31 @@
         background-color: #d1fae5;
         color: #065f46;
     }
+
+}
+
+/* SYSTEM */
+.system {
+    background-color: #e5e7eb;
+    color: #111827;
+}
+
+/* FEATURE */
+.feature {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+/* PROMOTION */
+.promotion {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+/* ALERT */
+.alert {
+    background-color: #fee2e2;
+    color: #b91c1c;
 }
 
 /* =============== Phân trang =============== */

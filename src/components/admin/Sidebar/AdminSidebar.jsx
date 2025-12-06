@@ -11,8 +11,24 @@ import {
   LogOut,
   FolderKanban
 } from "lucide-react";
-
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import authService from "@/services/authService";
 export default function AdminSidebar({ isCollapsed }) {
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    try {
+      await authService.logoutRequest();   // 👈 gọi API logout
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+
+    // Xóa token, điều hướng về login
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("refreshToken");
+    navigate("/login");    // 👈 chuyển trang
+
+  };
   const menu = [
     { to: "/admin/dashboard", label: "Trang Chủ", icon: <LayoutDashboard /> },
     { to: "/admin/manage/recruiment", label: "Quản lý tin tuyển dụng", icon: <Briefcase /> },
@@ -48,7 +64,7 @@ export default function AdminSidebar({ isCollapsed }) {
       {/* KHỐI 2: Nút Đăng xuất - Luôn nằm đáy */}
       <button
         className={styles.logoutButton}
-        onClick={() => console.log("Đăng xuất")}
+        onClick={handleLogout}
         title="Đăng xuất"
       >
         <div className={styles.icon}>

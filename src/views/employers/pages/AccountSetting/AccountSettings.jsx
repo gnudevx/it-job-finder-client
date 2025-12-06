@@ -26,13 +26,13 @@ export default function Account() {
                 </div>
                 <div className={styles.content}>
                     <Routes>
+                        <Route index element={<Navigate to="password" replace />} />
                         <Route path="password" element={<ChangePassword />} />
                         <Route path="personal" element={<PersonalInfo />} />
                         <Route path="license" element={<BusinessLicense />} />
                         <Route path="company-info" element={<Company />} />
                         <Route path="cv-applied" element={<Settings />} />
                         {/* Nếu không có gì thì mặc định chuyển sang "password" */}
-                        <Route index element={<Navigate to="password" replace />} />
                     </Routes>
                 </div>
             </div>
