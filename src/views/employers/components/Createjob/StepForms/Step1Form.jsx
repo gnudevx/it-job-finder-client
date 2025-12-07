@@ -94,7 +94,7 @@ export default function Step1Form() {
                     value={form.title}
                     onChange={(e) => updateField('title', e.target.value)}
                     onBlur={() => handleFieldBlur('title')}
-                    placeholder="VD: Nhân Viên Kinh Doanh Bất Động Sản"
+                    placeholder="VD: Lập trình viên IT"
                     maxLength={50}
                     className={!validatedFields.title ? styles.inputError : ''}
                 />

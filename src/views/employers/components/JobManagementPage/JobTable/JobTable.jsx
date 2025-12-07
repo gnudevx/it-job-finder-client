@@ -69,7 +69,9 @@ export default function JobTable({ jobs, setJobs }) {
             }
         } catch (err) {
             console.error(err);
-            toast.error("Có lỗi xảy ra, vui lòng thử lại!");
+            // --- Đọc message từ backend nếu có ---
+            const message = err.response?.data?.message || "Có lỗi xảy ra, vui lòng thử lại!";
+            toast.error(message);
         }
     };
     const handleResume = async (job) => {

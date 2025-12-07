@@ -99,7 +99,7 @@ export default function RecruiterList({ recruiters = [], onViewDetail }) {
 
                     <tbody className={styles.tbody}>
                         {filtered.map((recruiter) => (
-                            <tr key={recruiter.id} className={styles.row}>
+                            <tr key={recruiter._id} className={styles.row}>
                                 <td className={styles.companyCell}>
                                     <div className={styles.logoWrap}>
                                         <img
@@ -111,9 +111,9 @@ export default function RecruiterList({ recruiters = [], onViewDetail }) {
 
                                     <div className={styles.companyInfo}>
                                         <div className={styles.companyName}>
-                                            {recruiter.companyName}
+                                            {recruiter.fullName || "chưa tạo công ty"}
                                         </div>
-                                        <div className={styles.sub}>{recruiter.email}</div>
+                                        <div className={styles.sub}>{recruiter.userId?.email || "chưa có email"}</div>
                                     </div>
                                 </td>
 
@@ -125,13 +125,13 @@ export default function RecruiterList({ recruiters = [], onViewDetail }) {
 
                                 <td>
                                     <span className={`${styles.statusBadge} ${getStatusClass(recruiter.status)}`}>
-                                        {recruiter.status}
+                                        {recruiter.userId.status}
                                     </span>
                                 </td>
 
                                 <td>
                                     <span className={styles.credit}>
-                                        <strong>{recruiter.creditBalance ?? 0}</strong> tin
+                                        <strong>{recruiter.remaining ?? 0}</strong> tin
                                     </span>
                                 </td>
 
