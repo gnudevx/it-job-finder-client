@@ -26,8 +26,9 @@ export default function Footer() {
                     <div>
                         <h4 className={styles.sectionTitle}>Ứng Viên</h4>
                         <ul className={styles.linkList}>
-                            <li><a className={styles.linkItem}>Tìm việc làm</a></li>
-                            <li><a className={styles.linkItem}>Tạo CV chuyên nghiệp</a></li>
+                            <li><a href="" className={styles.linkItem}>Tìm việc làm</a></li>
+                            <li><a href="" className={styles.linkItem}>Thêm việc làm yêu thích</a></li>
+                            <li><a href="" className={styles.linkItem}>Ứng tuyển ngay</a></li>
                         </ul>
                     </div>
 

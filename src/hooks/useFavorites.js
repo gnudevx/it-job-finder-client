@@ -10,7 +10,7 @@ export default function useFavorites() {
             try {
                 const res = await getMyFavorites();
 
-                const ids = res.data.data.map(item => item.jobID._id);
+                const ids = res.data.map(item => item.jobID._id);
                 setFavorites(ids);
             } catch (err) {
                 console.log("Not logged in or cannot load favorites");

@@ -166,14 +166,16 @@
 .gradientText {
   background: linear-gradient(to right, #4f46e5, #7c3aed);
   -webkit-background-clip: text;
+  background-clip: text;
   color: transparent;
 }
 
 .subtitle {
   font-size: 1.125rem;
   color: #4b5563;
-  max-width: 32rem;
+  max-width: 35rem;
   margin: 0 auto;
+  padding-bottom: 20px;
 
   @media (min-width: 1024px) {
     margin-left: 0;

@@ -141,7 +141,7 @@ export default function HomePage() {
                             </h1>
 
                             <p className={styles.subtitle}>
-                                Tiếp cận hơn 5,000+ tin tuyển dụng IT chất lượng cao mỗi ngày.
+                                Tiếp cận đa dạng các tin tuyển dụng IT chất lượng cao mỗi ngày.
                             </p>
 
                             <div className={styles.searchBar}>
@@ -194,7 +194,7 @@ export default function HomePage() {
                                     className={styles.mainImage}
                                 />
 
-                                <div className={styles.floatingBadge}>
+                                {/* <div className={styles.floatingBadge}>
                                     <div className={styles.badgeIconWrapper}>
                                         <Search size={24} />
                                     </div>
@@ -202,7 +202,7 @@ export default function HomePage() {
                                         <p className={styles.badgeLabel}>Việc làm mới</p>
                                         <p className={styles.badgeCount}>120+</p>
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
 
