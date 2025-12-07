@@ -7,6 +7,7 @@ import { validateStep2 } from "@/viewmodels/ValidateStepEmployer/validateStep2Fi
 import { validateStep3 } from "@/viewmodels/ValidateStepEmployer/validateStep3Fields";
 import { validateStep4 } from "@/viewmodels/ValidateStepEmployer/validateStep4Fields";
 import jobApiService from '@api/jobApiService.js';
+import { checkJobLimit } from "@/utils/jobUtils";
 export const CreateJobContext = createContext();
 
 const setNestedPath = (obj, path, value) => {
@@ -26,7 +27,7 @@ export const CreateJobProvider = ({ children, isEditing = false, jobId = null })
     const fieldStepMap = {
         title: 1, specialization: 1, level: 1, jobType: 1, salary: 1, salaryFrom: 1, salaryTo: 1,
         jobDescription: 2, requirements: 2, benefits: 2, province: 2, address: 2, workingTime: 2,
-        education: 3, experienceLevel: 3, gender: 3, ageRange: 3, portfolioRequired: 3, mustHaveSkills: 3, optionalSkills: 3, languages: 3,
+        education: 3, experience: 3, gender: 3, ageRange: 3, portfolioRequired: 3, mustHaveSkills: 3, optionalSkills: 3, languages: 3,
         applicationDeadline: 4, quantity: 4, receiverName: 4, receiverPhone: 4, receiverEmail: 4
     };
 
@@ -45,13 +46,12 @@ export const CreateJobProvider = ({ children, isEditing = false, jobId = null })
         province: '', district: '', ward: '', address: '',
         domainKnowledge: [],
         education: '',
-        experienceLevel: '',
         gender: '',
         ageRange: '',
         portfolioRequired: false, mustHaveSkills: [], optionalSkills: [], languages: [],
         applicationDeadline: '', quantity: '', receiverName: '', receiverPhone: '', receiverEmail: '', allowOnlineApply: true,
     });
-
+    const [jobLimitVersion, setJobLimitVersion] = useState(0);
     const [validatedFields, setValidatedFields] = useState({});
     const [currentStep, setCurrentStep] = useState(0);
     const [openSteps, setOpenSteps] = useState([0]);
@@ -83,6 +83,13 @@ export const CreateJobProvider = ({ children, isEditing = false, jobId = null })
         }
     }, [isEditing, originalJob]);
     const handleSubmitJob = async (type = "publish") => {
+        const jobLimit = await checkJobLimit();
+        if (!jobLimit) return; // Nếu không thể kiểm tra, không tiếp tục
+
+        if (jobLimit.limitReached) {
+            toast.error(`Gói FREE chỉ có thể đăng ${jobLimit.maxPosts} tin/tháng.`);
+            return; // Nếu đã hết hạn mức, không cho phép tạo thêm tin
+        }
         const stepValidations = [validateStep1(form), validateStep2(form), validateStep3(form), validateStep4(form)];
         const allValidation = Object.assign({}, ...stepValidations);
         const errorFields = Object.keys(allValidation).filter(key => !allValidation[key]);
@@ -126,13 +133,14 @@ export const CreateJobProvider = ({ children, isEditing = false, jobId = null })
             }
             console.log("asdasdsad: ", res.data)
             if (res.success) {
+                setJobLimitVersion(v => v + 1); // Cập nhật phiên bản hạn mức tin đăng
                 toast.success(
                     isEditing
                         ? "Cập nhật tin thành công!"
-                        : `🎉 ${type === "publish" ? "Đăng tin" : "Lưu nháp"} thành công!`
+                        : `🎉 ${type === "publish" ? "Tin đã được lưu, đợi phản hồi từ admin" : "Lưu nháp"} thành công!`
                 );
             } else {
-                toast.error(res.data.message || "Có lỗi xảy123123 ra");
+                toast.error(res.data.message || "Có lỗi xảy ra");
             }
         } catch (err) {
             console.error(err);
@@ -238,7 +246,7 @@ export const CreateJobProvider = ({ children, isEditing = false, jobId = null })
         <CreateJobContext.Provider value={{
             form, updateField, validatedFields, setValidatedFields,
             currentStep, setCurrentStep, openSteps, toggleStep,
-            handleFieldBlur, handleSubmitJob, isEditing, jobId, loading
+            handleFieldBlur, handleSubmitJob, isEditing, jobId, loading, jobLimitVersion, setJobLimitVersion
         }}>
             {children}
         </CreateJobContext.Provider>

@@ -7,19 +7,18 @@ import useFavorites from "@/hooks/useFavorites";
 import JobCard from "@/views/candidates/components/JobCard/JobCard.jsx";
 import { getAllJobs } from "@/api/jobService";
 import Pagination from "@/components/common/Pagination/Pagination";
-import { useAuth } from "@/contexts/AuthContext.jsx";
+import NewsSection from "@/views/candidates/components/NewsSection/NewsSection.jsx";
+import { Search, MapPin } from "lucide-react";
 
 export default function HomePage() {
-    const { authToken } = useAuth();
 
-    // ❗ ĐÃ LOẠI favorites để tránh ESLint error
     const { toggleFavorite, isFavorite } = useFavorites();
 
     const [search, setSearch] = useState("");
     const [filters, setFilters] = useState({});
     const [jobs, setJobs] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const jobsPerPage = 15;
+    const jobsPerPage = 16;
 
     const navigate = useNavigate();
 
@@ -36,13 +35,14 @@ export default function HomePage() {
                     location: job.location?.name || "Không rõ",
                     experience: job.experience,
                     createdAt: job.createdAt || job.updatedAt || null,
-                    skills: job.skills || []
+                    skills: job.skills || [],
+                    jobType: job.jobType
                 }));
 
                 const sorted = formatted.sort((a, b) => {
                     const dateA = new Date(a.createdAt);
                     const dateB = new Date(b.createdAt);
-                    return dateB - dateA; // mới nhất lên đầu
+                    return dateB - dateA;
                 });
 
                 setJobs(sorted);
@@ -101,7 +101,6 @@ export default function HomePage() {
             }
 
             if (key === "createDate") {
-                // value là số ngày
                 const jobDate = new Date(job.createdAt);
                 const now = new Date();
                 const diffDays = Math.floor((now - jobDate) / (1000 * 60 * 60 * 24));
@@ -110,9 +109,9 @@ export default function HomePage() {
 
             if (key === "skills") {
                 if (!Array.isArray(job.skills) || !job.skills.length) return false;
-                const jobSkillNames = job.skills.map(s => s.name); // job.skills từ backend
-                const selectedSkills = Array.isArray(value) ? value : [value];
-                return selectedSkills.every(skill => jobSkillNames.includes(skill));
+                const jobSkillNames = job.skills.map(s => s.name);
+                const selected = Array.isArray(value) ? value : [value];
+                return selected.every(skill => jobSkillNames.includes(skill));
             }
 
             return true;
@@ -126,25 +125,97 @@ export default function HomePage() {
 
     return (
         <div className={styles["home-container"]}>
-            <div className={styles["top-section"]}>
-                <h1 className={styles.title}>HireIT - Thêm CV, Tìm việc làm hiệu quả</h1>
-                <div className={styles["search-box"]}>
-                    <input
-                        type="text"
-                        placeholder="Tìm kiếm việc làm..."
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        onKeyDown={(e) => e.key === "Enter" && handleSearchSubmit()}
-                    />
-                    <button onClick={handleSearchSubmit}>Tìm kiếm</button>
+
+            {/* -------------- REPLACED WITH NEW HERO LAYOUT ---------------- */}
+            <div className={styles.heroWrapper}>
+                <div className={styles.bgLayer}></div>
+                <div className={styles.bgCircleTop}></div>
+                <div className={styles.bgCircleBottom}></div>
+
+                <div className={styles.container}>
+                    <div className={styles.contentWrapper}>
+                        <div className={styles.leftContent}>
+                            <h1 className={styles.title}>
+                                HireIT - <span className={styles.gradientText}>Thêm CV,</span><br />
+                                Tìm việc làm hiệu quả
+                            </h1>
+
+                            <p className={styles.subtitle}>
+                                Tiếp cận hơn 5,000+ tin tuyển dụng IT chất lượng cao mỗi ngày.
+                            </p>
+
+                            <div className={styles.searchBar}>
+                                <div className={styles.searchInput}>
+                                    <Search className={styles.icon} size={20} />
+                                    <input
+                                        type="text"
+                                        placeholder="Tìm kiếm việc làm, kỹ năng, công ty..."
+                                        value={search}
+                                        onChange={(e) => setSearch(e.target.value)}
+                                        onKeyDown={(e) => e.key === "Enter" && handleSearchSubmit()}
+                                    />
+                                </div>
+
+                                <div className={styles.locationSelect}>
+                                    <MapPin className={styles.icon} size={20} />
+                                    <select
+                                        value={filters.location || ""}
+                                        onChange={(e) => {
+                                            const val = e.target.value;
+
+                                            // Nếu chọn "Tất cả địa điểm" => xoá filter
+                                            const formatted =
+                                                val === "" || val === "all"
+                                                    ? ""
+                                                    : val;
+
+                                            handleFilterChange("location", formatted);
+                                        }}
+                                    >
+                                        <option value="all">Tất cả địa điểm</option>
+                                        <option value="Hồ Chí Minh">Hồ Chí Minh</option>
+                                        <option value="Hà Nội">Hà Nội</option>
+                                        <option value="Đà Nẵng">Đà Nẵng</option>
+                                    </select>
+                                </div>
+
+                                <button onClick={handleSearchSubmit} className={styles.searchButton}>
+                                    Tìm kiếm
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className={styles.rightContent}>
+                            <div className={styles.imageWrapper}>
+                                <div className={styles.imageGlow}></div>
+                                <img
+                                    src="https://images.unsplash.com/photo-1586281380349-632531db7ed4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                                    alt="Job Search"
+                                    className={styles.mainImage}
+                                />
+
+                                <div className={styles.floatingBadge}>
+                                    <div className={styles.badgeIconWrapper}>
+                                        <Search size={24} />
+                                    </div>
+                                    <div>
+                                        <p className={styles.badgeLabel}>Việc làm mới</p>
+                                        <p className={styles.badgeCount}>120+</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
+            {/* -------------- END HERO SECTION ---------------- */}
 
             <FilterBar onChange={handleFilterChange} />
-
+            {/* 
             <div className={styles.totalJobs}>
                 Tổng số việc làm: {filtered.length}
-            </div>
+            </div> */}
 
             <div className={styles["jobs-grid"]}>
                 {currentJobs.map((job) => (
@@ -154,7 +225,6 @@ export default function HomePage() {
                         isFavorite={isFavorite(job.id)}
                         onToggleFavorite={toggleFavorite}
                         onClick={() => navigate(`/job/${job.id}`)}
-                        authToken={authToken}
                     />
                 ))}
             </div>
@@ -162,12 +232,14 @@ export default function HomePage() {
             <div className={styles["pagination"]}>
                 {totalPages > 1 && (
                     <Pagination
-                    page={currentPage}
-                    totalPages={totalPages}
-                    onChange={(newPage) => setCurrentPage(newPage)}
-                />
+                        page={currentPage}
+                        totalPages={totalPages}
+                        onChange={(newPage) => setCurrentPage(newPage)}
+                    />
                 )}
             </div>
+
+            <NewsSection />
         </div>
     );
 }

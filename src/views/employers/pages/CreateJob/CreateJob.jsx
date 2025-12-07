@@ -5,7 +5,6 @@ import Preview from '@views/employers/components/Createjob/Preview/Preview.jsx';
 import Sidebar from '@views/employers/components/Createjob/Sidebar/Sidebar.jsx';
 import StepForms from '@views/employers/components/Createjob/StepForms/StepForms.jsx';
 import { CreateJobProvider } from './CreateJobContext';
-
 export default function CreateJob() {
     const { jobId } = useParams();   // <--- phải đặt ở đây
 
@@ -23,7 +22,6 @@ export default function CreateJob() {
                     <aside className={styles.leftSidebar}>
                         <Sidebar steps={steps} />
                     </aside>
-
                     <main className={styles.body}>
                         <div className={styles.header}></div>
 
@@ -31,7 +29,6 @@ export default function CreateJob() {
                             <StepForms steps={steps} />
                         </div>
                     </main>
-
                     <aside className={styles.rightPreview}>
                         <Preview />
                     </aside>

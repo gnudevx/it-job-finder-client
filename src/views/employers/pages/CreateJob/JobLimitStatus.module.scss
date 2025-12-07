@@ -1,0 +1,31 @@
+.wrapper {
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+.limitReached {
+    color: #d9534f;
+
+    .count {
+        font-weight: 700;
+        color: #b52b27;
+    }
+}
+
+.status {
+    color: #444;
+
+    .count {
+        font-weight: 600;
+        color: #0d6efd;
+    }
+
+    .remaining {
+        font-weight: 700;
+        color: #198754;
+    }
+}

@@ -2,6 +2,7 @@ import React from "react";
 import HeaderCandidate from "@/views/candidates/components/Header/HeaderCandidate/HeaderCandidate.jsx";
 import { Outlet } from "react-router-dom";
 import styles from "@/views/candidates/layouts/CandidateLayout/CandidateLayout.module.scss";
+import Footer from "../../components/Footer/Footer";
 
 export default function CandidateLayout() {
     return (
@@ -15,6 +16,7 @@ export default function CandidateLayout() {
                     </div>
                 </div>
             </div>
+            <Footer />
         </div>
     );
 }

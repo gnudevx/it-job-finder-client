@@ -38,7 +38,7 @@ const employerRoutes = [
     { path: "jobs/", element: <JobManagementPage />, meta: { title: "JobManagementPage" } },
     { path: "recruitment-campaigns", element: <CampaignsPage />, meta: { title: "recruitment-campaigns" } },
     { path: "jobs/edit/:jobId", element: <CreateJob />, meta: { title: "Edit Job" } },
-    { path: "cvs-management/candidate-connection", element: <ManageAppliedCV />, meta: { title: "Manage Applied CVs" } },
+    { path: "cvs-management", element: <ManageAppliedCV />, meta: { title: "Manage Applied CVs" } },
     {
         path: "account/settings/*",
         element: <AccountSettings />,

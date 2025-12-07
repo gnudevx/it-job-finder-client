@@ -22,7 +22,7 @@ export default function JobManagementPage() {
     const fetchJobs = async () => {
         try {
             const res = await axios.get(
-                `/employer/jobs?employer_id=64e2b9b2d3f4a7c1e3b12345`
+                `/employer/jobs/getHistoryEmployer`
             );
             setJobs(res.data.data);
         } catch (err) {

@@ -27,7 +27,7 @@ export default function Sidebar({ steps = [] }) {
     const doneCountStep2 = step2Fields.filter(f => f.valid).length;
     const step3Fields = [
         { key: "education", label: "Học vấn", valid: validatedFields.education },
-        { key: "experience", label: "Kinh nghiệm", valid: validatedFields.mustHaveSkills },
+        { key: "experience", label: "Kinh nghiệm", valid: validatedFields.experience },
         { key: "ageRange", label: "Độ tuổi", valid: validatedFields.ageRange },
     ];
     const doneCountStep3 = step3Fields.filter(f => f.valid).length;

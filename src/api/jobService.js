@@ -8,6 +8,6 @@ export const getAllJobs = async () => {
 };
 
 export const getJobDetail = async (id) => {
-    const res = await axios.get(`http://localhost:5000/api/jobs/${id}`);
-    return res.data;
+  const res = await axios.get(`http://localhost:5000/api/jobs/${id}`);
+  return res.data;
 };
