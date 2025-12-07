@@ -1,4 +1,4 @@
-import axios from "../../services/axiosClient"; // tùy bạn đặt axios client ở đâu
+import axios from "@/services/axiosClient"; // tùy bạn đặt axios client ở đâu
 
 export const getEmployerApplications = async (filters = {}) => {
   const params = {};

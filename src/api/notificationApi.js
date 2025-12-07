@@ -1,4 +1,3 @@
-
 import { mockNotifications } from "@models/mockNotifications.js";
 
 export function fetchNotifications(page = 1, limit = 10) {

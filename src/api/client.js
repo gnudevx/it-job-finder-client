@@ -1,4 +1,4 @@
-import api from "./axiosInstance.js";
+import api from "@/services/axiosClient";
 
 const unwrapData = (res) => res.data;
 
