@@ -3,8 +3,8 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  align-items: flex-start;   
-  padding: 60px 0;
+  align-items: center;   
+  padding: 40px 20px;
   background: #3d37b0;
   overflow-y: auto;
   animation: fadeIn 0.8s ease;
@@ -12,6 +12,7 @@
 
 .authCard {
   width: 440px;
+  max-width: 440px;
   background: #fff;
   padding: 2rem 2.2rem;
   border-radius: 14px;
@@ -151,8 +152,119 @@
   }
 }
 
-/* Switch Login/Register */
+.roleSelection {
+  margin-bottom: 20px;
+  width: 100%;
+}
 
+.roleLabel {
+  display: block;
+  margin-bottom: 12px;
+  font-weight: 500;
+  color: #333;
+  font-size: 14px;
+}
+
+.roleButtons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.roleBtn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    border-color: #00b14f;
+    background: #f0fdf4;
+  }
+
+  &.active {
+    border-color: #00b14f;
+    background: #e8f5e9;
+    box-shadow: 0 2px 8px rgba(0, 177, 79, 0.2);
+  }
+}
+
+.roleIcon {
+  font-size: 28px;
+  flex-shrink: 0;
+}
+
+.roleText {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+
+  strong {
+    font-size: 15px;
+    color: #333;
+    margin-bottom: 2px;
+  }
+
+  small {
+    font-size: 12px;
+    color: #666;
+  }
+}
+
+.genderSelection {
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.genderLabel {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 500;
+  color: #333;
+  font-size: 14px;
+}
+
+.genderButtons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.genderBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  font-weight: 500;
+  color: #555;
+
+  &:hover {
+    border-color: #00b14f;
+    background: #f0fdf4;
+  }
+
+  &.active {
+    border-color: #00b14f;
+    background: #e8f5e9;
+    color: #00b14f;
+    box-shadow: 0 2px 6px rgba(0, 177, 79, 0.15);
+  }
+}
+
+/* Switch Login/Register */
 .switchLine {
   text-align: center;
   margin-top: 22px;

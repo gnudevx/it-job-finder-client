@@ -25,8 +25,8 @@ export default function LoginPage() {
     }
 
     try {
-      const data = await authService.login({ email, password });
-      console.log("Login data:", data);
+      const res = await authService.login({ email, password });
+      const data = res;
       // data.user có thông tin người dùng
       setUserId(data.user._id);
       setAuthToken(data.accessToken);

@@ -96,7 +96,6 @@ function ManageAppliedCV() {
     q: "",
     campaign: "",
     status: "",
-    source: "",
     range: "all",
     appliedAt: "",
     toDate: "",

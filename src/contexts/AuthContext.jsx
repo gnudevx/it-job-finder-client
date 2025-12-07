@@ -24,7 +24,6 @@ export function AuthProvider({ children }) {
     if (userId) localStorage.setItem("userId", userId);
     else localStorage.removeItem("userId");
   }, [authToken, userId]);
-
   
 
   useEffect(() => {

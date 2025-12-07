@@ -8,24 +8,46 @@ function IconSearch() {
 }
 
 function FilterBar({ filters, setFilters, campaigns }) {
-  const onTextChange = (e) => setFilters((prev) => ({ ...prev, q: e.target.value }));
-  const onStatusChange = (e) => setFilters((prev) => ({ ...prev, status: e.target.value }));
-  const onTimeChange = (e) =>
+  // --- Handlers ---
+  const onTextChange = (e) =>
+    setFilters((prev) => ({ ...prev, q: e.target.value }));
+
+  const onStatusChange = (e) =>
+    setFilters((prev) => ({ ...prev, status: e.target.value }));
+
+  const onTimeChange = (e) => {
+    const value = e.target.value;
+
     setFilters((prev) => ({
       ...prev,
-      range: e.target.value,
-      ...(e.target.value !== "custom" ? { appliedAt: "", toDate: "" } : {}),
+      range: value,
+      ...(value !== "custom"
+        ? { appliedAt: "", toDate: "" } // reset custom date
+        : {}),
     }));
-  const onCustomDateChange = (key, value) => setFilters((prev) => ({ ...prev, [key]: value }));
-  const clearFilters = () =>
-    setFilters({ q: "", campaign: "", status: "", source: "", range: "all", appliedAt: "", toDate: "" });
+  };
 
+  const onCustomDateChange = (key, value) =>
+    setFilters((prev) => ({ ...prev, [key]: value }));
+
+  const clearFilters = () =>
+    setFilters({
+      q: "",
+      campaign: "",
+      status: "",
+      range: "all",
+      appliedAt: "",
+      toDate: "",
+    });
+
+  // --- JSX ---
   return (
     <div className={styles.filterBar}>
+      {/* SEARCH BOX */}
       <form className={styles.searchBox} onSubmit={(e) => e.preventDefault()}>
         <input
           className={styles.searchInput}
-          placeholder="Tìm kiếm tên, email, số điện thoại"
+          placeholder="Tìm kiếm tên ứng viên, tin tuyển dụng"
           value={filters.q}
           onChange={onTextChange}
         />
@@ -34,19 +56,30 @@ function FilterBar({ filters, setFilters, campaigns }) {
         </button>
       </form>
 
+      {/* SELECT ROW */}
       <div className={styles.selectsRow}>
+        {/* Campaign */}
         <select
           className={styles.select}
           value={filters.campaign}
-          onChange={(e) => setFilters((prev) => ({ ...prev, campaign: e.target.value }))}
+          onChange={(e) =>
+            setFilters((prev) => ({ ...prev, campaign: e.target.value }))
+          }
         >
           <option value="">Chọn tin tuyển dụng</option>
           {campaigns.map((item) => (
-            <option key={item._id} value={item._id}>{item.title}</option>
+            <option key={item._id} value={item._id}>
+              {item.title}
+            </option>
           ))}
         </select>
 
-        <select className={styles.select} value={filters.status} onChange={onStatusChange}>
+        {/* Status */}
+        <select
+          className={styles.select}
+          value={filters.status}
+          onChange={onStatusChange}
+        >
           <option value="">Nhập trạng thái CV</option>
           <option value="applied">Tiếp nhận</option>
           <option value="reviewed">Phù hợp</option>
@@ -55,7 +88,12 @@ function FilterBar({ filters, setFilters, campaigns }) {
           <option value="rejected">Chưa phù hợp</option>
         </select>
 
-        <select className={styles.select} value={filters.range} onChange={onTimeChange}>
+        {/* Time Range */}
+        <select
+          className={styles.select}
+          value={filters.range}
+          onChange={onTimeChange}
+        >
           <option value="all">Tất cả thời gian</option>
           <option value="today">Hôm nay</option>
           <option value="7days">7 ngày gần đây</option>
@@ -65,6 +103,7 @@ function FilterBar({ filters, setFilters, campaigns }) {
           <option value="custom">Tùy chỉnh...</option>
         </select>
 
+        {/* Custom Date Range */}
         {filters.range === "custom" && (
           <div className={styles.customDateWrap}>
             <input
