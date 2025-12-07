@@ -37,9 +37,6 @@ export default function ManageCandidates() {
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Quản Lý Candidate</h1>
-      <button className={styles.addBtn} onClick={() => window.location.href="/admin/manage/candidates/add"}>
-        Thêm Ứng Viên
-      </button>
 
       <div className={styles.tableWrapper}>
         {loading ? (
@@ -89,7 +86,7 @@ export default function ManageCandidates() {
                         Sửa
                       </button>
                       <button className={styles.deleteBtn} onClick={() => handleDelete(c._id)}>
-                        Xóa
+                        Khóa
                       </button>
                     </div>
                   </td>
