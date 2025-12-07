@@ -1,7 +1,8 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import HeaderWrapper from "@/views/candidates/components/Header/HeaderWrapper.jsx"; 
+import HeaderWrapper from "@/views/candidates/components/Header/HeaderWrapper.jsx";
 import styles from "./GuestLayout.module.scss";
+import Footer from "../../components/Footer/Footer";
 
 export default function GuestLayout() {
     return (
@@ -15,6 +16,7 @@ export default function GuestLayout() {
                     </div>
                 </div>
             </div>
+            <Footer />
         </div>
     );
 }

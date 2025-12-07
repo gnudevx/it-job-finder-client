@@ -1,13 +1,13 @@
-import api from "./axiosInstance";
+import axiosClient from "@/services/axiosClient.js";
 
 export const getMyFavorites = () => {
-    return api.get("/favorites");
+    return axiosClient.get("/favorites");
 };
 
 export const addFavorite = (jobID) => {
-    return api.post("/favorites", { jobID });
+    return axiosClient.post("/favorites", { jobID });
 };
 
 export const removeFavorite = (jobID) => {
-    return api.delete(`/favorites/${jobID}`);
+    return axiosClient.delete(`/favorites/${jobID}`);
 };

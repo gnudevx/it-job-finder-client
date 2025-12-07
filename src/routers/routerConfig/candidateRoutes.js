@@ -23,8 +23,8 @@ const candidateRoutes = [
     { path: "account/viewedemployer", element: <ViewedEmployer />, meta: { title: "Home", icon: "home" } },
     { path: "account", element: <PersonalInfo />, meta: { title: "Home", icon: "home" } },
     { path: "account/changepassword", element: <ChangePassword />, meta: { title: "Home", icon: "home" } },
-    { path: "account/notifications", element: <NotificationSettings />},
-    { path: "account/security", element: <SecuritySettings />} ,
+    { path: "account/notifications", element: <NotificationSettings /> },
+    { path: "account/security", element: <SecuritySettings /> },
 ];
 
 export default candidateRoutes;

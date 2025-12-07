@@ -1,74 +1,47 @@
 .layout-container {
     display: flex;
     flex-direction: column;
-    height: 100dvh;
-    overflow: visible;
-    align-items: stretch;
+    min-height: 100vh;
+    /* đủ để đẩy footer xuống đáy */
 }
 
-/* Header */
+/* Header cố định chiều cao */
 header {
     height: 64px;
-    background-color: white;
+    flex-shrink: 0;
+    background: white;
     border-bottom: 1px solid #eee;
-    flex-shrink: 0;
-    // z-index: 10;
 }
 
-/* Wrapper chứa sidebar + main */
+/* Wrapper cho content */
 .content-wrapper {
-    display: flex;
     flex: 1;
-    min-height: 0;
-    transition: all 0.3s ease;
-    overflow: visible;
-    /* bắt buộc để con scroll được */
+    /* cho phép nở */
+    display: flex;
+    flex-direction: column;
 }
 
-/* Sidebar */
-.sidebar {
-    width: 250px;
-    background-color: #fff;
-    border-right: 1px solid #eee;
-    overflow-y: auto;
-    overflow-x: hidden;
-    flex-shrink: 0;
-}
-
-.sidebar.collapsed {
-    width: 60px;
-    /* ✅ sidebar co lại */
-}
-
-/* Main */
+/* Main content */
 .main-content {
     flex: 1;
     display: flex;
     flex-direction: column;
-    overflow-x: hidden;
-    /* chặn scroll ở layer này */
-    min-height: 0;
-    transition: all 0.3s ease;
-    z-index: 1;
 }
 
-/* Page container là nơi cuộn thực sự */
+/* Page container - KHÔNG scroll nội bộ */
 .page-container {
     flex: 1;
-    overflow-y: auto;
-    /* chỉ phần này scroll */
-    overflow-x: hidden;
     padding: 24px;
-    background-color: #f4f5f5;
-    min-height: 0;
+    background: #f4f5f5;
 }
 
+/* BODY phải cho scroll */
 html,
 body,
 #root {
     height: 100%;
-    overflow: hidden;
-    padding: 0;
     margin: 0;
-    /* khóa hoàn toàn scrollbar toàn cục */
+    padding: 0;
+    overflow-y: auto !important;
+    /* cho cuộn toàn trang */
 }
