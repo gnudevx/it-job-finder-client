@@ -7,14 +7,28 @@ export default function JobCard({
     job,
     isFavorite,
     onToggleFavorite,
-    onClick
+    onClick,
+    showStatusAndUpdate
 }) {
+    const STATUS_LABELS = {
+        applied: "Đã ứng tuyển",
+        reviewed: "Phù hợp",
+        interviewing: "Hẹn phỏng vấn",
+        hired: "Nhận việc",
+        rejected: "Chưa phù hợp"
+    };
+
+    const formatSalary = (salaryStr) => {
+        if (!salaryStr) return "";
+        return salaryStr.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    };
+
+
     return (
         <div className={styles.card} onClick={onClick}>
             <div className={styles.topRow}>
                 <img
                     src="/logo192.png"
-                    alt={job.company}
                     className={styles.logo}
                 />
 
@@ -34,9 +48,20 @@ export default function JobCard({
             </div>
 
             <div className={styles.title}>{job.title}</div>
+                {showStatusAndUpdate && (
+                    <div className={styles.statusUpdate}>
+                        <p className={styles.status}>
+                        Trạng thái: <strong>{STATUS_LABELS[job.status] || "Không rõ"}</strong>
+                        </p>
+                        <p className={styles.updatedAt}>
+                        Cập nhật gần nhất:{" "}
+                        <strong>{new Date(job.updatedAt).toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" })}</strong>
+                        </p>
+                    </div>
+                )}
 
-            <div className={styles.companyRow}>
-                <div className={styles.company}>{job.company}</div>
+            <div className={styles.groupRow}>
+                <div className={styles.group}>{job.group}</div>
 
                 {job.createdAt && (
                     <div className={styles.postDate}>
@@ -49,7 +74,7 @@ export default function JobCard({
             </div>
 
             <div className={styles.meta}>
-                <span className={styles.salary}>{job.salary}</span>
+                <span className={styles.salary}>Lương: {formatSalary(job.salary)}</span>
                 <span className={styles.location}>{job.location}</span>
             </div>
         </div>
@@ -61,4 +86,5 @@ JobCard.propTypes = {
     isFavorite: PropTypes.bool,
     onToggleFavorite: PropTypes.func,
     onClick: PropTypes.func,
+    showStatusAndUpdate: PropTypes.bool
 };

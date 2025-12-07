@@ -41,7 +41,7 @@ export default function ManageCandidates() {
         Thêm Ứng Viên
       </button>
 
-      <div className={styles.box}>
+      <div className={styles.tableWrapper}>
         {loading ? (
           <p>Đang tải danh sách ứng viên...</p>
         ) : candidates.length === 0 ? (

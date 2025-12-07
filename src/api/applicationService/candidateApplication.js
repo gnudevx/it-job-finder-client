@@ -1,4 +1,4 @@
-import axiosClient from "../services/axiosClient";
+import axiosClient from "../../services/axiosClient";
 
 const API_URL = "http://localhost:5000/candidates/applications";
 

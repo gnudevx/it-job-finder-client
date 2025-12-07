@@ -19,7 +19,7 @@ export default function HomePage() {
     const [filters, setFilters] = useState({});
     const [jobs, setJobs] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const jobsPerPage = 20;
+    const jobsPerPage = 15;
 
     const navigate = useNavigate();
 
@@ -31,11 +31,12 @@ export default function HomePage() {
                 const formatted = data.data.map(job => ({
                     id: job._id,
                     title: job.title,
-                    company: job.group_id?.name || "Không rõ",
+                    group: job.group_id?.name || "Không rõ",
                     salary: job.salary_raw || "Thoả thuận",
                     location: job.location?.name || "Không rõ",
                     experience: job.experience,
-                    createdAt: job.createdAt || job.updatedAt || null
+                    createdAt: job.createdAt || job.updatedAt || null,
+                    skills: job.skills || []
                 }));
 
                 const sorted = formatted.sort((a, b) => {
@@ -77,7 +78,8 @@ export default function HomePage() {
 
         const searchMatch =
             (job.title?.toLowerCase() || "").includes(keyword) ||
-            (job.company?.toLowerCase() || "").includes(keyword);
+            (job.group?.toLowerCase() || "").includes(keyword) ||
+            (job.location?.toLowerCase() || "").includes(keyword);
 
         if (!searchMatch) return false;
 
@@ -106,7 +108,14 @@ export default function HomePage() {
                 return diffDays < Number(value);
             }
 
-            return job[key]?.toLowerCase().includes(String(value).toLowerCase());
+            if (key === "skills") {
+                if (!Array.isArray(job.skills) || !job.skills.length) return false;
+                const jobSkillNames = job.skills.map(s => s.name); // job.skills từ backend
+                const selectedSkills = Array.isArray(value) ? value : [value];
+                return selectedSkills.every(skill => jobSkillNames.includes(skill));
+            }
+
+            return true;
         });
     });
 
@@ -118,7 +127,7 @@ export default function HomePage() {
     return (
         <div className={styles["home-container"]}>
             <div className={styles["top-section"]}>
-                <h1 className={styles.title}>HireIT - Tạo CV, Tìm việc làm hiệu quả</h1>
+                <h1 className={styles.title}>HireIT - Thêm CV, Tìm việc làm hiệu quả</h1>
                 <div className={styles["search-box"]}>
                     <input
                         type="text"
@@ -150,13 +159,15 @@ export default function HomePage() {
                 ))}
             </div>
 
-            {totalPages > 1 && (
-                <Pagination
+            <div className={styles["pagination"]}>
+                {totalPages > 1 && (
+                    <Pagination
                     page={currentPage}
                     totalPages={totalPages}
                     onChange={(newPage) => setCurrentPage(newPage)}
                 />
-            )}
+                )}
+            </div>
         </div>
     );
 }

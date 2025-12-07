@@ -4,6 +4,9 @@ import styles from "./JobDetail.module.scss";
 import useFavorites from "@/hooks/useFavorites";
 import useApplyJob from "@/hooks/useApplyJob";
 import { getJobDetail } from "@/api/jobService";
+import salary from "@assets/salary.svg";
+import location from "@assets/location.svg";
+import experience from "@assets/experience.svg";
 
 export default function JobDetail() {
     const mockCompany = {
@@ -45,14 +48,17 @@ export default function JobDetail() {
                 const formatted = {
                     id: data._id,
                     title: data.title,
-                    deadline: data.deadline,
+                    deadline: data.applicationDeadline,
                     description: data.description,
+                    salary: data.salary_raw,
                     requirements: Array.isArray(data.requirements)
                         ? data.requirements.join("\n")
                         : data.requirements,
                     benefits: Array.isArray(data.benefits)
                         ? data.benefits.join("\n")
                         : data.benefits,
+                    location: data.location?.name,
+                    experience: data.experience,
                     work_location_detail: data.work_location_detail,
                     working_time: data.working_time,
                     link: data.link,
@@ -94,26 +100,59 @@ export default function JobDetail() {
         <div className={styles.pageContainer}>
             {/* LEFT CONTENT */}
             <div className={styles.leftColumn}>
-                <div className={styles.jobHeader}>
-                    <h1 className={styles.title}>{title}</h1>
+                <div className={styles["main-detail"]}>
+                    <div className={styles.jobHeader}>
+                        <h1 className={styles.title}>{title}</h1>
 
-                    {authToken && (
-                        <button
-                            className={styles.favoriteBtn}
-                            onClick={() => toggleFavorite(id)}
-                        >
-                            {isFavorite(id) ? "💖 Bỏ lưu" : "🤍 Lưu việc"}
-                        </button>
-                    )}
+                        {authToken && (
+                            <button
+                                className={styles.favoriteBtn}
+                                onClick={() => toggleFavorite(id)}
+                            >
+                                {isFavorite(id) ? "💖 Bỏ lưu" : "🤍 Lưu việc"}
+                            </button>
+                        )}
+                    </div>
+
+                    <div className={styles.quickDetail}>
+                        <div>
+                            <img src={salary} className={styles["icon"]}></img>
+                            <p>Lương<br />{job.salary}</p>
+                        </div>
+                        <div>
+                            <img src={location} className={styles["icon"]}></img>
+                            <p>Địa điểm<br />{job.location}</p>
+                        </div>
+                        <div>
+                            <img src={experience} className={styles["icon"]}></img>
+                            <p>Kinh nghiệm<br />{job.experience} năm</p>
+                        </div>
+                    </div>
+
+                    <div className={styles["job-date"]}>
+                        <p className={styles.postDate}>
+                            Ngày đăng: <strong>{new Date(createdAt).toLocaleDateString("vi-VN")}</strong>
+                        </p>
+
+                        <p className={styles.deadline}>
+                            Hạn nộp hồ sơ: <strong>{new Date(deadline).toLocaleDateString("vi-VN")}</strong>
+                        </p>
+                    </div>
                 </div>
 
-                <p className={styles.postDate}>
-                    Ngày đăng: <strong>{new Date(createdAt).toLocaleDateString("vi-VN")}</strong>
-                </p>
-
-                <p className={styles.deadline}>
-                    Hạn nộp hồ sơ: <strong>{new Date(deadline).toLocaleDateString("vi-VN")}</strong>
-                </p>
+                <button
+                    className={styles.applyBtn}
+                    disabled={hasApplied}
+                    onClick={() => {
+                        if (!authToken) {
+                            alert("Vui lòng đăng nhập để sử dụng chức năng ứng tuyển!");
+                            return;
+                        }
+                        if (!hasApplied) setShowApplyForm(true);
+                    }}
+                >
+                    {hasApplied ? "Đã ứng tuyển" : "Ứng tuyển ngay"}
+                </button>
 
                 <section className={styles.section}>
                     <h2>Mô tả công việc</h2>
@@ -141,20 +180,6 @@ export default function JobDetail() {
                         ))}
                     </ul>
                 </section>
-
-                <button
-                    className={styles.applyBtn}
-                    disabled={hasApplied}
-                    onClick={() => {
-                        if (!authToken) {
-                            alert("Vui lòng đăng nhập để sử dụng chức năng ứng tuyển!");
-                            return;
-                        }
-                        if (!hasApplied) setShowApplyForm(true);
-                    }}
-                >
-                    {hasApplied ? "Đã ứng tuyển" : "Ứng tuyển ngay"}
-                </button>
             </div>
 
             {/* RIGHT SIDEBAR */}

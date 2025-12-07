@@ -4,15 +4,16 @@
   border-radius: 16px;
   padding: 1rem;
   display: flex;
+  width: 425px;
   flex-direction: column;
   gap: 0.75rem;
   transition: 0.25s ease;
   position: relative;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 
   &:hover {
     transform: translateY(-4px);
     border-color: #a5f3fc;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   }
 }
 
@@ -47,9 +48,12 @@
 }
 
 .title {
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: 600;
   color: #1f2937;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .meta {
@@ -66,14 +70,14 @@
   }
 }
 
-.companyRow {
+.groupRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 
-.company {
+.group {
   color: #6b7280;
   font-size: 0.9rem;
 }
@@ -81,4 +85,22 @@
 .postDate {
   font-size: 13px;
   color: #666;
+}
+
+.statusUpdate {
+  display: flex;
+  color: #374151;
+  font-weight: 700;
+
+  .p {
+    margin: 0;
+  }
+
+  strong {
+    color: #ae1515;
+  }
+
+  .updatedAt {
+    text-align: right;
+  }
 }

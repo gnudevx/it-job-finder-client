@@ -15,7 +15,8 @@ import NotificationDetail from "@/views/employers/components/SystemNotification/
 import VerificationModal from "@/views/employers/components/Verification/VerificationModal.jsx";
 import ProtectedRoute from "../protected/protected";
 import BuyService from "@/views/employers/pages/BuyService/BuyService.jsx";
-import Payment from "@/views/employers/pages/Payment/Payment.jsx";
+import Payment from "@/views/employers/pages/Payment/Payment.jsx";import ManageAppliedCV from "@/views/employers/pages/ManageAppliedCV/ManageAppliedCV.jsx"
+
 // import CompanyInfo from "@/views/employers/components/CompanyInfo/CompanyInfo";
 const employerRoutes = [
     { path: "dashboard", element: <Dashboard />, meta: { title: "Dashboard" } },
@@ -37,6 +38,7 @@ const employerRoutes = [
     { path: "jobs/", element: <JobManagementPage />, meta: { title: "JobManagementPage" } },
     { path: "recruitment-campaigns", element: <CampaignsPage />, meta: { title: "recruitment-campaigns" } },
     { path: "jobs/edit/:jobId", element: <CreateJob />, meta: { title: "Edit Job" } },
+    { path: "cvs-management/candidate-connection", element: <ManageAppliedCV />, meta: { title: "Manage Applied CVs" } },
     {
         path: "account/settings/*",
         element: <AccountSettings />,

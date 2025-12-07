@@ -35,7 +35,7 @@ const menuItems = [
         id: "cv-manager", // Thêm ID để quản lý state
         to: "cvs-management",
         children: [
-            { name: "Quản lý yêu cầu kết nối CV", to: "cvs-management/candidate-connection" }
+            { name: "Quản lý CV ứng tuyển", to: "cvs-management/candidate-connection" }
         ]
     },
     { type: "divider" },
