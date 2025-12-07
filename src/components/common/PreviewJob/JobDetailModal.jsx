@@ -4,7 +4,6 @@ import styles from "./JobDetailModal.module.scss";
 import PropTypes from "prop-types";
 const JobDetailModal = ({ job, onClose }) => {
     if (!job) return null;
-
     return (
         <div className={styles.overlay}>
             <div className={styles.modal}>
@@ -13,7 +12,7 @@ const JobDetailModal = ({ job, onClose }) => {
                     <div>
                         <h2 className={styles.title}>{job.title}</h2>
                         <p className={styles.company}>
-                            <Building2 size={16} /> {job.employer_id?.companyId?.name || "Chưa có"}
+                            <Building2 size={16} /> {job.employer_id?.companyId?.name || job.name || "Chưa có"}
                         </p>
                     </div>
 

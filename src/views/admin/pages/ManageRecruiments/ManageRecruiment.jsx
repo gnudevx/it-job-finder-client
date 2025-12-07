@@ -3,7 +3,7 @@ import { JobStatus } from "./types";
 import { Check, X, Eye, Filter } from "lucide-react";
 import styles from "./ManageRecruiment.module.scss";
 import jobApiService from "@/api/jobApiService.js"; // ✅ service gọi backend
-import JobDetailModal from "./JobDetailModal";
+import JobDetailModal from "../../../../components/common/PreviewJob/JobDetailModal";
 const ManageRecruiment = () => {
   const [jobs, setJobs] = useState([]);
   const [filter, setFilter] = useState("All");

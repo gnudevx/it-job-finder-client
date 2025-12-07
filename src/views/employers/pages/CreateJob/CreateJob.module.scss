@@ -114,3 +114,35 @@
         border-bottom: 1px solid #eee;
     }
 }
+
+.limitStatusWrap {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+
+    z-index: 50;
+
+    .limitBox {
+        background: white;
+        padding: 10px 14px;
+        border-radius: 8px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        font-size: 14px;
+        color: #333;
+        border-left: 4px solid #3b82f6; // xanh nhẹ
+        max-width: 260px;
+        animation: fadeIn 0.25s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-5px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+}

@@ -1,0 +1,255 @@
+.section {
+    background-color: #f3f4f6;
+    min-height: 100vh;
+    padding-bottom: 3rem;
+}
+
+.banner {
+    background-color: #ffedd5;
+    border-bottom: 1px solid #fed7aa;
+}
+
+.bannerContent {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center; // căn theo trục dọc
+    gap: 1rem; // khoảng cách giữa icon, text, ảnh
+
+    @media (max-width: 640px) {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+.iconWrapper {
+    background-color: #f97316;
+    padding: 0.25rem;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.icon {
+    width: 1rem;
+    height: 1rem;
+    color: white;
+}
+
+.bannerText {
+    font-size: 0.875rem;
+    color: #1f2937;
+
+    .highlight {
+        font-weight: bold;
+        color: #c2410c;
+    }
+}
+
+.bannerImageWrapper {
+    margin-left: auto;
+    display: block;
+    opacity: 0.5;
+
+    @media (max-width: 640px) {
+        display: none;
+    }
+}
+
+.bannerImage {
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 1.5rem auto 0;
+    padding: 0 1rem;
+}
+
+.filters {
+    display: flex;
+    gap: 0.75rem;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.filterBtn {
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: 1px solid #d1d5db;
+    background-color: white;
+    color: #4b5563;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+        background-color: #f9fafb;
+        color: #22c55e;
+    }
+}
+
+.active {
+    background-color: #22c55e;
+    color: white;
+    border-color: #22c55e;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.aiBtn {
+    margin-left: auto;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    background-color: #4f46e5;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    border: none;
+
+    &:hover {
+        background-color: #4338ca;
+    }
+
+    &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+}
+
+.loader {
+    width: 1rem;
+    height: 1rem;
+}
+
+.tipsList {
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e5e7eb;
+    divide-y: 1px solid #f3f4f6;
+    min-height: 300px;
+}
+
+.tipCard {
+    padding: 1.5rem;
+    transition: background 0.2s;
+
+    &:hover {
+        background-color: #f9fafb;
+    }
+}
+
+.tipHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.category {
+    background-color: #fef3c7;
+    color: #b45309;
+    font-size: 0.625rem;
+    font-weight: bold;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+}
+
+.date {
+    font-size: 0.75rem;
+    color: #9ca3af;
+}
+
+.title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.content {
+    font-size: 0.875rem;
+    color: #4b5563;
+    margin-bottom: 0.75rem;
+}
+
+.actions {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+.actions button {
+    border: none; // bỏ viền
+    background: transparent; // bỏ nền mặc định
+    padding: 0; // tùy chỉnh padding nếu muốn
+    cursor: pointer; // giữ hiệu ứng con trỏ tay
+    display: flex;
+    align-items: center;
+    gap: 0.25rem; // khoảng cách giữa icon và text
+    color: #6b7280; // màu chữ mặc định (gray-500)
+    font-size: 0.875rem; // text-sm
+    transition: color 0.2s ease;
+}
+
+.actions button:hover {
+    color: #16a34a; // ví dụ hover màu xanh lá (hoặc đỏ cho dislike)
+}
+
+.actions .dislikeBtn:hover {
+    color: #dc2626; // hover màu đỏ
+}
+
+.likeBtn:hover {
+    color: #22c55e;
+}
+
+.dislikeBtn:hover {
+    color: #ef4444;
+}
+
+.iconSmall {
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.25rem;
+}
+
+.sparklesSmall {
+    width: 0.75rem;
+    height: 0.75rem;
+    color: #4f46e5;
+    display: inline-block;
+}
+
+.emptyState {
+    padding: 5rem 0;
+    text-align: center;
+    color: #6b7280;
+}
+
+.emptyIcon {
+    background-color: #f3f4f6;
+    padding: 1rem;
+    border-radius: 9999px;
+    margin-bottom: 1rem;
+}
+
+.iconLarge {
+    width: 2rem;
+    height: 2rem;
+}

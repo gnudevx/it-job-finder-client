@@ -103,12 +103,14 @@
             font-size: 10px;
             color: white;
         }
+
     }
 }
 
 .iconWrapper {
     position: relative;
-    display: inline-block;
+    display: flex;
+    align-items: center;
 
     .tooltip {
         visibility: hidden;
@@ -117,7 +119,6 @@
         text-align: center;
         font-size: 10px;
         border-radius: 4px;
-        padding: 2px 6px;
         position: absolute;
         z-index: 10;
         top: -25px; // hoặc bottom: 100%;
@@ -126,6 +127,14 @@
         white-space: nowrap;
         opacity: 0;
         transition: opacity 0.2s;
+    }
+
+    span {
+        background: #ff6b00;
+        padding: 0px 6px;
+        border-radius: 10px;
+        font-size: 10px;
+        color: white;
     }
 
     &:hover .tooltip {
