@@ -1,7 +1,5 @@
 .sidebar {
-    position: fixed;
-    height: 100vh;
-    width: 259px;
+    width: 255px;
     background-color: #fff;
     border-right: 1px solid #eee;
     flex-shrink: 0;
@@ -9,6 +7,10 @@
     flex-direction: column;
     transition: width 0.3s ease;
     z-index: 1000;
+    position: relative;
+    /* Thêm dòng này */
+    height: 100%;
+    overflow-x: hidden;
 
     .profile {
         display: flex;
@@ -17,6 +19,7 @@
         padding: 12px 16px;
         border-bottom: 1px solid #eee;
         transition: all 0.3s ease;
+        flex-shrink: 0;
     }
 
     .avatarWrapper {
@@ -71,6 +74,7 @@
         gap: 4px;
         padding: 10px 12px;
         font-family: "Times New Roman", Times, serif;
+        overflow-x: hidden;
     }
 
     .menu-item {
@@ -183,6 +187,7 @@
     justify-content: center;
     margin-left: 8px; // Khoảng cách với chữ
     color: #888;
+    flex-shrink: 0;
 
     &:hover {
         background-color: rgba(0, 0, 0, 0.1); // Màu hover nhẹ
@@ -238,12 +243,12 @@
 
 /* 🌟 Hover mở rộng sidebar mượt và tự nhiên */
 .sidebar.collapsed:hover {
-    position: absolute;
+    position: fixed;
     width: 259px;
     box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
     z-index: 999;
-    overflow: visible;
     transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-x: hidden;
 }
 
 .sidebar.collapsed:hover .submenu {
@@ -310,7 +315,7 @@
 /* Khung chứa menu con */
 .submenu {
     margin-left: 20px; // Thụt vào
-    padding-left: 16px; // Thụt vào (tính từ icon-box)
+    padding-left: 20px; // Thụt vào (tính từ icon-box)
     border-left: 1px solid #e5e5e5;
     margin-top: 4px;
     display: block;
@@ -321,7 +326,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between; // Đẩy badge qua phải
-    padding: 10px 12px;
+    padding: 12px 12px;
     border-radius: 6px;
     text-decoration: none;
     color: #555;

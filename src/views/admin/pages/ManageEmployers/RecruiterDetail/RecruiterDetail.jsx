@@ -145,7 +145,7 @@ export default function RecruiterDetail({ recruiter, onBack, onStatusChange }) {
                             <div>
                                 <span className={styles.label}>Số dư tin đăng</span>
                                 <span className={styles.creditBalance}>
-                                    {recruiter.creditBalance}
+                                    {recruiter.remaining}
                                 </span>
                             </div>
 
@@ -328,7 +328,7 @@ RecruiterDetail.propTypes = {
 
         creditBalance: PropTypes.number,
         description: PropTypes.string,
-
+        remaining: PropTypes.string,
         jobs: PropTypes.arrayOf(
             PropTypes.shape({
                 id: PropTypes.string,

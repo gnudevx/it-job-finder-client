@@ -17,7 +17,7 @@ export default function ManageEmployers() {
         const data = await employerService.getAllEmployers();
         console.log("Recruiter data:", data, "haha", recruiters);
 
-        setRecruiters(data);
+        setRecruiters(data.data);
       } catch (err) {
         console.error("Lỗi load employers:", err);
       } finally {
@@ -36,7 +36,7 @@ export default function ManageEmployers() {
         <RecruiterList
           recruiters={recruiters}
           onViewDetail={async (r) => {
-            const full = await employerService.getEmployerById(r.id);
+            const full = await employerService.getEmployerById(r._id);
             setSelected(full);
 
           }}

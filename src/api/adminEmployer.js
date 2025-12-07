@@ -2,7 +2,7 @@ import axiosClient from "@/services/axiosClient.js";
 
 const employerService = {
     getAllEmployers: async () => {
-        const res = await axiosClient.get("/admin/manage/employers");
+        const res = await axiosClient.get("/admin/manage/getAllEmployersWithJobLimit");
         return res;
     },
 
