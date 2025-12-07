@@ -31,13 +31,13 @@ export default function MyCVs() {
     }
 
     try {
-      const response = await uploadResume(file); // gửi lên backend
+      const response = await uploadResume(file);
 
       addUploadedCV({
-        id: response.data.resume._id, // dùng ID từ DB
-        name: response.data.resume.fileName,
-        size: file.size,
-        url: response.data.resume.fileUrl,
+        id: response.resume._id,
+        name: response.resume.fileName,
+        size: response.resume.size,
+        url: response.resume.fileUrl,
       });
 
       alert("Upload CV thành công!");

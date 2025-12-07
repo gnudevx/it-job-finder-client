@@ -14,7 +14,7 @@ export default function useUploadedCVs() {
             id: cv._id,
             name: cv.fileName,
             url: cv.fileUrl,
-            size: cv.size || 0, // bạn có thể thêm nếu backend trả size
+            size: cv.size || 0,
           }))
         );
       } catch (err) {

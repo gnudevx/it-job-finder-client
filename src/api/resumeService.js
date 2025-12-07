@@ -1,19 +1,19 @@
-import client from "./client.js"; // client.js của bạn
+import api from "@/services/axiosClient";
 
 export const uploadResume = async (file) => {
   const formData = new FormData();
   formData.append("file", file);
 
-  return client.raw.post("/resumes/upload", formData, {
+  return api.raw.post("/api/resumes/upload", formData, {
     headers: { "Content-Type": "multipart/form-data" },
     withCredentials: true,
   });
 };
 
 export const getResumes = async () => {
-  return client.get("/resumes");
+  return api.get("/api/resumes");
 };
 
 export const deleteResume = async (id) => {
-  return client.delete(`/resumes/${id}`);
+  return api.delete(`/api/resumes/${id}`);
 };
