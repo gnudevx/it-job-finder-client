@@ -9,8 +9,10 @@ import ChangePassword from "@/views/candidates/pages/Account/PersonalSettings/Ch
 import MyCVs from "@/views/candidates/pages/Account/ManageCVs/MyCVs/MyCVs";
 import ConnectedEmployer from "@/views/candidates/pages/Account/ManageCVs/ConnectedEmployer/ConnectedEmployer";
 import ViewedEmployer from "@/views/candidates/pages/Account/ManageCVs/ViewedEmployer/ViewedEmployer";
-import NotificationSettings from "@/views/candidates/pages/Account/GeneralSettings/NotificationSettings/NotificationSettings.jsx";
+import NotificationSettings from "@/views/candidates/pages/Account/GeneralSettings/SystemNotification/NotificationList/NotificationList.jsx";
 import SecuritySettings from "@/views/candidates/pages/Account/GeneralSettings/SecuritySettings/SecuritySettings.jsx";
+import SystemNotification from "@/views/candidates/pages/Account/GeneralSettings/SystemNotification/SystemNotification.jsx";
+import NotificationDetail from "@/views/candidates/pages/Account/GeneralSettings/SystemNotification/NotificationDetail/NotificationDetail.jsx";
 
 const candidateRoutes = [
     { path: "home", element: <HomePage />, meta: { title: "Home", icon: "home" } },
@@ -25,6 +27,8 @@ const candidateRoutes = [
     { path: "account/changepassword", element: <ChangePassword />, meta: { title: "Home", icon: "home" } },
     { path: "account/notifications", element: <NotificationSettings /> },
     { path: "account/security", element: <SecuritySettings /> },
+    { path: "system-notification", element: <SystemNotification />, meta: { title: "Activities" } },
+    { path: "system-notification/:id", element: <NotificationDetail />, meta: { title: "Notification Detail" } },
 ];
 
 export default candidateRoutes;

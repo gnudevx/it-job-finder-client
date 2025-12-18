@@ -17,8 +17,8 @@ const adminRoutes = [
     { path: "manage/candidates/add", element: <CandidateForm mode="create" />, meta: { title: "Thêm Candidate" } },
     { path: "manage/candidates/:id", element: <EditCandidatePage mode="edit" />, meta: { title: "Chỉnh Sửa Candidate" } },
     { path: "manage/employers", element: <ManageEmployers />, meta: { title: "ManageEmployers" } },
-    { path: "notification/candidate", element: <CandidateNotification />, meta: { title: "CandidateNotification" } },
-    { path: "notification/employer", element: <EmployerNotification />, meta: { title: "EmployerNotification" } },
+    { path: "notification/candidate", element: <CandidateNotification targetAudience="CANDIDATE"/>, meta: { title: "CandidateNotification" } },
+    { path: "notification/employer", element: <EmployerNotification targetAudience="EMPLOYER"/>, meta: { title: "EmployerNotification" } },
     { path: "manage/SupportTickets", element: <SupportTickets />, meta: { title: "EmployerNotification" } },
     // {
     //     path: "account/settings/*",

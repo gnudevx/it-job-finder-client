@@ -3,11 +3,12 @@ import axiosClient from "@/services/axiosClient";
 const notificationApiService = {
     // admin gửi thông báo
     create: (payload) =>
-        axiosClient.post("/admin/notification/employer", payload),
+        axiosClient.post(`/admin/notification`, payload),
 
-    // admin xem list
-    adminList: (page = 1, limit = 10) =>
-        axiosClient.get(`/admin/notification/employer?page=${page}&limit=${limit}`),
+    adminList: (role, page = 1, limit = 10) =>
+        axiosClient.get(
+            `/admin/notification?page=${page}&limit=${limit}&role=${role}`
+        ),
 
     // employer xem list
     employerList: (page = 1, limit = 5) =>
@@ -22,7 +23,21 @@ const notificationApiService = {
 
     // employer đánh dấu đã đọc
     markRead: (id) =>
-        axiosClient.post(`/employer/system-notification/${id}/read`)
+        axiosClient.post(`/employer/system-notification/${id}/read`),
+
+    // candidate xem list
+    candidateList: (page = 1, limit = 5) =>
+        axiosClient.get(`/candidate/system-notification?page=${page}&limit=${limit}`),
+
+    getNotificationCandidate: () =>
+        axiosClient.get(`/candidate/system-notification/notifications`),
+    // candidate xem chi tiết
+    candidateGetById: (id) =>
+        axiosClient.get(`/candidate/system-notification/${id}`),
+
+    // candidate đánh dấu đã đọc
+    candidateMarkRead: (id) =>
+        axiosClient.post(`/candidate/system-notification/${id}/read`)
 
 };
 

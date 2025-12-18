@@ -43,7 +43,7 @@ const EmployerNotification = ({ targetAudience }) => {
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const res = await notificationApiService.adminList(1, 50);
+        const res = await notificationApiService.adminList(role, 1, 50);
         console.log("History load:", res);
         setHistory(res.items);
       } catch (err) {
@@ -72,7 +72,7 @@ const EmployerNotification = ({ targetAudience }) => {
     };
 
     try {
-      const res = await notificationApiService.create(payload);
+      const res = await notificationApiService.create(role, payload);
       console.log("Sent:", res.data);
 
       // reset
