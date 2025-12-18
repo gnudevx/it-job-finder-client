@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { PACKAGES } from '@/views/employers/pages/BuyService/constants.js';
-import { QrCode, CreditCard, ArrowLeft, Loader2 } from 'lucide-react';
+import {
+    ArrowLeft,
+    Loader2,
+    CheckCircle2,
+    ShieldCheck,
+    Wallet
+} from 'lucide-react';
 import styles from './Payment.module.scss';
 
 const Payment = () => {
@@ -10,66 +16,109 @@ const Payment = () => {
     const pkg = PACKAGES.find(p => p.id === pkgId);
 
     const [isProcessing, setIsProcessing] = useState(false);
-    const [paymentMethod, setPaymentMethod] = useState('qr');
+    const [paymentMethod, setPaymentMethod] = useState('momo');
 
-    const handlePayment = () => {
+    // ✅ LUỒNG MOMO THẬT – GIỮ NGUYÊN
+    const handlePayment = async () => {
+        if (paymentMethod !== 'momo') {
+            alert('ZaloPay hiện chưa được hỗ trợ.');
+            return;
+        }
+
         setIsProcessing(true);
-        setTimeout(() => {
+        try {
+            const res = await fetch('/api/payments/momo/create', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    packageId: pkg.id,
+                    amount: pkg.amount,
+                }),
+            });
+
+            const data = await res.json();
+            if (!data.payUrl) {
+                alert('Backend KHÔNG trả về order_url');
+                return;
+            }
+
+            window.location.href = data.payUrl;
+        } catch (err) {
+            console.error(err);
+            alert('Lỗi tạo thanh toán');
+        } finally {
             setIsProcessing(false);
-            alert('Thanh toán thành công!');
-            navigate('/employer/dashboard');
-        }, 2000);
+        }
     };
 
-    if (!pkg) return <div>Gói không tồn tại</div>;
+    if (!pkg) {
+        return <div className={styles.notFound}>Gói dịch vụ không tồn tại</div>;
+    }
 
     return (
-        <div className={styles.section}>
-            <button onClick={() => navigate(-1)} className={styles.backBtn}>
-                <ArrowLeft /> Quay lại
-            </button>
+        <div className={styles.page}>
+            <div className={styles.container}>
+                <button className={styles.backBtn} onClick={() => navigate(-1)}>
+                    <ArrowLeft size={18} /> Quay lại
+                </button>
 
-            <div className={styles.grid}>
-                <div className={styles.left}>
-                    <h2>Thông tin thanh toán</h2>
-                    <div className={styles.paymentMethods}>
-                        <button
-                            onClick={() => setPaymentMethod('qr')}
-                            className={paymentMethod === 'qr' ? styles.selected : ''}
+                <div className={styles.layout}>
+                    {/* LEFT */}
+                    <div className={styles.card}>
+                        <h2 className={styles.title}>
+                            <Wallet size={18} /> Phương thức thanh toán
+                        </h2>
+
+                        {/* MoMo */}
+                        <div
+                            className={`${styles.method} ${paymentMethod === 'momo' ? styles.activeMomo : ''
+                                }`}
+                            onClick={() => setPaymentMethod('momo')}
                         >
-                            <QrCode /> QR
-                        </button>
-                        <button
-                            onClick={() => setPaymentMethod('card')}
-                            className={paymentMethod === 'card' ? styles.selected : ''}
+                            <span>Ví MoMo</span>
+                            {paymentMethod === 'momo' && <CheckCircle2 />}
+                        </div>
+
+                        {/* ZaloPay */}
+                        <div
+                            className={`${styles.method} ${paymentMethod === 'zalopay' ? styles.activeZalo : ''
+                                }`}
+                            onClick={() => setPaymentMethod('zalopay')}
                         >
-                            <CreditCard /> Card
-                        </button>
+                            <span>Ví ZaloPay</span>
+                            {paymentMethod === 'zalopay' && <CheckCircle2 />}
+                        </div>
+
+                        <div className={styles.security}>
+                            <ShieldCheck size={16} />
+                            <span>Thanh toán an toàn qua cổng đối tác</span>
+                        </div>
                     </div>
 
-                    {paymentMethod === 'qr' ? (
-                        <div className={styles.qrContainer}>
-                            <img
-                                src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${pkg.id}`}
-                                alt="QR"
-                            />
-                        </div>
-                    ) : (
-                        <div className={styles.cardForm}>
-                            <input placeholder="Số thẻ" />
-                            <input placeholder="MM/YY" />
-                            <input placeholder="CVC" />
-                        </div>
-                    )}
-                </div>
+                    {/* RIGHT */}
+                    <div className={styles.card}>
+                        <h3>Thông tin đơn hàng</h3>
+                        <p className={styles.pkgName}>{pkg.name}</p>
+                        <p className={styles.desc}>{pkg.description}</p>
 
-                <div className={styles.right}>
-                    <h3>Đơn hàng</h3>
-                    <p>{pkg.name}</p>
-                    <p>{pkg.price}</p>
-                    <button onClick={handlePayment} disabled={isProcessing}>
-                        {isProcessing ? <Loader2 className="animate-spin" /> : 'Thanh toán ngay'}
-                    </button>
+                        <div className={styles.total}>
+                            <span>Tổng thanh toán</span>
+                            <strong>{pkg.price}</strong>
+                        </div>
+
+                        <button
+                            className={styles.payBtn}
+                            onClick={handlePayment}
+                            disabled={isProcessing}
+                        >
+                            {isProcessing ? (
+                                <Loader2 className={styles.spin} />
+                            ) : (
+                                `Thanh toán bằng ${paymentMethod === 'momo' ? 'MoMo' : 'ZaloPay'
+                                }`
+                            )}
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

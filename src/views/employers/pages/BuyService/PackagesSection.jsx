@@ -3,19 +3,32 @@ import { useNavigate } from 'react-router-dom';
 import PackageCard from './PackageCard';
 import styles from './PackagesSection.module.scss';
 import { PACKAGES } from './constants.js';
-
+import employerSerivce from '@/api/employerSerivce';
 const PackagesSection = () => {
     const navigate = useNavigate();
-    const [selectedPackageId, setSelectedPackageId] = useState('pkg_basic'); // mặc định Free
-
+    const [selectedPackageId, setSelectedPackageId] = useState(null);// mặc định Free
+    const tierToPackage = {
+        FREE: 'pkg_basic',
+        PRO: 'pkg_pro',
+        ENTERPRISE: 'pkg_enterprise'
+    };
     useEffect(() => {
-        console.log('Gói đang chọn:', selectedPackageId);
-    }, [selectedPackageId]);
+        const fetchEmployer = async () => {
+            const res = await employerSerivce.getMe();
+            const tier = res.user.tier;
+            console.log("helooo", tier)
+
+            setSelectedPackageId(tierToPackage[tier]);
+        };
+
+        fetchEmployer();
+    }, []);
 
     const handleCheckout = (pkg) => {
         setSelectedPackageId(pkg.id); // lưu gói đang chọn
         // Chuyển sang trang thanh toán với react-router
         navigate(`/employer/payment/${pkg.id}`);
+
     };
 
     return (

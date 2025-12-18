@@ -4,6 +4,7 @@ export const PACKAGES = [
         name: 'Gói Khởi Đầu',
         tier: 'FREE',
         price: '0 VNĐ',
+        amount: 0,
         description: 'Dành cho các startup nhỏ hoặc nhu cầu tuyển dụng ít.',
         features: [
             { text: '1 Tin đăng miễn phí / tháng', included: true },
@@ -19,6 +20,7 @@ export const PACKAGES = [
         name: 'Gói Tăng Tốc',
         tier: 'PRO',
         price: '1.500.000 VNĐ',
+        amount: 1500000,
         description: 'Giải pháp tối ưu cho doanh nghiệp đang mở rộng quy mô.',
         features: [
             { text: '10 Tin đăng / tháng', included: true },
@@ -34,6 +36,7 @@ export const PACKAGES = [
         name: 'Gói Toàn Diện',
         tier: 'ENTERPRISE',
         price: '5.000.000 VNĐ',
+        amount: 5000000,
         description: 'Dành cho tập đoàn lớn với nhu cầu tuyển dụng liên tục.',
         features: [
             { text: 'Không giới hạn tin đăng', included: true },

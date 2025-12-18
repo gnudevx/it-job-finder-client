@@ -15,7 +15,8 @@ import NotificationDetail from "@/views/employers/components/SystemNotification/
 import VerificationModal from "@/views/employers/components/Verification/VerificationModal.jsx";
 import ProtectedRoute from "../protected/protected";
 import BuyService from "@/views/employers/pages/BuyService/BuyService.jsx";
-import Payment from "@/views/employers/pages/Payment/Payment.jsx";import ManageAppliedCV from "@/views/employers/pages/ManageAppliedCV/ManageAppliedCV.jsx"
+import Payment from "@/views/employers/pages/Payment/Payment.jsx";
+import ManageAppliedCV from "@/views/employers/pages/ManageAppliedCV/ManageAppliedCV.jsx"
 
 // import CompanyInfo from "@/views/employers/components/CompanyInfo/CompanyInfo";
 const employerRoutes = [

@@ -4,7 +4,7 @@ export const uploadResume = async (file) => {
   const formData = new FormData();
   formData.append("file", file);
 
-  return api.raw.post("/api/resumes/upload", formData, {
+  return api.post("/api/resumes/upload", formData, {
     headers: { "Content-Type": "multipart/form-data" },
     withCredentials: true,
   });

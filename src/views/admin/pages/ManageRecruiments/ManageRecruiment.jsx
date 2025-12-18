@@ -76,7 +76,7 @@ const ManageRecruiment = () => {
           )
         );
       }
-    }, 10000);
+    }, 1000);
   };
   const handleUndo = () => {
     if (!undoData) return;

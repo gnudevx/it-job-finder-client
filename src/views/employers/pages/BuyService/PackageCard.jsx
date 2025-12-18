@@ -33,7 +33,7 @@ const PackageCard = ({ pkg, isSelected, onCheckout }) => (
         <button
             className={isSelected ? styles.btnSelected : (pkg.highlight ? styles.btnHighlight : styles.btn)}
             onClick={onCheckout}
-            disabled={isSelected} // disable nếu đang chọn
+            disabled={isSelected || pkg.tier === 'FREE'}
         >
             {isSelected ? 'Đang chọn' : 'Thanh toán'}
         </button>

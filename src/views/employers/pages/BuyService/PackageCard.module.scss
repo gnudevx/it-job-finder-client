@@ -156,3 +156,8 @@
     border: 1px solid #93c5fd; // blue-300 border
     cursor: not-allowed; // disable click
 }
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
