@@ -7,16 +7,13 @@ import { getJobDetail } from "@/api/jobService";
 import salary from "@assets/salary.svg";
 import location from "@assets/location.svg";
 import experience from "@assets/experience.svg";
+import companyService from "@/api/companyService";
 
 export default function JobDetail() {
-    const mockCompany = {
-    name: "CÔNG TY TNHH TMDV ADFLY VIỆT NAM",
-    logo: "https://cdn-new.topcv.vn/unsafe/80x/https://static.topcv.vn/company_logos/1g3gyTtHdfyN9ndE5aLL3F15xIWW7hLb_1659587053____814dcd7883821b4807a29497c20ef6d1.jpg",
-    scale: "100-499 nhân viên",
-    field: "Khác",
-    address:
-        "Tầng 2, tòa nhà TSA Building số 53-55-57 Phó Đức Chính, Phường Nguyễn Thái Bình, Quận 1, TPHCM",
-    link: "#",
+    const COMPANY_SIZE_MAP = {
+        small: 'Dưới 50 nhân viên',
+        medium: '50–199 nhân viên',
+        large: '200+ nhân viên',
     };
 
     const { id } = useParams();
@@ -25,6 +22,9 @@ export default function JobDetail() {
 
     const [job, setJob] = useState(null);
     const [loading, setLoading] = useState(true);
+
+    const [company, setCompany] = useState(null);
+    const [loadingCompany, setLoadingCompany] = useState(true);
 
     // APPLY FORM
     const [showApplyForm, setShowApplyForm] = useState(false);
@@ -49,7 +49,7 @@ export default function JobDetail() {
                     id: data._id,
                     title: data.title,
                     deadline: data.applicationDeadline,
-                    description: data.description,
+                    jobDescription: data.jobDescription,
                     salary: data.salary_raw,
                     requirements: Array.isArray(data.requirements)
                         ? data.requirements.join("\n")
@@ -58,6 +58,7 @@ export default function JobDetail() {
                         ? data.benefits.join("\n")
                         : data.benefits,
                     location: data.location?.name,
+                    employer_id: data.employer_id,
                     experience: data.experience,
                     work_location_detail: data.work_location_detail,
                     working_time: data.working_time,
@@ -80,10 +81,30 @@ export default function JobDetail() {
         fetchJob();
     }, [id]);
 
+    useEffect(() => {
+        if (!job?.employer_id) return;
+
+        const fetchCompany = async () => {
+            try {
+                const res = await companyService.getCompanyPublic(job.employer_id);
+
+                if (res.success) {
+                    setCompany(res.data);
+                }
+            } catch (err) {
+                console.error("Lỗi tải company:", err);
+            } finally {
+                setLoadingCompany(false);
+            }
+        };
+
+        fetchCompany();
+    }, [job?.employer_id]);
+
     if (loading) return <div>Đang tải...</div>;
     if (!job) return <div>Không tìm thấy tin tuyển dụng.</div>;
 
-    const { title, deadline, description, requirements, benefits, 
+    const { title, deadline, jobDescription, requirements, benefits, 
         work_location_detail, working_time, link, level, education, quantity, jobType, createdAt  } = job;
 
     const handleSubmitApplication = async () => {
@@ -157,7 +178,7 @@ export default function JobDetail() {
                 <section className={styles.section}>
                     <h2>Mô tả công việc</h2>
                     <ul>
-                        {(description || "").split("\n").map((item, idx) => (
+                        {(jobDescription || "").split("\n").map((item, idx) => (
                             <li key={idx}>{item}</li>
                         ))}
                     </ul>
@@ -185,40 +206,62 @@ export default function JobDetail() {
             {/* RIGHT SIDEBAR */}
             <div className={styles.rightColumn}>
                 <div className={styles.companyInfo}>
-                    <div className={styles.companyTop}>
-                        <img src={mockCompany.logo} alt={mockCompany.name} />
-                        <div className={styles.companyName}>
-                            <a href={mockCompany.link}>{mockCompany.name}</a>
-                        </div>
-                    </div>
-
-                    <div className={styles.companyBottom}>
-                        <div className={styles.companyInfoList}>
-                            <div className={styles.companyItem}>
-                                <div className={styles.companyItemIcon}>👥</div>
-                                <div className={styles.companyItemText}>
-                                    <span className={styles.companyItemTitle}>Quy mô:</span>
-                                    <span className={styles.companyItemValue}>{mockCompany.scale}</span>
+                    {!loadingCompany && company && (
+                        <>
+                            <div className={styles.companyTop}>
+                                <img
+                                    src={company.avatar || ""}
+                                    alt={company.name}
+                                    onError={(e) => {
+                                        e.target.src = "";
+                                    }}
+                                />
+                                <div className={styles.companyName}>
+                                    <a
+                                        href={`/company/${company._id}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        {company.name}
+                                    </a>
                                 </div>
                             </div>
 
-                            <div className={styles.companyItem}>
-                                <div className={styles.companyItemIcon}>📦</div>
-                                <div className={styles.companyItemText}>
-                                    <span className={styles.companyItemTitle}>Lĩnh vực:</span>
-                                    <span className={styles.companyItemValue}>{mockCompany.field}</span>
-                                </div>
-                            </div>
+                            <div className={styles.companyBottom}>
+                                <div className={styles.companyInfoList}>
+                                    <div className={styles.companyItem}>
+                                        <div className={styles.companyItemIcon}>👥</div>
+                                        <div className={styles.companyItemText}>
+                                            <span className={styles.companyItemTitle}>Quy mô:</span>
+                                            <span className={styles.companyItemValue}>
+                                                {COMPANY_SIZE_MAP[company.size] || "Đang cập nhật"}
+                                            </span>
+                                        </div>
+                                    </div>
 
-                            <div className={styles.companyItem}>
-                                <div className={styles.companyItemIcon}>📍</div>
-                                <div className={styles.companyItemText}>
-                                    <span className={styles.companyItemTitle}>Địa điểm:</span>
-                                    <span className={styles.companyItemValue}>{mockCompany.address}</span>
+                                    <div className={styles.companyItem}>
+                                        <div className={styles.companyItemIcon}>📦</div>
+                                        <div className={styles.companyItemText}>
+                                            <span className={styles.companyItemTitle}>Lĩnh vực:</span>
+                                            <span className={styles.companyItemValue}>
+                                                {company.field || company.industry || "Đang cập nhật"}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div className={styles.companyItem}>
+                                        <div className={styles.companyItemIcon}>📍</div>
+                                        <div className={styles.companyItemText}>
+                                            <span className={styles.companyItemTitle}>Địa điểm:</span>
+                                            <span className={styles.companyItemValue}>
+                                                {company.address || "Đang cập nhật"}
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        </>
+                    )}
                 </div>
 
                 <div className={styles.sidebarBox}>

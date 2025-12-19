@@ -7,6 +7,8 @@ const companyService = {
     getMyCompany: () => axiosClient.get("/employer/account/settings/my-company-info"),
     selectCompany: (companyId) =>
         axiosClient.post("/employer/account/settings/select-company", { companyId }),
+    getCompanyPublic: (employerId) =>
+        axiosClient.get(`/company/by-employer/${employerId}`),
 };
 
 export default companyService;

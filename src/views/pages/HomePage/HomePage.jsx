@@ -11,8 +11,8 @@ import NewsSection from "@/views/candidates/components/NewsSection/NewsSection.j
 import { Search, MapPin } from "lucide-react";
 
 export default function HomePage() {
-
-    const { toggleFavorite, isFavorite } = useFavorites();
+    const authToken = localStorage.getItem("authToken");
+    const { toggleFavorite, isFavorite } = useFavorites(authToken);
 
     const [search, setSearch] = useState("");
     const [filters, setFilters] = useState({});
