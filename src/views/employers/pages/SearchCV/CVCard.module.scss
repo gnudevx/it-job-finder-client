@@ -1,0 +1,206 @@
+.card {
+    background: #fff;
+    border: 1px solid #f1f1f1;
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    gap: 20px;
+    position: relative;
+    transition: box-shadow 0.2s;
+}
+
+.card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.matchBadge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: #d1fae5;
+    color: #047857;
+    border: 1px solid #a7f3d0;
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.matchIcon {
+    width: 12px;
+    height: 12px;
+}
+
+.avatarSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #eef2ff;
+}
+
+.fileType {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 6px;
+    text-transform: uppercase;
+}
+
+.filePdf {
+    background: #fee2e2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+}
+
+.fileDoc {
+    background: #dbeafe;
+    color: #1d4ed8;
+    border: 1px solid #bfdbfe;
+}
+
+.content {
+    flex: 1;
+}
+
+.header {
+    margin-bottom: 4px;
+}
+
+.name {
+    font-size: 18px;
+    font-weight: 700;
+    color: #111827;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.id {
+    font-size: 10px;
+    background: #f3f4f6;
+    color: #6b7280;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.title {
+    color: #4f46e5;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.meta {
+    display: flex;
+    gap: 16px;
+    font-size: 12px;
+    color: #6b7280;
+    margin-bottom: 12px;
+}
+
+.summaryWrapper {
+    margin-bottom: 16px;
+}
+
+.summary {
+    font-size: 14px;
+    color: #4b5563;
+    font-style: italic;
+    border-left: 2px solid #e5e7eb;
+    padding-left: 12px;
+}
+
+.aiBox {
+    background: rgba(238, 242, 255, 0.6);
+    border: 1px solid #e0e7ff;
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 16px;
+}
+
+.aiHeader {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.aiTag {
+    font-size: 10px;
+    background: #4f46e5;
+    color: #fff;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 700;
+}
+
+.aiText {
+    font-size: 12px;
+    color: #3730a3;
+}
+
+.skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.skill {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+    color: #4b5563;
+}
+
+.actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-left: 1px solid #f3f4f6;
+    padding-left: 24px;
+    min-width: 176px;
+}
+
+.primaryBtn {
+    background: #4f46e5;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.secondaryBtn {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.saveBtn {
+    background: transparent;
+    font-size: 11px;
+    font-weight: 700;
+    color: #6b7280;
+    border: none;
+    cursor: pointer;
+}

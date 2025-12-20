@@ -1,37 +1,67 @@
 import React, { useEffect, useState } from "react";
 import styles from "./HisUpdateAccount.module.scss";
 import { Dot } from "lucide-react";
+import { accountActivityService } from "@/api/authLog.service.js";
+
+export const ACTION_LABEL = {
+    UPDATE_PROFILE: "Cập nhật thông tin cá nhân",
+    UPLOAD_LICENSE: "Tải lên giấy phép kinh doanh",
+    VERIFY_PHONE: "Xác thực số điện thoại",
+    CHANGE_PASSWORD: "Đổi mật khẩu",
+    UPDATE_EMAIL: "Cập nhật email",
+    UPDATE_AVATAR: "Cập nhật ảnh đại diện",
+    UPGRADE_PACKAGE: "Nâng cấp gói dịch vụ",
+    PAYMENT_FAILED: "Thanh toán thất bại",
+};
+
+const transformActivities = (rawData) => {
+    return rawData.map((item) => {
+        let actionText = ACTION_LABEL[item.action] || item.action;
+
+        if (item.action === "UPGRADE_PACKAGE" && item.meta?.tier) {
+            actionText = `Nâng cấp gói ${item.meta.tier}`;
+        }
+
+        return {
+            id: item._id,
+            action: actionText,
+            timestamp: item.createdAt,
+        };
+    });
+};
 
 export default function HisUpdateAccount() {
     const [history, setHistory] = useState([]);
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
 
-    const mockData = [
-        { id: 1, userId: 123, action: "Đổi mật khẩu", timestamp: "2025-11-12T19:52:00Z" },
-        { id: 2, userId: 123, action: "Cập nhật email", timestamp: "2025-11-10T15:30:00Z" },
-        { id: 3, userId: 123, action: "Cập nhật số điện thoại", timestamp: "2025-11-11T12:20:00Z" },
-        { id: 4, userId: 123, action: "Thay đổi avatar", timestamp: "2025-11-08T09:10:00Z" },
-        // ... bạn có thể thêm nhiều mock data hơn để test scroll
-    ];
-
     useEffect(() => {
-        const timer = setTimeout(() => {
-            setHistory(mockData);
-        }, 300);
-        return () => clearTimeout(timer);
+        const fetchHistory = async () => {
+            try {
+                const res =
+                    await accountActivityService.getAccountSettingActivities();
+                const transformed = transformActivities(res.data);
+                setHistory(transformed);
+            } catch (err) {
+                console.error("Fetch history failed", err);
+            }
+        };
+
+        fetchHistory();
     }, []);
 
     const formatTime = (timestamp) => {
         const date = new Date(timestamp);
-        const hours = date.getHours().toString().padStart(2, "0");
-        const minutes = date.getMinutes().toString().padStart(2, "0");
-        return `${hours}:${minutes}`;
+        return date.toLocaleTimeString("vi-VN", {
+            hour: "2-digit",
+            minute: "2-digit",
+        });
     };
 
-    // Lọc theo khoảng ngày
     const filteredHistory = history.filter((item) => {
-        const itemDate = new Date(item.timestamp).toISOString().split("T")[0]; // yyyy-mm-dd
+        const itemDate = new Date(item.timestamp)
+            .toISOString()
+            .split("T")[0];
         if (startDate && itemDate < startDate) return false;
         if (endDate && itemDate > endDate) return false;
         return true;
@@ -46,14 +76,12 @@ export default function HisUpdateAccount() {
                         type="date"
                         value={startDate}
                         onChange={(e) => setStartDate(e.target.value)}
-                        className={styles.datePicker}
                     />
                     <span>→</span>
                     <input
                         type="date"
                         value={endDate}
                         onChange={(e) => setEndDate(e.target.value)}
-                        className={styles.datePicker}
                     />
                 </div>
             </div>
@@ -65,9 +93,13 @@ export default function HisUpdateAccount() {
                     filteredHistory.map((item) => (
                         <div key={item.id} className={styles.item}>
                             <div className={styles.dateSection}>
-                                <span className={styles.date}>{new Date(item.timestamp).toLocaleDateString()}</span>
-                                <Dot className={styles.dot} />
-                                <span className={styles.timestamp}>{formatTime(item.timestamp)}</span>
+                                <span className={styles.date}>
+                                    {new Date(item.timestamp).toLocaleDateString("vi-VN")}
+                                </span>
+                                <Dot size={16} />
+                                <span className={styles.timestamp}>
+                                    {formatTime(item.timestamp)}
+                                </span>
                             </div>
                             <span className={styles.action}>{item.action}</span>
                         </div>

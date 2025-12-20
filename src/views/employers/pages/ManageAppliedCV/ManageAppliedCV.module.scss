@@ -126,7 +126,8 @@
   margin-bottom: 14px;
 
   display: grid;
-  grid-template-columns: 1fr auto; /* trái 1fr, phải auto */
+  grid-template-columns: 1fr auto;
+  /* trái 1fr, phải auto */
   align-items: center;
   gap: 12px;
 
@@ -162,9 +163,18 @@
   align-items: flex-end;
 }
 
+.actionBtns {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+
+}
+
 .saveStatusBtn {
   padding: 8px 16px;
-  background: #3b82f6; /* màu xanh dương */
+  background: #3b82f6;
+  /* màu xanh dương */
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -201,6 +211,7 @@
   filter: brightness(0.9);
   transform: translateY(-1px);
 }
+
 /* Badges */
 
 .badge {
