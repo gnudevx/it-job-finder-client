@@ -145,7 +145,7 @@ export default function Sidebar({ isCollapsed }) {
                     return (
                         <NavLink
                             key={item.to}
-                            end
+                            end={item.to === "account/settings" ? false : true}
                             to={item.to}
                             className={({ isActive }) =>
                                 `${styles["menu-item"]} ${isActive ? styles.active : ""}`

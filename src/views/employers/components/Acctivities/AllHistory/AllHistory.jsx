@@ -1,81 +1,56 @@
 import React, { useEffect, useState } from "react";
 import styles from "./AllHistory.module.scss";
 import Pagination from "@/components/common/Pagination/Pagination.jsx";
-
+import { getAuthLogs } from "@/api/authLog.service";
 export default function AllHistory() {
     const [histories, setHistories] = useState([]);
     const [page, setPage] = useState(1);
-    const [totalPages] = useState(2);
+    const [totalPages, setTotalPages] = useState(2);
+    const transformLogs = (rawLogs) => {
+        const map = {};
 
-    // 🧩 Dữ liệu giả (mock)
-    const mockData = {
-        1: [
-            {
-                date: "11/11/2025",
-                logs: [{ time: "15:39", action: "Đăng nhập" }],
-            },
-            {
-                date: "07/11/2025",
-                logs: [
-                    { time: "02:43", action: "Đăng xuất" },
-                    { time: "01:52", action: "Đăng nhập" },
-                ],
-            },
-        ],
-        2: [
-            {
-                date: "06/11/2025",
-                logs: [
-                    { time: "22:58", action: "Đăng xuất" },
-                    { time: "22:56", action: "Đăng nhập" },
-                ],
-            },
-            {
-                date: "05/11/2025",
-                logs: [
-                    { time: "21:12", action: "Đăng nhập" },
-                    { time: "21:30", action: "Đăng xuất" },
-                ],
-            },
-        ],
-        3: [
-            {
-                date: "04/11/2025",
-                logs: [
-                    { time: "09:45", action: "Đăng nhập" },
-                    { time: "10:15", action: "Đăng xuất" },
-                    { time: "14:00", action: "Đăng nhập" },
-                ],
-            },
-        ],
-        4: [
-            {
-                date: "03/11/2025",
-                logs: [
-                    { time: "08:12", action: "Đăng nhập" },
-                    { time: "12:00", action: "Đăng xuất" },
-                ],
-            },
-        ],
-        5: [
-            {
-                date: "02/11/2025",
-                logs: [
-                    { time: "11:11", action: "Đăng nhập" },
-                    { time: "11:25", action: "Đăng xuất" },
-                ],
-            },
-        ],
+        rawLogs.forEach((log) => {
+            const dateObj = new Date(log.createdAt);
+
+            const date = dateObj.toLocaleDateString("vi-VN");
+            const time = dateObj.toLocaleTimeString("vi-VN", {
+                hour: "2-digit",
+                minute: "2-digit",
+            });
+
+            if (!map[date]) {
+                map[date] = [];
+            }
+
+            map[date].push({
+                time,
+                action: log.action === "LOGIN" ? "Đăng nhập" : "Đăng xuất",
+            });
+        });
+
+        return Object.entries(map).map(([date, logs]) => ({
+            date,
+            logs,
+        }));
     };
 
     // 🪄 Giả lập fetch dữ liệu mỗi khi đổi trang
     useEffect(() => {
-        // Giả lập trễ 300ms như gọi API thật
-        const timer = setTimeout(() => {
-            setHistories(mockData[page] || []);
-        }, 300);
+        const fetchHistories = async () => {
+            try {
+                const res = await getAuthLogs(page, 5);
+                // res = { data, pagination }
+                console.log("res", res)
+                const formatted = transformLogs(res.data);
 
-        return () => clearTimeout(timer);
+                setHistories(formatted);
+                setTotalPages(res.pagination.totalPages);
+            } catch (err) {
+                console.error("Fetch auth logs failed", err);
+            }
+        };
+
+        fetchHistories();
     }, [page]);
 
     return (

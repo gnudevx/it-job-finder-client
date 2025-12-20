@@ -13,6 +13,7 @@ import employerService from "@/api/employerSerivce.js";
 export default function Dashboard() {
     const { steps, fetchSteps } = useEmployerProgress();
     const [employer, setEmployer] = useState(null);
+    const [jobCount, setJobCount] = useState(0);
     useEffect(() => {
         fetchSteps();
         const fetchEmployer = async () => {
@@ -20,6 +21,7 @@ export default function Dashboard() {
                 const res = await employerService.getMe();
                 console.log("Employer data:", res);
                 setEmployer(res.user); // giả sử API trả về { user: {...} }
+                setJobCount(res.jobCount || 0);
 
             } catch (err) {
                 console.error("Không thể lấy thông tin employer:", err);
@@ -31,7 +33,7 @@ export default function Dashboard() {
         { title: "Xác thực số điện thoại", link: "/employer/account/phone-verify", completed: steps.phoneVerified },
         { title: "Cập nhật thông tin công ty", link: "/employer/account/settings/company-info", completed: steps.companyInfoUpdated },
         { title: "Cập nhật Giấy đăng ký doanh nghiệp", link: "/employer/account/settings/license", completed: steps.licenseUploaded },
-        { title: "Đăng tin tuyển dụng đầu tiên", link: "/employer/jobs/create", completed: false, disabled: true },
+        { title: "Đăng tin tuyển dụng đầu tiên", link: "/employer/jobs/create", completed: jobCount > 0, disabled: true },
     ];
 
     const exploreData = [
@@ -70,7 +72,8 @@ export default function Dashboard() {
                 <div className={styles.cardGrid}>
                     {actions.map((item, i) => {
                         const isLast = i === actions.length - 1;
-                        const disabled = isLast ? isLastStepDisabled() : false;
+                        const disabled =
+                            isLast ? isLastStepDisabled() || item.completed : false;
                         return (
                             <ProgressCard
                                 key={i}

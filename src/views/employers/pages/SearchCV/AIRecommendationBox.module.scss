@@ -1,0 +1,194 @@
+.wrapper {
+    max-width: 56rem; // max-w-4xl
+    margin: 0 auto;
+}
+
+/* Card */
+.card {
+    background: #fff;
+    border-radius: 1rem;
+    border: 1px solid #f3f4f6;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+/* Header */
+.header {
+    padding: 2rem;
+    border-bottom: 1px solid #f3f4f6;
+    background: linear-gradient(to right, #90a5ec, #f3e6e6);
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #111827;
+    margin-bottom: 0.5rem;
+}
+
+.iconBox {
+    padding: 0.625rem;
+    background: #4f46e5;
+    border-radius: 0.75rem;
+    color: #fff;
+    box-shadow: 0 10px 20px rgba(79, 70, 229, 0.15);
+}
+
+.icon {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.subtitle {
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+/* Body */
+.body {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.labelRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.label {
+    font-size: 0.75rem;
+    font-weight: 900;
+    color: #374151;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.hint {
+    font-size: 10px;
+    color: #9ca3af;
+}
+
+.textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 1.25rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 1rem;
+    resize: none;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    font-weight: 500;
+    background: rgba(249, 250, 251, 0.3);
+    transition: all 0.2s ease;
+
+    &:focus {
+        outline: none;
+        border-color: #6366f1;
+        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+    }
+}
+
+/* Button */
+.buttonWrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.button {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 2.5rem;
+    border-radius: 1rem;
+    font-size: 0.75rem;
+    font-weight: 900;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.buttonActive {
+    background: #4f46e5;
+    color: #fff;
+    box-shadow: 0 20px 25px rgba(79, 70, 229, 0.25);
+
+    &:hover {
+        background: #4338ca;
+        transform: translateY(-4px);
+    }
+}
+
+.buttonDisabled {
+    background: #f3f4f6;
+    color: #9ca3af;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.searchIcon {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.spinner {
+    width: 1.25rem;
+    height: 1.25rem;
+    animation: spin 1s linear infinite;
+}
+
+.spinnerBg {
+    opacity: 0.25;
+}
+
+.spinnerFg {
+    opacity: 0.75;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Result */
+.result {
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.resultHeader {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    span {
+        flex: 1;
+        height: 1px;
+        background: #e5e7eb;
+    }
+
+    h3 {
+        font-size: 0.75rem;
+        font-weight: 900;
+        color: #9ca3af;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+}
+
+.resultGrid {
+    display: grid;
+    gap: 1.5rem;
+}

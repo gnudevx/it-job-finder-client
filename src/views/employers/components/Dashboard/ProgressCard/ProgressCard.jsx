@@ -40,7 +40,7 @@ export default function ProgressCard({ title, link, completed, disabled }) {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.2 }}
                 >
-                    Hãy hoàn thành tất cả các bước trước để thực hiện bước này.
+                    Bạn không thể chọn khi chưa hoàn thành các bước hoặc đã đăng tin
                 </motion.div>
             )}
         </motion.div>

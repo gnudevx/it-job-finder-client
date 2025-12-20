@@ -17,7 +17,7 @@ import ProtectedRoute from "../protected/protected";
 import BuyService from "@/views/employers/pages/BuyService/BuyService.jsx";
 import Payment from "@/views/employers/pages/Payment/Payment.jsx";
 import ManageAppliedCV from "@/views/employers/pages/ManageAppliedCV/ManageAppliedCV.jsx"
-
+import SearchCV from "@/views/employers/pages/SearchCV/SearchCV.jsx"
 // import CompanyInfo from "@/views/employers/components/CompanyInfo/CompanyInfo";
 const employerRoutes = [
     { path: "dashboard", element: <Dashboard />, meta: { title: "Dashboard" } },
@@ -40,16 +40,10 @@ const employerRoutes = [
     { path: "recruitment-campaigns", element: <CampaignsPage />, meta: { title: "recruitment-campaigns" } },
     { path: "jobs/edit/:jobId", element: <CreateJob />, meta: { title: "Edit Job" } },
     { path: "cvs-management", element: <ManageAppliedCV />, meta: { title: "Manage Applied CVs" } },
-    {
-        path: "account/settings/*",
-        element: <AccountSettings />,
-        meta: { title: "Accountsetting" },
-        // children: [
-        //     { path: "company-info", element: <CompanyInfo /> },
-        // ],
-    },
+    { path: "account/settings/*", element: <AccountSettings />, meta: { title: "Accountsetting" }, },
     { path: "employer-verify/", element: <VerificationModal />, meta: { title: "VerificationModal" } },
     { path: "buy-services/", element: <BuyService />, meta: { title: "BuyService" } },
     { path: "payment/:pkgId", element: <Payment />, meta: { title: "Payment" } },
+    { path: "search-cv/*", element: <SearchCV />, meta: { title: "SearchCV" } },
 ];
 export default employerRoutes;
