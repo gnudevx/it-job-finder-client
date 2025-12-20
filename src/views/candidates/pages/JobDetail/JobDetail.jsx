@@ -210,7 +210,7 @@ export default function JobDetail() {
                         <>
                             <div className={styles.companyTop}>
                                 <img
-                                    src={company.avatar || ""}
+                                    src={company.logo || ""}
                                     alt={company.name}
                                     onError={(e) => {
                                         e.target.src = "";
