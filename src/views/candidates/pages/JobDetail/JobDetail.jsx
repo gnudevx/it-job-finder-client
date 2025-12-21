@@ -86,7 +86,7 @@ export default function JobDetail() {
 
         const fetchCompany = async () => {
             try {
-                const res = await companyService.getCompanyPublic(job.employer_id);
+                const res = await companyService.getCompanyByEmployerPublic(job.employer_id);
 
                 if (res.success) {
                     setCompany(res.data);
@@ -219,8 +219,6 @@ export default function JobDetail() {
                                 <div className={styles.companyName}>
                                     <a
                                         href={`/company/${company._id}`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
                                     >
                                         {company.name}
                                     </a>

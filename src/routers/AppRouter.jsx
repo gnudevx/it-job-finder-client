@@ -14,6 +14,8 @@ import privateRoutes from "./routerConfig/privateRoutes";
 import JobDetail from "@/views/candidates/pages/JobDetail/JobDetail";
 import { useAuth } from "@/contexts/AuthContext";
 import RootRedirect from "./RootRedirect";
+import CompanyInfoPage from "@/views/candidates/components/CompanyInfo/CompanyInfoPage";
+
 const LoadingScreen = () => (
   <div className="flex items-center justify-center h-screen text-lg font-medium">
     Loading...
@@ -46,6 +48,7 @@ export const AppRouter = () => {
             <Route path="/" element={<RootRedirect />} />
             <Route path="/home" element={<HomePage />} />
             <Route path="/job/:id" element={<JobDetail />} />
+            <Route path="/company/:id" element={<CompanyInfoPage />} />
           </Route>
 
           <Route path="/login" element={<LoginPage />} />

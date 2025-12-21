@@ -13,6 +13,7 @@ import NotificationSettings from "@/views/candidates/pages/Account/GeneralSettin
 import SecuritySettings from "@/views/candidates/pages/Account/GeneralSettings/SecuritySettings/SecuritySettings.jsx";
 import SystemNotification from "@/views/candidates/pages/Account/GeneralSettings/SystemNotification/SystemNotification.jsx";
 import NotificationDetail from "@/views/candidates/pages/Account/GeneralSettings/SystemNotification/NotificationDetail/NotificationDetail.jsx";
+import CompanyInfoPage from "@/views/candidates/components/CompanyInfo/CompanyInfoPage.jsx";
 
 const candidateRoutes = [
     { path: "home", element: <HomePage />, meta: { title: "Home", icon: "home" } },
@@ -29,6 +30,7 @@ const candidateRoutes = [
     { path: "account/security", element: <SecuritySettings /> },
     { path: "system-notification", element: <SystemNotification />, meta: { title: "Activities" } },
     { path: "system-notification/:id", element: <NotificationDetail />, meta: { title: "Notification Detail" } },
+    { path: "company/:id", element: <CompanyInfoPage />, meta: { title: "Company Info" } },
 ];
 
 export default candidateRoutes;
