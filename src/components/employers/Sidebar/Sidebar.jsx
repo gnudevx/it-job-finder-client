@@ -1,4 +1,4 @@
-import React, { useState } from "react"; // <-- Thêm useState
+import React, { useState, useEffect } from "react"; // <-- Thêm useState
 import { NavLink } from "react-router-dom";
 import {
     Home,
@@ -16,7 +16,7 @@ import {
 import styles from "./Sidebar.module.scss";
 import PropTypes from "prop-types";
 import avt from "@/assets/logo.jpg";
-
+import employerService from "@/api/employerSerivce.js";
 // --- Cấu trúc menu MỚI ---
 // Chúng ta thêm 'type', 'id', 'children', 'badge'
 const menuItems = [
@@ -56,6 +56,19 @@ export default function Sidebar({ isCollapsed }) {
     const handleSubMenuToggle = (id) => {
         setOpenSubMenuId(prevId => (prevId === id ? "" : id));
     };
+    const [employer, setEmployer] = useState(null);
+    useEffect(() => {
+        const fetchMe = async () => {
+            try {
+                const data = await employerService.getMe();
+                setEmployer(data.user);
+            } catch (err) {
+                console.error("Không lấy được thông tin employer", err);
+            }
+        };
+
+        fetchMe();
+    }, []);
     return (
         <aside className={`${styles.sidebar} ${isCollapsed ? styles.collapsed : ""}`}>
             <div className={styles.profile}>
@@ -63,8 +76,12 @@ export default function Sidebar({ isCollapsed }) {
                     <img src={avt} alt="avatar" className={styles.avatarImg} />
                 </div>
                 <div className={styles.info}>
-                    <div className={styles.name}>Nguyen Duc</div>
-                    <div className={styles.role}>Employer</div>
+                    <div className={styles.name}>
+                        {employer?.fullName || "—"}
+                    </div>
+                    <div className={styles.role}>
+                        {employer?.role || "Employer"}
+                    </div>
                 </div>
             </div>
 

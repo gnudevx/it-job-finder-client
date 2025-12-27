@@ -79,16 +79,6 @@ const Payment = () => {
                             {paymentMethod === 'momo' && <CheckCircle2 />}
                         </div>
 
-                        {/* ZaloPay */}
-                        <div
-                            className={`${styles.method} ${paymentMethod === 'zalopay' ? styles.activeZalo : ''
-                                }`}
-                            onClick={() => setPaymentMethod('zalopay')}
-                        >
-                            <span>Ví ZaloPay</span>
-                            {paymentMethod === 'zalopay' && <CheckCircle2 />}
-                        </div>
-
                         <div className={styles.security}>
                             <ShieldCheck size={16} />
                             <span>Thanh toán an toàn qua cổng đối tác</span>

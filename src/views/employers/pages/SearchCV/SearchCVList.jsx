@@ -1,17 +1,37 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import styles from "./SearchCVList.module.scss";
-import { mockCVs } from "./mock-data";
+import axiosClient from "@/services/axiosClient.js";
 import CVCard from "./CVCard";
 
 const SearchCVList = () => {
     const [searchQuery, setSearchQuery] = useState("");
+    const [cvs, setCvs] = useState([]);
     const [selectedSkills, setSelectedSkills] = useState([]);
     const [suggestions] = useState([]);
+    useEffect(() => {
+        const fetchCVs = async () => {
+            try {
+                const res = await axiosClient.get("/employer/search-cv");
+                setCvs(res);
+                console.log(res)
+            } catch (err) {
+                console.error(err);
+            }
+        };
+
+        fetchCVs();
+    }, []);
     const allSkills = useMemo(() => {
         const skills = new Set();
-        mockCVs.forEach(cv => cv.skills.forEach(s => skills.add(s)));
+
+        cvs.forEach(cv => {
+            if (Array.isArray(cv.skills)) {
+                cv.skills.forEach(s => skills.add(s));
+            }
+        });
+
         return Array.from(skills);
-    }, []);
+    }, [cvs]);
     const toggleSkill = skill => {
         setSelectedSkills(prev =>
             prev.includes(skill)
@@ -21,20 +41,22 @@ const SearchCVList = () => {
     };
     const filteredCVs = useMemo(() => {
         const q = searchQuery.toLowerCase();
-        return mockCVs.filter(cv => {
+
+        return cvs.filter(cv => {
+            const skills = Array.isArray(cv.skills) ? cv.skills : [];
+
             const matchesSearch =
-                cv.fullName.toLowerCase().includes(q) ||
-                cv.title.toLowerCase().includes(q) ||
-                cv.skills.some(s => s.toLowerCase().includes(q));
+                cv.fullName?.toLowerCase().includes(q) ||
+                cv.title?.toLowerCase().includes(q) ||
+                skills.some(s => s.toLowerCase().includes(q));
 
             const matchesSkills =
                 selectedSkills.length === 0 ||
-                selectedSkills.some(s => cv.skills.includes(s));
+                selectedSkills.some(s => skills.includes(s));
 
             return matchesSearch && matchesSkills;
         });
-    }, [searchQuery, selectedSkills]);
-
+    }, [cvs, searchQuery, selectedSkills]);
     return (
         <div className={styles.layout}>
             {/* SIDEBAR */}
