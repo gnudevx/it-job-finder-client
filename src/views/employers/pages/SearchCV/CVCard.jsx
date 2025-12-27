@@ -1,7 +1,48 @@
 import React from 'react';
 import styles from './CVCard.module.scss';
 import PropTypes from 'prop-types';
-const CVCard = ({ cv, onSave, isRecommended }) => {
+import axios from 'axios';
+const CVCard = ({ cv, isRecommended }) => {
+    const handleViewPDF = () => {
+
+        if (cv.resumeId) {
+            console.log("cvis: ", cv)
+            window.open(`http://localhost:5000/api/resumes/${cv.resumeId}/view`, "_blank");
+        } else {
+            alert("Ứng viên chưa tải CV lên.");
+        }
+    };
+    const handleDownload = async () => {
+        if (!cv.resumeId) {
+            alert("Ứng viên chưa tải CV");
+            return;
+        }
+
+        const token = localStorage.getItem("authToken");
+
+        const res = await axios.get(
+            `http://localhost:5000/api/resumes/downloads/${cv.resumeId}`,
+            {
+                responseType: "blob",
+                headers: {
+                    Authorization: `Bearer ${token}`, // ✅ JWT VẪN Ở ĐÂY
+                },
+                withCredentials: true,
+            }
+        );
+
+        const blob = new Blob([res.data], { type: "application/pdf" });
+        const url = window.URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `${cv.fullName}-CV.pdf`;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+
+        window.URL.revokeObjectURL(url);
+    };
     return (
         <div className={styles.card}>
             {isRecommended && cv.matchScore && (
@@ -19,7 +60,7 @@ const CVCard = ({ cv, onSave, isRecommended }) => {
 
             <div className={styles.avatarSection}>
                 <img
-                    src={cv.avatar}
+                    src={cv.avatar || 'https://picsum.photos/seed/avatar/200/200'}
                     alt={cv.fullName}
                     className={styles.avatar}
                 />
@@ -43,8 +84,8 @@ const CVCard = ({ cv, onSave, isRecommended }) => {
 
                 <div className={styles.meta}>
                     <span>{cv.experienceYears} năm KN</span>
-                    <span>{cv.location}</span>
-                    <span>{cv.education}</span>
+                    <span>{cv.address ?? ""}</span>
+                    <span>{cv.education ?? ""}</span>
                 </div>
 
                 <div className={styles.summaryWrapper}>
@@ -71,20 +112,15 @@ const CVCard = ({ cv, onSave, isRecommended }) => {
             </div>
 
             <div className={styles.actions}>
-                <button className={styles.primaryBtn}>
+                <button className={styles.primaryBtn} onClick={handleViewPDF}>
                     Xem CV Chi tiết
                 </button>
 
-                <button className={styles.secondaryBtn}>
+                <button className={styles.secondaryBtn} onClick={handleDownload}>
                     Tải file gốc
                 </button>
 
-                <button
-                    onClick={() => onSave?.(cv.id)}
-                    className={styles.saveBtn}
-                >
-                    Lưu vào Giỏ CV
-                </button>
+
             </div>
         </div>
     );
@@ -94,10 +130,12 @@ CVCard.propTypes = {
         id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
         fullName: PropTypes.string.isRequired,
         avatar: PropTypes.string,
+        resumeId: PropTypes.string,
+        fileUrl: PropTypes.string,
         fileType: PropTypes.oneOf(['pdf', 'doc', 'docx', 'CV']),
         title: PropTypes.string,
         experienceYears: PropTypes.number,
-        location: PropTypes.string,
+        address: PropTypes.string,
         education: PropTypes.string,
         summary: PropTypes.string,
         matchScore: PropTypes.number,
