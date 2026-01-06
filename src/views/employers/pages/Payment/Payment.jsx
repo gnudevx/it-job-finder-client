@@ -75,7 +75,7 @@ const Payment = () => {
                                 }`}
                             onClick={() => setPaymentMethod('momo')}
                         >
-                            <span>Ví MoMo</span>
+                            <span>Ví MoMo1</span>
                             {paymentMethod === 'momo' && <CheckCircle2 />}
                         </div>
 
