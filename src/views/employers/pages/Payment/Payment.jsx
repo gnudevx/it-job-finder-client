@@ -87,12 +87,12 @@ const Payment = () => {
 
                     {/* RIGHT */}
                     <div className={styles.card}>
-                        <h3>Thông tin đơn hàng</h3>
+                        <h3>Thông tin đơn hàng của bạn</h3>
                         <p className={styles.pkgName}>{pkg.name}</p>
                         <p className={styles.desc}>{pkg.description}</p>
 
                         <div className={styles.total}>
-                            <span>Tổng thanh toán</span>
+                            <span>Tổng thanh toán cho đơn hàng</span>
                             <strong>{pkg.price}</strong>
                         </div>
 
