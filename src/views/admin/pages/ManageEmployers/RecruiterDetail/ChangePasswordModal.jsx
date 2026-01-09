@@ -8,8 +8,8 @@ export default function ChangePasswordModal({ recruiter, onClose }) {
     const [loading, setLoading] = useState(false);
 
     const handleChangePassword = async () => {
-        if (!newPassword || !reNewPassword) return alert("Vui lòng nhập đủ thông tin");
-        if (newPassword !== reNewPassword) return alert("Mật khẩu không khớp");
+        if (!newPassword || !reNewPassword) return alert("Vui lòng nhập đủ password để thay đổi");
+        if (newPassword !== reNewPassword) return alert("Mật khẩu không khớp với mật khẩu cũ");
 
         try {
             setLoading(true);

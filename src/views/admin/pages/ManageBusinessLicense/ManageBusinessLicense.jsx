@@ -24,7 +24,7 @@ const ManageBusinessLicense = () => {
       setHistory(resHistory.history || []);
     } catch (err) {
       console.error(err);
-      alert('Lỗi khi tải dữ liệu');
+      alert('Lỗi khi tải dữ liệu lên');
     }
   };
 

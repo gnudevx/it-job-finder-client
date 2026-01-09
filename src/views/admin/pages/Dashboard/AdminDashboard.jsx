@@ -73,7 +73,7 @@ export default function AdminDashboard() {
       <div className={styles.chartsGrid}>
         {/* JOB STATS */}
         <div className={styles.chartCard}>
-          <h3 className={styles.chartTitle}>Thống Kê Tin Đăng (7 ngày qua)</h3>
+          <h3 className={styles.chartTitle}>Thống Kê Tin Đăng (7 ngày vừa qua)</h3>
           <div className={styles.chartWrapper}>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={jobStats}>
