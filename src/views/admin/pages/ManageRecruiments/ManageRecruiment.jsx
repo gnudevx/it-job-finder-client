@@ -32,7 +32,7 @@ const ManageRecruiment = () => {
       // Nếu backend trả { success, data }
       setJobs(res.jobs || []); // ✅ chắc chắn jobs là mảng
     } catch (err) {
-      console.error("Lấy danh sách job lỗi:", err);
+      console.error("Lấy danh sách job lỗi:   ", err);
       alert("Không thể tải danh sách job");
     } finally {
       setLoading(false);
@@ -69,7 +69,7 @@ const ManageRecruiment = () => {
       try {
         await jobApiService.updateJobStatus(id, newStatus);
       } catch (err) {
-        alert("Cập nhật lỗi, khôi phục trạng thái cũ.");
+        toast.alert("Cập nhật lỗi, khôi phục trạng thái cũ.");
         setJobs(prev =>
           prev.map(job =>
             job._id === id ? { ...job, publishStatus: oldStatus } : job
