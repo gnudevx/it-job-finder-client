@@ -11,12 +11,12 @@ export default function AdminLayout() {
   const pageTitles = {
     "/admin/dashboard": "Admin Dashboard",
     "/admin/manage/recruiment": "Quản lý tin tuyển dụng",
-    "/admin/notification/candidate": "Thông báo Candidate",
-    "/admin/notification/employer": "Thông báo Employer",
+    "/admin/notification/candidate": "Thông báo cho Candidate",
+    "/admin/notification/employer": "Thông báo cho Employer",
     "/admin/manage/business-license": "Giấy Đăng Ký Doanh Nghiệp",
     "/admin/manage/candidates": "Quản Lý Candidate",
     "/admin/manage/employers": "Quản Lý Employer",
-    "/admin/manage/SupportTickets": "Quản Lý Yêu Cầu Hỗ Trợ",
+    "/admin/manage/SupportTickets": "Quản Lý Yêu Cầu Hỗ Trợ Employer",
   };
 
   const currentTitle = pageTitles[location.pathname] || "Admin";
