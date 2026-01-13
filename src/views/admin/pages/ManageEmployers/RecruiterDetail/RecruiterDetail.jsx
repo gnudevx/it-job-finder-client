@@ -167,9 +167,9 @@ export default function RecruiterDetail({ recruiter, onBack, onStatusChange }) {
                             <table className={styles.jobTable}>
                                 <thead>
                                     <tr>
-                                        <th>Tiêu đề</th>
-                                        <th>Ngày đăng</th>
-                                        <th>Lượt xem</th>
+                                        <th>Tiêu đề tin </th>
+                                        <th>Ngày đăng </th>
+                                        <th>Lượt xem tin</th>
                                         <th>Trạng thái</th>
                                     </tr>
                                 </thead>
