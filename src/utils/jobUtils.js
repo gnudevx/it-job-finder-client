@@ -9,7 +9,7 @@ export const checkJobLimit = async () => {
         return res.data; // Trả về dữ liệu { remaining, limitReached }
     } catch (err) {
         console.error(err);
-        toast.error("Không thể kiểm tra hạn mức tin đăng");
+        toast.error("Không thể kiểm tra hạn mức tin  trong tháng");
         return null;
     }
 };
