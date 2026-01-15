@@ -62,7 +62,7 @@ export default function Dashboard() {
     };
     const completedCount = actions.filter((a) => a.completed).length;
     const progressPercent = Math.round((completedCount / actions.length) * 100);
-    if (!employer) return <div>Đang tải thông tin nhà tuyển dụng...</div>;
+    if (!employer) return <div>Đang tải thông tin của nhà tuyển dụng...</div>;
     return (
         <div className={styles.dashboard}>
 
