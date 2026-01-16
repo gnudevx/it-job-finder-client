@@ -115,7 +115,7 @@ const insights = () => {
                     ) : (
                         <div className={styles.emptyState}>
                             <div className={styles.emptyIcon}><Info className={styles.iconLarge} /></div>
-                            <h3> Hiện Chưa có bài viết nào</h3>
+                            <h3> Hiện Chưa có bài viết nào được đăng</h3>
                             <p> Hiện chưa có thông tin trong mục này. Vui lòng quay lại sau.</p>
                         </div>
                     )}

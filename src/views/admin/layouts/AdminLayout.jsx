@@ -10,7 +10,7 @@ export default function AdminLayout() {
 
   const pageTitles = {
     "/admin/dashboard": "Admin Dashboard",
-    "/admin/manage/recruiment": "Quản lý tin tuyển dụng",
+    "/admin/manage/recruiment": "Quản lý tin nhà tuyển dụng",
     "/admin/notification/candidate": "Thông báo cho Candidate",
     "/admin/notification/employer": "Thông báo cho Employer",
     "/admin/manage/business-license": "Giấy Đăng Ký Doanh Nghiệp",
