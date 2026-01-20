@@ -98,8 +98,8 @@ function FilterBar({ filters, setFilters, campaigns }) {
           <option value="today">Hôm nay</option>
           <option value="7days">7 ngày gần đây nhất</option>
           <option value="30days">30 ngày gần đây nhất</option>
-          <option value="thisMonth">Tháng này</option>
-          <option value="lastMonth">Tháng trước</option>
+          <option value="thisMonth">Tháng này </option>
+          <option value="lastMonth">Tháng trước </option>
           <option value="custom">Tùy chỉnh...</option>
         </select>
 
