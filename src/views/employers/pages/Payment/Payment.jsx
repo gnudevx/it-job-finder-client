@@ -14,7 +14,6 @@ const Payment = () => {
     const { pkgId } = useParams();
     const navigate = useNavigate();
     const pkg = PACKAGES.find(p => p.id === pkgId);
-
     const [isProcessing, setIsProcessing] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState('momo');
 
@@ -24,7 +23,6 @@ const Payment = () => {
             alert('ZaloPay hiện chưa được hỗ trợ.');
             return;
         }
-
         setIsProcessing(true);
         try {
             const res = await fetch('/api/payments/momo/create', {
@@ -41,7 +39,6 @@ const Payment = () => {
                 alert('Backend KHÔNG trả về order_url');
                 return;
             }
-
             window.location.href = data.payUrl;
         } catch (err) {
             console.error(err);
