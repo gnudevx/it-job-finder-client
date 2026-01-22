@@ -60,13 +60,11 @@ const Payment = () => {
                 </button>
 
                 <div className={styles.layout}>
-                    {/* LEFT */}
                     <div className={styles.card}>
                         <h2 className={styles.title}>
                             <Wallet size={18} /> Phương thức thanh toán
                         </h2>
 
-                        {/* MoMo */}
                         <div
                             className={`${styles.method} ${paymentMethod === 'momo' ? styles.activeMomo : ''
                                 }`}
