@@ -73,13 +73,11 @@ const Payment = () => {
                             <span>Ví MoMo1</span>
                             {paymentMethod === 'momo' && <CheckCircle2 />}
                         </div>
-
                         <div className={styles.security}>
                             <ShieldCheck size={16} />
                             <span>Thanh toán an toàn qua cổng đối tác</span>
                         </div>
                     </div>
-
                     {/* RIGHT */}
                     <div className={styles.card}>
                         <h3>Thông tin đơn hàng của bạn</h3>
