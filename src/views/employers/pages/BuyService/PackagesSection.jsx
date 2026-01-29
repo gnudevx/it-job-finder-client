@@ -20,7 +20,6 @@ const PackagesSection = () => {
 
             setSelectedPackageId(tierToPackage[tier]);
         };
-
         fetchEmployer();
     }, []);
 
@@ -28,7 +27,6 @@ const PackagesSection = () => {
         setSelectedPackageId(pkg.id); // lưu gói đang chọn
         // Chuyển sang trang thanh toán với react-router
         navigate(`/employer/payment/${pkg.id}`);
-
     };
 
     return (
@@ -51,5 +49,4 @@ const PackagesSection = () => {
         </div>
     );
 };
-
 export default PackagesSection;
