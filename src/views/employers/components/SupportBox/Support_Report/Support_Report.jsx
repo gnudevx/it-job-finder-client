@@ -22,18 +22,15 @@ export default function Support_Report() {
             setFormData({ ...formData, [name]: value });
         }
     };
-
     // ✅ Nhận file mới từ component con
     const handleFilesChange = (newFiles) => {
         setFormData({ ...formData, files: newFiles });
     };
-
     const removeFile = (index) => {
         const newFiles = [...formData.files];
         newFiles.splice(index, 1);
         setFormData({ ...formData, files: newFiles });
     };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -61,7 +58,6 @@ export default function Support_Report() {
             setStatus("error");
         }
     };
-
     return (
         <form className={styles.reportForm} onSubmit={handleSubmit}>
             <h3>Yêu cầu hỗ trợ & Báo cáo vi phạm</h3>
@@ -81,7 +77,6 @@ export default function Support_Report() {
                     onChange={handleChange}
                 />
             </div>
-
             <div className={styles.field}>
                 <label>Loại báo cáo <span>*</span></label>
                 <select name="type" value={formData.type} onChange={handleChange}>
@@ -92,7 +87,6 @@ export default function Support_Report() {
                     <option value="other">Khác</option>
                 </select>
             </div>
-
             <div className={styles.field}>
                 <label>Mô tả <span>*</span></label>
                 <textarea
@@ -103,7 +97,6 @@ export default function Support_Report() {
                     onChange={handleChange}
                 ></textarea>
             </div>
-
             <div className={styles.uploadBox}>
                 <label>Tài liệu chứng minh</label>
                 <FileUpload
