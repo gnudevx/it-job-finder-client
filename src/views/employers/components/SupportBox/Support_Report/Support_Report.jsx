@@ -105,7 +105,6 @@ export default function Support_Report() {
                     accept=".jpeg,.jpg,.png,.pdf"
                     note="Dung lượng tối đa 5MB, định dạng: jpeg, jpg, png, pdf"
                 />
-
                 {formData.files.length > 0 && (
                     <ul className={styles.fileList}>
                         {formData.files.map((f, i) => (
