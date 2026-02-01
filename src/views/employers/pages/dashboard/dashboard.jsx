@@ -35,7 +35,6 @@ export default function Dashboard() {
         { title: "Cập nhật Giấy đăng ký doanh nghiệp", link: "/employer/account/settings/license", completed: steps.licenseUploaded },
         { title: "Đăng tin tuyển dụng đầu tiên", link: "/employer/jobs/create", completed: jobCount > 0, disabled: true },
     ];
-
     const exploreData = [
         {
             title: "Đăng tin tuyển dụng",
@@ -86,7 +85,6 @@ export default function Dashboard() {
                     })}
                 </div>
             </div>
-
             {/* Section 2 */}
             <div className={styles.section}>
                 <SectionTitle title="Khám phá HireIT dành cho nhà tuyển dụng" />
