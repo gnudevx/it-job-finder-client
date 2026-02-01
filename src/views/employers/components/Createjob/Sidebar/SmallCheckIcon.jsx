@@ -18,7 +18,6 @@ const SmallCheckIcon = ({ color = "#16a34a", size = "20px" }) => (
         <polyline points="20 6 9 17 4 12"></polyline>
     </svg>
 );
-
 SmallCheckIcon.propTypes = {
     color: PropTypes.string,
     size: PropTypes.string,
