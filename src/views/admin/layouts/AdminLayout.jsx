@@ -7,7 +7,6 @@ import styles from "./AdminLayout.module.scss";
 export default function AdminLayout() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const location = useLocation();
-
   const pageTitles = {
     "/admin/dashboard": "Admin Dashboard",
     "/admin/manage/recruiment": "Quản lý tin nhà tuyển dụng",
