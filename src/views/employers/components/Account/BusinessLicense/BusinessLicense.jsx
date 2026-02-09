@@ -20,12 +20,10 @@ export default function BusinessLicense() {
             alert("Vui lòng chọn file trước khi lưu");
             return;
         }
-
         const formData = new FormData();
         formData.append("license", files[0]); // lấy file đầu tiên
 
         setLoading(true);
-
         try {
             const res = await axios.post(
                 `/employer/account/settings/license`,
@@ -152,7 +150,6 @@ export default function BusinessLicense() {
                         {loading ? "Đang cập nhật..." : "Cập nhật giấy phép"}
                     </button>
                 )}
-
                 {/* REJECTED -> Cho phép upload lại */}
                 {license?.status === "rejected" && (
                     <button
