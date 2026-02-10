@@ -46,29 +46,23 @@ export default function LoginPage() {
   const handleGoogleLogin = () => {
     loginWithGoogle(async (code) => {
       try {
-        const res = await fetch("http://localhost:5000/api/auth/google", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ code }),
-        });
-
-        const data = await res.json();
+        const res = await authService.googleLogin(code);
+        const data = res;
 
         if (data.success) {
-          setAuthToken(data.token);
-          localStorage.setItem("authToken", data.token);
+          setAuthToken(data.accessToken);
+          setUserId(data.user._id);
+          setUser(data.user);
 
-          localStorage.setItem("userId", data.user._id);
-          setUser(data.user._id);
+          localStorage.setItem("authToken", data.accessToken);
 
           alert("Đăng nhập Google thành công!");
-          navigate("/candidate/home");
-        } else {
-          alert("Google login thất bại!");
+
+          navigate("/candidate/home", { replace: true });
         }
       } catch (error) {
-        console.error("Google Login Error:", error);
-        alert("Lỗi kết nối đến server!");
+        console.error(error);
+        alert("Google login lỗi");
       }
     });
   };

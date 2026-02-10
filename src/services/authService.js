@@ -12,9 +12,14 @@ export const refreshTokenRequest = () =>
 export const logoutRequest = () =>
   axiosClient.post("/api/auth/logout");
 
+// GOOGLE LOGIN
+export const googleLogin = (code) => 
+  axiosClient.post("/api/auth/google", { code });
+
 const authService = {
   login,
   refreshTokenRequest,
   logoutRequest,
+  googleLogin,
 };
 export default authService;
