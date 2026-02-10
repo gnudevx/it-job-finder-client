@@ -12,7 +12,6 @@ const SearchCV = () => {
                     <div className={styles.brand}>
                         <div className={styles.logo}>CV</div>
                     </div>
-
                     <div className={styles.navTabs}>
                         <NavLink
                             to=""
@@ -23,7 +22,6 @@ const SearchCV = () => {
                         >
                             Tìm kiếm CV
                         </NavLink>
-
                         <NavLink
                             to="ai"
                             className={({ isActive }) =>

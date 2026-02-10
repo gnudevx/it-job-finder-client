@@ -9,12 +9,10 @@ export default function NotificationList() {
     const [page, setPage] = useState(1);
     const [notifications, setNotifications] = useState([]);
     const [totalPages, setTotalPages] = useState(1);
-
     const navigate = useNavigate(); // <-- thêm navigate
 
     const TYPE_LABEL = { SYSTEM: "Hệ thống", FEATURE: "Tính năng", PROMOTION: "Khuyến mãi", ALERT: "Cảnh báo" };
     const TYPE_STYLE = { SYSTEM: styles.system, FEATURE: styles.feature, PROMOTION: styles.promotion, ALERT: styles.alert };
-
     useEffect(() => { load(); }, [page]);
 
     const load = async () => {
@@ -26,7 +24,6 @@ export default function NotificationList() {
             console.error(e);
         }
     };
-
     const handleClick = async (n) => {
         try {
             navigate(`/employer/system-notification/${n._id}`); // <-- navigate sang chi tiết
@@ -34,7 +31,6 @@ export default function NotificationList() {
             console.error(err);
         }
     };
-
     return (
         <div className={styles.list}>
             {notifications.map((n) => (
@@ -47,7 +43,6 @@ export default function NotificationList() {
                     </div>
                 </div>
             ))}
-
             <Pagination page={page} totalPages={totalPages} onChange={setPage} />
         </div>
     );

@@ -9,7 +9,7 @@ const CVCard = ({ cv, isRecommended }) => {
             console.log("cvis: ", cv)
             window.open(`http://localhost:5000/api/resumes/${cv.resumeId}/view`, "_blank");
         } else {
-            alert("Ứng viên chưa tải CV lên.");
+            alert("Ứng viên chưa tải CV lên. Vui lòng xem lại");
         }
     };
     const handleDownload = async () => {
@@ -54,7 +54,7 @@ const CVCard = ({ cv, isRecommended }) => {
                             clipRule="evenodd"
                         />
                     </svg>
-                    Độ phù hợp: {cv.matchScore}%
+                    Độ phù hợp với CV: {cv.matchScore}%
                 </div>
             )}
 

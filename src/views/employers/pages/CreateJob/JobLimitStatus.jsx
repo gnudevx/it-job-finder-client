@@ -27,7 +27,7 @@ export default function JobLimitStatus() {
         <div className={styles.wrapper}>
             {limit.limitReached ? (
                 <p className={styles.limitReached}>
-                    Hạn mức tin đăng đã <strong>đầy</strong>. Bạn đã đăng
+                    Hạn mức tin đăng đã <strong> đầy </strong>. Bạn đã đăng
                     <span className={styles.count}> {limit.postedThisMonth}/{limit.maxPosts} </span>
                     tin tháng này.
                 </p>

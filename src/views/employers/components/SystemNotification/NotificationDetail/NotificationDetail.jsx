@@ -7,7 +7,6 @@ export default function NotificationDetail() {
     const { id } = useParams();
     const navigate = useNavigate();
     const [detail, setDetail] = useState(null);
-
     useEffect(() => {
         if (!id) return;
 
@@ -23,9 +22,7 @@ export default function NotificationDetail() {
         };
         load();
     }, [id]);
-
     if (!detail) return <div>Loading...</div>;
-
     return (
         <div className={styles.detail}>
             <button className={styles.back} onClick={() => navigate(-1)}>

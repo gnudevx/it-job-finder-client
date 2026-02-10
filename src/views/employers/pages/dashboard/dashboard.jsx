@@ -35,7 +35,6 @@ export default function Dashboard() {
         { title: "Cập nhật Giấy đăng ký doanh nghiệp", link: "/employer/account/settings/license", completed: steps.licenseUploaded },
         { title: "Đăng tin tuyển dụng đầu tiên", link: "/employer/jobs/create", completed: jobCount > 0, disabled: true },
     ];
-
     const exploreData = [
         {
             title: "Đăng tin tuyển dụng",
@@ -62,7 +61,7 @@ export default function Dashboard() {
     };
     const completedCount = actions.filter((a) => a.completed).length;
     const progressPercent = Math.round((completedCount / actions.length) * 100);
-    if (!employer) return <div>Đang tải thông tin nhà tuyển dụng...</div>;
+    if (!employer) return <div>Đang tải thông tin của nhà tuyển dụng...</div>;
     return (
         <div className={styles.dashboard}>
 
@@ -86,7 +85,6 @@ export default function Dashboard() {
                     })}
                 </div>
             </div>
-
             {/* Section 2 */}
             <div className={styles.section}>
                 <SectionTitle title="Khám phá HireIT dành cho nhà tuyển dụng" />

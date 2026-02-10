@@ -25,7 +25,7 @@ export default function ManageCandidates() {
   }, []);
 
   const handleDelete = async (id) => {
-    if (!confirm("Bạn có chắc muốn xóa ứng viên này?")) return;
+    if (!confirm("Bạn có chắc muốn xóa ứng viên này? vui lòng xác nhận")) return;
     try {
       await adminService.DeleteCandidate(id);
       setCandidates(candidates.filter((c) => c._id !== id));
@@ -82,7 +82,7 @@ export default function ManageCandidates() {
                   <td>{new Date(c.updatedAt).toLocaleString("vi-VN")}</td>
                   <td>
                     <div className={styles.actionBtns}>
-                      <button className={styles.editBtn} onClick={() => window.location.href=`/admin/manage/candidates/${c._id}`}>
+                      <button className={styles.editBtn} onClick={() => window.location.href = `/admin/manage/candidates/${c._id}`}>
                         Sửa
                       </button>
                       <button className={styles.deleteBtn} onClick={() => handleDelete(c._id)}>

@@ -55,7 +55,7 @@ export default function CandidateForm({ mode = "create", initialData = {}, onSuc
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       <h2 className={styles.title}>
-        {mode === "create" ? "Thêm Ứng Viên" : "Chỉnh Sửa Ứng Viên"}
+        {mode === "create" ? "Thêm Mới Ứng Viên" : "Chỉnh Sửa Ứng Viên"}
       </h2>
 
       <div className={styles.row}>
@@ -87,9 +87,9 @@ export default function CandidateForm({ mode = "create", initialData = {}, onSuc
         <label>Giới tính:</label>
         <select name="gender" value={form.gender} onChange={handleChange}>
           <option value="">— Chọn —</option>
-          <option value="male">Nam</option>
-          <option value="female">Nữ</option>
-          <option value="other">Khác</option>
+          <option value="Nam">Nam</option>
+          <option value="Nữ">Nữ</option>
+          <option value="Khác">Khác</option>
         </select>
       </div>
 

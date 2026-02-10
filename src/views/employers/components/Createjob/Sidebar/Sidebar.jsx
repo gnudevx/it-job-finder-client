@@ -3,8 +3,6 @@ import { CreateJobContext } from '@views/employers/pages/CreateJob/CreateJobCont
 import PropTypes from "prop-types";
 import styles from "./Sidebar.module.scss";
 import SidebarStepSubitems from "./SidebarStepSubitems";
-
-
 export default function Sidebar({ steps = [] }) {
     const { currentStep, setCurrentStep, validatedFields } = useContext(CreateJobContext);
     const step1Fields = [
@@ -14,7 +12,6 @@ export default function Sidebar({ steps = [] }) {
         { key: "jobType", label: "Loại công việc", valid: validatedFields.jobType },
         { key: "salary", label: "Mức lương", valid: validatedFields.salary },
     ];
-
     const doneCountStep1 = step1Fields.filter(f => f.valid).length;
     const step2Fields = [
         { key: "jobDescription", label: "Mô tả công việc", valid: validatedFields.jobDescription },
@@ -39,7 +36,6 @@ export default function Sidebar({ steps = [] }) {
         { key: "receiverEmail", label: "Email nhận hồ sơ", valid: validatedFields.receiverEmail },
     ];
     const doneCountStep4 = step4Fields.filter(f => f.valid).length;
-
     return (
         <div className={styles.sidebarCard}>
             <ol className={styles.stepsList}>
@@ -69,7 +65,6 @@ export default function Sidebar({ steps = [] }) {
         </div>
     );
 }
-
 Sidebar.propTypes = {
     steps: PropTypes.arrayOf(PropTypes.string),
 

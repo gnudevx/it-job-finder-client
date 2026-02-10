@@ -16,7 +16,7 @@ export default function EditCandidatePage() {
         if (res.success) setInitialData(res.data);
       } catch (err) {
         console.error(err);
-        alert("Lỗi khi tải thông tin ứng viên");
+        alert("Lỗi khi tải thông tin ứng viên, vui lòng thử lại");
       } finally {
         setLoading(false);
       }

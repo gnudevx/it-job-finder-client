@@ -14,7 +14,6 @@ const Payment = () => {
     const { pkgId } = useParams();
     const navigate = useNavigate();
     const pkg = PACKAGES.find(p => p.id === pkgId);
-
     const [isProcessing, setIsProcessing] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState('momo');
 
@@ -24,7 +23,6 @@ const Payment = () => {
             alert('ZaloPay hiện chưa được hỗ trợ.');
             return;
         }
-
         setIsProcessing(true);
         try {
             const res = await fetch('/api/payments/momo/create', {
@@ -41,7 +39,6 @@ const Payment = () => {
                 alert('Backend KHÔNG trả về order_url');
                 return;
             }
-
             window.location.href = data.payUrl;
         } catch (err) {
             console.error(err);
@@ -63,36 +60,32 @@ const Payment = () => {
                 </button>
 
                 <div className={styles.layout}>
-                    {/* LEFT */}
                     <div className={styles.card}>
                         <h2 className={styles.title}>
                             <Wallet size={18} /> Phương thức thanh toán
                         </h2>
 
-                        {/* MoMo */}
                         <div
                             className={`${styles.method} ${paymentMethod === 'momo' ? styles.activeMomo : ''
                                 }`}
                             onClick={() => setPaymentMethod('momo')}
                         >
-                            <span>Ví MoMo</span>
+                            <span>Ví MoMo1</span>
                             {paymentMethod === 'momo' && <CheckCircle2 />}
                         </div>
-
                         <div className={styles.security}>
                             <ShieldCheck size={16} />
                             <span>Thanh toán an toàn qua cổng đối tác</span>
                         </div>
                     </div>
-
                     {/* RIGHT */}
                     <div className={styles.card}>
-                        <h3>Thông tin đơn hàng</h3>
+                        <h3>Thông tin đơn hàng của bạn</h3>
                         <p className={styles.pkgName}>{pkg.name}</p>
                         <p className={styles.desc}>{pkg.description}</p>
 
                         <div className={styles.total}>
-                            <span>Tổng thanh toán</span>
+                            <span>Tổng thanh toán cho đơn hàng</span>
                             <strong>{pkg.price}</strong>
                         </div>
 

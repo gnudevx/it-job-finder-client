@@ -49,7 +49,6 @@ export default function HisUpdateAccount() {
 
         fetchHistory();
     }, []);
-
     const formatTime = (timestamp) => {
         const date = new Date(timestamp);
         return date.toLocaleTimeString("vi-VN", {
@@ -57,7 +56,6 @@ export default function HisUpdateAccount() {
             minute: "2-digit",
         });
     };
-
     const filteredHistory = history.filter((item) => {
         const itemDate = new Date(item.timestamp)
             .toISOString()
@@ -66,7 +64,6 @@ export default function HisUpdateAccount() {
         if (endDate && itemDate > endDate) return false;
         return true;
     });
-
     return (
         <div className={styles.container}>
             <div className={styles.header}>
@@ -85,7 +82,6 @@ export default function HisUpdateAccount() {
                     />
                 </div>
             </div>
-
             <div className={styles.list}>
                 {filteredHistory.length === 0 ? (
                     <p>Chưa có hoạt động nào</p>
