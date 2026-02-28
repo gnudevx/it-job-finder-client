@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
-    ChevronDown, ChevronRight,
+    ChevronDown, ChevronRight, MessageSquareMore,
     Briefcase, FileText, UserCog, Settings
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -91,9 +91,9 @@ export default function HeaderCandidate() {
             <div className={styles["header-right"]}>
                 <NotificationDropdown />
 
-                {/* <div className={styles.iconWrapper} onClick={() => navigate("/candidate/messages")}>
-                    <MessageSquareMore className={styles.icon} />
-                </div> */}
+                <li className={styles.iconWrapper} onClick={() => {console.log("clicked"); navigate("/candidate/messages")}}>
+                    <MessageSquareMore className={styles.icon}/>
+                </li>
 
                 {/* PROFILE DROPDOWN */}
                 <div
