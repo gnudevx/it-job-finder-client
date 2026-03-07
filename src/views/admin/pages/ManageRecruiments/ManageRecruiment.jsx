@@ -69,7 +69,7 @@ const ManageRecruiment = () => {
       try {
         await jobApiService.updateJobStatus(id, newStatus);
       } catch (err) {
-        toast.alert("Cập nhật lỗi, khôi phục trạng thái cũ.");
+        alert("Cập nhật lỗi, khôi phục trạng thái cũ.");
         setJobs(prev =>
           prev.map(job =>
             job._id === id ? { ...job, publishStatus: oldStatus } : job
