@@ -1,0 +1,106 @@
+.container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: white;
+}
+
+.header {
+  display: flex;
+  align-items: center; /* Canh giữa avatar và khối chữ theo chiều dọc */
+  gap: 12px; /* Khoảng cách ngang giữa avatar và khối chữ (có thể tăng giảm tùy ý) */
+  padding: 16px 20px; 
+  border-bottom: 1px solid #e5e7eb;
+  background-color: #fff;
+
+  img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%; /* Bo tròn avatar */
+    object-fit: cover;
+  }
+
+  /* Target trực tiếp vào thẻ div bọc Tên và Trạng thái */
+  > div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px; /* Khoảng cách dọc sát lại giữa Tên và Trạng thái */
+  }
+
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #111827; // Màu chữ đen đậm giống hình
+    margin: 0; /* QUAN TRỌNG: Bỏ khoảng lề mặc định siêu to của thẻ h3 */
+    line-height: 1.2;
+  }
+
+  span {
+    font-size: 13px;
+    color: #93c5fd; /* Màu xanh lơ nhạt nhạt giống chữ "Đang hoạt động" của bạn */
+    margin: 0;
+  }
+}
+
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  background: #f9fafb;
+}
+
+.msg {
+  margin-bottom: 12px;
+
+  span {
+    font-size: 10px;
+    color: #9ca3af;
+  }
+}
+
+.me {
+  text-align: right;
+}
+
+.bubble {
+  display: inline-block;
+  padding: 10px 14px;
+  border-radius: 16px;
+  background: white;
+}
+
+.me .bubble {
+  background: #5f93f3;
+  color: white;
+}
+
+.input {
+  padding: 12px;
+  border-top: 1px solid #f3f4f6;
+  display: flex;
+  gap: 8px;
+
+  input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 12px;
+    background: #f3f4f6;
+    border: none;
+  }
+
+  button {
+    width: 40px;
+    height: 40px;
+    background: #5f93f3;
+    color: white;
+    border-radius: 10px;
+  }
+}
+
+.empty {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #9ca3af;
+}
