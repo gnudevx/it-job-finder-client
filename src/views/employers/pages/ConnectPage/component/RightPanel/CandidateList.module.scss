@@ -1,0 +1,147 @@
+.container {
+  width: 320px; // w-80
+  border-left: 1px solid #e5e7eb;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.header {
+  padding: 16px;
+  border-bottom: 1px solid #f3f4f6;
+
+  h3 {
+    font-size: 12px;
+    font-weight: bold;
+    color: #1f2937;
+    text-transform: uppercase;
+  }
+
+  p {
+    font-size: 11px;
+    color: #9ca3af;
+    margin-top: 4px;
+  }
+}
+
+.list {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.item {
+  padding: 16px;
+  border-bottom: 1px solid #f9fafb;
+
+  &:hover {
+    background: #f9fafb;
+  }
+}
+
+.info {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+  align-items: flex-start; /* YÊU CẦU 1: Căn cho text bám sát lên mép trên của avatar */
+
+  img {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+}
+.textContent {
+  display: flex;
+  flex-direction: column;
+  gap: 4px; 
+  margin-top: -3px; 
+  min-width: 0; /* QUAN TRỌNG: Phải có cái này thì chữ bên trong mới tự động cắt thành dấu ... được */
+
+  h4 {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0; 
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Thêm cắt tên luôn phòng trường hợp tên ứng viên quá dài */
+  }
+}
+
+.jobMeta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  /* Đã xóa flex-wrap: wrap; */
+  white-space: nowrap; /* Ép tất cả nằm trên 1 dòng duy nhất */
+
+  span {
+    font-size: 11px;
+    color: #9ca3af;
+  }
+
+  /* Cấu hình cho chức danh (Frontend Developer...) */
+  span:first-child {
+    overflow: hidden;
+    text-overflow: ellipsis; /* Dài quá thì biến thành ... */
+  }
+
+  /* Cấu hình cho ngày ứng tuyển */
+  span:last-child {
+    flex-shrink: 0; /* Ép không cho đoạn ngày giờ bị bóp méo hay thu nhỏ */
+  }
+
+  .dot {
+    font-size: 10px;
+    color: #d1d5db; 
+    flex-shrink: 0;
+  }
+}
+.actions {
+  display: flex;
+  gap: 8px;
+
+  button {
+    flex: 1;
+    padding: 6px;
+    background: #deefff;
+    color: #565fe2;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+      background: #9cc4e9;
+    }
+  }
+}
+
+.iconBtn {
+  flex: unset !important;
+  width: 32px;
+  background: #f3f4f6 !important;
+  color: #6b7280 !important;
+}
+
+.footer {
+  padding: 16px;
+  border-top: 1px solid #f3f4f6;
+
+  button {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #4b5563;
+    cursor: pointer;
+
+    &:hover {
+      background: #f9fafb;
+    }
+  }
+}

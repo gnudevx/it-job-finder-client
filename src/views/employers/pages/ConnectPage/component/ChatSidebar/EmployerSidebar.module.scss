@@ -1,0 +1,350 @@
+.container {
+  width: 320px;
+  border-right: 1px solid #e5e7eb;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.header {
+  padding: 16px;
+  border-bottom: 1px solid #f3f4f6;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logoWrap {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  width: auto; /* Để auto chiều rộng cho tự nhiên với height */
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* YÊU CẦU 3: Màu chữ Connect đồng bộ logo */
+.title {
+  font-weight: 700;
+  color: #b094cf; /* Xanh đen sẫm giống hình 2 */
+  font-size: 16px; /* Cho to ra chút xíu để cân đối với hình */
+}
+
+/* YÊU CẦU 2: Layout bên phải Header */
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.homeBtn {
+  background: #f3f4f6;
+  color: #4b5563;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 999px; /* Nút bo tròn */
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: #e5e7eb;
+    color: #1f2937;
+  }
+}
+
+/* YÊU CẦU 1: Giao diện Settings và Popup */
+.settingsWrap {
+  position: relative;
+}
+
+.iconBtn {
+  color: #6b7280;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s;
+
+  &:hover, &.activeIcon {
+    background: #f3f4f6;
+    color: #374151;
+  }
+}
+
+.settingsDropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  width: 240px;
+  z-index: 50;
+  padding: 8px 0;
+
+  /* Mũi tên nhỏ chỉ lên trên (giống tooltip) */
+  &::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    right: 12px;
+    width: 10px;
+    height: 10px;
+    background: white;
+    border-left: 1px solid #e5e7eb;
+    border-top: 1px solid #e5e7eb;
+    transform: rotate(45deg);
+  }
+}
+
+.settingItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  cursor: pointer;
+  position: relative;
+  z-index: 1; /* Để nổi trên cái mũi tên tooltip */
+
+  &:hover {
+    background: #f9fafb;
+  }
+}
+
+.settingLabel {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #4b5563;
+  font-size: 14px;
+}
+
+/* Nút gạt Toggle Bật/Tắt */
+.toggle {
+  width: 36px;
+  height: 20px;
+  background: #d1d5db; /* Màu xám khi tắt */
+  border-radius: 999px;
+  position: relative;
+  transition: background-color 0.2s ease;
+}
+
+.toggleActive {
+  background: #10b981; /* Màu xanh lá khi bật giống hình */
+}
+
+.toggleCircle {
+  width: 16px;
+  height: 16px;
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.toggleActive .toggleCircle {
+  transform: translateX(16px);
+}
+/* YÊU CẦU 2: Giữ ô search không bị tràn khỏi layout */
+.searchBox {
+  padding: 16px;
+  position: relative;
+  width: 100%;
+  box-sizing: border-box; /* Quan trọng để padding không làm tăng tổng width */
+
+  input {
+    width: 100%;
+    box-sizing: border-box; /* Tránh tràn input */
+    padding: 8px 16px 8px 36px;
+    background: #f3f4f6;
+    border-radius: 999px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+  }
+}
+
+.searchIcon {
+  position: absolute;
+  left: 26px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+}
+
+.feedback {
+  margin: 0 16px 16px;
+  background: #eff6ff;
+  border: 1px solid #dbeafe;
+  padding: 12px 16px;
+  border-radius: 12px;
+
+  .feedbackTitle {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #1e3a8a;
+  }
+
+  .feedbackDesc {
+    font-size: 12px;
+    color: #3b82f6;
+    margin-bottom: 10px;
+  }
+
+  button {
+    width: 100%;
+    background: #dbeafe;
+    color: #2563eb;
+    padding: 8px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 13px;
+  }
+}
+
+/* YÊU CẦU 3: Tabs đậm/nhạt, không tô viền */
+.tabs {
+  display: flex;
+  border-bottom: 1px solid #f3f4f6;
+  padding: 0 16px;
+  gap: 20px;
+
+  button {
+    padding: 12px 0;
+    font-size: 14px;
+    color: #6b7280;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-weight: 400; /* Nhạt cho tab chưa chọn */
+  }
+}
+
+.activeTab {
+  color: #1f2937 !important;
+  font-weight: 700 !important; /* Đậm cho tab được chọn */
+}
+
+.list {
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* YÊU CẦU 4: Chỉnh item gọn gàng hơn, bớt cầu kì */
+.item {
+  width: 100%;
+  display: flex;
+  gap: 10px; /* Thu nhỏ khoảng cách */
+  padding: 12px 16px; /* Thu nhỏ padding */
+  border: none;
+  background: transparent;
+  border-left: 3px solid transparent;
+  cursor: pointer;
+  text-align: left;
+  box-sizing: border-box;
+
+  &:hover {
+    background: #f9fafb;
+  }
+}
+
+.active {
+  background: #ecfdf5;
+  border-left: 3px solid #16a34a;
+}
+
+.avatarWrap {
+  position: relative;
+  flex-shrink: 0;
+
+  img {
+    width: 36px; /* Thu nhỏ avatar */
+    height: 36px;
+    border-radius: 999px;
+    object-fit: cover;
+  }
+}
+
+.online {
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  width: 10px;
+  height: 10px;
+  background: #22c55e;
+  border: 2px solid white;
+  border-radius: 999px;
+}
+
+.info {
+  flex: 1;
+  min-width: 0;
+
+  h4 {
+    font-size: 13px; /* Cân đối lại size chữ */
+    font-weight: 600;
+    margin: 0 0 2px 0;
+    color: #1f2937;
+  }
+
+  p {
+    font-size: 12px;
+    color: #6b7280;
+    margin: 0 0 4px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Cắt chữ nếu tin nhắn quá dài */
+  }
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  span {
+    font-size: 11px;
+    color: #9ca3af;
+  }
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Đẩy badge ra sát lề phải */
+
+  span:first-child {
+    font-size: 10px;
+    background: #f3f4f6;
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: #4b5563;
+  }
+}
+
+.badge {
+  background: #ef4444 !important;
+  color: white !important;
+  border-radius: 999px;
+  font-size: 10px;
+  padding: 2px 6px;
+  font-weight: 600;
+}

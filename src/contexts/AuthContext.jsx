@@ -13,6 +13,23 @@ export function AuthProvider({ children }) {
   
   const [initialized, setInitialized] = useState(false);
 
+  const login = ({ token, user, id }) => {
+    if (token) {
+      setAuthToken(token);
+      localStorage.setItem("authToken", token);
+    }
+
+    if (user) {
+      setUser(user);
+      localStorage.setItem("user", JSON.stringify(user));
+    }
+
+    if (id) {
+      setUserId(id);
+      localStorage.setItem("userId", id);
+    }
+  };
+
   useEffect(() => {
     setInitialized(true);
   }, []);
@@ -33,7 +50,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ authToken, setAuthToken, user, setUser, userId, setUserId, initialized }}
+      value={{ authToken, setAuthToken, user, setUser, userId, setUserId, initialized, login }}
     >
       {children}
     </AuthContext.Provider>

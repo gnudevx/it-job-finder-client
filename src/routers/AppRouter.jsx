@@ -15,7 +15,7 @@ import JobDetail from "@/views/candidates/pages/JobDetail/JobDetail";
 import { useAuth } from "@/contexts/AuthContext";
 import RootRedirect from "./RootRedirect";
 import CompanyInfoPage from "@/views/candidates/components/CompanyInfo/CompanyInfoPage";
-
+import ConnectPage from "@/views/employers/pages/ConnectPage/ConnectPage.jsx";
 const LoadingScreen = () => (
   <div className="flex items-center justify-center h-screen text-lg font-medium">
     Loading...
@@ -53,13 +53,15 @@ export const AppRouter = () => {
 
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-
+          <Route path="/candidate/connect" element={<ConnectPage role="candidate" />} />
+          <Route path="/candidate/connect/:id" element={<ConnectPage role="candidate" />} />
           {/* Candidate layout */}
           <Route
             path="/candidate/*"
             element={<PrivateRoute element={<CandidateApp />} />}
           />
-
+          <Route path="/employer/connect" element={<ConnectPage role="employer" />} />
+          <Route path="/employer/connect/:id" element={<ConnectPage role="employer" />} />
           {/* Employer */}
           <Route
             path="/employer/*"
@@ -73,11 +75,12 @@ export const AppRouter = () => {
           />
 
           {/* Private routes khác */}
+      
           {privateRoutes.map(({ path, element }, idx) => (
             <Route
-              key={idx}
-              path={path}
-              element={<PrivateRoute element={element} />}
+            key={idx}
+            path={path}
+            element={<PrivateRoute element={element} />}
             />
           ))}
 

@@ -64,7 +64,12 @@ export default function Header({ onToggleSidebar }) {
             <div className={styles["header-right"]}>
                 <NavButton icon={BsPencilSquare} label="Đăng tin" to="/employer/jobs/create" />
                 <NavButton icon={TbReportSearch} label="Tìm CV" to="/employer/search" />
-                <NavButton icon={BiMessageSquareDots} label="Connect" to="/employer/connect" />
+                <NavButton
+                    icon={BiMessageSquareDots}
+                    label="Connect"
+                    to="/employer/connect"
+                    newTab
+                />
                 <DropdownButton
                     icon={FaRegLightbulb}
                     label="Insights"

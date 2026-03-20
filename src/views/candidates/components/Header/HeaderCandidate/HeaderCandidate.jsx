@@ -9,7 +9,8 @@ import logo from "@/assets/Logo_HireIT_Header.png";
 import logo_candidate from "@/assets/logo_candidate.jpg";
 import NotificationDropdown from "@/views/candidates/components/Header/DropdownButton/NotificationDropdown.jsx";
 import authService from "@/services/authService";
-
+import { NavButton } from "@/views/employers/components/Dashboard/NavButton/NavButton.jsx";
+// import { BiMessageSquareDots } from "react-icons/bi";
 export default function HeaderCandidate() {
     const [showDropdown, setShowDropdown] = useState(false);
     const [openSections, setOpenSections] = useState({
@@ -91,10 +92,13 @@ export default function HeaderCandidate() {
             <div className={styles["header-right"]}>
                 <NotificationDropdown />
 
-                <li className={styles.iconWrapper} onClick={() => {console.log("clicked"); navigate("/candidate/messages")}}>
-                    <MessageSquareMore className={styles.icon}/>
-                </li>
-
+               
+                <NavButton
+                    icon={MessageSquareMore}
+                    to="/candidate/connect"
+                    newTab
+                    isTransparent={true}
+                />
                 {/* PROFILE DROPDOWN */}
                 <div
                     className={styles.profileWrapper}

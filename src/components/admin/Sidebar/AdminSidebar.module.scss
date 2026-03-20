@@ -1,118 +1,145 @@
+/* VARIABLES */
+$sidebar-width: 275px;
+$sidebar-collapsed: 80px;
+
+$primary: #4e73df;
+$primary-dark: #224abe;
+
+$text-light: rgba(255, 255, 255, 1);
+$text-white: #fff;
+
+$hover-bg: rgba(255, 255, 255, 0.12);
+$logout-bg: rgba(255, 255, 255, 0.1);
+$logout-hover: rgba(255, 255, 255, 0.2);
+
+$radius: 8px;
+$transition: all 0.2s ease;
+
+/* SIDEBAR */
 .sidebar {
   position: fixed;
   top: 0;
   left: 0;
   height: 100vh;
 
-  width: 260px;
-  background: #93beff;
-  padding: 20px 0;
+  width: $sidebar-width;
+  padding: 16px 0;
+
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
-  overflow-x: hidden;
-  transition: width 0.25s ease;
+
+  background: linear-gradient(180deg, $primary 0%, $primary-dark 100%);
+  color: $text-white;
+
+  transition: width 0.3s ease; // 🔥 bonus animation
 }
 
+/* COLLAPSE */
 .collapsed {
-  width: 70px;
+  width: $sidebar-collapsed;
 }
 
-/* KHỐI 1: CĂN GIỮA MENU */
+/* MENU */
 .menuCenterer {
   flex: 1;
-  /* Chiếm toàn bộ khoảng trống ở giữa */
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* Căn giữa nội dung bên trong (Menu) theo chiều dọc */
-  width: 100%;
   overflow-y: auto;
-  /* Cho phép scroll nếu màn hình quá bé */
 
-  /* Ẩn thanh scroll cho đẹp (tùy chọn) */
   &::-webkit-scrollbar {
-    width: 0px;
-    background: transparent;
+    width: 0;
   }
 }
 
 .nav {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  width: 100%;
+  gap: 4px;
 }
 
-/* KHỐI 2: NÚT ĐĂNG XUẤT */
-.logoutButton {
-  flex-shrink: 0;
-  /* Không cho phép nút bị co lại */
-  display: flex;
-  align-items: center;
-  padding: 12px 20px;
-  background: none;
-  /* Hoặc thử đổi màu nền để test: background: red; */
-  border: none;
-  cursor: pointer;
-
-  /* Tôi đổi màu chữ sang đậm hơn chút để dễ nhìn trên nền xanh #93beff */
-  color: #333;
-
-  font-size: 15px;
-  width: 100%;
-  text-align: left;
-  /* Đẩy cách menu một chút và thêm gạch ngang mờ */
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-  margin-bottom: 25px;
-}
-
-.logoutButton:hover {
-  background-color: rgba(239, 234, 234, 0.3);
-}
-
-/* Các style cũ */
-.link {
+/* COMMON ITEM STYLE (reuse) */
+%menu-item {
   display: flex;
   align-items: center;
   gap: 12px;
+
   padding: 12px 20px;
+  margin: 0 10px;
+
+  border-radius: $radius;
+  transition: $transition;
+}
+
+/* LINK */
+.link {
+  @extend %menu-item;
+
   text-decoration: none;
-  color: #333;
-  /* Đổi màu chữ đậm hơn cho dễ đọc */
-  font-size: 15px;
-  width: 100%;
-  white-space: nowrap;
+  color: $text-light;
+  font-size: 14px;
+  font-weight: bold;
+
+  &:hover {
+    background: $hover-bg;
+    color: $text-white;
+  }
 }
 
+/* ACTIVE */
 .active {
-  background: #f4f2f2;
-  color: #0c0c0c;
+  background: #fff;
+  color: $primary;
   font-weight: 600;
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
+/* ICON */
 .icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
+
   width: 24px;
+  flex-shrink: 0;
 }
 
+/* TEXT */
 .label {
   flex: 1;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
-/* Khi thu nhỏ sidebar */
-.collapsed .logoutButton {
-  justify-content: center;
-  padding-left: 0;
-  padding-right: 0;
+/* LOGOUT */
+.logoutButton {
+  @extend %menu-item;
+
+  margin: 10px;
+  border: none;
+
+  background: $logout-bg;
+  color: $text-white;
+
+  cursor: pointer;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.2); // 🔥 bonus divider
+
+  &:hover {
+    background: $logout-hover;
+  }
 }
 
-.collapsed .label {
-  display: none;
+/* COLLAPSED MODE */
+.collapsed {
+  .link,
+  .logoutButton {
+    justify-content: center;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .label {
+    display: none;
+  }
 }

@@ -12,7 +12,26 @@
     border: none;
     padding: 8px 14px;
     border-radius: 999px;
+&.transparent {
+        background-color: transparent; 
+        
+        /* Bạn có thể đổi màu hover cho hợp với nền trong suốt nếu muốn */
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.1); 
+        }
+        &.active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+    }
 
+    /* Giữ nguyên hover/active cũ cho nút thường */
+    &:not(.transparent):hover {
+        background-color: #3f516a;
+    }
+
+    &:not(.transparent).active {
+        background-color: #4b5f7d;
+    }
     &:hover {
         background-color: #3f516a;
     }

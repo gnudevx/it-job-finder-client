@@ -334,7 +334,7 @@ export default function JobDetail() {
 
             </div>
 
-            {/* ================== APPLY MODAL ================== */}
+            {/*============= APPLY MODAL============= */}
             {showApplyForm && (
                 <div className={styles.modalOverlay}>
                     <div className={styles.modal}>

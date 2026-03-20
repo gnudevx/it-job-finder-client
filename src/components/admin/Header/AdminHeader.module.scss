@@ -1,21 +1,55 @@
+
+/* VARIABLES (đồng bộ với Sidebar) */
+$primary: #4e73df;
+$primary-dark: #224abe;
+$text-white: #fff;
+
+$header-height: 60px;
+$transition: all 0.2s ease;
+$radius: 8px;
+
+/* HEADER */
 .headerInner {
-  height: 60px;
+  height: $header-height;
   width: 100%;
-  background: #ffffff;
+
   display: flex;
   align-items: center;
+
   padding: 0 20px;
+
+  background: linear-gradient(90deg, $primary 0%, $primary-dark 100%);
+  color: $text-white;
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: $transition;
 }
 
+/* MENU BUTTON */
 .menuBtn {
-  font-size: 22px;
-  cursor: pointer;
-  background: none;
+  font-size: 20px;
+
+  background: rgba(255, 255, 255, 0.15);
+  color: $text-white;
+
   border: none;
+  border-radius: $radius;
+
+  padding: 6px 10px;
+
+  cursor: pointer;
+  transition: $transition;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.25);
+  }
 }
 
+/* TITLE */
 .title {
   font-size: 18px;
   font-weight: 600;
-  margin-left: 12px;
+
+  margin-left: 14px;
+  white-space: nowrap;
 }
