@@ -4,7 +4,7 @@ import { Search, Settings, Bell, Volume2 } from "lucide-react";
 import PropTypes from "prop-types";
 import logo from "@assets/Logo_HireIT_Header.png";
 import { useNavigate } from "react-router-dom";
-
+import { formatDistanceToNow } from 'date-fns';
 export default function ChatSidebar({ candidates, selectedId, onSelect }) {
   const navigate = useNavigate();
   // States cho Popup Cài đặt
@@ -94,10 +94,10 @@ export default function ChatSidebar({ candidates, selectedId, onSelect }) {
       <div className={styles.searchBox}>
         <Search className={styles.searchIcon} size={16} />
         <input
-  placeholder="Tên công ty, nhà tuyển dụng..."
-  value={searchText}
-  onChange={(e) => setSearchText(e.target.value)}
-/>
+          placeholder="Tên công ty, nhà tuyển dụng..."
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+        />
       </div>
 
 
@@ -107,7 +107,7 @@ export default function ChatSidebar({ candidates, selectedId, onSelect }) {
           <button
             type="button"
             key={c.id}
-            onClick={() => onSelect(c.id)}
+            onClick={() => onSelect(c.id, c.conversationId)}
             className={`${styles.item} ${
               selectedId === c.id ? styles.active : ""
             }`}
@@ -120,7 +120,11 @@ export default function ChatSidebar({ candidates, selectedId, onSelect }) {
             <div className={styles.info}>
               <div className={styles.top}>
                 <h4>{c.name}</h4>
-                <span>{c.lastMessageTime}</span>
+                <span>
+                  {c.lastMessageTime
+                    ? formatDistanceToNow(new Date(c.lastMessageTime), { addSuffix: true })
+                    : ''}
+                </span>
               </div>
 
               <p>{c.lastMessage || "Chưa có tin nhắn"}</p>

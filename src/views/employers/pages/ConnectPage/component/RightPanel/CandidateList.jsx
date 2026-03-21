@@ -1,9 +1,26 @@
 import styles from "./CandidateList.module.scss";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
-
+import axiosClient from "@/services/axiosClient.js"
 export default function CandidateList({ candidates, onSelect }) {
   const navigate = useNavigate();
+  const startChat = async (candidateId) => {
+  try {
+    // Gọi backend để tạo hoặc lấy conversation
+    const res = await axiosClient.post("/employer/connect/conversations", {
+      candidateId,
+    });
+
+    // Lấy conversationId từ backend
+    console.log("conversationId:", res);
+     const convoId = res._id; 
+
+    // Truyền conversationId xuống ChatWindow
+    onSelect(candidateId, convoId);
+  } catch (err) {
+    console.error(err);
+  }
+};
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -29,9 +46,13 @@ export default function CandidateList({ candidates, onSelect }) {
                 </div>
               </div>
             </div>
-
             <div className={styles.actions}>
-              <button onClick={() => onSelect(candidate.id)}>
+              <button
+                onClick={() => {
+                  onSelect(candidate.id);
+                  startChat(candidate.id); // 👈 thêm
+                }}
+              >
                 Nhắn tin
               </button>
             </div>
