@@ -50,30 +50,40 @@
 }
 
 .msg {
-  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Mặc định tin nhắn người khác sẽ nằm bên trái */
+  margin-bottom: 16px;
 
   span {
     font-size: 10px;
     color: #9ca3af;
+    margin-top: 4px; /* Đẩy thời gian cách bong bóng chat ra một xíu */
   }
 }
 
 .me {
-  text-align: right;
+  align-items: flex-end; /* Tin nhắn của mình (có class .me) sẽ bị đẩy sang phải */
 }
 
 .bubble {
-  display: inline-block;
+  max-width: 70%; /* 🔥 QUAN TRỌNG: Giới hạn độ rộng tối đa để không bị full màn hình */
   padding: 10px 14px;
   border-radius: 16px;
-  background: white;
+  background: #e5e7eb; /* Màu nền xám nhạt cho tin nhắn người nhận */
+  color: #111827; /* Màu chữ đen cho dễ đọc */
+  word-break: break-word; /* Ép xuống dòng nếu có 1 từ viết dính liền quá dài */
 }
 
-.me .bubble {
+/* Thêm class này dành riêng cho cục tin nhắn của mình */
+.myBubble {
   background: #5f93f3;
   color: white;
 }
-
+.me .bubble {
+  background: #5f93f3; /* Màu xanh cho tin nhắn của mình */
+  color: white;
+}
 .input {
   padding: 12px;
   border-top: 1px solid #f3f4f6;

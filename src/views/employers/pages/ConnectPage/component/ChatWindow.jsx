@@ -2,18 +2,29 @@ import { useState, useEffect, useRef } from "react";
 import styles from "./ChatWindow.module.scss";
 import { Send } from "lucide-react";
 import PropTypes from "prop-types";
-import { MOCK_MESSAGES } from "../types";
-
-export default function ChatWindow({ candidate }) {
+import axiosClient from "@/services/axiosClient.js";
+import { useAuth } from "@/contexts/AuthContext";
+export default function ChatWindow({ candidate, conversationId, onMessageSent }) {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
   const scrollRef = useRef(null);
-
+  const { user } = useAuth();
+  // 🔹 Load messages khi conversationId thay đổi
   useEffect(() => {
-    if (candidate) {
-      setMessages(MOCK_MESSAGES[candidate.id] || []);
-    }
-  }, [candidate]);
+    const fetchMessages = async () => {
+      if (!conversationId) return;
+      try {
+        const res = await axiosClient.get(`/employer/connect/messages/${conversationId}`);
+        console.log("du lieu",res, "haha" , conversationId)
+
+        setMessages(res); // backend trả về danh sách message
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchMessages();
+  }, [conversationId]);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -21,18 +32,30 @@ export default function ChatWindow({ candidate }) {
     }
   }, [messages]);
 
-  const handleSend = () => {
-    if (!inputText.trim()) return;
+  // 🔹 Gửi tin nhắn
+  const handleSend = async () => {
+    if (!inputText.trim() || !conversationId) return;
 
-    const newMsg = {
-      id: Date.now(),
-      text: inputText,
-      isMe: true,
-      timestamp: new Date().toLocaleTimeString(),
-    };
+    try {
+      const res = await axiosClient.post("/employer/connect/messages", {
+        conversationId,
+        senderId: user?.userId,
+        senderRole: user?.role,
+        text: inputText,
+      });
 
-    setMessages([...messages, newMsg]);
-    setInputText("");
+      setMessages(prev => [...prev, res]);
+      
+      // 🔹 Gọi callback để cập nhật sidebar
+      onMessageSent && onMessageSent({
+        candidateId: candidate.id,
+        text: inputText
+      });
+
+      setInputText("");
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   if (!candidate) {
@@ -45,7 +68,6 @@ export default function ChatWindow({ candidate }) {
 
   return (
     <div className={styles.container}>
-      {/* Header */}
       <div className={styles.header}>
         <img src={candidate.avatar} alt="" />
         <div>
@@ -54,20 +76,29 @@ export default function ChatWindow({ candidate }) {
         </div>
       </div>
 
-      {/* Messages */}
       <div ref={scrollRef} className={styles.messages}>
-        {messages.map((m) => (
-          <div
-            key={m.id}
-            className={`${styles.msg} ${m.isMe ? styles.me : ""}`}
-          >
-            <div className={styles.bubble}>{m.text}</div>
-            <span>{m.timestamp}</span>
-          </div>
-        ))}
+        {messages.map((m, index) => {
+          // 🔥 Đặt biến này để check cho chắc (thay user.userId bằng user._id hoặc user.id tùy backend của bác)
+          const isMe = m.senderId === user.userId || m.senderId === user._id || m.senderId === user.id;
+
+          return (
+            <div
+              key={m._id || index}
+              className={`${styles.msg} ${isMe ? styles.me : ''}`}
+            >
+              {/* Truyền thẳng class myBubble vào đây nếu là tin nhắn của mình */}
+              <div className={`${styles.bubble} ${isMe ? styles.myBubble : ''}`}>
+                {m.text}
+              </div>
+              
+              <span>
+                {m.createdAt ? new Date(m.createdAt).toLocaleTimeString() : ""}
+              </span>
+            </div>
+          );
+        })}
       </div>
 
-      {/* Input */}
       <div className={styles.input}>
         <input
           value={inputText}
@@ -84,4 +115,6 @@ export default function ChatWindow({ candidate }) {
 
 ChatWindow.propTypes = {
   candidate: PropTypes.object,
+  conversationId: PropTypes.string,
+  onMessageSent: PropTypes.func,
 };
