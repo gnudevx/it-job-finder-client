@@ -1,8 +1,7 @@
 import styles from "./EmployerList.module.scss";
 import PropTypes from "prop-types";
 
-// Lưu ý: Mình đổi tên prop thành 'employers' cho chuẩn nghĩa, 
-// nhưng nếu bạn vẫn muốn dùng tên prop là 'candidates' thì cứ đổi lại nhé!
+
 export default function EmployerList({ employers, onSelect }) {
   return (
     <div className={styles.container}>
@@ -12,7 +11,7 @@ export default function EmployerList({ employers, onSelect }) {
 
       <div className={styles.list}>
         {employers.map((employer) => (
-          <div key={employer.id} className={styles.item}>
+          <div key={`${employer.id}-${employer.jobId}`} className={styles.item}>
             
             <div className={styles.info}>
               {/* Vùng Logo Công ty */}
@@ -32,7 +31,7 @@ export default function EmployerList({ employers, onSelect }) {
 
             {/* Nút nhắn tin */}
             <div className={styles.actions}>
-              <button onClick={() => onSelect(employer.id)}>
+              <button onClick={() => onSelect(employer.id, null,employer.jobId)}>
                 Nhắn tin
               </button>
             </div>

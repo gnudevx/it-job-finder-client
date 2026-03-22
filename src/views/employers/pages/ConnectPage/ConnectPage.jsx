@@ -2,21 +2,84 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import styles from "./ConnectPage.module.scss";
 
-import EmployerSidebar from "./component/ChatSidebar/EmployerSidebar.jsx";
-import CandidateSidebar from './component/ChatSidebar/CandidateSidebar.jsx'
+import CandidateSidebar from "./component/ChatSidebar/CandidateSidebar.jsx";
+import  EmployerSidebar from './component/ChatSidebar/EmployerSidebar.jsx'
 import ChatWindow from "./component/ChatWindow.jsx";
 import CandidateList from "./component/RightPanel/CandidateList.jsx";
 import EmployerList from "./component/RightPanel/EmployerList.jsx";
-import { MOCK_MESSAGES_EPLOYERS } from "./types";
 import employerService from "@api/employerSerivce.js"
+import candidateService from "@api/candidateService.js"
 
 export default function ConnectPage() {
   const { user } = useAuth();
   const role = user?.role; // 🔥
   const [candidates, setCandidates] = useState([]); 
-  const [selectedCandidate, setSelectedCandidate] = useState(null);
   const [conversationId, setConversationId] = useState(null);
   const [conversations, setConversations] = useState([]);
+  const [employers, setEmployers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [candidateConversations, setCandidateConversations] = useState([]); // danh sach chat cuoi cung ben candidate
+  useEffect(() => {
+  if (role === "candidate") {
+    const fetchEmployers = async () => {
+      try {
+        const res = await candidateService.getApplications();
+        setEmployers(res.data); // 👈 data bạn đã format ở backend
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchEmployers();
+  }
+}, [role]);
+useEffect(() => {
+  if (role === "candidate") {
+    const fetchConversations = async () => {
+      try {
+        const res = await candidateService.getConversationsByCandidate();
+        console.log("aaaaa", res)
+        setCandidateConversations(res);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchConversations();
+  }
+}, [role]);
+const handleSelectEmployer = async (employerId, conversationId, jobId) => {
+  try {
+    let convoId = conversationId;
+
+    if (!convoId) {
+      const res = await candidateService.createConversation(
+        employerId,
+        jobId
+      );
+      convoId = res._id;
+    }
+
+    setConversationId(convoId);
+
+    const convoData = candidateConversations.find(
+      c => c.id === employerId
+    );
+
+    const employerData = employers.find(
+      e => e.id === employerId && e.jobId === jobId
+    );
+
+    setSelectedUser({
+      ...employerData,
+      ...convoData,
+      jobId
+    });
+
+  } catch (err) {
+    console.error(err);
+  }
+};
   useEffect(() => {
     if (role === "employer") {
       const fetchConversations = async () => {
@@ -38,8 +101,9 @@ export default function ConnectPage() {
         id: item.candidate.candidateId, // 👈 QUAN TRỌNG
         name: item.candidate.fullName,
         avatar: item.candidate.avatar,
-        position: item.jobTitle,
+        position: item.position,
         appliedDate: item.appliedAt,
+        jobId: item.jobId,
       }));
 
       setCandidates(mapped);
@@ -48,7 +112,7 @@ export default function ConnectPage() {
     }
   };
   const handleSelectCandidate = (candidateId, convoId) => {
-    setSelectedCandidate(candidates.find(c => c.id === candidateId));
+    setSelectedUser(candidates.find(c => c.id === candidateId));
     setConversationId(convoId);
   };
   useEffect(() => {
@@ -71,24 +135,24 @@ export default function ConnectPage() {
     );
 
     // Nếu candidate đang nhắn là selectedCandidate, update luôn
-    if (selectedCandidate?.id === candidateId) {
-      setSelectedCandidate(prev => ({ ...prev, lastMessage: text }));
+    if (selectedUser?.id === candidateId) {
+      setSelectedUser(prev => ({ ...prev, lastMessage: text }));
     }
   };
   return (
     <div className={styles.container}>
       {/* Sidebar */}
        {role === "employer" && (
-      <EmployerSidebar
+      < CandidateSidebar
         candidates={conversations}
-       onSelect={handleSelectCandidate}
+        onSelect={handleSelectCandidate}
         role={role} // 👈 truyền xuống
       />) 
       }
       {role === "candidate" && (
-            <CandidateSidebar
-              candidates={candidates}
-              onSelect={handleSelectCandidate}
+            <EmployerSidebar
+              employers={candidateConversations}
+              onSelect={handleSelectEmployer}
               role={role} // 👈 truyền xuống
             />) 
             }
@@ -103,7 +167,7 @@ export default function ConnectPage() {
         </div>
 
         <ChatWindow
-          candidate={selectedCandidate}
+          chatUser={selectedUser}
           conversationId={conversationId}
           onMessageSent={(msg) => handleMessageSent(msg)}
         />
@@ -118,8 +182,8 @@ export default function ConnectPage() {
       )}
       {role === "candidate" && (
         <EmployerList
-          employers={MOCK_MESSAGES_EPLOYERS}
-           onSelect={handleSelectCandidate}
+          employers={employers}
+          onSelect={handleSelectEmployer}
         />
       )}
     </div>
