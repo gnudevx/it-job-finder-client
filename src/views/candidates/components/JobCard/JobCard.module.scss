@@ -1,61 +1,64 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
 .card {
   background: #fff;
-  border: 1px solid #f3f4f6;
-  padding: 20px;
-  border-radius: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: $space-xl;
+  border-radius: $radius-lg;
   transition: 0.3s ease;
   position: relative;
   overflow: hidden;
+
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding-left: 20px;
-  padding-right: 20px;
 
   &:hover {
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
-    border-color: #c7d2fe;
+    box-shadow: $shadow-hover;
+    border-color: lighten($primary, 30%);
   }
 }
 
+// ===== TOP LINE =====
 .topLine {
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: 0 auto auto 0;
   width: 100%;
   height: 4px;
-  background: linear-gradient(to right, transparent, #6366f1, transparent);
+  background: linear-gradient(to right, transparent, $primary, transparent);
   opacity: 0;
-  transition: 0.3s ease;
+  transition: 0.3s;
 
   .card:hover & {
     opacity: 1;
   }
 }
 
+// ===== HEADER =====
 .header {
-  display: flex;
-  justify-content: space-between;
+  @include flex-between;
   align-items: flex-start;
-  margin-bottom: 16px;
+  margin-bottom: $space-lg;
 }
 
 .headerLeft {
   display: flex;
-  gap: 10px;
+  gap: $space-sm;
 }
 
+// ===== LOGO =====
 .logoWrapper {
   width: 56px;
   height: 56px;
-  border-radius: 12px;
-  background: #f9fafb;
-  border: 1px solid #f3f4f6;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 8px;
-  transition: 0.3s ease;
+  border-radius: $radius-md;
+  background: $bg-light;
+  border: 1px solid $border;
+  padding: $space-sm;
+
+  @include flex-center;
+
+  transition: 0.3s;
 
   .card:hover & {
     transform: scale(1.05);
@@ -68,45 +71,50 @@
   object-fit: contain;
 }
 
+// ===== TITLE =====
 .title {
-  font-size: 1.125rem;
+  font-size: $font-lg;
   font-weight: 700;
-  color: #111827;
-  margin-bottom: 4px;
+  color: $text-main;
+  margin-bottom: $space-xs;
+
+  @include text-ellipsis(2);
 
   .card:hover & {
-    color: #4f46e5;
+    color: $primary;
   }
 }
 
+// ===== COMPANY =====
 .companyRow {
   display: flex;
   align-items: center;
-  color: #6b7280;
-  font-size: 0.875rem;
+  font-size: $font-sm;
+  color: $text-secondary;
 }
 
 .companyIcon {
-  margin-right: 4px;
-  color: #9ca3af;
+  margin-right: $space-xs;
+  color: $text-muted;
 }
 
 .companyName {
   font-weight: 500;
 }
 
+// ===== FAVORITE =====
 .favButton {
-  padding: 8px;
+  padding: $space-sm;
   border-radius: 50%;
-  color: #d1d5db;
-  transition: 0.2s ease;
   border: none;
   background: transparent;
   cursor: pointer;
+  color: $text-muted;
+  transition: 0.2s;
 
   &:hover {
-    color: #ef4444;
-    background: #fef2f2;
+    color: $danger;
+    background: $bg-hover;
   }
 
   &:active {
@@ -114,112 +122,111 @@
   }
 }
 
+// ===== BODY =====
 .body {
-  flex-grow: 1;
-  margin-bottom: 24px;
+  margin-bottom: $space-lg;
+
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: $space-sm;
 }
 
+// ===== SALARY =====
 .salaryBox {
   display: inline-flex;
-  background: #ecfdf5;
-  color: #047857;
-  font-weight: 600;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-size: 0.875rem;
   align-items: center;
+
+  background: $success-bg;
+  color: $success-text;
+
+  font-weight: 600;
+  font-size: $font-sm;
+
+  padding: $space-xs $space-sm;
+  border-radius: $radius-sm;
 }
 
 .salaryIcon {
-  margin-right: 4px;
+  margin-right: $space-xs;
 }
 
-.locationRow {
-  display: flex;
-  align-items: center;
-  font-size: 0.875rem;
-  color: #6b7280;
-}
-
-.locationIcon {
-  margin-right: 6px;
-  color: #9ca3af;
-}
-
+// ===== ROWS =====
+.locationRow,
 .jobTypeRow {
   display: flex;
   align-items: center;
-  font-size: 0.875rem;
-  color: #6b7280;
+  font-size: $font-sm;
+  color: $text-secondary;
 }
 
+.locationIcon,
 .jobTypeIcon {
-  margin-right: 6px;
-  color: #9ca3af;
+  margin-right: $space-xs;
+  color: $text-muted;
 }
 
+// ===== TAGS =====
 .tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: $space-xs;
 }
 
 .tag {
   font-size: 0.75rem;
-  background: #f3f4f6;
+  background: $bg-light;
   color: #4b5563;
-  padding: 4px 8px;
-  border-radius: 6px;
+  padding: $space-xs $space-sm;
+  border-radius: $radius-sm;
   border: 1px solid #e5e7eb;
 }
 
+// ===== STATUS =====
 .statusUpdate {
-  background: #f9fafb;
-  border: 1px solid #f3f4f6;
-  padding: 10px 12px;
-  border-radius: 10px;
-  margin-bottom: 16px;
+  background: $bg-light;
+  border: 1px solid $border;
+  padding: $space-md;
+  border-radius: $radius-md;
+  margin-bottom: $space-lg;
+
   font-size: 0.85rem;
   color: #374151;
 
-
   strong {
-    color: #111827;
+    color: $text-main;
   }
 }
 
+// ===== FOOTER =====
 .footer {
-  border-top: 1px solid #f3f4f6;
-  padding-top: 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  border-top: 1px solid $border;
+  padding-top: $space-lg;
+
+  @include flex-between;
 }
 
 .dateRow {
   display: flex;
   align-items: center;
-  color: #9ca3af;
   font-size: 0.8rem;
+  color: $text-muted;
 }
 
 .dateIcon {
-  margin-right: 4px;
+  margin-right: $space-xs;
 }
 
+// ===== APPLY BUTTON =====
 .applyButton {
-  font-size: 0.875rem;
+  font-size: $font-sm;
   font-weight: 600;
-  color: #4f46e5;
-  background: none;
+  color: $primary;
   border: none;
+  background: none;
   cursor: pointer;
 
   &:hover {
-    color: #4338ca;
+    color: $primary-hover;
     text-decoration: underline;
   }
 }

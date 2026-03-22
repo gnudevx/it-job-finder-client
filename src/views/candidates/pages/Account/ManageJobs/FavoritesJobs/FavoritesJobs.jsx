@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./FavoritesJobs.module.scss";
 import JobCard from "@/views/candidates/components/JobCard/JobCard.jsx";
-import { getAllJobs } from "@/api/jobService";
+import { getMyFavorites } from "@/api/favoriteService";
 import useFavorites from "@/hooks/useFavorites";
 import Pagination from "@/components/common/Pagination/Pagination";
 
@@ -15,23 +15,31 @@ export default function SavedJobs() {
     const jobsPerPage = 12;
 
     useEffect(() => {
-        const fetchJobs = async () => {
-            const data = await getAllJobs();
+        const fetchFavorites = async () => {
+            try {
+                const res = await getMyFavorites();
 
-            const formatted = data.data.map(job => ({
-                id: job._id,
-                title: job.title,
-                group: job.group_id?.name || "Không rõ",
-                salary: job.salary_raw || "Thoả thuận",
-                location: job.location?.name || "Không rõ",
-                experience: job.experience,
-                createdAt: job.createdAt,
-            }));
+                const formatted = res.data.map(item => {
+                    const job = item.jobID;
 
-            setJobs(formatted);
+                    return {
+                        id: job._id,
+                        title: job.title,
+                        group: job.group_id?.name || "Không rõ",
+                        salary: job.salary_raw || "Thoả thuận",
+                        location: job.location?.name || "Không rõ",
+                        experience: job.experience,
+                        createdAt: job.createdAt,
+                    };
+                });
+
+                setJobs(formatted);
+            } catch (err) {
+                console.error("Load favorites failed", err);
+            }
         };
 
-        fetchJobs();
+        fetchFavorites();
     }, []);
 
     const savedJobs = jobs.filter(job => favorites.includes(job.id));
