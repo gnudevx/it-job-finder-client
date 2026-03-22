@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { getMyFavorites, addFavorite, removeFavorite } from "@/api/favoriteService";
 
-export default function useFavorites(authToken) {
+export default function useFavorites() {
     const [favorites, setFavorites] = useState([]);
+    const token = localStorage.getItem("authToken");
 
     // Load danh sách favorites từ DB khi login
     useEffect(() => {
-        if (!authToken) {
+        if (!token) {
             setFavorites([]);
             return;
         }
@@ -17,16 +18,15 @@ export default function useFavorites(authToken) {
                 const ids = res.data.map(item => item.jobID._id);
                 setFavorites(ids);
             } catch (err) {
-                console.log("Cannot load favorites");
                 setFavorites([]);
             }
         }
 
         load();
-    }, [authToken]);
+    }, [token]);
     // Toggle yêu thích
     const toggleFavorite = async (jobID) => {
-        if (!authToken) {
+        if (!token) {
             alert("Vui lòng đăng nhập để lưu việc làm!");
             return;
         }
