@@ -4,17 +4,22 @@ import { Send } from "lucide-react";
 import PropTypes from "prop-types";
 import axiosClient from "@/services/axiosClient.js";
 import { useAuth } from "@/contexts/AuthContext";
-export default function ChatWindow({ candidate, conversationId, onMessageSent }) {
+export default function ChatWindow({ chatUser, conversationId, onMessageSent }) {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
   const scrollRef = useRef(null);
-  const { user } = useAuth();
+  const { user: currentUser } = useAuth();
   // 🔹 Load messages khi conversationId thay đổi
   useEffect(() => {
     const fetchMessages = async () => {
+      console.log("chatUser", chatUser)
       if (!conversationId) return;
       try {
-        const res = await axiosClient.get(`/employer/connect/messages/${conversationId}`);
+        const base = currentUser.role === "employer"
+          ? "/employer/connect"
+          : "/candidate/connect";
+
+        const res = await axiosClient.get(`${base}/messages/${conversationId}`);
         console.log("du lieu",res, "haha" , conversationId)
 
         setMessages(res); // backend trả về danh sách message
@@ -35,20 +40,24 @@ export default function ChatWindow({ candidate, conversationId, onMessageSent })
   // 🔹 Gửi tin nhắn
   const handleSend = async () => {
     if (!inputText.trim() || !conversationId) return;
-
+    const base =
+      currentUser.role === "employer"
+        ? "/employer/connect"
+        : "/candidate/connect";
     try {
-      const res = await axiosClient.post("/employer/connect/messages", {
+      const res = await axiosClient.post(`${base}/messages`, {
         conversationId,
-        senderId: user?.userId,
-        senderRole: user?.role,
+        senderId: currentUser?.userId,
+        senderRole: currentUser?.role,
         text: inputText,
       });
+      console.log("ádsadasđs",res)
 
       setMessages(prev => [...prev, res]);
       
       // 🔹 Gọi callback để cập nhật sidebar
       onMessageSent && onMessageSent({
-        candidateId: candidate.id,
+        candidateId: chatUser.id,
         text: inputText
       });
 
@@ -58,7 +67,7 @@ export default function ChatWindow({ candidate, conversationId, onMessageSent })
     }
   };
 
-  if (!candidate) {
+  if (!chatUser) {
     return (
       <div className={styles.empty}>
         <p>Chọn cuộc trò chuyện để bắt đầu</p>
@@ -69,17 +78,17 @@ export default function ChatWindow({ candidate, conversationId, onMessageSent })
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <img src={candidate.avatar} alt="" />
+        <img src={chatUser?.avatar} alt="" />
         <div>
-          <h3>{candidate.name}</h3>
-          <span>Đang hoạt động</span>
+          <h3>{chatUser?.name}</h3>
+          <span>{chatUser?.position}</span>
         </div>
       </div>
 
       <div ref={scrollRef} className={styles.messages}>
         {messages.map((m, index) => {
           // 🔥 Đặt biến này để check cho chắc (thay user.userId bằng user._id hoặc user.id tùy backend của bác)
-          const isMe = m.senderId === user.userId || m.senderId === user._id || m.senderId === user.id;
+          const isMe = m.senderId === currentUser.userId || m.senderId === currentUser._id || m.senderId === currentUser.id;
 
           return (
             <div
@@ -114,7 +123,7 @@ export default function ChatWindow({ candidate, conversationId, onMessageSent })
 }
 
 ChatWindow.propTypes = {
-  candidate: PropTypes.object,
+  chatUser: PropTypes.object,
   conversationId: PropTypes.string,
   onMessageSent: PropTypes.func,
 };
