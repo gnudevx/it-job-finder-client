@@ -5,17 +5,17 @@ import PropTypes from "prop-types";
 import logo from "@assets/Logo_HireIT_Header.png";
 import { useNavigate } from "react-router-dom";
 import { formatDistanceToNow } from 'date-fns';
-export default function ChatSidebar({ candidates, selectedId, onSelect }) {
+export default function ChatSidebar({ employers, selectedId, onSelect }) {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("all");
   // States cho Popup Cài đặt
   const [showSettings, setShowSettings] = useState(false);
   const [notifyEnabled, setNotifyEnabled] = useState(true);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [searchText, setSearchText] = useState("");
-  const filteredCandidates = (candidates || [])
-  .filter((c) => activeTab === "unread" ? c.unreadCount > 0 : true)
-  .filter((c) => c.name.toLowerCase().includes(searchText.toLowerCase()));
+  const filteredEmployers = employers
+  .filter((c) =>
+    c.name.toLowerCase().includes(searchText.toLowerCase())
+  );
   // Ref để xử lý click ra ngoài thì đóng popup
   const settingsRef = useRef(null);
 
@@ -94,54 +94,20 @@ export default function ChatSidebar({ candidates, selectedId, onSelect }) {
       <div className={styles.searchBox}>
         <Search className={styles.searchIcon} size={16} />
         <input
-        placeholder="Họ tên ứng viên..."
-        value={searchText}
-        onChange={(e) => setSearchText(e.target.value)}
-      />
+          placeholder="Tên công ty, nhà tuyển dụng..."
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+        />
       </div>
 
-      {/* Feedback */}
-      <div className={styles.feedback}>
-        <p className={styles.feedbackTitle}>
-          Bạn đánh giá trải nghiệm của mình với HireIT Connect thế nào?
-        </p>
-        <p className={styles.feedbackDesc}>
-          Chia sẻ ngay với đội ngũ phát triển để cải thiện trải nghiệm
-        </p>
-        <button
-          type="button"
-          onClick={() => navigate("/employer/support-box/suggest")}
-        >
-          Gửi phản hồi
-        </button>
-      </div>
-
-      {/* Tabs */}
-      <div className={styles.tabs}>
-  <button
-    type="button"
-    className={activeTab === "all" ? styles.activeTab : ""}
-    onClick={() => setActiveTab("all")}
-  >
-    Tất cả
-  </button>
-
-  <button
-    type="button"
-    className={activeTab === "unread" ? styles.activeTab : ""}
-    onClick={() => setActiveTab("unread")}
-  >
-    Chưa đọc
-  </button>
-</div>
 
       {/* List */}
       <div className={styles.list}>
-        {filteredCandidates.map((c) => (
+        {filteredEmployers.map((c) => (
           <button
             type="button"
             key={c.id}
-            onClick={() => onSelect(c.id, c.conversationId)}
+            onClick={() => onSelect(c.id, c.conversationId, c.jobId)}
             className={`${styles.item} ${
               selectedId === c.id ? styles.active : ""
             }`}
@@ -179,7 +145,7 @@ export default function ChatSidebar({ candidates, selectedId, onSelect }) {
 }
 
 ChatSidebar.propTypes = {
-  candidates: PropTypes.array.isRequired,
+  employers: PropTypes.array.isRequired,
   selectedId: PropTypes.string,
   onSelect: PropTypes.func.isRequired,
 };

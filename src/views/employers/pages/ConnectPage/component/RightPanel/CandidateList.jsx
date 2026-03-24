@@ -4,23 +4,22 @@ import { useNavigate } from "react-router-dom";
 import axiosClient from "@/services/axiosClient.js"
 export default function CandidateList({ candidates, onSelect }) {
   const navigate = useNavigate();
-  const startChat = async (candidateId) => {
-  try {
-    // Gọi backend để tạo hoặc lấy conversation
-    const res = await axiosClient.post("/employer/connect/conversations", {
-      candidateId,
-    });
+  const startChat = async (candidateId, jobId) => {
+    try {
+      const res = await axiosClient.post("/employer/connect/conversations", {
+        candidateId,
+        jobId, // 👈 BẮT BUỘC
+      });
 
-    // Lấy conversationId từ backend
-    console.log("conversationId:", res);
-     const convoId = res._id; 
+      const convoId = res._id; // 👈 FIX
 
-    // Truyền conversationId xuống ChatWindow
-    onSelect(candidateId, convoId);
-  } catch (err) {
-    console.error(err);
-  }
-};
+      // 👉 sau khi có conversationId mới select
+      onSelect(candidateId, convoId);
+
+    } catch (err) {
+      console.error(err);
+    }
+  };
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -48,10 +47,7 @@ export default function CandidateList({ candidates, onSelect }) {
             </div>
             <div className={styles.actions}>
               <button
-                onClick={() => {
-                  onSelect(candidate.id);
-                  startChat(candidate.id); // 👈 thêm
-                }}
+                onClick={() => startChat(candidate.id, candidate.jobId)}
               >
                 Nhắn tin
               </button>
