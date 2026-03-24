@@ -120,7 +120,6 @@ export default function LoginPage() {
           </button>
 
         </div>
-
         <p className={styles.switchLine}>
           Bạn chưa có tài khoản?
           <span onClick={() => navigate("/register")}> Đăng ký ngay</span>
