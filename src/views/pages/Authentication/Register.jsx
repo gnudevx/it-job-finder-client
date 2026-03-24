@@ -14,10 +14,8 @@ export default function RegisterPage() {
   const [gender, setGender] = useState("other");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
   const navigate = useNavigate();
   const { login } = useAuth();
-
   const handleRegister = async (e) => {
     e.preventDefault();
     setError("");
