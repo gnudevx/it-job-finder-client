@@ -177,7 +177,6 @@ export default function ChatSidebar({ candidates, selectedId, onSelect }) {
     </div>
   );
 }
-
 ChatSidebar.propTypes = {
   candidates: PropTypes.array.isRequired,
   selectedId: PropTypes.string,
