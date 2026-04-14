@@ -1,18 +1,18 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import styles from "./Authentication.module.scss";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styles from './Authentication.module.scss';
 
-import { FcGoogle } from "react-icons/fc";
-import { loginWithGoogle } from "@/utils/googleAuth";
-import { useAuth } from "@/contexts/AuthContext";
+import { FcGoogle } from 'react-icons/fc';
+import { loginWithGoogle } from '@/utils/googleAuth';
+import { useAuth } from '@/contexts/AuthContext';
 import authService from '@/services/authService';
 export default function LoginPage() {
   const { setAuthToken, setUserId, setUser } = useAuth();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPass, setShowPass] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   const navigate = useNavigate();
 
@@ -20,7 +20,7 @@ export default function LoginPage() {
     e.preventDefault();
 
     if (!email || !password) {
-      setError("Vui lòng nhập email và mật khẩu");
+      setError('Vui lòng nhập email và mật khẩu');
       return;
     }
 
@@ -30,18 +30,17 @@ export default function LoginPage() {
       // data.user có thông tin người dùng
       setUserId(data.user._id);
       setAuthToken(data.accessToken);
-      setUser(data.user)
+      setUser(data.user);
       alert(data.message);
 
-      if (data.user.role === "employer") navigate("/employer/");
-      else if (data.user.role == "admin") navigate("/admin");
-      else navigate("/candidate/home");
+      if (data.user.role === 'employer') navigate('/employer/');
+      else if (data.user.role == 'admin') navigate('/admin');
+      else navigate('/candidate/home');
     } catch (err) {
-      console.error("Login error:", err);
-      setError(err.response?.data?.message || "Không thể kết nối server");
+      console.error('Login error:', err);
+      setError(err.response?.data?.message || 'Không thể kết nối server');
     }
   };
-
 
   const handleGoogleLogin = () => {
     loginWithGoogle(async (code) => {
@@ -54,15 +53,15 @@ export default function LoginPage() {
           setUserId(data.user._id);
           setUser(data.user);
 
-          localStorage.setItem("authToken", data.accessToken);
+          localStorage.setItem('authToken', data.accessToken);
 
-          alert("Đăng nhập Google thành công!");
+          alert('Đăng nhập Google thành công!');
 
-          navigate("/candidate/home", { replace: true });
+          navigate('/candidate/home', { replace: true });
         }
       } catch (error) {
         console.error(error);
-        alert("Google login lỗi");
+        alert('Google login lỗi');
       }
     });
   };
@@ -88,16 +87,13 @@ export default function LoginPage() {
         {/* Password */}
         <div className={styles.inputGroup}>
           <input
-            type={showPass ? "text" : "password"}
+            type={showPass ? 'text' : 'password'}
             placeholder="Mật khẩu"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <span
-            className={styles.togglePass}
-            onClick={() => setShowPass(!showPass)}
-          >
-            {showPass ? "Ẩn" : "Hiện"}
+          <span className={styles.togglePass} onClick={() => setShowPass(!showPass)}>
+            {showPass ? 'Ẩn' : 'Hiện'}
           </span>
         </div>
 
@@ -111,18 +107,13 @@ export default function LoginPage() {
 
         <div className={styles.socialButtons}>
           {/* GOOGLE */}
-          <button
-            type="button"
-            className={styles.google}
-            onClick={handleGoogleLogin}
-          >
+          <button type="button" className={styles.google} onClick={handleGoogleLogin}>
             <FcGoogle /> Google
           </button>
-
         </div>
         <p className={styles.switchLine}>
           Bạn chưa có tài khoản?
-          <span onClick={() => navigate("/register")}> Đăng ký ngay</span>
+          <span onClick={() => navigate('/register')}> Đăng ký ngay</span>
         </p>
       </form>
     </div>

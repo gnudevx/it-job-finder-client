@@ -1,22 +1,22 @@
-import { useState, useEffect } from "react";
-import adminService from "@/api/adminService";
-import styles from "./CandidateForm.module.scss";
-import PropTypes from "prop-types";
+import { useState, useEffect } from 'react';
+import adminService from '@/api/adminService';
+import styles from './CandidateForm.module.scss';
+import PropTypes from 'prop-types';
 
-export default function CandidateForm({ mode = "create", initialData = {}, onSuccess }) {
+export default function CandidateForm({ mode = 'create', initialData = {}, onSuccess }) {
   const [form, setForm] = useState({
-    fullName: "",
-    email: "",
-    phone: "",
-    address: "",
-    birthday: "",
-    gender: "",
-    avatar: "",
+    fullName: '',
+    email: '',
+    phone: '',
+    address: '',
+    birthday: '',
+    gender: '',
+    avatar: '',
   });
 
   useEffect(() => {
-    if (mode === "edit" && initialData && Object.keys(initialData).length > 0) {
-      setForm(prev => ({ ...prev, ...initialData }));
+    if (mode === 'edit' && initialData && Object.keys(initialData).length > 0) {
+      setForm((prev) => ({ ...prev, ...initialData }));
     }
   }, [mode, initialData]);
 
@@ -29,33 +29,33 @@ export default function CandidateForm({ mode = "create", initialData = {}, onSuc
     e.preventDefault();
 
     try {
-      if (mode === "create") {
+      if (mode === 'create') {
         await adminService.CreateCandidate(form);
       } else {
         await adminService.UpdateCandidate(form._id, form);
       }
 
-      alert(mode === "create" ? "Thêm ứng viên thành công!" : "Cập nhật thành công!");
+      alert(mode === 'create' ? 'Thêm ứng viên thành công!' : 'Cập nhật thành công!');
       if (onSuccess) onSuccess();
     } catch (err) {
       console.error(err);
 
       // Lấy message lỗi từ axios
-      let msg = "Không rõ lỗi";
+      let msg = 'Không rõ lỗi';
       if (err.response?.data?.error) {
         msg = err.response.data.error;
       } else if (err.message) {
         msg = err.message;
       }
 
-      alert("Lỗi khi lưu ứng viên: " + msg);
+      alert('Lỗi khi lưu ứng viên: ' + msg);
     }
   };
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       <h2 className={styles.title}>
-        {mode === "create" ? "Thêm Mới Ứng Viên" : "Chỉnh Sửa Ứng Viên"}
+        {mode === 'create' ? 'Thêm Mới Ứng Viên' : 'Chỉnh Sửa Ứng Viên'}
       </h2>
 
       <div className={styles.row}>
@@ -80,7 +80,12 @@ export default function CandidateForm({ mode = "create", initialData = {}, onSuc
 
       <div className={styles.row}>
         <label>Ngày sinh:</label>
-        <input type="date" name="birthday" value={form.birthday?.split("T")[0] || ""} onChange={handleChange} />
+        <input
+          type="date"
+          name="birthday"
+          value={form.birthday?.split('T')[0] || ''}
+          onChange={handleChange}
+        />
       </div>
 
       <div className={styles.row}>
@@ -99,20 +104,20 @@ export default function CandidateForm({ mode = "create", initialData = {}, onSuc
       </div>
 
       <button className={styles.btn} type="submit">
-        {mode === "create" ? "Thêm mới" : "Cập nhật"}
+        {mode === 'create' ? 'Thêm mới' : 'Cập nhật'}
       </button>
     </form>
   );
 }
 
 CandidateForm.propTypes = {
-  mode: PropTypes.oneOf(["create", "edit"]),
+  mode: PropTypes.oneOf(['create', 'edit']),
   initialData: PropTypes.object,
   onSuccess: PropTypes.func,
 };
 
 CandidateForm.defaultProps = {
-  mode: "create",
+  mode: 'create',
   initialData: {},
   onSuccess: null,
 };

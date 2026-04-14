@@ -9,7 +9,7 @@
   display: flex;
   align-items: center; /* Canh giữa avatar và khối chữ theo chiều dọc */
   gap: 12px; /* Khoảng cách ngang giữa avatar và khối chữ (có thể tăng giảm tùy ý) */
-  padding: 16px 20px; 
+  padding: 16px 20px;
   border-bottom: 1px solid #e5e7eb;
   background-color: #fff;
 
@@ -39,6 +39,42 @@
     font-size: 13px;
     color: #93c5fd; /* Màu xanh lơ nhạt nhạt giống chữ "Đang hoạt động" của bạn */
     margin: 0;
+  }
+  .callBtn {
+    /* Fix cứng kích thước để tạo khối hình tròn đều */
+    width: 40px;
+    height: 40px;
+    margin-left: auto;
+
+    /* Cập nhật nền mặc định cho bớt trống */
+    background: #f0f2f5; /* Xám nhạt, hoặc bạn có thể đổi thành #e7f3ff để có màu xanh nhạt */
+    color: #0084ff;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+
+    /* Căn giữa icon */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: all 0.2s ease;
+
+    svg {
+      width: 20px; /* Thu nhỏ icon lại một chút cho thanh thoát */
+      height: 20px;
+      fill: currentColor;
+    }
+
+    /* Khi di chuột vào thì nền đậm lên một chút */
+    &:hover {
+      background: #e4e6eb;
+    }
+
+    &:active {
+      background: #d8dadf;
+      transform: scale(0.95); /* Thêm hiệu ứng lún xuống nhẹ khi click cho xịn */
+    }
   }
 }
 

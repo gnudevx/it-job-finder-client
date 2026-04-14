@@ -1,16 +1,16 @@
-import React, { useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import styles from "./MyCVs.module.scss";
-import { Upload } from "lucide-react";
+import React, { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styles from './MyCVs.module.scss';
+import { Upload } from 'lucide-react';
 
 // import useCVs from "@/hooks/useCVs";
 // import CVList from "@/views/candidates/components/CVList/CVList.jsx";
 // import CVModal from "@/views/candidates/components/CVModal/CVModal.jsx";
 // import CVBuilder from "@/views/candidates/components/CVBuilder/CVBuilder.jsx";
-import useUploadedCVs from "@/hooks/useUploadedCVs";
-import { uploadResume } from "@/api/resumeService";
+import useUploadedCVs from '@/hooks/useUploadedCVs';
+import { uploadResume } from '@/api/resumeService';
 
-import UploadedCVItem from "@/views/candidates/components/UploadedCVItem/UploadedCVItem.jsx";
+import UploadedCVItem from '@/views/candidates/components/UploadedCVItem/UploadedCVItem.jsx';
 
 export default function MyCVs() {
   const fileInputRef = useRef(null);
@@ -25,8 +25,8 @@ export default function MyCVs() {
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    if (file.type !== "application/pdf") {
-      alert("Vui lòng chọn file PDF hợp lệ!");
+    if (file.type !== 'application/pdf') {
+      alert('Vui lòng chọn file PDF hợp lệ!');
       return;
     }
 
@@ -40,22 +40,22 @@ export default function MyCVs() {
         url: response.resume.fileUrl,
       });
 
-      alert("Upload CV thành công!");
+      alert('Upload CV thành công!');
     } catch (err) {
       console.error(err);
-      alert("Upload thất bại, thử lại sau.");
+      alert('Upload thất bại, thử lại sau.');
     } finally {
       fileInputRef.current.value = null;
     }
   };
 
   const handleViewPDF = (id) => {
-    window.open(`http://localhost:5000/api/resumes/${id}/view`, "_blank");
+    window.open(`http://localhost:5000/api/resumes/${id}/view`, '_blank');
   };
 
   const handleSelectCV = (cv) => {
     // Khi user chọn CV để recommend
-    navigate("/candidate/account/recommendjobs", { state: { cv } });
+    navigate('/candidate/account/recommendjobs', { state: { cv } });
   };
 
   return (
@@ -86,7 +86,7 @@ export default function MyCVs() {
             type="file"
             ref={fileInputRef}
             accept="application/pdf"
-            style={{ display: "none" }}
+            style={{ display: 'none' }}
             onChange={handleFileChange}
           />
         </div>
@@ -109,7 +109,7 @@ export default function MyCVs() {
                 onDelete={() => removeUploadedCV(cv.id)}
                 onSelect={() => {
                   handleSelectCV(cv);
-                  alert("Đã chọn CV: " + cv.name);
+                  alert('Đã chọn CV: ' + cv.name);
                 }}
               />
             ))

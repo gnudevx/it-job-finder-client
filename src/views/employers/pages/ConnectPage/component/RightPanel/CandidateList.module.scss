@@ -55,14 +55,14 @@
 .textContent {
   display: flex;
   flex-direction: column;
-  gap: 4px; 
-  margin-top: -3px; 
+  gap: 4px;
+  margin-top: -3px;
   min-width: 0; /* QUAN TRỌNG: Phải có cái này thì chữ bên trong mới tự động cắt thành dấu ... được */
 
   h4 {
     font-size: 14px;
     font-weight: bold;
-    margin: 0; 
+    margin: 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis; /* Thêm cắt tên luôn phòng trường hợp tên ứng viên quá dài */
@@ -94,7 +94,7 @@
 
   .dot {
     font-size: 10px;
-    color: #d1d5db; 
+    color: #d1d5db;
     flex-shrink: 0;
   }
 }

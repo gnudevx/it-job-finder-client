@@ -1,6 +1,6 @@
-import axiosClient from "@/services/axiosClient";
+import axiosClient from '@/services/axiosClient';
 
-const API_URL = "http://localhost:5000/candidates/applications";
+const API_URL = 'http://localhost:5000/candidates/applications';
 
 export const applyJob = async ({ jobId, resumeId, coverLetter, token }) => {
   const res = await axiosClient.post(

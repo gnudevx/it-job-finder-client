@@ -131,7 +131,9 @@
   align-items: center;
   gap: 12px;
 
-  transition: box-shadow 0.18s ease, transform 0.18s ease;
+  transition:
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
 }
 
 .cvProfile {
@@ -168,7 +170,6 @@
   align-items: center;
   gap: 12px;
   margin-top: 16px;
-
 }
 
 .saveStatusBtn {
@@ -181,7 +182,9 @@
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;
-  transition: filter 0.2s ease, transform 0.2s ease;
+  transition:
+    filter 0.2s ease,
+    transform 0.2s ease;
 }
 
 .saveStatusBtn:hover {
@@ -204,7 +207,9 @@
   border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
-  transition: filter 0.2s ease, transform 0.2s ease;
+  transition:
+    filter 0.2s ease,
+    transform 0.2s ease;
 }
 
 .viewPdfBtn:hover {

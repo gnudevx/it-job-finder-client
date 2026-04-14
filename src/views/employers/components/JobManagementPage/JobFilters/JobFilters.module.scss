@@ -1,90 +1,89 @@
 // Container chính
 .filtersContainer {
-    display: flex;
-    flex-direction: column; // Xếp 2 hàng theo chiều dọc
-    gap: 16px; // Khoảng cách giữa 2 hàng
-    padding: 20px;
-    background: #fff;
-    border-radius: 8px;
-    border: 1px solid #e8e8e8;
+  display: flex;
+  flex-direction: column; // Xếp 2 hàng theo chiều dọc
+  gap: 16px; // Khoảng cách giữa 2 hàng
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid #e8e8e8;
 }
 
 // Kiểu cho mỗi hàng
 .row {
-    display: flex;
-    gap: 24px; // Khoảng cách giữa các mục trong hàng
-    align-items: center;
-
+  display: flex;
+  gap: 24px; // Khoảng cách giữa các mục trong hàng
+  align-items: center;
 }
 
 // Nhóm tìm kiếm (Icon + Input CÓ viền)
 .inputGroup {
-    display: flex;
-    align-items: center;
-    border: 1px solid #dcdcdc;
-    border-radius: 6px;
+  display: flex;
+  align-items: center;
+  border: 1px solid #dcdcdc;
+  border-radius: 6px;
+  flex: 1;
+  position: relative;
+  height: 40px; // optional
+
+  .icon {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #999;
+    pointer-events: none;
+  }
+
+  input[type='text'] {
     flex: 1;
-    position: relative;
-    height: 40px; // optional
+    padding: 10px 14px;
+    padding-left: 38px; // 🎯 Quan trọng! Dời text sang phải để tránh icon
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 14px;
 
-    .icon {
-        position: absolute;
-        top: 50%;
-        left: 12px;
-        transform: translateY(-50%);
-        font-size: 18px;
-        color: #999;
-        pointer-events: none;
+    &::placeholder {
+      color: #999;
     }
-
-    input[type="text"] {
-        flex: 1;
-        padding: 10px 14px;
-        padding-left: 38px; // 🎯 Quan trọng! Dời text sang phải để tránh icon
-        border: none;
-        outline: none;
-        background: transparent;
-        font-size: 14px;
-
-        &::placeholder {
-            color: #999;
-        }
-    }
+  }
 }
 
 // Nhóm Select (Label/Icon + Select KHÔNG viền chung)
 .selectGroup {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 
-    label,
-    span {
-        font-size: 14px;
-        color: #555;
-        flex-shrink: 0; // Không co-op nhãn
-    }
+  label,
+  span {
+    font-size: 14px;
+    color: #555;
+    flex-shrink: 0; // Không co-op nhãn
+  }
 
-    span {
-        // Icon lịch
-        color: #888;
-        font-size: 16px;
-    }
+  span {
+    // Icon lịch
+    color: #888;
+    font-size: 16px;
+  }
 
-    select {
-        padding: 10px 14px;
-        border: 1px solid #dcdcdc;
-        border-radius: 6px;
-        background: #fff;
-        font-size: 14px;
-    }
+  select {
+    padding: 10px 14px;
+    border: 1px solid #dcdcdc;
+    border-radius: 6px;
+    background: #fff;
+    font-size: 14px;
+  }
 }
 
 // Checkbox
 .checkbox {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 14px;
-    margin-left: auto; // !! Quan trọng: Đẩy checkbox sang phải
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  margin-left: auto; // !! Quan trọng: Đẩy checkbox sang phải
 }

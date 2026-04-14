@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { JobStatus } from "./types";
-import { Check, X, Eye, Filter } from "lucide-react";
-import styles from "./ManageRecruiment.module.scss";
-import jobApiService from "@/api/jobApiService.js"; // ✅ service gọi backend
-import JobDetailModal from "../../../../components/common/PreviewJob/JobDetailModal";
+import React, { useEffect, useState } from 'react';
+import { JobStatus } from './types';
+import { Check, X, Eye, Filter } from 'lucide-react';
+import styles from './ManageRecruiment.module.scss';
+import jobApiService from '@/api/jobApiService.js'; // ✅ service gọi backend
+import JobDetailModal from '../../../../components/common/PreviewJob/JobDetailModal';
 const ManageRecruiment = () => {
   const [jobs, setJobs] = useState([]);
-  const [filter, setFilter] = useState("All");
+  const [filter, setFilter] = useState('All');
   const [loading, setLoading] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,11 +16,11 @@ const ManageRecruiment = () => {
   const handleViewJob = async (id) => {
     try {
       const detail = await jobApiService.getJobDetail(id);
-      console.log("Chi tiết job:", detail);
+      console.log('Chi tiết job:', detail);
       setSelectedJob(detail.job);
       setIsModalOpen(true);
     } catch (err) {
-      console.log("Lỗi lấy chi tiết job:", err);
+      console.log('Lỗi lấy chi tiết job:', err);
     }
   };
   // 🔹 Lấy danh sách job từ backend
@@ -32,8 +32,8 @@ const ManageRecruiment = () => {
       // Nếu backend trả { success, data }
       setJobs(res.jobs || []); // ✅ chắc chắn jobs là mảng
     } catch (err) {
-      console.error("Lấy danh sách job lỗi:   ", err);
-      alert("Không thể tải danh sách job");
+      console.error('Lấy danh sách job lỗi:   ', err);
+      alert('Không thể tải danh sách job');
     } finally {
       setLoading(false);
     }
@@ -44,16 +44,14 @@ const ManageRecruiment = () => {
 
   // 🔹 Cập nhật trạng thái job
   const handleStatusChange = async (id, newStatus) => {
-    const oldJob = jobs.find(j => j._id === id);
+    const oldJob = jobs.find((j) => j._id === id);
     if (!oldJob) return;
 
     const oldStatus = oldJob.publishStatus;
 
     // 1️⃣ Update UI ngay lập tức
-    setJobs(prev =>
-      prev.map(job =>
-        job._id === id ? { ...job, publishStatus: newStatus } : job
-      )
+    setJobs((prev) =>
+      prev.map((job) => (job._id === id ? { ...job, publishStatus: newStatus } : job))
     );
 
     // 2️⃣ Lưu thông tin để undo
@@ -69,11 +67,9 @@ const ManageRecruiment = () => {
       try {
         await jobApiService.updateJobStatus(id, newStatus);
       } catch (err) {
-        alert("Cập nhật lỗi, khôi phục trạng thái cũ.");
-        setJobs(prev =>
-          prev.map(job =>
-            job._id === id ? { ...job, publishStatus: oldStatus } : job
-          )
+        alert('Cập nhật lỗi, khôi phục trạng thái cũ.');
+        setJobs((prev) =>
+          prev.map((job) => (job._id === id ? { ...job, publishStatus: oldStatus } : job))
         );
       }
     }, 1000);
@@ -86,10 +82,8 @@ const ManageRecruiment = () => {
     clearTimeout(undoTimer); // Hủy gửi API
 
     // Khôi phục UI
-    setJobs(prev =>
-      prev.map(job =>
-        job._id === id ? { ...job, publishStatus: oldStatus } : job
-      )
+    setJobs((prev) =>
+      prev.map((job) => (job._id === id ? { ...job, publishStatus: oldStatus } : job))
     );
 
     setShowUndo(false);
@@ -97,9 +91,9 @@ const ManageRecruiment = () => {
   };
   // 🔹 Lọc job theo trạng thái
   const filteredJobs =
-    filter === "All"
+    filter === 'All'
       ? jobs
-      : jobs.filter(j => j.publishStatus.toLowerCase() === filter.toLowerCase());
+      : jobs.filter((j) => j.publishStatus.toLowerCase() === filter.toLowerCase());
 
   return (
     <div className={styles.container}>
@@ -150,7 +144,7 @@ const ManageRecruiment = () => {
                 <tr key={job._id} className={styles.row}>
                   <td className={styles.titleCol}>{job.title}</td>
                   <td className={styles.textGray}>
-                    {job.employer_id?.companyId?.name || "Chưa có"}
+                    {job.employer_id?.companyId?.name || 'Chưa có'}
                   </td>
                   <td className={styles.textMuted}>
                     {new Date(job.createdAt).toLocaleDateString()}
@@ -158,12 +152,13 @@ const ManageRecruiment = () => {
 
                   <td>
                     <span
-                      className={`${styles.statusTag} ${job.publishStatus === JobStatus.PENDING.toLowerCase()
-                        ? styles.pending
-                        : job.publishStatus === JobStatus.APPROVED
-                          ? styles.approved
-                          : styles.rejected
-                        }`}
+                      className={`${styles.statusTag} ${
+                        job.publishStatus === JobStatus.PENDING.toLowerCase()
+                          ? styles.pending
+                          : job.publishStatus === JobStatus.APPROVED
+                            ? styles.approved
+                            : styles.rejected
+                      }`}
                     >
                       {job.publishStatus}
                     </span>
@@ -209,10 +204,7 @@ const ManageRecruiment = () => {
             </tbody>
 
             {isModalOpen && (
-              <JobDetailModal
-                job={selectedJob}
-                onClose={() => setIsModalOpen(false)}
-              />
+              <JobDetailModal job={selectedJob} onClose={() => setIsModalOpen(false)} />
             )}
           </table>
         )}

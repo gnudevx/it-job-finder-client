@@ -1,144 +1,143 @@
 .table {
-    margin-top: 20px;
-    background: #fff;
-    border-radius: 8px;
-    border: 1px solid #e8e8e8;
+  margin-top: 20px;
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid #e8e8e8;
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
+  table {
+    width: 100%;
+    border-collapse: collapse;
 
-        th {
-            padding: 16px;
-            text-align: left;
-            background: #fafafa;
-            border-bottom: 1px solid #eee;
-        }
-
-        td {
-            padding: 18px;
-            border-bottom: 1px solid #f2f2f2;
-            vertical-align: middle;
-        }
+    th {
+      padding: 16px;
+      text-align: left;
+      background: #fafafa;
+      border-bottom: 1px solid #eee;
     }
+
+    td {
+      padding: 18px;
+      border-bottom: 1px solid #f2f2f2;
+      vertical-align: middle;
+    }
+  }
 }
 
 .title {
-    font-size: 14px;
-    color: #666;
+  font-size: 14px;
+  color: #666;
 }
 
 .jobName {
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 6px;
 }
 
 .tags {
-    margin: 8px 0;
-    display: flex;
-    gap: 8px;
+  margin: 8px 0;
+  display: flex;
+  gap: 8px;
 
-    span {
-        font-size: 12px;
-        padding: 2px 8px;
-        border-radius: 4px;
-    }
+  span {
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
 
-    .hidden {
-        background: #f1f1f1;
-        color: #666;
-    }
+  .hidden {
+    background: #f1f1f1;
+    color: #666;
+  }
 
-    .pending {
-        background: #e0f0ff;
-        color: #0077ff;
-    }
+  .pending {
+    background: #e0f0ff;
+    color: #0077ff;
+  }
 }
 
 .actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
 
-    .btnGreen {
-        background: #e6f9ee;
-        color: #1aa06d;
-        padding: 6px 14px;
-        border: 1px solid #1aa06d;
-        border-radius: 6px;
-        cursor: pointer;
-    }
+  .btnGreen {
+    background: #e6f9ee;
+    color: #1aa06d;
+    padding: 6px 14px;
+    border: 1px solid #1aa06d;
+    border-radius: 6px;
+    cursor: pointer;
+  }
 
-    .btnWhite {
-        background: #fff;
-        padding: 6px 14px;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        cursor: pointer;
-    }
+  .btnWhite {
+    background: #fff;
+    padding: 6px 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    cursor: pointer;
+  }
 }
 
 .iconCol {
+  display: flex;
+  flex-direction: column; // hoặc row nếu muốn nằm ngang
+  align-items: flex-start; // căn trái
+  justify-content: flex-start; // bắt đầu từ trên
+  gap: 21px;
+  color: #777;
+
+  svg {
+    cursor: pointer;
+  }
+
+  .newTag {
     display: flex;
-    flex-direction: column; // hoặc row nếu muốn nằm ngang
-    align-items: flex-start; // căn trái
-    justify-content: flex-start; // bắt đầu từ trên
-    gap: 21px;
-    color: #777;
+    align-items: center;
+    gap: 4px;
 
-    svg {
-        cursor: pointer;
+    span {
+      background: #ff6b00;
+      padding: 0px 6px;
+      border-radius: 10px;
+      font-size: 10px;
+      color: white;
     }
-
-    .newTag {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-
-        span {
-            background: #ff6b00;
-            padding: 0px 6px;
-            border-radius: 10px;
-            font-size: 10px;
-            color: white;
-        }
-
-    }
+  }
 }
 
 .iconWrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
+  position: relative;
+  display: flex;
+  align-items: center;
 
-    .tooltip {
-        visibility: hidden;
-        background-color: #333;
-        color: #fff;
-        text-align: center;
-        font-size: 10px;
-        border-radius: 4px;
-        position: absolute;
-        z-index: 10;
-        top: -25px; // hoặc bottom: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        white-space: nowrap;
-        opacity: 0;
-        transition: opacity 0.2s;
-    }
+  .tooltip {
+    visibility: hidden;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    font-size: 10px;
+    border-radius: 4px;
+    position: absolute;
+    z-index: 10;
+    top: -25px; // hoặc bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
 
-    span {
-        background: #ff6b00;
-        padding: 0px 6px;
-        border-radius: 10px;
-        font-size: 10px;
-        color: white;
-    }
+  span {
+    background: #ff6b00;
+    padding: 0px 6px;
+    border-radius: 10px;
+    font-size: 10px;
+    color: white;
+  }
 
-    &:hover .tooltip {
-        visibility: visible;
-        opacity: 1;
-    }
+  &:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+  }
 }

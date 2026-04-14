@@ -76,7 +76,8 @@
   border-radius: 50%;
   transition: all 0.2s;
 
-  &:hover, &.activeIcon {
+  &:hover,
+  &.activeIcon {
     background: #f3f4f6;
     color: #374151;
   }
@@ -89,7 +90,9 @@
   background: white;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
   width: 240px;
   z-index: 50;
   padding: 8px 0;
@@ -154,7 +157,7 @@
   top: 2px;
   left: 2px;
   transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .toggleActive .toggleCircle {

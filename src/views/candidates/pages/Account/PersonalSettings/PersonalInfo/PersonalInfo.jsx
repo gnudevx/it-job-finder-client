@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import styles from "./PersonalInfo.module.scss";
-import usePersonalInfo from "@/hooks/usePersonalInfo";
+import React, { useState } from 'react';
+import styles from './PersonalInfo.module.scss';
+import usePersonalInfo from '@/hooks/usePersonalInfo';
 
 export default function PersonalInfo() {
   const { formData, updateField, save } = usePersonalInfo();
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -14,14 +14,14 @@ export default function PersonalInfo() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage("");
+    setMessage('');
     setLoading(true);
 
     try {
       await save();
-      setMessage("Lưu thông tin thành công!");
+      setMessage('Lưu thông tin thành công!');
     } catch (error) {
-      setMessage(error.message || "Có lỗi xảy ra. Vui lòng thử lại.");
+      setMessage(error.message || 'Có lỗi xảy ra. Vui lòng thử lại.');
     }
 
     setLoading(false);
@@ -36,11 +36,7 @@ export default function PersonalInfo() {
         </p>
 
         {message && (
-          <div
-            className={
-              message.includes("thành công") ? styles.success : styles.error
-            }
-          >
+          <div className={message.includes('thành công') ? styles.success : styles.error}>
             {message}
           </div>
         )}
@@ -73,16 +69,10 @@ export default function PersonalInfo() {
 
           {/* Email */}
           <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            value={formData.email}
-            disabled
-          />
+          <input id="email" name="email" type="email" value={formData.email} disabled />
 
           <button type="submit" className={styles.saveBtn} disabled={loading}>
-            {loading ? "Đang lưu..." : "Lưu"}
+            {loading ? 'Đang lưu...' : 'Lưu'}
           </button>
         </form>
       </div>

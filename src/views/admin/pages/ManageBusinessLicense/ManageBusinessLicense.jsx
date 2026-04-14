@@ -38,8 +38,8 @@ const ManageBusinessLicense = () => {
       const res = await adminLicenseApi.updateLicenseStatus(id, status);
       // axios trả về res.data
       console.log('Kết quả đánh giá:', res);
-      setPending(prev => prev.filter(e => e.id !== id));
-      setHistory(prev => [res.employer, ...prev]);
+      setPending((prev) => prev.filter((e) => e.id !== id));
+      setHistory((prev) => [res.employer, ...prev]);
     } catch (err) {
       console.error(err);
       alert('Đánh giá thất bại');
@@ -56,42 +56,50 @@ const ManageBusinessLicense = () => {
       {/* Danh sách pending */}
       <div className={styles.cardList}>
         {pending.length > 0 ? (
-          pending.map(emp => (
-            console.log(emp),
-            <div key={emp.id} className={styles.card}>
-              <div className={styles.cardLeft}>
-                <div className={styles.iconWrapper}>
-                  <FileText size={32} />
+          pending.map(
+            (emp) => (
+              console.log(emp),
+              (
+                <div key={emp.id} className={styles.card}>
+                  <div className={styles.cardLeft}>
+                    <div className={styles.iconWrapper}>
+                      <FileText size={32} />
+                    </div>
+                    <div>
+                      <h3 className={styles.companyName}>{emp.companyName}</h3>
+                      <p className={styles.text}>Người đại diện: {emp.fullName}</p>
+                      <p className={styles.text}>Email: {emp.email}</p>
+                      {emp.licenseDocUrl && (
+                        <a
+                          href={`http://localhost:5000${emp.licenseDocUrl}`}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          Xem giấy phép
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                  <div className={styles.actions}>
+                    <button
+                      className={styles.rejectBtn}
+                      disabled={loading}
+                      onClick={() => handleReview(emp.id, LicenseStatus.REJECTED.toLowerCase())}
+                    >
+                      <XCircle size={18} /> Từ chối
+                    </button>
+                    <button
+                      className={styles.verifyBtn}
+                      disabled={loading}
+                      onClick={() => handleReview(emp.id, LicenseStatus.VERIFIED.toLowerCase())}
+                    >
+                      <CheckCircle size={18} /> Xác nhận hợp lệ
+                    </button>
+                  </div>
                 </div>
-                <div>
-                  <h3 className={styles.companyName}>{emp.companyName}</h3>
-                  <p className={styles.text}>Người đại diện: {emp.fullName}</p>
-                  <p className={styles.text}>Email: {emp.email}</p>
-                  {emp.licenseDocUrl && (
-                    <a href={`http://localhost:5000${emp.licenseDocUrl}`} target="_blank" rel="noreferrer">
-                      Xem giấy phép
-                    </a>
-                  )}
-                </div>
-              </div>
-              <div className={styles.actions}>
-                <button
-                  className={styles.rejectBtn}
-                  disabled={loading}
-                  onClick={() => handleReview(emp.id, LicenseStatus.REJECTED.toLowerCase())}
-                >
-                  <XCircle size={18} /> Từ chối
-                </button>
-                <button
-                  className={styles.verifyBtn}
-                  disabled={loading}
-                  onClick={() => handleReview(emp.id, LicenseStatus.VERIFIED.toLowerCase())}
-                >
-                  <CheckCircle size={18} /> Xác nhận hợp lệ
-                </button>
-              </div>
-            </div>
-          ))
+              )
+            )
+          )
         ) : (
           <div className={styles.emptyBox}>
             <CheckCircle size={48} />
@@ -113,12 +121,22 @@ const ManageBusinessLicense = () => {
             </tr>
           </thead>
           <tbody>
-            {history.map(e => (
+            {history.map((e) => (
               <tr key={e.id}>
                 <td>{e.companyName}</td>
                 <td>
-                  <span className={e.licenseStatus === LicenseStatus.VERIFIED ? styles.statusVerified : styles.statusRejected}>
-                    {e.licenseStatus === LicenseStatus.VERIFIED ? <CheckCircle size={12} /> : <XCircle size={12} />}
+                  <span
+                    className={
+                      e.licenseStatus === LicenseStatus.VERIFIED
+                        ? styles.statusVerified
+                        : styles.statusRejected
+                    }
+                  >
+                    {e.licenseStatus === LicenseStatus.VERIFIED ? (
+                      <CheckCircle size={12} />
+                    ) : (
+                      <XCircle size={12} />
+                    )}
                     {e.licenseStatus}
                   </span>
                 </td>

@@ -1,36 +1,31 @@
-import React, { useEffect, useState } from "react";
-import styles from "./EmployerNotification.module.scss";
+import React, { useEffect, useState } from 'react';
+import styles from './EmployerNotification.module.scss';
 
-import NotificationForm from "./NotificationForm";
-import NotificationHistory from "./NotificationHistory";
-import NotificationPreview from "./NotificationPreview";
+import NotificationForm from './NotificationForm';
+import NotificationHistory from './NotificationHistory';
+import NotificationPreview from './NotificationPreview';
 
-import PropTypes from "prop-types";
-import { UserRole, NotificationType } from "./types.js";
+import PropTypes from 'prop-types';
+import { UserRole, NotificationType } from './types.js';
 
-import notificationApiService from "@/api/notificationApiService.js";
+import notificationApiService from '@/api/notificationApiService.js';
 
 const EmployerNotification = ({ targetAudience }) => {
-
   /** ---------------------------------------
    * BASIC STATE
    ----------------------------------------*/
-  const [title, setTitle] = useState("");
-  const [message, setMessage] = useState("");
-  const [recipientType, setRecipientType] = useState("ALL");
-  const [specificId, setSpecificId] = useState("");
+  const [title, setTitle] = useState('');
+  const [message, setMessage] = useState('');
+  const [recipientType, setRecipientType] = useState('ALL');
+  const [specificId, setSpecificId] = useState('');
   const [notifType, setNotifType] = useState(NotificationType.SYSTEM);
 
   /** ---------------------------------------
    * ROLE CONFIG
    ----------------------------------------*/
-  const role =
-    targetAudience === "CANDIDATE"
-      ? UserRole.CANDIDATE
-      : UserRole.EMPLOYER;
+  const role = targetAudience === 'CANDIDATE' ? UserRole.CANDIDATE : UserRole.EMPLOYER;
 
-  const audienceLabel =
-    targetAudience === "CANDIDATE" ? "Ứng Viên" : "Nhà Tuyển Dụng";
+  const audienceLabel = targetAudience === 'CANDIDATE' ? 'Ứng Viên' : 'Nhà Tuyển Dụng';
 
   /** ---------------------------------------
    * NOTIFICATION HISTORY
@@ -44,10 +39,10 @@ const EmployerNotification = ({ targetAudience }) => {
     const fetchHistory = async () => {
       try {
         const res = await notificationApiService.adminList(role, 1, 50);
-        console.log("History load:", res);
+        console.log('History load:', res);
         setHistory(res.items);
       } catch (err) {
-        console.error("Load history error:", err);
+        console.error('Load history error:', err);
       }
     };
 
@@ -59,7 +54,7 @@ const EmployerNotification = ({ targetAudience }) => {
    ----------------------------------------*/
   const handleSend = async () => {
     if (!title.trim() || !message.trim()) {
-      alert("Vui lòng nhập tiêu đề và nội dung!");
+      alert('Vui lòng nhập tiêu đề và nội dung!');
       return;
     }
 
@@ -68,26 +63,24 @@ const EmployerNotification = ({ targetAudience }) => {
       message,
       type: notifType,
       recipientRole: role,
-      recipientId: recipientType === "ALL" ? "ALL" : specificId || "UNKNOWN",
+      recipientId: recipientType === 'ALL' ? 'ALL' : specificId || 'UNKNOWN',
     };
 
     try {
       const res = await notificationApiService.create(role, payload);
-      console.log("Sent:", res.data);
+      console.log('Sent:', res.data);
 
       // reset
-      setTitle("");
-      setMessage("");
-      setSpecificId("");
-
+      setTitle('');
+      setMessage('');
+      setSpecificId('');
     } catch (err) {
-      console.error("Send error:", err);
+      console.error('Send error:', err);
     }
   };
 
   return (
     <div className={styles.wrapper}>
-
       {/* LEFT */}
       <div className={styles.left}>
         <h1 className={styles.header}>
@@ -111,11 +104,7 @@ const EmployerNotification = ({ targetAudience }) => {
       </div>
 
       {/* PREVIEW */}
-      <NotificationPreview
-        title={title}
-        message={message}
-        notifType={notifType}
-      />
+      <NotificationPreview title={title} message={message} notifType={notifType} />
 
       {/* RIGHT — HISTORY */}
       <div className={styles.right}>
@@ -126,7 +115,7 @@ const EmployerNotification = ({ targetAudience }) => {
 };
 
 EmployerNotification.propTypes = {
-  targetAudience: PropTypes.oneOf(["CANDIDATE", "EMPLOYER"]).isRequired,
+  targetAudience: PropTypes.oneOf(['CANDIDATE', 'EMPLOYER']).isRequired,
 };
 
 export default EmployerNotification;

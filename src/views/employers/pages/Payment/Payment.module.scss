@@ -1,108 +1,108 @@
 .page {
-    min-height: 100vh;
-    background: #f9fafb;
-    overflow: hidden;
+  min-height: 100vh;
+  background: #f9fafb;
+  overflow: hidden;
 }
 
 .container {
-    max-width: 1100px;
-    margin: auto;
-    padding: 32px 16px;
+  max-width: 1100px;
+  margin: auto;
+  padding: 32px 16px;
 }
 
 .backBtn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 24px;
 }
 
 .layout {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 24px;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
 }
 
 .card {
-    background: #fff;
-    border-radius: 16px;
-    padding: 24px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, .05);
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .title {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
 }
 
 .method {
-    border: 2px solid #e5e7eb;
-    padding: 16px;
-    border-radius: 12px;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
+  border: 2px solid #e5e7eb;
+  padding: 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
 }
 
 .activeMomo {
-    border-color: #a50064;
-    background: #fff0f6;
+  border-color: #a50064;
+  background: #fff0f6;
 }
 
 .security {
-    margin-top: 16px;
-    display: flex;
-    gap: 8px;
-    font-size: 14px;
+  margin-top: 16px;
+  display: flex;
+  gap: 8px;
+  font-size: 14px;
 }
 
 .total {
-    display: flex;
-    justify-content: space-between;
-    margin: 20px 0;
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
 }
 
 .payBtn {
-    width: 100%;
-    padding: 14px;
-    border-radius: 12px;
-    background: #a50064;
-    color: #fff;
-    font-weight: bold;
-    border: none;
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  background: #a50064;
+  color: #fff;
+  font-weight: bold;
+  border: none;
 }
 
 .spin {
-    animation: spin 1s linear infinite;
+  animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .method {
-    border: 2px solid #e5e7eb;
-    padding: 16px;
-    border-radius: 12px;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 12px;
+  border: 2px solid #e5e7eb;
+  padding: 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
 }
 
 .activeMomo {
-    border-color: #a50064;
-    background: #fff0f6;
+  border-color: #a50064;
+  background: #fff0f6;
 }
 
 .activeZalo {
-    border-color: #0068ff;
-    background: #eff6ff;
+  border-color: #0068ff;
+  background: #eff6ff;
 }

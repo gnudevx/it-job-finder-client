@@ -3,7 +3,7 @@
   min-height: 100vh;
 
   .top-section {
-    background-image: url("../../../assets/landing_pic.png");
+    background-image: url('../../../assets/landing_pic.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -330,7 +330,6 @@
 }
 
 @keyframes bounceSlow {
-
   0%,
   100% {
     transform: translateY(0);

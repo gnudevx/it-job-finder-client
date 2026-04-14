@@ -1,4 +1,4 @@
-import api from "@/services/axiosClient";
+import api from '@/services/axiosClient';
 
 const unwrapData = (res) => res.data;
 
@@ -7,12 +7,12 @@ const handleError = (err) => {
   if (err.response) {
     // server trả lỗi
     const data = err.response.data;
-    const message = data?.message || data?.error || "Server error";
+    const message = data?.message || data?.error || 'Server error';
     const status = err.response.status;
     return Promise.reject({ message, status, data });
   }
   // network hoặc khác
-  return Promise.reject({ message: err.message || "Unknown error" });
+  return Promise.reject({ message: err.message || 'Unknown error' });
 };
 
 export default {

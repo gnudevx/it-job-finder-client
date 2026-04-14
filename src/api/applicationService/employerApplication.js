@@ -1,4 +1,4 @@
-import axios from "@/services/axiosClient"; // tùy bạn đặt axios client ở đâu
+import axios from '@/services/axiosClient'; // tùy bạn đặt axios client ở đâu
 
 export const getEmployerApplications = async (filters = {}) => {
   const params = {};
@@ -10,7 +10,7 @@ export const getEmployerApplications = async (filters = {}) => {
   if (filters.appliedAt) params.appliedAt = filters.appliedAt;
   if (filters.toDate) params.toDate = filters.toDate;
 
-  const res = await axios.get("/employer/api/applications", { params });
+  const res = await axios.get('/employer/api/applications', { params });
   return res.data;
 };
 

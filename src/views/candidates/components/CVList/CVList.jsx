@@ -1,7 +1,7 @@
-import React from "react";
-import PropTypes from "prop-types";
-import styles from "./CVList.module.scss";
-import { Eye, Trash2 } from "lucide-react";
+import React from 'react';
+import PropTypes from 'prop-types';
+import styles from './CVList.module.scss';
+import { Eye, Trash2 } from 'lucide-react';
 
 export default function CVList({ data, onDelete }) {
   if (!data || data.length === 0)
@@ -19,7 +19,7 @@ export default function CVList({ data, onDelete }) {
           <h4>{cv.title}</h4>
 
           <div className={styles.actions}>
-            <button onClick={() => window.open(cv.previewUrl, "_blank")}>
+            <button onClick={() => window.open(cv.previewUrl, '_blank')}>
               <Eye size={16} /> Xem
             </button>
 

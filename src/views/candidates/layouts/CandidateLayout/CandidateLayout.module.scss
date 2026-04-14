@@ -1,47 +1,47 @@
 .layout-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    /* đủ để đẩy footer xuống đáy */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  /* đủ để đẩy footer xuống đáy */
 }
 
 /* Header cố định chiều cao */
 header {
-    height: 64px;
-    flex-shrink: 0;
-    background: white;
-    border-bottom: 1px solid #eee;
+  height: 64px;
+  flex-shrink: 0;
+  background: white;
+  border-bottom: 1px solid #eee;
 }
 
 /* Wrapper cho content */
 .content-wrapper {
-    flex: 1;
-    /* cho phép nở */
-    display: flex;
-    flex-direction: column;
+  flex: 1;
+  /* cho phép nở */
+  display: flex;
+  flex-direction: column;
 }
 
 /* Main content */
 .main-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Page container - KHÔNG scroll nội bộ */
 .page-container {
-    flex: 1;
-    padding: 24px;
-    background: #f4f5f5;
+  flex: 1;
+  padding: 24px;
+  background: #f4f5f5;
 }
 
 /* BODY phải cho scroll */
 html,
 body,
 #root {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    overflow-y: auto !important;
-    /* cho cuộn toàn trang */
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto !important;
+  /* cho cuộn toàn trang */
 }

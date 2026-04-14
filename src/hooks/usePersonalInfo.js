@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
-import { loadPersonalInfo, savePersonalInfo } from "@/api/personalInfoService";
+import { useEffect, useState } from 'react';
+import { loadPersonalInfo, savePersonalInfo } from '@/api/personalInfoService';
 
 export default function usePersonalInfo() {
   const [formData, setFormData] = useState({
-    fullName: "",
-    phone: "",
-    email: "",
+    fullName: '',
+    phone: '',
+    email: '',
   });
 
   useEffect(() => {
@@ -14,12 +14,12 @@ export default function usePersonalInfo() {
         const info = await loadPersonalInfo();
 
         setFormData({
-          fullName: info.fullName || "",
-          phone: info.phone || "",
-          email: info.email || "", // <- email từ DB vào FE
+          fullName: info.fullName || '',
+          phone: info.phone || '',
+          email: info.email || '', // <- email từ DB vào FE
         });
       } catch (err) {
-        console.error("Không thể load thông tin người dùng", err);
+        console.error('Không thể load thông tin người dùng', err);
       }
     };
 

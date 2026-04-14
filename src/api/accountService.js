@@ -1,8 +1,7 @@
-import axiosClient from "../services/axiosClient";
+import axiosClient from '../services/axiosClient';
 
 const accountService = {
-    changePassword: (data) =>
-        axiosClient.put("/employer/account/settings/password", data),
+  changePassword: (data) => axiosClient.put('/employer/account/settings/password', data),
 };
 
 export default accountService;

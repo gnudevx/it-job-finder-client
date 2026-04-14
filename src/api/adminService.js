@@ -1,4 +1,4 @@
-import axiosClient from "../services/axiosClient";
+import axiosClient from '../services/axiosClient';
 
 const adminService = {
   AllCandidates: () => axiosClient.get('/admin/managing/candidates'),
@@ -6,7 +6,7 @@ const adminService = {
   GetCandidate: (id) => axiosClient.get(`/admin/managing/candidates/${id}`),
 
   // Create candidate
-  CreateCandidate: (data) => axiosClient.post("/admin/managing/candidates", data),
+  CreateCandidate: (data) => axiosClient.post('/admin/managing/candidates', data),
 
   // Update candidate
   UpdateCandidate: (id, data) => axiosClient.put(`/admin/managing/candidates/${id}`, data),

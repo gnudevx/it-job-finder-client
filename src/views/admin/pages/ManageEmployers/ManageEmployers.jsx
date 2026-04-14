@@ -4,7 +4,7 @@ import styles from './ManageEmployers.module.scss';
 import RecruiterList from './RecruiterList/RecruiterList.jsx';
 import RecruiterDetail from './RecruiterDetail/RecruiterDetail.jsx';
 
-import employerService from "@/api/adminEmployer.js";
+import employerService from '@/api/adminEmployer.js';
 
 export default function ManageEmployers() {
   const [recruiters, setRecruiters] = useState([]);
@@ -15,11 +15,11 @@ export default function ManageEmployers() {
     const fetchData = async () => {
       try {
         const data = await employerService.getAllEmployers();
-        console.log("Recruiter data:", data, "haha", recruiters);
+        console.log('Recruiter data:', data, 'haha', recruiters);
 
         setRecruiters(data.data);
       } catch (err) {
-        console.error("Lỗi load employers:", err);
+        console.error('Lỗi load employers:', err);
       } finally {
         setLoading(false);
       }
@@ -38,7 +38,6 @@ export default function ManageEmployers() {
           onViewDetail={async (r) => {
             const full = await employerService.getEmployerById(r._id);
             setSelected(full);
-
           }}
         />
       ) : (
@@ -46,8 +45,8 @@ export default function ManageEmployers() {
           recruiter={selected}
           onBack={() => setSelected(null)}
           onStatusChange={(id, newStatus) => {
-            setRecruiters(prev =>
-              prev.map(r => (r.id === id ? { ...r, status: newStatus } : r))
+            setRecruiters((prev) =>
+              prev.map((r) => (r.id === id ? { ...r, status: newStatus } : r))
             );
             setSelected(null); // quay về list
           }}

@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import styles from "./ManageCandidates.module.scss";
-import adminService from "@/api/adminService";
+import { useEffect, useState } from 'react';
+import styles from './ManageCandidates.module.scss';
+import adminService from '@/api/adminService';
 
 export default function ManageCandidates() {
   const [candidates, setCandidates] = useState([]);
@@ -14,7 +14,7 @@ export default function ManageCandidates() {
         setCandidates(res.data);
       }
     } catch (err) {
-      console.error("Error loading candidates:", err);
+      console.error('Error loading candidates:', err);
     } finally {
       setLoading(false);
     }
@@ -25,12 +25,12 @@ export default function ManageCandidates() {
   }, []);
 
   const handleDelete = async (id) => {
-    if (!confirm("Bạn có chắc muốn xóa ứng viên này? vui lòng xác nhận")) return;
+    if (!confirm('Bạn có chắc muốn xóa ứng viên này? vui lòng xác nhận')) return;
     try {
       await adminService.DeleteCandidate(id);
       setCandidates(candidates.filter((c) => c._id !== id));
     } catch (err) {
-      console.error("Error deleting candidate:", err);
+      console.error('Error deleting candidate:', err);
     }
   };
 
@@ -66,23 +66,23 @@ export default function ManageCandidates() {
                   <td>{c.email}</td>
                   <td>{c.phone}</td>
                   <td>{c.address}</td>
-                  <td>{c.birthday ? new Date(c.birthday).toLocaleDateString("vi-VN") : "—"}</td>
-                  <td>{c.gender === "male" ? "Nam" : c.gender === "female" ? "Nữ" : "Khác"}</td>
+                  <td>{c.birthday ? new Date(c.birthday).toLocaleDateString('vi-VN') : '—'}</td>
+                  <td>{c.gender === 'male' ? 'Nam' : c.gender === 'female' ? 'Nữ' : 'Khác'}</td>
                   <td>
                     {c.avatar ? (
-                      <img
-                        src={c.avatar}
-                        style={{ width: 50, height: 50, borderRadius: "50%" }}
-                      />
+                      <img src={c.avatar} style={{ width: 50, height: 50, borderRadius: '50%' }} />
                     ) : (
-                      "—"
+                      '—'
                     )}
                   </td>
-                  <td>{new Date(c.createdAt).toLocaleString("vi-VN")}</td>
-                  <td>{new Date(c.updatedAt).toLocaleString("vi-VN")}</td>
+                  <td>{new Date(c.createdAt).toLocaleString('vi-VN')}</td>
+                  <td>{new Date(c.updatedAt).toLocaleString('vi-VN')}</td>
                   <td>
                     <div className={styles.actionBtns}>
-                      <button className={styles.editBtn} onClick={() => window.location.href = `/admin/manage/candidates/${c._id}`}>
+                      <button
+                        className={styles.editBtn}
+                        onClick={() => (window.location.href = `/admin/manage/candidates/${c._id}`)}
+                      >
                         Sửa
                       </button>
                       <button className={styles.deleteBtn} onClick={() => handleDelete(c._id)}>

@@ -1,15 +1,15 @@
-import React from "react";
-import useChangePassword from "@/hooks/useChangePassword";
-import { useAuth } from "@/contexts/AuthContext.jsx";
-import styles from "./ChangePassword.module.scss";
+import React from 'react';
+import useChangePassword from '@/hooks/useChangePassword';
+import { useAuth } from '@/contexts/AuthContext.jsx';
+import styles from './ChangePassword.module.scss';
 
 export default function ChangePassword() {
   const { user, initialized } = useAuth();
   const { formData, updateField, changePassword, loading } = useChangePassword();
 
-  if (!initialized) return "Đang tải...";
+  if (!initialized) return 'Đang tải...';
 
-  const email = user?.email || "Không xác định";
+  const email = user?.email || 'Không xác định';
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,7 +23,7 @@ export default function ChangePassword() {
       window.alert(result.message);
       return;
     }
-    window.alert("Đổi mật khẩu thành công!");
+    window.alert('Đổi mật khẩu thành công!');
   };
 
   return (
@@ -32,10 +32,9 @@ export default function ChangePassword() {
         <h2>Thay đổi mật khẩu đăng nhập</h2>
 
         <form onSubmit={handleSubmit} className={styles.form}>
-
           <div className={styles.formGroup}>
             <label>Email đăng nhập</label>
-            <input type="email" value={!initialized ? "Đang tải..." : email} disabled />
+            <input type="email" value={!initialized ? 'Đang tải...' : email} disabled />
           </div>
 
           <div className={styles.formGroup}>
@@ -72,7 +71,7 @@ export default function ChangePassword() {
           </div>
 
           <button type="submit" className={styles.saveBtn} disabled={loading}>
-            {loading ? "Đang xử lý..." : "Lưu"}
+            {loading ? 'Đang xử lý...' : 'Lưu'}
           </button>
         </form>
       </div>

@@ -1,48 +1,48 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import styles from "./Authentication.module.scss";
-import { useAuth } from "@/contexts/AuthContext";
-import { FcGoogle } from "react-icons/fc";
-import { loginWithGoogle } from "@/utils/googleAuth";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styles from './Authentication.module.scss';
+import { useAuth } from '@/contexts/AuthContext';
+import { FcGoogle } from 'react-icons/fc';
+import { loginWithGoogle } from '@/utils/googleAuth';
 
 export default function RegisterPage() {
-  const [fullname, setFullname] = useState("");
-  const [email, setEmail] = useState("");
-  const [pass, setPass] = useState("");
-  const [confirm, setConfirm] = useState("");
-  const [role, setRole] = useState("candidate");
-  const [gender, setGender] = useState("other");
-  const [error, setError] = useState("");
+  const [fullname, setFullname] = useState('');
+  const [email, setEmail] = useState('');
+  const [pass, setPass] = useState('');
+  const [confirm, setConfirm] = useState('');
+  const [role, setRole] = useState('candidate');
+  const [gender, setGender] = useState('other');
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { login } = useAuth();
   const handleRegister = async (e) => {
     e.preventDefault();
-    setError("");
+    setError('');
     setLoading(true);
 
     if (!fullname || !email || !pass || !confirm) {
-      setError("Vui lòng nhập đầy đủ thông tin");
+      setError('Vui lòng nhập đầy đủ thông tin');
       setLoading(false);
       return;
     }
 
     if (pass !== confirm) {
-      setError("Mật khẩu không trùng khớp");
+      setError('Mật khẩu không trùng khớp');
       setLoading(false);
       return;
     }
 
     if (pass.length < 6) {
-      setError("Mật khẩu phải có ít nhất 6 ký tự");
+      setError('Mật khẩu phải có ít nhất 6 ký tự');
       setLoading(false);
       return;
     }
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('http://localhost:5000/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           fullname,
           email,
@@ -50,33 +50,32 @@ export default function RegisterPage() {
           role,
           gender,
         }),
-        credentials: "include"
+        credentials: 'include',
       });
 
       const data = await res.json();
 
       if (!res.ok || !data.success) {
-        setError(data.message || "Đăng ký thất bại");
+        setError(data.message || 'Đăng ký thất bại');
         setLoading(false);
         return;
       }
 
       login(data.user);
       // Show success message
-      alert("Đăng ký thành công! Đang chuyển hướng...");
-      
-      // Navigate based on role - AUTO LOGIN COMPLETE
-      if (data.user.role === "candidate") {
-        navigate("/candidate/home");
-      } else if (data.user.role === "employer") {
-        navigate("/employer/dashboard");
-      } else {
-        navigate("/");
-      }
+      alert('Đăng ký thành công! Đang chuyển hướng...');
 
+      // Navigate based on role - AUTO LOGIN COMPLETE
+      if (data.user.role === 'candidate') {
+        navigate('/candidate/home');
+      } else if (data.user.role === 'employer') {
+        navigate('/employer/dashboard');
+      } else {
+        navigate('/');
+      }
     } catch (e) {
-      setError("Lỗi kết nối server");
-      console.error("Register error:", e);
+      setError('Lỗi kết nối server');
+      console.error('Register error:', e);
       setLoading(false);
     }
   };
@@ -84,39 +83,39 @@ export default function RegisterPage() {
   const handleGoogleLogin = () => {
     loginWithGoogle(async (code) => {
       try {
-        const res = await fetch("http://localhost:5000/api/auth/google", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
+        const res = await fetch('http://localhost:5000/api/auth/google', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ code }),
-          credentials: "include"
+          credentials: 'include',
         });
 
         const data = await res.json();
 
         if (data.success) {
           // Save user info
-          localStorage.setItem("user", JSON.stringify(data.user));
-          
+          localStorage.setItem('user', JSON.stringify(data.user));
+
           if (data.accessToken) {
-            localStorage.setItem("accessToken", data.accessToken);
+            localStorage.setItem('accessToken', data.accessToken);
           }
 
-          alert("Đăng nhập bằng Google thành công!");
-          
+          alert('Đăng nhập bằng Google thành công!');
+
           // Navigate based on user role from response
-          if (data.user.role === "candidate") {
-            navigate("/candidate/home");
-          } else if (data.user.role === "employer") {
-            navigate("/employer/dashboard");
+          if (data.user.role === 'candidate') {
+            navigate('/candidate/home');
+          } else if (data.user.role === 'employer') {
+            navigate('/employer/dashboard');
           } else {
-            navigate("/");
+            navigate('/');
           }
         } else {
-          alert("Google login failed: " + (data.error || data.message));
+          alert('Google login failed: ' + (data.error || data.message));
         }
       } catch (error) {
-        console.error("Google login error:", error);
-        alert("Lỗi kết nối server");
+        console.error('Google login error:', error);
+        alert('Lỗi kết nối server');
       }
     });
   };
@@ -135,8 +134,8 @@ export default function RegisterPage() {
           <div className={styles.roleButtons}>
             <button
               type="button"
-              className={`${styles.roleBtn} ${role === "candidate" ? styles.active : ""}`}
-              onClick={() => setRole("candidate")}
+              className={`${styles.roleBtn} ${role === 'candidate' ? styles.active : ''}`}
+              onClick={() => setRole('candidate')}
               disabled={loading}
             >
               <div className={styles.roleIcon}>👤</div>
@@ -147,8 +146,8 @@ export default function RegisterPage() {
             </button>
             <button
               type="button"
-              className={`${styles.roleBtn} ${role === "employer" ? styles.active : ""}`}
-              onClick={() => setRole("employer")}
+              className={`${styles.roleBtn} ${role === 'employer' ? styles.active : ''}`}
+              onClick={() => setRole('employer')}
               disabled={loading}
             >
               <div className={styles.roleIcon}>🏢</div>
@@ -188,8 +187,8 @@ export default function RegisterPage() {
           <div className={styles.genderButtons}>
             <button
               type="button"
-              className={`${styles.genderBtn} ${gender === "male" ? styles.active : ""}`}
-              onClick={() => setGender("male")}
+              className={`${styles.genderBtn} ${gender === 'male' ? styles.active : ''}`}
+              onClick={() => setGender('male')}
               disabled={loading}
             >
               <span className={styles.genderIcon}>♂</span>
@@ -197,8 +196,8 @@ export default function RegisterPage() {
             </button>
             <button
               type="button"
-              className={`${styles.genderBtn} ${gender === "female" ? styles.active : ""}`}
-              onClick={() => setGender("female")}
+              className={`${styles.genderBtn} ${gender === 'female' ? styles.active : ''}`}
+              onClick={() => setGender('female')}
               disabled={loading}
             >
               <span className={styles.genderIcon}>♀</span>
@@ -206,8 +205,8 @@ export default function RegisterPage() {
             </button>
             <button
               type="button"
-              className={`${styles.genderBtn} ${gender === "other" ? styles.active : ""}`}
-              onClick={() => setGender("other")}
+              className={`${styles.genderBtn} ${gender === 'other' ? styles.active : ''}`}
+              onClick={() => setGender('other')}
               disabled={loading}
             >
               <span className={styles.genderIcon}>⚧</span>
@@ -241,7 +240,7 @@ export default function RegisterPage() {
         {error && <p className={styles.error}>{error}</p>}
 
         <button className={styles.submitBtn} type="submit" disabled={loading}>
-          {loading ? "Đang xử lý..." : "Đăng ký"}
+          {loading ? 'Đang xử lý...' : 'Đăng ký'}
         </button>
 
         <div className={styles.orLine}>Hoặc đăng nhập bằng</div>
@@ -259,7 +258,7 @@ export default function RegisterPage() {
 
         <p className={styles.switchLine}>
           Bạn đã có tài khoản?
-          <span onClick={() => !loading && navigate("/login")}> Đăng nhập ngay</span>
+          <span onClick={() => !loading && navigate('/login')}> Đăng nhập ngay</span>
         </p>
       </form>
     </div>

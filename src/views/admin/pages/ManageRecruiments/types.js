@@ -1,14 +1,14 @@
 export const JobStatus = {
-    PENDING: "PENDING",
-    APPROVED: "APPROVED",
-    REJECTED: "REJECTED",
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
 };
 
 export const JobPostingExample = {
-    id: "",
-    title: "",
-    companyName: "",
-    postedDate: "",
-    status: JobStatus.PENDING,
-    description: "",
+  id: '',
+  title: '',
+  companyName: '',
+  postedDate: '',
+  status: JobStatus.PENDING,
+  description: '',
 };

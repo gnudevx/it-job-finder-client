@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import CandidateForm from "./CandidateForm";
-import adminService from "@/api/adminService";
+import { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import CandidateForm from './CandidateForm';
+import adminService from '@/api/adminService';
 
 export default function EditCandidatePage() {
   const { id } = useParams();
@@ -16,7 +16,7 @@ export default function EditCandidatePage() {
         if (res.success) setInitialData(res.data);
       } catch (err) {
         console.error(err);
-        alert("Lỗi khi tải thông tin ứng viên, vui lòng thử lại");
+        alert('Lỗi khi tải thông tin ứng viên, vui lòng thử lại');
       } finally {
         setLoading(false);
       }
@@ -31,7 +31,7 @@ export default function EditCandidatePage() {
     <CandidateForm
       mode="edit"
       initialData={initialData}
-      onSuccess={() => navigate("/admin/manage/candidates")}
+      onSuccess={() => navigate('/admin/manage/candidates')}
     />
   );
 }

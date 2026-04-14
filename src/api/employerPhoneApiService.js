@@ -1,10 +1,10 @@
 // src/api/employerPhoneApi.js
-import axiosClient from "@/services/axiosClient.js";
+import axiosClient from '@/services/axiosClient.js';
 
 const employerPhoneApiService = {
-    verifyPhone: (data) => {
-        return axiosClient.post("/employer/account/phone-verify", data);
-    },
+  verifyPhone: (data) => {
+    return axiosClient.post('/employer/account/phone-verify', data);
+  },
 };
 
 export default employerPhoneApiService;

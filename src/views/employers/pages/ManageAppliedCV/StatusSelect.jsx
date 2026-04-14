@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
-import styles from "./StatusSelect.module.scss";
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import styles from './StatusSelect.module.scss';
 
 function StatusSelect({ currentStatus, onChange }) {
   const [status, setStatus] = useState(currentStatus);

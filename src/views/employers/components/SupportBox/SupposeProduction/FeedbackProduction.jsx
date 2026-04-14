@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import FileUpload from "@components/common/FileUpload/FileUpload.jsx";
-import FormLabel from "@components/common/FormLabel/FormLabel.jsx";
-import styles from "./FeedbackProduction.module.scss";
-import supportService from "@/api/supportService.js";
+import React, { useState } from 'react';
+import FileUpload from '@components/common/FileUpload/FileUpload.jsx';
+import FormLabel from '@components/common/FormLabel/FormLabel.jsx';
+import styles from './FeedbackProduction.module.scss';
+import supportService from '@/api/supportService.js';
 
 export default function FeedbackProduction() {
-  const [category, setCategory] = useState("");
-  const [content, setContent] = useState("");
+  const [category, setCategory] = useState('');
+  const [content, setContent] = useState('');
   const [files, setFiles] = useState([]);
 
   const removeFile = (index) => {
@@ -22,26 +22,26 @@ export default function FeedbackProduction() {
     e.preventDefault();
 
     if (!category) {
-      alert("Vui lòng chọn loại báo cáo!");
+      alert('Vui lòng chọn loại báo cáo!');
       return;
     }
 
     if (!content.trim()) {
-      alert("Vui lòng nhập nội dung góp ý!");
+      alert('Vui lòng nhập nội dung góp ý!');
       return;
     }
 
     const fd = new FormData();
-    fd.append("category", category);
-    fd.append("content", content);
-    files.forEach(f => fd.append("files", f));
+    fd.append('category', category);
+    fd.append('content', content);
+    files.forEach((f) => fd.append('files', f));
 
     try {
       await supportService.createFeedback(fd);
-      alert("Gửi góp ý thành công!");
+      alert('Gửi góp ý thành công!');
     } catch (err) {
       console.error(err);
-      alert("Đã xảy ra lỗi!");
+      alert('Đã xảy ra lỗi!');
     }
   };
 
@@ -50,10 +50,9 @@ export default function FeedbackProduction() {
       <h3>Góp ý sản phẩm</h3>
 
       <span className={styles.span}>
-        <strong>HireIT</strong> rất mong muốn lắng nghe các phản hồi, góp ý từ
-        phía Nhà tuyển dụng / Doanh nghiệp để liên tục cải tiến, bổ sung tính
-        năng, giúp sản phẩm Smart Recruitment Platform ngày càng hữu ích và
-        thân thiện hơn với người dùng.
+        <strong>HireIT</strong> rất mong muốn lắng nghe các phản hồi, góp ý từ phía Nhà tuyển dụng /
+        Doanh nghiệp để liên tục cải tiến, bổ sung tính năng, giúp sản phẩm Smart Recruitment
+        Platform ngày càng hữu ích và thân thiện hơn với người dùng.
       </span>
 
       <div className={styles.field}>
@@ -92,7 +91,7 @@ export default function FeedbackProduction() {
           <ul className={styles.fileList}>
             {files.map((f, i) => (
               <li key={i}>
-                {f.name}{" "}
+                {f.name}{' '}
                 <button type="button" onClick={() => removeFile(i)}>
                   ×
                 </button>

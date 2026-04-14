@@ -1,6 +1,6 @@
-import React from "react";
-import PropTypes from "prop-types";
-import styles from "./AdminHeader.module.scss";
+import React from 'react';
+import PropTypes from 'prop-types';
+import styles from './AdminHeader.module.scss';
 
 export default function AdminHeader({ onToggleSidebar, title }) {
   return (

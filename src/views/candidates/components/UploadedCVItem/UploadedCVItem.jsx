@@ -1,12 +1,14 @@
-import React from "react";
-import { Eye, Trash2 } from "lucide-react";
-import styles from "./UploadedCVItem.module.scss";
-import PropTypes from "prop-types";
+import React from 'react';
+import { Eye, Trash2 } from 'lucide-react';
+import styles from './UploadedCVItem.module.scss';
+import PropTypes from 'prop-types';
 
 export default function UploadedCVItem({ cv, onView, onDelete, onSelect }) {
   return (
     <div className={styles.item}>
-      <p>📄 <strong>{cv.name}</strong></p>
+      <p>
+        📄 <strong>{cv.name}</strong>
+      </p>
       <p>Kích thước: {(cv.size / 1024).toFixed(1)} KB</p>
 
       <div className={styles.actions}>

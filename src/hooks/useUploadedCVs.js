@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import * as resumeAPI from "@/api/resumeService";
+import { useEffect, useState } from 'react';
+import * as resumeAPI from '@/api/resumeService';
 
 export default function useUploadedCVs() {
   const [uploadedCVs, setUploadedCVs] = useState([]);
@@ -18,7 +18,7 @@ export default function useUploadedCVs() {
           }))
         );
       } catch (err) {
-        console.error("Lỗi load CV:", err);
+        console.error('Lỗi load CV:', err);
       }
     };
 
@@ -33,10 +33,10 @@ export default function useUploadedCVs() {
     try {
       await resumeAPI.deleteResume(id); // xoá trên backend
       setUploadedCVs((prev) => prev.filter((cv) => cv.id !== id));
-      alert("Xoá CV thành công!");
+      alert('Xoá CV thành công!');
     } catch (err) {
-      console.error("Xoá CV thất bại:", err);
-      alert("Xoá CV thất bại, thử lại");
+      console.error('Xoá CV thất bại:', err);
+      alert('Xoá CV thất bại, thử lại');
     }
   };
 

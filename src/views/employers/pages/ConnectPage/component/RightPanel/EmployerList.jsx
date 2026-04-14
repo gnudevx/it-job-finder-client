@@ -1,6 +1,5 @@
-import styles from "./EmployerList.module.scss";
-import PropTypes from "prop-types";
-
+import styles from './EmployerList.module.scss';
+import PropTypes from 'prop-types';
 
 export default function EmployerList({ employers, onSelect }) {
   return (
@@ -12,12 +11,11 @@ export default function EmployerList({ employers, onSelect }) {
       <div className={styles.list}>
         {employers.map((employer) => (
           <div key={`${employer.id}-${employer.jobId}`} className={styles.item}>
-            
             <div className={styles.info}>
               {/* Vùng Logo Công ty */}
               <div className={styles.logoWrap}>
-                 {/* Giả sử employer.avatar chứa link logo */}
-                 <img src={employer.avatar} alt="logo" />
+                {/* Giả sử employer.avatar chứa link logo */}
+                <img src={employer.avatar} alt="logo" />
               </div>
 
               {/* Vùng Text: Tên Job và Tên Công ty */}
@@ -31,11 +29,8 @@ export default function EmployerList({ employers, onSelect }) {
 
             {/* Nút nhắn tin */}
             <div className={styles.actions}>
-              <button onClick={() => onSelect(employer.id, null,employer.jobId)}>
-                Nhắn tin
-              </button>
+              <button onClick={() => onSelect(employer.id, null, employer.jobId)}>Nhắn tin</button>
             </div>
-
           </div>
         ))}
       </div>

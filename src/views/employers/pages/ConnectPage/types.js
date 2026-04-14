@@ -113,14 +113,44 @@ export const MOCK_EPLOYERS = [
   },
 ];
 export const MOCK_MESSAGES = {
-  '1': [
-    { id: 'm1', senderId: '1', text: 'Chào bạn, mình muốn hỏi thêm về yêu cầu công việc ạ.', timestamp: '10:25', isMe: false },
-    { id: 'm2', senderId: 'me', text: 'Chào A, bạn có thắc mắc gì về JD không?', timestamp: '10:28', isMe: true },
-    { id: 'm3', senderId: '1', text: 'Mình muốn hỏi về chế độ remote của công ty.', timestamp: '10:30', isMe: false },
+  1: [
+    {
+      id: 'm1',
+      senderId: '1',
+      text: 'Chào bạn, mình muốn hỏi thêm về yêu cầu công việc ạ.',
+      timestamp: '10:25',
+      isMe: false,
+    },
+    {
+      id: 'm2',
+      senderId: 'me',
+      text: 'Chào A, bạn có thắc mắc gì về JD không?',
+      timestamp: '10:28',
+      isMe: true,
+    },
+    {
+      id: 'm3',
+      senderId: '1',
+      text: 'Mình muốn hỏi về chế độ remote của công ty.',
+      timestamp: '10:30',
+      isMe: false,
+    },
   ],
-  '2': [
-    { id: 'm4', senderId: 'me', text: 'Chào B, mình đã xem qua portfolio của bạn.', timestamp: '09:00', isMe: true },
-    { id: 'm5', senderId: '2', text: 'Vâng, mình đã nhận được lịch hẹn. Cảm ơn bạn!', timestamp: '09:15', isMe: false },
+  2: [
+    {
+      id: 'm4',
+      senderId: 'me',
+      text: 'Chào B, mình đã xem qua portfolio của bạn.',
+      timestamp: '09:00',
+      isMe: true,
+    },
+    {
+      id: 'm5',
+      senderId: '2',
+      text: 'Vâng, mình đã nhận được lịch hẹn. Cảm ơn bạn!',
+      timestamp: '09:15',
+      isMe: false,
+    },
   ],
 };
 export const MOCK_MESSAGES_EPLOYERS = [
@@ -128,12 +158,14 @@ export const MOCK_MESSAGES_EPLOYERS = [
     id: '1', // ID = 1 khớp với MOCK_MESSAGES '1' của bạn
     name: 'FPT Retail',
     position: 'Data Engineer',
-    avatar: 'https://ui-avatars.com/api/?name=FR&background=0D8ABC&color=fff&rounded=true&font-size=0.4',
+    avatar:
+      'https://ui-avatars.com/api/?name=FR&background=0D8ABC&color=fff&rounded=true&font-size=0.4',
   },
   {
     id: '2', // ID = 2 khớp với MOCK_MESSAGES '2' của bạn
     name: 'CÔNG TY CỔ PHẦN LONG CHÂU',
     position: 'Data Engineer',
-    avatar: 'https://ui-avatars.com/api/?name=LC&background=10B981&color=fff&rounded=true&font-size=0.4',
+    avatar:
+      'https://ui-avatars.com/api/?name=LC&background=10B981&color=fff&rounded=true&font-size=0.4',
   },
 ];

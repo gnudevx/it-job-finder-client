@@ -1,10 +1,13 @@
 // ManageAppliedCV.jsx
-import React, { useState, useEffect, useCallback } from "react";
-import styles from "./ManageAppliedCV.module.scss";
-import { getEmployerApplications, updateEmployerApplicationStatus } from "@api/applicationService/employerApplication.js";
-import StatusSelect from "./StatusSelect";
-import FilterBar from "./FilterBar";
-import PropTypes from "prop-types";
+import React, { useState, useEffect, useCallback } from 'react';
+import styles from './ManageAppliedCV.module.scss';
+import {
+  getEmployerApplications,
+  updateEmployerApplicationStatus,
+} from '@api/applicationService/employerApplication.js';
+import StatusSelect from './StatusSelect';
+import FilterBar from './FilterBar';
+import PropTypes from 'prop-types';
 
 // -------------------- CV Item Component --------------------
 function CVItem({ app, onStatusUpdated }) {
@@ -13,9 +16,9 @@ function CVItem({ app, onStatusUpdated }) {
 
   const handleViewPDF = () => {
     if (app.resumeId) {
-      window.open(`http://localhost:5000/api/resumes/${app.resumeId._id}/view`, "_blank");
+      window.open(`http://localhost:5000/api/resumes/${app.resumeId._id}/view`, '_blank');
     } else {
-      alert("Ứng viên chưa tải CV lên.");
+      alert('Ứng viên chưa tải CV lên.');
     }
   };
 
@@ -26,7 +29,7 @@ function CVItem({ app, onStatusUpdated }) {
       // Truyền cả updatedAt mới về ManageAppliedCV
       onStatusUpdated(app._id, updatedApp.status, updatedApp.updatedAt);
     } catch (err) {
-      alert("Lỗi khi cập nhật trạng thái!");
+      alert('Lỗi khi cập nhật trạng thái!');
       console.error(err);
     }
     setLoading(false);
@@ -38,29 +41,24 @@ function CVItem({ app, onStatusUpdated }) {
         <div className={styles.cvName}>{app.candidateId?.fullName}</div>
         <div className={styles.cvJob}>{app.jobId?.title}</div>
         <div className={styles.cvDate}>
-          Ngày ứng tuyển: {new Date(app.appliedAt).toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" })}
+          Ngày ứng tuyển:{' '}
+          {new Date(app.appliedAt).toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })}
         </div>
         <div className={styles.cvDate}>
-          Ngày cập nhật: {new Date(app.updatedAt).toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" })}
+          Ngày cập nhật:{' '}
+          {new Date(app.updatedAt).toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })}
         </div>
       </div>
 
       <div className={styles.cvActions}>
         <div className={styles.statusWrapper}>
           <span className={styles.statusLabel}>Trạng thái: </span>
-          <StatusSelect
-            currentStatus={status}
-            onChange={(newStatus) => setStatus(newStatus)}
-          />
+          <StatusSelect currentStatus={status} onChange={(newStatus) => setStatus(newStatus)} />
         </div>
 
         <div className={styles.actionBtns}>
-          <button
-            className={styles.saveStatusBtn}
-            onClick={handleSaveStatus}
-            disabled={loading}
-          >
-            {loading ? "Đang lưu..." : "Lưu trạng thái"}
+          <button className={styles.saveStatusBtn} onClick={handleSaveStatus} disabled={loading}>
+            {loading ? 'Đang lưu...' : 'Lưu trạng thái'}
           </button>
 
           <button className={styles.viewPdfBtn} onClick={handleViewPDF}>
@@ -68,7 +66,6 @@ function CVItem({ app, onStatusUpdated }) {
           </button>
         </div>
       </div>
-
     </div>
   );
 }
@@ -93,12 +90,12 @@ CVItem.propTypes = {
 // -------------------- Main Component --------------------
 function ManageAppliedCV() {
   const [filters, setFilters] = useState({
-    q: "",
-    campaign: "",
-    status: "",
-    range: "all",
-    appliedAt: "",
-    toDate: "",
+    q: '',
+    campaign: '',
+    status: '',
+    range: 'all',
+    appliedAt: '',
+    toDate: '',
   });
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -132,11 +129,9 @@ function ManageAppliedCV() {
 
   const handleStatusUpdated = (id, newStatus, updatedAt) => {
     setApplications((prev) =>
-      prev.map((item) =>
-        item._id === id ? { ...item, status: newStatus, updatedAt } : item
-      )
+      prev.map((item) => (item._id === id ? { ...item, status: newStatus, updatedAt } : item))
     );
-    alert("Cập nhật trạng thái CV thành công");
+    alert('Cập nhật trạng thái CV thành công');
   };
 
   return (
@@ -146,7 +141,7 @@ function ManageAppliedCV() {
 
         <FilterBar filters={filters} setFilters={setFilters} campaigns={campaigns} />
 
-        <div style={{ marginTop: "24px" }}>
+        <div style={{ marginTop: '24px' }}>
           {loading && <p>Đang tải...</p>}
           {!loading && applications.length === 0 && <p>Không có ứng viên nào.</p>}
 

@@ -1,5 +1,5 @@
 .container {
-  width: 350px; 
+  width: 350px;
   border-left: 1px solid #e5e7eb;
   background: white;
   display: flex;
@@ -9,7 +9,7 @@
 
 .header {
   padding: 24px 20px 16px; /* Cách lề trên nhiều hơn một chút cho thoáng */
-  
+
   h3 {
     font-size: 14px;
     font-weight: 800;
@@ -38,7 +38,7 @@
   align-items: center;
   gap: 14px;
   min-width: 0; /* Quan trọng để text có thể bị cắt (ellipsis) khi quá dài */
-  flex: 1; 
+  flex: 1;
 }
 
 .logoWrap {
@@ -54,7 +54,7 @@
   overflow: hidden;
 
   img {
-    width: 34px; 
+    width: 34px;
     height: auto;
     max-height: 34px;
     object-fit: contain; /* Đảm bảo logo không bị méo */
@@ -65,8 +65,8 @@
   display: flex;
   flex-direction: column;
   gap: 4px; /* Khoảng cách giữa tên Job và tên Công ty */
-  min-width: 0; 
-  padding-right: 12px; 
+  min-width: 0;
+  padding-right: 12px;
 
   h4 {
     font-size: 14px;
@@ -80,7 +80,7 @@
 
   span {
     font-size: 13px;
-    color: #6b7280; 
+    color: #6b7280;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -88,7 +88,7 @@
 }
 
 .actions {
-  flex-shrink: 0; 
+  flex-shrink: 0;
 
   button {
     padding: 6px 14px;

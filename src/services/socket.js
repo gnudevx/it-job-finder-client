@@ -1,11 +1,14 @@
-// src/services/socket.js
-import { io } from "socket.io-client";
+import { io } from 'socket.io-client';
 
-export const socket = io(process.env.REACT_APP_API_BASE_URL, {
-    transports: ["websocket"],
+export const socket = io('http://localhost:5000', {
+  withCredentials: true,
+  autoConnect: false,
 });
 
-// Khi kết nối
-socket.on("connect", () => {
-    console.log("Socket connected:", socket.id);
+socket.on('connect', () => {
+  console.log('🔥 SOCKET CONNECTED:', socket.id);
+});
+
+socket.on('connect_error', (err) => {
+  console.log('❌ SOCKET ERROR:', err.message);
 });

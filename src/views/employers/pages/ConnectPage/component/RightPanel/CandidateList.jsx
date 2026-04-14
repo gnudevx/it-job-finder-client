@@ -1,12 +1,12 @@
-import styles from "./CandidateList.module.scss";
-import PropTypes from "prop-types";
-import { useNavigate } from "react-router-dom";
-import axiosClient from "@/services/axiosClient.js"
+import styles from './CandidateList.module.scss';
+import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
+import axiosClient from '@/services/axiosClient.js';
 export default function CandidateList({ candidates, onSelect }) {
   const navigate = useNavigate();
   const startChat = async (candidateId, jobId) => {
     try {
-      const res = await axiosClient.post("/employer/connect/conversations", {
+      const res = await axiosClient.post('/employer/connect/conversations', {
         candidateId,
         jobId, // 👈 BẮT BUỘC
       });
@@ -15,7 +15,6 @@ export default function CandidateList({ candidates, onSelect }) {
 
       // 👉 sau khi có conversationId mới select
       onSelect(candidateId, convoId);
-
     } catch (err) {
       console.error(err);
     }
@@ -36,7 +35,7 @@ export default function CandidateList({ candidates, onSelect }) {
               {/* Group nội dung chữ để dễ style */}
               <div className={styles.textContent}>
                 <h4>{candidate.name}</h4>
-                
+
                 {/* Gộp Position và Meta vào cùng 1 dòng */}
                 <div className={styles.jobMeta}>
                   <span>{candidate.position}</span>
@@ -46,18 +45,14 @@ export default function CandidateList({ candidates, onSelect }) {
               </div>
             </div>
             <div className={styles.actions}>
-              <button
-                onClick={() => startChat(candidate.id, candidate.jobId)}
-              >
-                Nhắn tin
-              </button>
+              <button onClick={() => startChat(candidate.id, candidate.jobId)}>Nhắn tin</button>
             </div>
           </div>
         ))}
       </div>
 
       <div className={styles.footer}>
-        <button onClick={() => navigate("/employer/cvs-management")}>
+        <button onClick={() => navigate('/employer/cvs-management')}>
           Quản lý hồ sơ ứng tuyển
         </button>
       </div>

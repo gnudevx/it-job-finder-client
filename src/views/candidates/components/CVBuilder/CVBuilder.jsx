@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import styles from "./CVBuilder.module.scss";
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import styles from './CVBuilder.module.scss';
 
 export default function CVBuilder({ onSave }) {
   const [form, setForm] = useState({
-    fullName: "",
-    position: "",
-    summary: "",
-    skills: "",
-    experience: "",
+    fullName: '',
+    position: '',
+    summary: '',
+    skills: '',
+    experience: '',
   });
 
   const handleChange = (e) => {
@@ -30,7 +30,7 @@ export default function CVBuilder({ onSave }) {
       </html>
     `;
 
-    const blob = new Blob([previewHtml], { type: "text/html" });
+    const blob = new Blob([previewHtml], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
 
     onSave({
@@ -66,11 +66,7 @@ export default function CVBuilder({ onSave }) {
 
       <div className={styles.group}>
         <label>Kinh nghiệm</label>
-        <textarea
-          name="experience"
-          value={form.experience}
-          onChange={handleChange}
-        />
+        <textarea name="experience" value={form.experience} onChange={handleChange} />
       </div>
 
       <button className={styles.saveBtn} onClick={handleCreateCV}>
