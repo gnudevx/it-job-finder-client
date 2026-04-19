@@ -344,20 +344,10 @@
 }
 
 .badge {
-  position: absolute; // đặt chồng lên avatar
-  top: 0;
-  right: 0;
-  min-width: 18px; // tối thiểu 18x18px
-  height: 18px;
-  padding: 0 5px; // nếu số > 9
-  border-radius: 50%; // thành hình tròn
-  background-color: red; // màu đỏ
-  color: white; // chữ trắng
-  font-size: 12px;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid white; // viền trắng như insta
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3); // optional
+  background: #ef4444 !important;
+  color: white !important;
+  border-radius: 999px;
+  font-size: 10px;
+  padding: 2px 6px;
+  font-weight: 600;
 }

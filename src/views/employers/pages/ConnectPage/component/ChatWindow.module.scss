@@ -3,6 +3,9 @@
   display: flex;
   flex-direction: column;
   background: white;
+  height: 100%; /* Hoặc một con số cố định như 600px */
+  max-height: 100vh; /* Đảm bảo không vượt quá chiều cao màn hình */
+  overflow: hidden; /* Ngăn container tổng bị scroll */
 }
 
 .header {
@@ -83,6 +86,7 @@
   overflow-y: auto;
   padding: 16px;
   background: #f9fafb;
+  -webkit-overflow-scrolling: touch;
 }
 
 .msg {
@@ -125,7 +129,7 @@
   border-top: 1px solid #f3f4f6;
   display: flex;
   gap: 8px;
-
+  background: white;
   input {
     flex: 1;
     padding: 10px;

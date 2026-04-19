@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import logo from '@assets/Logo_HireIT_Header.png';
 import { useNavigate } from 'react-router-dom';
 import { formatDistanceToNow } from 'date-fns';
-export default function ChatSidebar({ employers, selectedId, onSelect }) {
+export default function ChatSidebar({ employers, selectedId, onSelect, role }) {
   const navigate = useNavigate();
   // States cho Popup Cài đặt
   const [showSettings, setShowSettings] = useState(false);
@@ -94,38 +94,42 @@ export default function ChatSidebar({ employers, selectedId, onSelect }) {
 
       {/* List */}
       <div className={styles.list}>
-        {filteredEmployers.map((c) => (
-          <button
-            type="button"
-            key={c.id}
-            onClick={() => onSelect(c.id, c.conversationId, c.jobId)}
-            className={`${styles.item} ${selectedId === c.id ? styles.active : ''}`}
-          >
-            <div className={styles.avatarWrap}>
-              <img src={c.avatar} alt="" />
-              {c.status === 'online' && <span className={styles.online}></span>}
-            </div>
+        {filteredEmployers.map((c) => {
+          const unread = role === 'employer' ? c.unreadCount?.employer : c.unreadCount?.candidate;
 
-            <div className={styles.info}>
-              <div className={styles.top}>
-                <h4>{c.name}</h4>
-                <span>
-                  {c.lastMessageTime
-                    ? formatDistanceToNow(new Date(c.lastMessageTime), { addSuffix: true })
-                    : ''}
-                </span>
+          return (
+            <button
+              type="button"
+              key={c.conversationId}
+              onClick={() => onSelect(c.id, c.conversationId, c.jobId)}
+              className={`${styles.item} ${selectedId === c.conversationId ? styles.active : ''}`}
+            >
+              <div className={styles.avatarWrap}>
+                <img src={c.avatar} alt="" />
+                {c.status === 'online' && <span className={styles.online}></span>}
               </div>
 
-              <p>{c.lastMessage || 'Chưa có tin nhắn'}</p>
+              <div className={styles.info}>
+                <div className={styles.top}>
+                  <h4>{c.name}</h4>
+                  <span>
+                    {c.lastMessageTime
+                      ? formatDistanceToNow(new Date(c.lastMessageTime), { addSuffix: true })
+                      : ''}
+                  </span>
+                </div>
 
-              <div className={styles.meta}>
-                <span>{c.position}</span>
+                <p>{c.lastMessage || 'Chưa có tin nhắn'}</p>
 
-                {c.unreadCount != 0 && <span className={styles.badge}>{c.unreadCount}</span>}
+                <div className={styles.meta}>
+                  <span>{c.position}</span>
+                  {/* ✅ dùng đúng unread */}
+                  {unread > 0 && <span className={styles.badge}>{unread}</span>}
+                </div>
               </div>
-            </div>
-          </button>
-        ))}
+            </button>
+          );
+        })}
       </div>
     </div>
   );
@@ -135,4 +139,5 @@ ChatSidebar.propTypes = {
   employers: PropTypes.array.isRequired,
   selectedId: PropTypes.string,
   onSelect: PropTypes.func.isRequired,
+  role: PropTypes.string.isRequired,
 };
