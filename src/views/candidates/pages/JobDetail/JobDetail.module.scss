@@ -2,18 +2,21 @@
 
 .pageContainer {
   display: flex;
-  gap: 24px;
+  flex-direction: column;
+  gap: 0 24px;
   margin: 0 auto;
   padding: 24px 0;
   width: 1150px;
 }
 
-/* LEFT COLUMN (MAIN CONTENT) */
-
-.leftColumn {
-  width: 70%;
+.mainContent {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  width: 100%;
 }
 
+/* LEFT COLUMN (MAIN CONTENT) */
 .title {
   font-size: 26px;
   font-weight: 600;
@@ -97,10 +100,6 @@
 }
 
 /* RIGHT SIDEBAR */
-
-.rightColumn {
-  width: 30%;
-}
 
 .sidebarBox {
   background: #fff;
