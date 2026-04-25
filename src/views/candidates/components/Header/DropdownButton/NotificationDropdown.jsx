@@ -1,54 +1,80 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './NotificationDropdown.module.scss';
+import notificationApiService from '@api/notificationApiService';
 import { FaBell } from 'react-icons/fa';
+import { socket } from '@/services/socket';
+import { useAuth } from '@/contexts/AuthContext';
 
 export const NotificationDropdown = () => {
+  const { role } = useAuth();
   const [open, setOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
   const ref = useRef();
+
+  const fetchNotifications = async () => {
+    const res = await notificationApiService.candidateList(1, 20);
+
+    setNotifications(res.items);
+
+    const unread = res.items.filter((n) => !n.isRead).length;
+    setUnreadCount(unread);
+  };
+
+  const handleMarkRead = async (id) => {
+    await notificationApiService.candidateMarkRead(id);
+
+    setNotifications((prev) =>
+      prev.map((n) =>
+        n._id === id ? { ...n, isRead: true } : n
+      )
+    );
+
+    setUnreadCount((prev) => Math.max(prev - 1, 0));
+  };
+
+  const handleMarkAllRead = async () => {
+    const unreadNotifications = notifications.filter((n) => !n.isRead);
+    if (unreadNotifications.length === 0) return;
+
+    try {
+      await Promise.all(
+        unreadNotifications.map((n) => notificationApiService.candidateMarkRead(n._id))
+      );
+      setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
+      setUnreadCount(0);
+    } catch (error) {
+      console.error('Error marking all notifications as read:', error);
+    }
+  };
 
   // Đóng khi click ra ngoài
   useEffect(() => {
     const handleClick = (e) => {
       if (ref.current && !ref.current.contains(e.target)) setOpen(false);
     };
-    document.addEventListener('mousedown', handleClick);
-    return () => document.removeEventListener('mousedown', handleClick);
-  }, []);
-
-  // ✅ Giống “Insights”: Fetch khi mở dropdown
+      document.addEventListener('mousedown', handleClick);
+      return () => document.removeEventListener('mousedown', handleClick);
+    }, []);
+  
   useEffect(() => {
-    // Fetch dữ liệu 1 lần khi component mount (hoặc sau này gọi API)
-    const mockData = [
-      {
-        id: 1,
-        title: 'Workshop miễn phí: Nâng cấp kỹ năng phân tích dữ liệu',
-        content:
-          'Tham gia buổi workshop đặc biệt giúp bạn nắm vững kỹ năng phân tích dữ liệu bằng Excel và Power BI. Số lượng vé giới hạn!',
-        date: '12/11/2025',
-        isRead: false,
-      },
-      {
-        id: 2,
-        title: 'Tuyển sinh khóa ReactJS cho người mới bắt đầu',
-        content:
-          'Khóa học ReactJS thực hành 100% dự án thật, phù hợp cho sinh viên CNTT và lập trình viên mới.',
-        date: '10/11/2025',
-        isRead: false,
-      },
-      {
-        id: 3,
-        title: 'Nhận học bổng 50% cho khóa lập trình Backend',
-        content:
-          'Ưu đãi học bổng lên đến 50% dành cho học viên đăng ký sớm khóa NodeJS Backend Developer.',
-        date: '08/11/2025',
-        isRead: false,
-      },
-    ];
-    setNotifications(mockData);
-  }, []);
+    socket.connect();
 
-  const unreadCount = notifications.filter((n) => !n.isRead).length;
+    const userId = localStorage.getItem('userId');
+
+    socket.emit('join', { userId, role: role?.toUpperCase() });
+
+    socket.on('notification:new', (data) => {
+      setNotifications((prev) => [data, ...prev]);
+      setUnreadCount((prev) => prev + 1);
+    });
+
+    return () => socket.off('notification:new');
+  }, [role]);
+
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
 
   return (
     <div className={styles.wrapper} ref={ref}>
@@ -65,7 +91,7 @@ export const NotificationDropdown = () => {
             <div className={styles.title}>Thông báo</div>
             <button
               className={styles.markAll}
-              onClick={() => setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })))}
+              onClick={handleMarkAllRead}
             >
               Đánh dấu tất cả là đã đọc
             </button>
@@ -76,14 +102,18 @@ export const NotificationDropdown = () => {
               <div className={styles.empty}>Không có thông báo</div>
             ) : (
               notifications.map((n) => (
-                <div key={n.id} className={`${styles.item} ${n.isRead ? styles.read : ''}`}>
+                <div
+                  key={n._id}
+                  onClick={() => handleMarkRead(n._id)}
+                  className={`${styles.item} ${n.isRead ? styles.read : ''}`}
+                >
                   <div className={styles.itemLeft}>
                     <div className={styles.iconDot}>i</div>
                   </div>
                   <div className={styles.itemBody}>
                     <div className={styles.itemTitle}>{n.title}</div>
-                    <div className={styles.itemText}>{n.content}</div>
-                    <div className={styles.itemDate}>{n.date}</div>
+                    <div className={styles.itemText}>{n.message}</div>
+                    <div className={styles.itemDate}>{new Date(n.createdAt).toLocaleString()}</div>
                   </div>
                 </div>
               ))

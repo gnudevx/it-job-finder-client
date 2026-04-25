@@ -7,7 +7,7 @@ import { loginWithGoogle } from '@/utils/googleAuth';
 import { useAuth } from '@/contexts/AuthContext';
 import authService from '@/services/authService';
 export default function LoginPage() {
-  const { setAuthToken, setUserId, setUser } = useAuth();
+  const { login } = useAuth();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -28,9 +28,7 @@ export default function LoginPage() {
       const res = await authService.login({ email, password });
       const data = res;
       // data.user có thông tin người dùng
-      setUserId(data.user._id);
-      setAuthToken(data.accessToken);
-      setUser(data.user);
+      login({ token: data.accessToken, user: data.user, id: data.user._id });
       alert(data.message);
 
       if (data.user.role === 'employer') navigate('/employer/');
@@ -49,9 +47,7 @@ export default function LoginPage() {
         const data = res;
 
         if (data.success) {
-          setAuthToken(data.accessToken);
-          setUserId(data.user._id);
-          setUser(data.user);
+          login({ token: data.accessToken, user: data.user, id: data.user._id });
 
           localStorage.setItem('authToken', data.accessToken);
 

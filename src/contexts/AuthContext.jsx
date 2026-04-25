@@ -8,6 +8,7 @@ export function AuthProvider({ children }) {
   const [authToken, setAuthToken] = useState(localStorage.getItem('authToken'));
   const [userId, setUserId] = useState(localStorage.getItem('userId'));
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user') || 'null'));
+  const [role, setRole] = useState(user ? user.role : null);
 
   const [initialized, setInitialized] = useState(false);
 
@@ -20,6 +21,9 @@ export function AuthProvider({ children }) {
     if (user) {
       setUser(user);
       localStorage.setItem('user', JSON.stringify(user));
+      if (user.role) {
+        setRole(user.role);
+      }
     }
 
     if (id) {
@@ -41,13 +45,19 @@ export function AuthProvider({ children }) {
   }, [authToken, userId]);
 
   useEffect(() => {
-    if (user) localStorage.setItem('user', JSON.stringify(user));
-    else localStorage.removeItem('user');
+    if (user) {
+      localStorage.setItem('user', JSON.stringify(user));
+      if (user.role && !role) {
+        setRole(user.role);
+      }
+    } else {
+      localStorage.removeItem('user');
+    }
   }, [user]);
 
   return (
     <AuthContext.Provider
-      value={{ authToken, setAuthToken, user, setUser, userId, setUserId, initialized, login }}
+      value={{ authToken, setAuthToken, user, setUser, userId, setUserId, role, setRole, initialized, login }}
     >
       {children}
     </AuthContext.Provider>
