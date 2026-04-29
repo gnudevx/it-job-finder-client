@@ -23,9 +23,9 @@ const EmployerNotification = ({ targetAudience }) => {
   /** ---------------------------------------
    * ROLE CONFIG
    ----------------------------------------*/
-  const role = targetAudience === 'CANDIDATE' ? UserRole.CANDIDATE : UserRole.EMPLOYER;
+  const role = targetAudience === 'EMPLOYER' ? UserRole.EMPLOYER : UserRole.CANDIDATE;
 
-  const audienceLabel = targetAudience === 'CANDIDATE' ? 'Ứng Viên' : 'Nhà Tuyển Dụng';
+  const audienceLabel = targetAudience === 'EMPLOYER' ? 'Nhà Tuyển Dụng' : 'Ứng Viên';
 
   /** ---------------------------------------
    * NOTIFICATION HISTORY
@@ -67,7 +67,7 @@ const EmployerNotification = ({ targetAudience }) => {
     };
 
     try {
-      const res = await notificationApiService.create(role, payload);
+      const res = await notificationApiService.create(payload);
       console.log('Sent:', res.data);
 
       // reset
