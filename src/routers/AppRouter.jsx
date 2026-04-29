@@ -59,7 +59,6 @@ export const AppRouter = () => {
 
           {/* Admin */}
           <Route path="/admin/*" element={<PrivateRoute element={<AdminApp />} />} />
-
           {/* Private routes khác */}
 
           {privateRoutes.map(({ path, element }, idx) => (

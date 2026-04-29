@@ -23,46 +23,62 @@ export default function ConnectPage() {
   const currentConversationRef = useRef(null);
 
   useEffect(() => {
-  if (!conversationId) return;
+    if (!conversationId) return;
 
-  socket.emit('join-conversation', conversationId);
-}, [conversationId]);
+    socket.emit('join-conversation', conversationId);
+  }, [conversationId]);
+  // ✅ Effect 1: Chỉ xử lý connect/disconnect theo user — KHÔNG có conversationId
   useEffect(() => {
     if (!user?._id) return;
+    console.log(' 👤', user);
+    const handleConnect = () => {
+      socket.emit('user:join', user._id);
+      console.log('✅ Joined personal room:', user._id);
+    };
 
-    // ✅ connect trước
+    // Đăng ký listener TRƯỚC khi connect
+    socket.on('connect', handleConnect);
     socket.connect();
 
-    console.log("✅ SOCKET CONNECTED");
-
-    const handleReceive = (message) => {
-        setConversations(prev => {
-          return prev
-            .map(c => {
-              if (c.conversationId === message.conversationId) {
-                return {
-                  ...c,
-                  lastMessage: message.text,
-                  lastMessageTime: message.createdAt,
-                  unreadCount: message.unreadCount,
-                };
-              }
-              return c;
-            })
-            .sort((a, b) => new Date(b.lastMessageTime) - new Date(a.lastMessageTime));
-        });
-      };
-
-    socket.on("receive-message", handleReceive);
+    // ✅ Nếu đã connected sẵn → emit luôn, không chờ event
+    if (socket.connected) {
+      socket.emit('user:join', user._id);
+      console.log('✅ Already connected, joined personal room:', user._id);
+    }
 
     return () => {
-      socket.off("receive-message", handleReceive);
-      socket.disconnect();
+      socket.off('connect', handleConnect); // cleanup listener
     };
-  }, [user, role, conversationId]);
-useEffect(() => {
-  currentConversationRef.current = conversationId;
-}, [conversationId]);
+  }, [user]);
+  useEffect(() => {
+    const handleReceive = (message) => {
+      setConversations((prev) =>
+        prev
+          .map((c) => {
+            if (c.conversationId === message.conversationId) {
+              return {
+                ...c,
+                lastMessage: message.text,
+                lastMessageTime: message.createdAt,
+                unreadCount: message.unreadCount,
+              };
+            }
+            return c;
+          })
+          .sort((a, b) => new Date(b.lastMessageTime) - new Date(a.lastMessageTime))
+      );
+    };
+
+    socket.on('receive-message', handleReceive);
+
+    return () => {
+      socket.off('receive-message', handleReceive); // chỉ off listener, không disconnect
+    };
+  }, []);
+
+  useEffect(() => {
+    currentConversationRef.current = conversationId;
+  }, [conversationId]);
 
   useEffect(() => {
     if (role === 'candidate') {
@@ -78,11 +94,7 @@ useEffect(() => {
       fetchEmployers();
     }
   }, [role]);
-  useEffect(() => {
-    if (!user?._id) return;
 
-    socket.connect();
-  }, [user]);
   useEffect(() => {
     const fetchConversations = async () => {
       try {
@@ -94,9 +106,9 @@ useEffect(() => {
         setConversations(res);
 
         // 🔥 JOIN ALL ROOM
-          res.forEach(c => {
-            socket.emit('join-conversation', c.conversationId);
-          });
+        res.forEach((c) => {
+          socket.emit('join-conversation', c.conversationId);
+        });
       } catch (err) {
         console.error(err);
       }
@@ -105,7 +117,6 @@ useEffect(() => {
     if (role) fetchConversations();
   }, [role]);
 
-  
   const handleSelectEmployer = async (employerId, conversationId, jobId) => {
     try {
       let convoId = conversationId;
@@ -115,9 +126,7 @@ useEffect(() => {
         convoId = res._id;
       }
       setConversationId(convoId);
-      const employerData = employers.find(
-        (e) => e.id === employerId
-      );
+      const employerData = employers.find((e) => e.id === employerId);
 
       setSelectedUser({
         ...employerData,
@@ -128,15 +137,15 @@ useEffect(() => {
         conversationId: convoId,
         role: role,
       });
-      setConversations(prev =>
-        prev.map(c => {
+      setConversations((prev) =>
+        prev.map((c) => {
           if (c.conversationId === convoId) {
             return {
               ...c,
               unreadCount: {
                 ...c.unreadCount,
-                [role]: 0
-              }
+                [role]: 0,
+              },
             };
           }
           return c;
@@ -181,15 +190,15 @@ useEffect(() => {
         conversationId: convoId,
         role: role,
       });
-      setConversations(prev =>
-        prev.map(c => {
+      setConversations((prev) =>
+        prev.map((c) => {
           if (c.conversationId === convoId) {
             return {
               ...c,
               unreadCount: {
                 ...c.unreadCount,
-                [role]: 0
-              }
+                [role]: 0,
+              },
             };
           }
           return c;
@@ -205,30 +214,33 @@ useEffect(() => {
     }
   }, [role]);
   const handleMessageSent = ({ conversationId, text, createdAt }) => {
-      setConversations(prev =>
-        prev.map(c => {
-          if (c.conversationId === conversationId) { // ✅ FIX ở đây
+    setConversations((prev) =>
+      prev
+        .map((c) => {
+          if (c.conversationId === conversationId) {
+            // ✅ FIX ở đây
             return {
               ...c,
-              lastMessage: text,               // 👉 nên update luôn
-              lastMessageTime: createdAt,      // 👉 nên update luôn
+              lastMessage: text, // 👉 nên update luôn
+              lastMessageTime: createdAt, // 👉 nên update luôn
               unreadCount: {
                 ...c.unreadCount,
                 [role]: 0,
-              }
+              },
             };
           }
           return c;
-        }).sort((a, b) => new Date(b.lastMessageTime) - new Date(a.lastMessageTime))
-      );
-    };
+        })
+        .sort((a, b) => new Date(b.lastMessageTime) - new Date(a.lastMessageTime))
+    );
+  };
   return (
     <div className={styles.container}>
       {/* Sidebar */}
       {role === 'employer' && (
         <CandidateSidebar
           candidates={conversations}
-          selectedId={conversationId} 
+          selectedId={conversationId}
           onSelect={handleSelectCandidate}
           role={role} // 👈 truyền xuống
         />
@@ -236,7 +248,7 @@ useEffect(() => {
       {role === 'candidate' && (
         <EmployerSidebar
           employers={conversations}
-          selectedId={conversationId} 
+          selectedId={conversationId}
           onSelect={handleSelectEmployer}
           role={role} // 👈 truyền xuống
         />

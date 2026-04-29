@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import axiosClient from '@/services/axiosClient.js';
 import { useAuth } from '@/contexts/AuthContext';
 import { socket } from '@/services/socket';
+import VideoCallOverlay from './videoCall/VideoCallOverlay';
 export default function ChatWindow({ chatUser, conversationId, onMessageSent }) {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState('');
@@ -15,17 +16,23 @@ export default function ChatWindow({ chatUser, conversationId, onMessageSent }) 
   const isFirstLoad = useRef(true);
   const [sending, setSending] = useState(false);
   const shouldAutoScrollRef = useRef(true);
-  const handleStartCall = () => {
-    if (!conversationId) return;
-
-    // cách đơn giản: mở 1 trang call riêng
-    window.open(`/video-call/${conversationId}`, '_blank');
-  };
-  // 🔹 Load messages khi conversationId thay đổi
+  const [incomingCall, setIncomingCall] = useState(false);
+  const [callerIdRef, setCallerIdRef] = useState(null); // lưu callerId
+  const [showOverlay, setShowOverlay] = useState(false); // mở overlay
+  const [incomingCallConvoId, setIncomingCallConvoId] = useState(null);
+  const [myRole, setMyRole] = useState(null);
+  const [callerUser, setCallerUser] = useState(null); 
   useEffect(() => {
-    setMessages([]);
-    setCursor(null);
-  }, [conversationId]);
+  const handleRing = ({ conversationId: cid, callerId, callerName, callerAvatar }) => {
+    if (callerId === currentUser?._id) return;
+    setCallerIdRef(callerId);
+    setIncomingCallConvoId(cid);
+    setIncomingCall(true);
+    setCallerUser({ name: callerName, avatar: callerAvatar }); // ✅
+  };
+  socket.on('call:ring', handleRing);
+  return () => socket.off('call:ring', handleRing);
+}, [currentUser]);
 
   useEffect(() => {
     const fetchFirstMessages = async () => {
@@ -122,6 +129,50 @@ export default function ChatWindow({ chatUser, conversationId, onMessageSent }) 
 
     console.log('JOIN CONVERSATION:', conversationId);
   }, [conversationId]);
+  const handleStartCall = () => {
+    if (!conversationId) return;
+    socket.emit('join-conversation', conversationId);
+    console.log('🚀 START CALL with', chatUser, currentUser);
+    socket.emit('call:ring', {
+      conversationId,
+      callerId: currentUser?._id,
+    });
+    setMyRole('caller'); 
+    setShowOverlay(true); // 👈 mở overlay thay vì window.open
+  };
+  const handleAcceptCall = () => {
+    socket.emit('call:accepted', { conversationId: incomingCallConvoId }); // ✅ SỬA
+    socket.emit('join-conversation', incomingCallConvoId);
+    setMyRole('callee');
+    setIncomingCall(false);
+    setShowOverlay(true);
+  };
+
+  const handleDeclineCall = () => {
+    socket.emit('call:decline', { conversationId: incomingCallConvoId });
+    setIncomingCall(false);
+  };
+
+  // ── Nhận call message realtime → thêm vào chat ─────────────
+  useEffect(() => {
+    const addCallMessage = ({ message, conversationId: cid }) => {
+      if (cid !== conversationId) return;
+      setMessages((prev) => [...prev, message]);
+      setTimeout(() => {
+        scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
+      }, 50);
+    };
+    return () => {
+      socket.off('call:ended', addCallMessage);
+      socket.off('call:declined', addCallMessage);
+      socket.off('call:missed', addCallMessage);
+    };
+  }, [conversationId]);
+  // 🔹 Load messages khi conversationId thay đổi
+  useEffect(() => {
+    setMessages([]);
+    setCursor(null);
+  }, [conversationId]);
 
   useEffect(() => {
     const el = scrollRef.current;
@@ -151,7 +202,7 @@ export default function ChatWindow({ chatUser, conversationId, onMessageSent }) 
     try {
       const res = await axiosClient.post(`${base}/messages`, {
         conversationId,
-        senderId: currentUser?.userId,
+        senderId: currentUser?._id,
         senderRole: currentUser?.role,
         text: inputText,
       });
@@ -185,61 +236,103 @@ export default function ChatWindow({ chatUser, conversationId, onMessageSent }) 
       setSending(false); // 🔥 QUAN TRỌNG NHẤT
     }
   };
-
-  if (!chatUser) {
-    return (
-      <div className={styles.empty}>
-        <p>Chọn cuộc trò chuyện để bắt đầu</p>
-      </div>
-    );
-  }
-
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <img src={chatUser?.avatar} alt="" />
-        <div>
-          <h3>{chatUser?.name}</h3>
-          <span>{chatUser?.position}</span>
+    <>
+      {incomingCall && (
+        <div className={styles.incomingCall}>
+          {/* 👇 dùng callerUser thay vì chatUser */}
+          <span>📲 Có cuộc gọi đến từ {callerUser?.name || 'Ai đó'}</span>
+          <button onClick={handleAcceptCall}>✅ Nghe</button>
+          <button onClick={handleDeclineCall}>❌ Từ chối</button>
         </div>
-        <button className={styles.callBtn} onClick={handleStartCall} aria-label="Video Call">
-          <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-            <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z" />
-          </svg>
-        </button>
-      </div>
-
-      <div ref={scrollRef} className={styles.messages} onScroll={handleScroll}>
-        {loadingMore && <div className={styles.loading}>Loading...</div>}
-        {messages.map((m, index) => {
-          // 🔥 Đặt biến này để check cho chắc (thay user.userId bằng user._id hoặc user.id tùy backend của bác)
-          const isMe =
-            m.senderId === currentUser.userId ||
-            m.senderId === currentUser._id ||
-            m.senderId === currentUser.id;
-
-          return (
-            <div key={m._id || index} className={`${styles.msg} ${isMe ? styles.me : ''}`}>
-              {/* Truyền thẳng class myBubble vào đây nếu là tin nhắn của mình */}
-              <div className={`${styles.bubble} ${isMe ? styles.myBubble : ''}`}>{m.text}</div>
-
-              <span>{m.createdAt ? new Date(m.createdAt).toLocaleTimeString() : ''}</span>
-            </div>
-          );
-        })}
-      </div>
-
-      <div className={styles.input}>
-        <input
-          value={inputText}
-          onChange={(e) => setInputText(e.target.value)}
-          placeholder="Nhập tin nhắn..."
+      )}
+      {showOverlay && (
+        <VideoCallOverlay
+          conversationId={incomingCallConvoId || conversationId}
+          chatUser={myRole === 'callee' ? callerUser : chatUser}
+          callerId={callerIdRef || currentUser?._id}
+          currentUser={currentUser}
+          onClose={() => {
+            setShowOverlay(false);
+            setMyRole(null);     // reset khi đóng
+          }}
+          role={myRole}  
+         
         />
-        <button onClick={handleSend} disabled={sending}>
-          <Send size={18} />
-        </button>
-      </div>
-    </div>
+      )}
+      {!chatUser ? (
+        // Early return logic nằm ở đây thay vì return sớm
+        <div className={styles.empty}>
+          <p>Chọn cuộc trò chuyện để bắt đầu</p>
+        </div>
+      ) : (
+        <div className={styles.container}>
+          <div className={styles.header}>
+            <img src={chatUser?.avatar} alt="" />
+            <div>
+              <h3>{chatUser?.name}</h3>
+              <span>{chatUser?.position}</span>
+            </div>
+            <button className={styles.callBtn} onClick={handleStartCall} aria-label="Video Call">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z" />
+              </svg>
+            </button>
+          </div>
+
+          <div ref={scrollRef} className={styles.messages} onScroll={handleScroll}>
+            {loadingMore && <div className={styles.loading}>Loading...</div>}
+            {messages.map((m, index) => {
+              // 🔥 Đặt biến này để check cho chắc (thay user.userId bằng user._id hoặc user.id tùy backend của bác)
+              const isMe =
+                m.senderId === currentUser.userId ||
+                m.senderId === currentUser._id ||
+                m.senderId === currentUser.id;
+              if (m.type === 'call') {
+                const icons = {
+                  completed: '📞',
+                  missed: '📵',
+                  declined: '🚫',
+                };
+                const labels = {
+                  completed: `Cuộc gọi video · ${Math.floor(m.callDuration / 60)}:${String(m.callDuration % 60).padStart(2, '0')}`,
+                  missed: 'Cuộc gọi nhỡ',
+                  declined: 'Cuộc gọi bị từ chối',
+                };
+                return (
+                  <div key={m._id || index} className={styles.callRecord}>
+                    <span className={styles.callIcon}>{icons[m.callStatus]}</span>
+                    <span className={styles.callLabel}>{labels[m.callStatus]}</span>
+                    <span className={styles.callTime}>
+                      {new Date(m.createdAt).toLocaleTimeString()}
+                    </span>
+                  </div>
+                );
+              }
+              return (
+                <div key={m._id || index} className={`${styles.msg} ${isMe ? styles.me : ''}`}>
+                  {/* Truyền thẳng class myBubble vào đây nếu là tin nhắn của mình */}
+                  <div className={`${styles.bubble} ${isMe ? styles.myBubble : ''}`}>{m.text}</div>
+
+                  <span>{m.createdAt ? new Date(m.createdAt).toLocaleTimeString() : ''}</span>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className={styles.input}>
+            <input
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              placeholder="Nhập tin nhắn..."
+            />
+            <button onClick={handleSend} disabled={sending}>
+              <Send size={18} />
+            </button>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
