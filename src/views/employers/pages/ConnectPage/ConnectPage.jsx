@@ -75,11 +75,9 @@ export default function ConnectPage() {
       socket.off('receive-message', handleReceive); // chỉ off listener, không disconnect
     };
   }, []);
-
   useEffect(() => {
     currentConversationRef.current = conversationId;
   }, [conversationId]);
-
   useEffect(() => {
     if (role === 'candidate') {
       const fetchEmployers = async () => {
