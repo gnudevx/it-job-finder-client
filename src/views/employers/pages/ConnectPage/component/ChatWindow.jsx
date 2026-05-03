@@ -21,18 +21,18 @@ export default function ChatWindow({ chatUser, conversationId, onMessageSent }) 
   const [showOverlay, setShowOverlay] = useState(false); // mở overlay
   const [incomingCallConvoId, setIncomingCallConvoId] = useState(null);
   const [myRole, setMyRole] = useState(null);
-  const [callerUser, setCallerUser] = useState(null); 
+  const [callerUser, setCallerUser] = useState(null);
   useEffect(() => {
-  const handleRing = ({ conversationId: cid, callerId, callerName, callerAvatar }) => {
-    if (callerId === currentUser?._id) return;
-    setCallerIdRef(callerId);
-    setIncomingCallConvoId(cid);
-    setIncomingCall(true);
-    setCallerUser({ name: callerName, avatar: callerAvatar }); // ✅
-  };
-  socket.on('call:ring', handleRing);
-  return () => socket.off('call:ring', handleRing);
-}, [currentUser]);
+    const handleRing = ({ conversationId: cid, callerId, callerName, callerAvatar }) => {
+      if (callerId === currentUser?._id) return;
+      setCallerIdRef(callerId);
+      setIncomingCallConvoId(cid);
+      setIncomingCall(true);
+      setCallerUser({ name: callerName, avatar: callerAvatar }); // ✅
+    };
+    socket.on('call:ring', handleRing);
+    return () => socket.off('call:ring', handleRing);
+  }, [currentUser]);
 
   useEffect(() => {
     const fetchFirstMessages = async () => {
@@ -137,7 +137,7 @@ export default function ChatWindow({ chatUser, conversationId, onMessageSent }) 
       conversationId,
       callerId: currentUser?._id,
     });
-    setMyRole('caller'); 
+    setMyRole('caller');
     setShowOverlay(true); // 👈 mở overlay thay vì window.open
   };
   const handleAcceptCall = () => {
@@ -173,7 +173,6 @@ export default function ChatWindow({ chatUser, conversationId, onMessageSent }) 
     setMessages([]);
     setCursor(null);
   }, [conversationId]);
-
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
@@ -256,8 +255,8 @@ export default function ChatWindow({ chatUser, conversationId, onMessageSent }) 
             setShowOverlay(false);
             setMyRole(null);     // reset khi đóng
           }}
-          role={myRole}  
-         
+          role={myRole}
+
         />
       )}
       {!chatUser ? (
@@ -335,7 +334,6 @@ export default function ChatWindow({ chatUser, conversationId, onMessageSent }) 
     </>
   );
 }
-
 ChatWindow.propTypes = {
   chatUser: PropTypes.object,
   conversationId: PropTypes.string,
