@@ -210,7 +210,6 @@ export default function VideoCallOverlay({
     declined: '❌ Cuộc gọi bị từ chối',
     missed: '📵 Không có người nghe',
   };
-
   return (
     <div className={styles.overlay}>
       <div className={styles.callBox}>
@@ -254,7 +253,6 @@ export default function VideoCallOverlay({
     </div>
   );
 }
-
 VideoCallOverlay.propTypes = {
   conversationId: PropTypes.string.isRequired,
   chatUser: PropTypes.object,
