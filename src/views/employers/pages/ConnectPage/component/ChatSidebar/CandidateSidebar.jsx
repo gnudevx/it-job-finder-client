@@ -5,7 +5,8 @@ import PropTypes from 'prop-types';
 import logo from '@assets/Logo_HireIT_Header.png';
 import { useNavigate } from 'react-router-dom';
 import { formatDistanceToNow } from 'date-fns';
-export default function ChatSidebar({ candidates, selectedId, onSelect, role }) {
+import { socket } from '@/services/socket';
+export default function ChatSidebar({ candidates, selectedId, onSelect, role, currentUser  }) {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('all');
   // States cho Popup Cài đặt
@@ -13,7 +14,8 @@ export default function ChatSidebar({ candidates, selectedId, onSelect, role }) 
   const [notifyEnabled, setNotifyEnabled] = useState(true);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [searchText, setSearchText] = useState('');
-  const filteredCandidates = (candidates || [])
+  const [candidatesState, setCandidatesState] = useState(candidates);
+  const filteredCandidates = (candidatesState || [])
     .filter((c) => {
       const unread = role === 'employer' ? c.unreadCount?.employer : c.unreadCount?.candidate;
 
@@ -23,6 +25,67 @@ export default function ChatSidebar({ candidates, selectedId, onSelect, role }) 
 
   // Ref để xử lý click ra ngoài thì đóng popup
   const settingsRef = useRef(null);
+  useEffect(() => {
+    setCandidatesState((prev) => {
+      if (!prev.length) return candidates;
+
+      return prev.map((p) => {
+        const fresh = candidates.find(e => e.conversationId === p.conversationId);
+        if (!fresh) return p;
+
+        return {
+          ...fresh,
+
+          // 🔥 GIỮ lại realtime nếu có
+          lastMessage: p.lastMessage || fresh.lastMessage,
+          lastMessageTime: p.lastMessageTime || fresh.lastMessageTime,
+        };
+      });
+    });
+  }, [candidates]);
+  useEffect(() => {
+  console.log('🔥 candidates từ API:', candidates);
+}, [candidates]);
+  useEffect(() => {
+    if (!currentUser?._id) return;
+    socket.emit('user:join', currentUser._id);
+  }, [currentUser]);
+  useEffect(() => {
+    const handleNewMessage = (message) => {
+      setCandidatesState((prev) => {
+        const updated = prev.map((c) => {
+          if (String(c.conversationId) !== String(message.conversationId)) return c;
+          console.log('message moi o candidate sidebar', message);
+          const isMe =
+            message.senderId === currentUser?._id ||
+            message.senderId === currentUser?.userId;
+
+          return {
+            ...c,
+            lastMessage:
+              message.type === 'file'
+                ? '📎 File'
+                : message.text || '📎 File',
+            lastMessageTime: message.createdAt,
+
+            unreadCount: {
+              ...c.unreadCount,
+              [role]: isMe
+                ? c.unreadCount?.[role] || 0
+                : (c.unreadCount?.[role] || 0) + 1,
+            },
+          };
+        });
+
+        return updated.sort(
+          (a, b) => new Date(b.lastMessageTime) - new Date(a.lastMessageTime)
+        );
+      });
+    };
+
+    socket.on('receive-message', handleNewMessage);
+    return () => socket.off('receive-message', handleNewMessage);
+  }, [role, currentUser]);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -139,7 +202,23 @@ export default function ChatSidebar({ candidates, selectedId, onSelect, role }) 
             <button
               type="button"
               key={c.conversationId}
-              onClick={() => onSelect(c.id, c.conversationId, c.jobId)}
+              onClick={() => {
+                onSelect(c.id, c.conversationId, c.jobId);
+
+                setCandidatesState((prev) =>
+                  prev.map((item) =>
+                    item.conversationId === c.conversationId
+                      ? {
+                          ...item,
+                          unreadCount: {
+                            ...item.unreadCount,
+                            [role]: 0,
+                          },
+                        }
+                      : item
+                  )
+                );
+              }}
               className={`${styles.item} ${selectedId === c.conversationId ? styles.active : ''}`}
             >
               <div className={styles.avatarWrap}>
@@ -157,7 +236,11 @@ export default function ChatSidebar({ candidates, selectedId, onSelect, role }) 
                   </span>
                 </div>
 
-                <p>{c.lastMessage || 'Chưa có tin nhắn'}</p>
+                <p>
+                  {c.lastMessage
+                    ? (c.lastMessage.endsWith('.pdf') ? '📎 File' : c.lastMessage)
+                    : 'Chưa có tin nhắn'}
+                </p>
 
                 <div className={styles.meta}>
                   <span>{c.position}</span>
@@ -178,4 +261,5 @@ ChatSidebar.propTypes = {
   selectedId: PropTypes.string,
   onSelect: PropTypes.func.isRequired,
   role: PropTypes.string.isRequired,
+  currentUser: PropTypes.object,
 };
