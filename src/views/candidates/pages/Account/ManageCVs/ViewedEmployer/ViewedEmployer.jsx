@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './ViewedEmployer.module.scss';
 
 export default function ViewedEmployer() {
-  // 🔹 Dữ liệu mẫu (có thể thay bằng dữ liệu thật từ API)
+  // Dữ liệu mẫu (có thể thay bằng dữ liệu thật từ API)
   const employers = [
     {
       id: 1,

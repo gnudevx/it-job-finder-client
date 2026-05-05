@@ -34,7 +34,7 @@ export default function VideoCallOverlay({
     clearInterval(timerRef.current);
     if (pcRef.current) {
         pcRef.current.close();
-        pcRef.current = null; // 👈 THÊM DÒNG NÀY
+        pcRef.current = null; // THÊM DÒNG NÀY
     }
     localStreamRef.current?.getTracks().forEach((t) => t.stop());
     localStreamRef.current = null;
@@ -165,7 +165,7 @@ export default function VideoCallOverlay({
 
   init().catch(console.error);
 
-  socket.on('call:accepted', handleCallAccepted); // 👈 THÊM
+  socket.on('call:accepted', handleCallAccepted); // THÊM
   socket.on('call:offer', handleOffer);
   socket.on('call:answer', handleAnswer);
   socket.on('call:ice-candidate', handleIce);
@@ -175,7 +175,7 @@ export default function VideoCallOverlay({
 
   return () => {
     isCancelled = true;
-    socket.off('call:accepted', handleCallAccepted); // 👈 THÊM
+    socket.off('call:accepted', handleCallAccepted); // THÊM
     socket.off('call:offer', handleOffer);
     socket.off('call:answer', handleAnswer);
     socket.off('call:ice-candidate', handleIce);

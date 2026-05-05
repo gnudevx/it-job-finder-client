@@ -54,7 +54,7 @@ export default function HeaderCandidate() {
 
   const handleLogout = async () => {
     try {
-      await authService.logoutRequest(); // 👈 gọi API logout
+      await authService.logoutRequest(); // gọi API logout
     } catch (error) {
       console.error('Logout error:', error);
     }
@@ -63,7 +63,7 @@ export default function HeaderCandidate() {
     localStorage.removeItem('authToken');
     localStorage.removeItem('refreshToken');
 
-    navigate('/login'); // 👈 chuyển trang
+    navigate('/login'); // chuyển trang
   };
 
   return (

@@ -8,7 +8,7 @@ export default function HisReportCVSearch() {
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
 
-  // 🔹 Mock dữ liệu hợp lý cho lịch sử tìm kiếm CV
+  // Mock dữ liệu hợp lý cho lịch sử tìm kiếm CV
   const mockData = [
     {
       id: 1,

@@ -65,7 +65,7 @@ export default function ChatWindow({ chatUser, conversationId, onMessageSent }) 
 
       shouldAutoScrollRef.current = isNearBottom;
 
-      setLoadingMore(true); // 👈 THIẾU CÁI NÀY
+      setLoadingMore(true); // THIẾU CÁI NÀY
       await new Promise((resolve) => setTimeout(resolve, 500));
       const base = currentUser.role === 'employer' ? '/employer/connect' : '/candidate/connect';
 
@@ -87,7 +87,7 @@ export default function ChatWindow({ chatUser, conversationId, onMessageSent }) 
 
       setMessages((prev) => [...normalized, ...prev]);
 
-      setCursor(normalized[0]._id); // 🔥 sửa lại luôn
+      setCursor(normalized[0]._id); // sửa lại luôn
 
       setTimeout(() => {
         const newHeight = scrollRef.current.scrollHeight;
@@ -109,7 +109,7 @@ export default function ChatWindow({ chatUser, conversationId, onMessageSent }) 
         return [...prev, message];
       });
 
-      // 👇 chỉ scroll nếu gần bottom
+      // chỉ scroll nếu gần bottom
       if (isNearBottom) {
         setTimeout(() => {
           el.scrollTop = el.scrollHeight;
@@ -137,11 +137,11 @@ export default function ChatWindow({ chatUser, conversationId, onMessageSent }) 
       conversationId,
       callerId: currentUser?._id,
     });
-    setMyRole('caller'); 
-    setShowOverlay(true); // 👈 mở overlay thay vì window.open
+    setMyRole('caller');
+    setShowOverlay(true); // mở overlay thay vì window.open
   };
   const handleAcceptCall = () => {
-    socket.emit('call:accepted', { conversationId: incomingCallConvoId }); // ✅ SỬA
+    socket.emit('call:accepted', { conversationId: incomingCallConvoId });
     socket.emit('join-conversation', incomingCallConvoId);
     setMyRole('callee');
     setIncomingCall(false);
@@ -168,7 +168,7 @@ export default function ChatWindow({ chatUser, conversationId, onMessageSent }) 
       socket.off('call:missed', addCallMessage);
     };
   }, [conversationId]);
-  // 🔹 Load messages khi conversationId thay đổi
+  // Load messages khi conversationId thay đổi
   useEffect(() => {
     setMessages([]);
     setCursor(null);
@@ -192,7 +192,7 @@ export default function ChatWindow({ chatUser, conversationId, onMessageSent }) 
     }
   }, [messages]);
 
-  // 🔹 Gửi tin nhắn
+  // Gửi tin nhắn
   const handleSend = async () => {
     if (!inputText.trim() || !conversationId || sending) return;
     setSending(true);
@@ -207,7 +207,7 @@ export default function ChatWindow({ chatUser, conversationId, onMessageSent }) 
         text: inputText,
       });
       console.log('🚀 MESSAGE SENT:', res);
-      // 🔥 emit realtime
+      // emit realtime
       socket.emit('send-message', {
         conversationId,
         message: res,
@@ -233,14 +233,14 @@ export default function ChatWindow({ chatUser, conversationId, onMessageSent }) 
     } catch (err) {
       console.error(err);
     } finally {
-      setSending(false); // 🔥 QUAN TRỌNG NHẤT
+      setSending(false); // QUAN TRỌNG NHẤT
     }
   };
   return (
     <>
       {incomingCall && (
         <div className={styles.incomingCall}>
-          {/* 👇 dùng callerUser thay vì chatUser */}
+          {/* dùng callerUser thay vì chatUser */}
           <span>📲 Có cuộc gọi đến từ {callerUser?.name || 'Ai đó'}</span>
           <button onClick={handleAcceptCall}>✅ Nghe</button>
           <button onClick={handleDeclineCall}>❌ Từ chối</button>
@@ -283,7 +283,7 @@ export default function ChatWindow({ chatUser, conversationId, onMessageSent }) 
           <div ref={scrollRef} className={styles.messages} onScroll={handleScroll}>
             {loadingMore && <div className={styles.loading}>Loading...</div>}
             {messages.map((m, index) => {
-              // 🔥 Đặt biến này để check cho chắc (thay user.userId bằng user._id hoặc user.id tùy backend của bác)
+              // Đặt biến này để check cho chắc (thay user.userId bằng user._id hoặc user.id tùy backend của bác)
               const isMe =
                 m.senderId === currentUser.userId ||
                 m.senderId === currentUser._id ||

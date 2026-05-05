@@ -56,7 +56,7 @@ export default function Dashboard() {
       title: 'Đăng tin tuyển dụng',
       btnText: 'Thử ngay',
       imageUrl: dangtin,
-      link: '/employer/jobs/create', // 👈 thêm dòng này
+      link: '/employer/jobs/create', // thêm dòng này
     },
     {
       title: 'Tìm kiếm CV',
@@ -109,7 +109,7 @@ export default function Dashboard() {
               title={item.title}
               btnText={item.btnText}
               imageUrl={item.imageUrl}
-              link={item.link} // 👈 thêm prop link
+              link={item.link} // thêm prop link
             />
           ))}
         </div>
