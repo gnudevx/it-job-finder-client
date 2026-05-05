@@ -4,9 +4,10 @@ import { Send } from 'lucide-react';
 import PropTypes from 'prop-types';
 import axiosClient from '@/services/axiosClient.js';
 import { useAuth } from '@/contexts/AuthContext';
-import { socket } from '@/services/socket';
 import VideoCallOverlay from './videoCall/VideoCallOverlay';
-export default function ChatWindow({ chatUser, conversationId, onMessageSent }) {
+import { socket } from '@/services/socket.js';
+import { API_BASE } from '@/config/config.js';
+export default function ChatWindow({ chatUser, conversationId }) {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState('');
   const [cursor, setCursor] = useState(null);
@@ -22,6 +23,16 @@ export default function ChatWindow({ chatUser, conversationId, onMessageSent }) 
   const [incomingCallConvoId, setIncomingCallConvoId] = useState(null);
   const [myRole, setMyRole] = useState(null);
   const [callerUser, setCallerUser] = useState(null);
+  const fileInputRef = useRef(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const handleSelectFile = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setSelectedFile(file);
+  };
+
+  
   useEffect(() => {
     const handleRing = ({ conversationId: cid, callerId, callerName, callerAvatar }) => {
       if (callerId === currentUser?._id) return;
@@ -193,45 +204,53 @@ export default function ChatWindow({ chatUser, conversationId, onMessageSent }) 
 
   // 🔹 Gửi tin nhắn
   const handleSend = async () => {
-    if (!inputText.trim() || !conversationId || sending) return;
+    if ((!inputText.trim() && !selectedFile) || !conversationId || sending) return;
     setSending(true);
     console.log('🚀 SEND MESSAGE...', chatUser);
     const base = currentUser.role === 'employer' ? '/employer/connect' : '/candidate/connect';
 
     try {
-      const res = await axiosClient.post(`${base}/messages`, {
-        conversationId,
-        senderId: currentUser?._id,
-        senderRole: currentUser?.role,
-        text: inputText,
-      });
-      console.log('🚀 MESSAGE SENT:', res);
-      // 🔥 emit realtime
-      socket.emit('send-message', {
-        conversationId,
-        message: res,
-      });
+        if (selectedFile) {
+          const formData = new FormData();
+          formData.append('file', selectedFile);
+          formData.append('conversationId', conversationId);
+          formData.append('senderId', currentUser?._id);
+          console.log('currentUser file:', currentUser?._id);
+          const res = await axiosClient.post('/messages/send-file', formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            });
 
-      // optimistic UI
-      setMessages((prev) => [...prev, res]);
-      setTimeout(() => {
-        const el = scrollRef.current;
-        if (el) {
-          el.scrollTop = el.scrollHeight;
+          socket.emit('send-message', {
+            conversationId,
+            message: res,
+          });
+
+          setMessages((prev) => [...prev, res]);
+          setSelectedFile(null);
         }
-      }, 0);
-      onMessageSent &&
-        onMessageSent({
-          conversationId,
-          candidateId: chatUser.id,
-          text: inputText,
-          createdAt: new Date().toISOString(),
-        });
 
-      setInputText('');
-    } catch (err) {
-      console.error(err);
-    } finally {
+        if (inputText.trim()) {
+          const res = await axiosClient.post(`${base}/messages`, {
+            conversationId,
+            senderId: currentUser?._id,
+            senderRole: currentUser?.role,
+            text: inputText,
+          });
+
+          socket.emit('send-message', {
+            conversationId,
+            message: res,
+          });
+
+          setMessages((prev) => [...prev, res]);
+        }
+
+        setInputText('');
+      } catch (err) {
+        console.error(err);
+      } finally {
       setSending(false); // 🔥 QUAN TRỌNG NHẤT
     }
   };
@@ -308,6 +327,32 @@ export default function ChatWindow({ chatUser, conversationId, onMessageSent }) 
                   </div>
                 );
               }
+              if (m.type === 'file') {
+                const isImage = m.file?.mimeType?.startsWith('image/');
+
+                return (
+                  <div key={m._id || index} className={`${styles.msg} ${isMe ? styles.me : ''}`}>
+                    <div className={`${styles.bubble} ${isMe ? styles.myBubble : ''}`}>
+                      {isImage ? (
+                        <img
+                          src={m.file.url}
+                          alt={m.file.name}
+                          style={{ maxWidth: '200px', borderRadius: '8px' }}
+                        />
+                      ) : (
+                        <a
+                          href={`${API_BASE}${m.file.url}`}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          📄 {m.file.name}
+                        </a>
+                      )}
+                    </div>
+                    <span>{new Date(m.createdAt).toLocaleTimeString()}</span>
+                  </div>
+                );
+              }
               return (
                 <div key={m._id || index} className={`${styles.msg} ${isMe ? styles.me : ''}`}>
                   {/* Truyền thẳng class myBubble vào đây nếu là tin nhắn của mình */}
@@ -318,8 +363,19 @@ export default function ChatWindow({ chatUser, conversationId, onMessageSent }) 
               );
             })}
           </div>
+          <input
+            type="file"
+            ref={fileInputRef}
+            style={{ display: 'none' }}
+            onChange={handleSelectFile}
+          />
 
+          {/* icon file */}
+         
           <div className={styles.input}>
+            <button onClick={() => fileInputRef.current.click()}>
+              📎
+            </button>
             <input
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
@@ -329,7 +385,22 @@ export default function ChatWindow({ chatUser, conversationId, onMessageSent }) 
               <Send size={18} />
             </button>
           </div>
+          {selectedFile && (
+              <div>
+                {selectedFile.type.startsWith('image/') ? (
+                  <a href={URL.createObjectURL(selectedFile)} target="_blank" rel="noreferrer">
+                    <img src={URL.createObjectURL(selectedFile)} width={100} />
+                  </a>
+                ) : (
+                  <a href={URL.createObjectURL(selectedFile)} target="_blank" rel="noreferrer">
+                    📎 {selectedFile.name}
+                  </a>
+                )}
+                <button onClick={() => setSelectedFile(null)}>❌</button>
+              </div>
+            )}
         </div>
+        
       )}
     </>
   );
@@ -337,5 +408,4 @@ export default function ChatWindow({ chatUser, conversationId, onMessageSent }) 
 ChatWindow.propTypes = {
   chatUser: PropTypes.object,
   conversationId: PropTypes.string,
-  onMessageSent: PropTypes.func,
 };
