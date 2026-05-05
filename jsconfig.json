@@ -12,7 +12,8 @@
       "@routers/*": ["routers/*"],
       "@components/*": ["components/*"],
       "@layouts/*": ["views/layouts/*"],
-      "@pages/*": ["views/pages/*"]
+      "@pages/*": ["views/pages/*"],
+      "@config/*": ["config/*"]
     }
   },
   "include": ["src"]
