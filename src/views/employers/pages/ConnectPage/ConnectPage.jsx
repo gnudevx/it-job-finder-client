@@ -100,7 +100,7 @@ export default function ConnectPage() {
           role === 'employer'
             ? await employerService.getConversationsByEmployer()
             : await candidateService.getConversationsByCandidate();
-
+        console.log('🔥 conversations từ API:', res);
         setConversations(res);
 
         // 🔥 JOIN ALL ROOM
@@ -241,6 +241,7 @@ export default function ConnectPage() {
           selectedId={conversationId}
           onSelect={handleSelectCandidate}
           role={role} // 👈 truyền xuống
+          currentUser={user}
         />
       )}
       {role === 'candidate' && (
@@ -249,6 +250,7 @@ export default function ConnectPage() {
           selectedId={conversationId}
           onSelect={handleSelectEmployer}
           role={role} // 👈 truyền xuống
+          currentUser={user}
         />
       )}
       {/* Main */}
