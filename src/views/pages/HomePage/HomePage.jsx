@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './HomePage.module.scss';
 
@@ -11,16 +11,16 @@ import Pagination from '@/components/common/Pagination/Pagination';
 import NewsSection from '@/views/candidates/components/NewsSection/NewsSection.jsx';
 import { Search, MapPin } from 'lucide-react';
 
-// Memoize normalizeText to avoid recalculation
-const normalizeText = (str) => {
-  if (!str) return '';
-  return str
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/\./g, '')
-    .replace(/\s+/g, '')
-    .toLowerCase();
-};
+// // Memoize normalizeText to avoid recalculation
+// const normalizeText = (str) => {
+//   if (!str) return '';
+//   return str
+//     .normalize('NFD')
+//     .replace(/[\u0300-\u036f]/g, '')
+//     .replace(/\./g, '')
+//     .replace(/\s+/g, '')
+//     .toLowerCase();
+// };
 
 export default function HomePage() {
   const authToken = localStorage.getItem('authToken');
@@ -41,9 +41,17 @@ export default function HomePage() {
     const fetchJobs = async () => {
       try {
         setLoading(true);
-        const data = await getAllJobs();
+        const params = {
+          q: debouncedSearch,
+          location: filters.location,
+          experience: filters.experience,
+          salaryLevel: filters.salaryLevel,
+          skills: filters.skills,
+          createDate: filters.createDate,
+        };
 
-        const formatted = data.data.map((job) => ({
+        const data = await getAllJobs(params);
+        const formatted = (data.data || data).map((job) => ({
           id: job._id,
           title: job.title,
           group: job.group_id?.name || 'Không rõ',
@@ -55,7 +63,6 @@ export default function HomePage() {
           jobType: job.jobType,
         }));
 
-        // Sort immediately and store once
         formatted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         setJobs(formatted);
       } catch (error) {
@@ -66,7 +73,7 @@ export default function HomePage() {
     };
 
     fetchJobs();
-  }, []);
+  }, [debouncedSearch, filters.location, filters.experience, filters.salaryLevel, filters.skills, filters.createDate]);
 
   const handleFilterChange = useCallback((type, value) => {
     setFilters((prev) => ({ ...prev, [type]: value }));
@@ -74,65 +81,10 @@ export default function HomePage() {
   }, []);
 
   const handleSearchSubmit = useCallback(() => {
-    setFilters((prev) => ({ ...prev, keyword: debouncedSearch }));
     setCurrentPage(1);
-  }, [debouncedSearch]);
+  }, []);
 
-  // Update keyword filter when debounced search changes
-  useEffect(() => {
-    setFilters((prev) => ({ ...prev, keyword: debouncedSearch }));
-    setCurrentPage(1);
-  }, [debouncedSearch]);
-
-  // Memoize filtered results to avoid recalculation on every render
-  const filtered = useMemo(() => {
-    return jobs.filter((job) => {
-      const keyword = filters.keyword?.toLowerCase() || '';
-
-      // Optimize string search with cached normalized strings
-      const searchMatch =
-        (job.title?.toLowerCase() || '').includes(keyword) ||
-        (job.group?.toLowerCase() || '').includes(keyword) ||
-        (job.location?.toLowerCase() || '').includes(keyword);
-
-      if (!searchMatch) return false;
-
-      return Object.entries(filters).every(([key, value]) => {
-        if (!value || key === 'keyword') return true;
-
-        switch (key) {
-          case 'experience':
-            return Number(job.experience) >= Number(value);
-
-          case 'salaryLevel': {
-            const salary = parseInt(job.salary.replace(/\D/g, ''));
-            if (!salary) return true;
-            return salary >= Number(value);
-          }
-
-          case 'location':
-            return normalizeText(job.location).includes(normalizeText(value));
-
-          case 'createDate': {
-            const jobDate = new Date(job.createdAt);
-            const now = new Date();
-            const diffDays = Math.floor((now - jobDate) / (1000 * 60 * 60 * 24));
-            return diffDays < Number(value);
-          }
-
-          case 'skills': {
-            if (!Array.isArray(job.skills) || !job.skills.length) return false;
-            const jobSkillNames = job.skills.map((s) => s.name);
-            const selected = Array.isArray(value) ? value : [value];
-            return selected.every((skill) => jobSkillNames.includes(skill));
-          }
-
-          default:
-            return true;
-        }
-      });
-    });
-  }, [jobs, filters]);
+  const filtered = jobs;
 
   const totalPages = Math.ceil(filtered.length / jobsPerPage);
   const indexOfLast = currentPage * jobsPerPage;
