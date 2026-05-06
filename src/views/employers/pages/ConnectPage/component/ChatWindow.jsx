@@ -331,26 +331,51 @@ export default function ChatWindow({ chatUser, conversationId }) {
                 const isImage = m.file?.mimeType?.startsWith('image/');
 
                 return (
-                  <div key={m._id || index} className={`${styles.msg} ${isMe ? styles.me : ''}`}>
-                    <div className={`${styles.bubble} ${isMe ? styles.myBubble : ''}`}>
-                      {isImage ? (
+                    <div
+                      key={m._id || index}
+                      className={`${styles.msg} ${isMe ? styles.me : ''}`}
+                    >
+                      {/* 🟢 IMAGE */}
+                      {m.type === 'file' && isImage && (
                         <img
                           src={m.file.url}
                           alt={m.file.name}
-                          style={{ maxWidth: '200px', borderRadius: '8px' }}
+                          className={styles.imageMsg}
+                          onClick={() =>
+                            window.open(`${API_BASE}${m.file.url}`, '_blank', 'noopener,noreferrer')
+                          }
                         />
-                      ) : (
-                        <a
-                          href={`${API_BASE}${m.file.url}`}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          📄 {m.file.name}
-                        </a>
                       )}
+
+                      {/* 🟢 FILE (PDF, DOC, etc) */}
+                      {m.type === 'file' && !isImage && (
+                        <div
+                          className={styles.fileCard}
+                          onClick={() =>
+                            window.open(`${API_BASE}${m.file.url}`, '_blank', 'noopener,noreferrer')
+                          }
+                        >
+                          <span>📄</span>
+                          <div>
+                            <p>{m.file.name}</p>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* 🟢 TEXT */}
+                      {m.type === 'text' && (
+                        <div className={`${styles.bubble} ${isMe ? styles.myBubble : ''}`}>
+                          {m.text}
+                        </div>
+                      )}
+
+                      {/* 🕒 TIME */}
+                      <span>
+                        {m.createdAt
+                          ? new Date(m.createdAt).toLocaleTimeString()
+                          : ''}
+                      </span>
                     </div>
-                    <span>{new Date(m.createdAt).toLocaleTimeString()}</span>
-                  </div>
                 );
               }
               return (
@@ -372,33 +397,39 @@ export default function ChatWindow({ chatUser, conversationId }) {
 
           {/* icon file */}
          
-          <div className={styles.input}>
-            <button onClick={() => fileInputRef.current.click()}>
-              📎
-            </button>
-            <input
-              value={inputText}
-              onChange={(e) => setInputText(e.target.value)}
-              placeholder="Nhập tin nhắn..."
-            />
-            <button onClick={handleSend} disabled={sending}>
-              <Send size={18} />
-            </button>
-          </div>
-          {selectedFile && (
-              <div>
-                {selectedFile.type.startsWith('image/') ? (
-                  <a href={URL.createObjectURL(selectedFile)} target="_blank" rel="noreferrer">
-                    <img src={URL.createObjectURL(selectedFile)} width={100} />
-                  </a>
-                ) : (
-                  <a href={URL.createObjectURL(selectedFile)} target="_blank" rel="noreferrer">
-                    📎 {selectedFile.name}
-                  </a>
-                )}
-                <button onClick={() => setSelectedFile(null)}>❌</button>
+          <div className={styles.inputBox}>
+              {selectedFile && (
+                <div className={styles.filePreview}>
+                  {selectedFile.type.startsWith('image/') ? (
+                    <img src={URL.createObjectURL(selectedFile)} />
+                  ) : (
+                    <div className={styles.fileItem}>
+                      📄 {selectedFile.name}
+                    </div>
+                  )}
+                  <button onClick={() => setSelectedFile(null)}>✖</button>
+                </div>
+              )}
+
+              <div className={styles.inputInner}>
+                <button
+                  className={styles.attachBtn}
+                  onClick={() => fileInputRef.current.click()}
+                >
+                  📎
+                </button>
+
+                <input
+                  value={inputText}
+                  onChange={(e) => setInputText(e.target.value)}
+                  placeholder="Nhập tin nhắn..."
+                />
+
+                <button onClick={handleSend} disabled={sending}>
+                  <Send size={18} />
+                </button>
               </div>
-            )}
+            </div>
         </div>
         
       )}
