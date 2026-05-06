@@ -3,7 +3,7 @@ import HeaderCandidate from '@/views/candidates/components/Header/HeaderCandidat
 import { Outlet } from 'react-router-dom';
 import styles from '@/views/candidates/layouts/CandidateLayout/CandidateLayout.module.scss';
 import Footer from '../../components/Footer/Footer';
-
+import ChatBotWidget from '../../components/Chatbotwidget/Chatbotwidget.jsx';
 export default function CandidateLayout() {
   return (
     <div className={styles['layout-container']}>
@@ -17,6 +17,7 @@ export default function CandidateLayout() {
         </div>
       </div>
       <Footer />
+       <ChatBotWidget />
     </div>
   );
 }
