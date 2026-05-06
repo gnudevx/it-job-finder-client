@@ -237,3 +237,96 @@
     color: #aaa;
   }
 }
+// CÁC KIỂU CHO TIN NHẮN HÌNH ẢNH VÀ FILE
+.imageMsg {
+  max-width: 200px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+.imageMsg {
+  max-width: 200px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.fileCard {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f1f1f1;
+  padding: 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  max-width: 240px;
+}
+
+.me .fileCard {
+  background: #dcf8c6;
+}
+
+.fileCard {
+  display: flex;
+  gap: 10px;
+  background: #f1f1f1;
+  padding: 10px;
+  border-radius: 12px;
+  align-items: center;
+}
+
+.fileCard p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.fileCard a {
+  font-size: 12px;
+  color: #007bff;
+}
+
+// input box phía dưới cùng để gửi tin nhắn
+.inputBox {
+  padding: 10px;
+  border-top: 1px solid #eee;
+}
+
+.inputInner {
+  display: flex;
+  align-items: center;
+  background: #f1f1f1;
+  border-radius: 20px;
+  padding: 6px 10px;
+}
+
+.inputInner input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  padding: 6px;
+}
+
+.attachBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.filePreview {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.filePreview img {
+  width: 60px;
+  height: 60px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.fileItem {
+  background: #e4e6eb;
+  padding: 6px 10px;
+  border-radius: 10px;
+}
