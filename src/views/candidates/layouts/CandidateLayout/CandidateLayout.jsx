@@ -8,7 +8,6 @@ export default function CandidateLayout() {
   return (
     <div className={styles['layout-container']}>
       <HeaderCandidate />
-
       <div className={styles['content-wrapper']}>
         <div className={styles['main-content']}>
           <div className={styles['page-container']}>
@@ -17,7 +16,7 @@ export default function CandidateLayout() {
         </div>
       </div>
       <Footer />
-       <ChatBotWidget />
+      <ChatBotWidget />
     </div>
   );
 }
