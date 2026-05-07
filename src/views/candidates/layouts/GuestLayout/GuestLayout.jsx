@@ -3,7 +3,6 @@ import { Outlet } from 'react-router-dom';
 import HeaderWrapper from '@/views/candidates/components/Header/HeaderWrapper.jsx';
 import styles from './GuestLayout.module.scss';
 import Footer from '../../components/Footer/Footer';
-
 export default function GuestLayout() {
   return (
     <div className={styles['layout-container']}>
