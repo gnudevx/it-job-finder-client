@@ -22,7 +22,7 @@ export default function Preview() {
     fetchCompanyData();
   }, []);
 
-  // 🟦 Tạo jobPreviewData dựa trên state company
+  // Tạo jobPreviewData dựa trên state company
   const jobPreviewData = {
     title: form.title || 'Tiêu đề công việc của bạn',
     name: company?.name || 'Chưa có công ty', // ⭐ OK

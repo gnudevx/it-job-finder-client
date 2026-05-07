@@ -8,12 +8,12 @@ export default function CandidateList({ candidates, onSelect }) {
     try {
       const res = await axiosClient.post('/employer/connect/conversations', {
         candidateId,
-        jobId, // 👈 BẮT BUỘC
+        jobId, // BẮT BUỘC
       });
 
-      const convoId = res._id; // 👈 FIX
+      const convoId = res._id; // FIX
 
-      // 👉 sau khi có conversationId mới select
+      // sau khi có conversationId mới select
       onSelect(candidateId, convoId);
     } catch (err) {
       console.error(err);

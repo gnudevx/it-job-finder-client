@@ -1,12 +1,13 @@
 import React from 'react';
 import styles from './CVCard.module.scss';
 import PropTypes from 'prop-types';
-import axios from 'axios';
+import axiosClient from '@/services/axiosClient.js';
+
 const CVCard = ({ cv, isRecommended }) => {
   const handleViewPDF = () => {
     if (cv.resumeId) {
-      console.log('cvis: ', cv);
-      window.open(`http://localhost:5000/api/resumes/${cv.resumeId}/view`, '_blank');
+      const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      window.open(`${baseUrl}api/resumes/${cv.resumeId}/view`, '_blank');
     } else {
       alert('Ứng viên chưa tải CV lên. Vui lòng xem lại');
     }
@@ -17,17 +18,11 @@ const CVCard = ({ cv, isRecommended }) => {
       return;
     }
 
-    const token = localStorage.getItem('authToken');
-
-    const res = await axios.get(`http://localhost:5000/api/resumes/downloads/${cv.resumeId}`, {
+    const blobData = await axiosClient.get(`/api/resumes/downloads/${cv.resumeId}`, {
       responseType: 'blob',
-      headers: {
-        Authorization: `Bearer ${token}`, // ✅ JWT VẪN Ở ĐÂY
-      },
-      withCredentials: true,
     });
 
-    const blob = new Blob([res.data], { type: 'application/pdf' });
+    const blob = new Blob([blobData], { type: 'application/pdf' });
     const url = window.URL.createObjectURL(blob);
 
     const link = document.createElement('a');

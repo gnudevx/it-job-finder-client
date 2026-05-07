@@ -1,13 +1,13 @@
-import axios from 'axios';
+import axiosClient from '@/services/axiosClient.js';
 
-const API_URL = 'http://localhost:5000/api/jobs';
+const API_URL = '/api/jobs';
 
-export const getAllJobs = async () => {
-  const res = await axios.get(API_URL);
-  return res.data;
+export const getAllJobs = async (params = {}) => {
+  const res = await axiosClient.get(API_URL, { params });
+  return res;
 };
 
 export const getJobDetail = async (id) => {
-  const res = await axios.get(`http://localhost:5000/api/jobs/${id}`);
-  return res.data;
+  const res = await axiosClient.get(`${API_URL}/${id}`);
+  return res;
 };

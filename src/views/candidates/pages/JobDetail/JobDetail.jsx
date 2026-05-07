@@ -252,7 +252,7 @@ export default function JobDetail() {
                     </div>
 
                     <div className={styles.companyItem}>
-                      <div className={styles.companyItemIcon}>📦</div>
+                      <div className={styles.companyItemIcon}>💼</div>
                       <div className={styles.companyItemText}>
                         <span className={styles.companyItemTitle}>Lĩnh vực:</span>
                         <span className={styles.companyItemValue}>

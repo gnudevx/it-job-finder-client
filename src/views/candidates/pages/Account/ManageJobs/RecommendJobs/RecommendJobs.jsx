@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styles from './RecommendJobs.module.scss';
-import JobCard from '@/views/candidates/components/JobCard/JobCard.jsx';
 import Pagination from '@/components/common/Pagination/Pagination.jsx';
 import { getJobDetail } from '@/api/jobService';
+import { recommendResume } from '@/api/resumeService';
 
 export default function RecommendJobs() {
-  const [loading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [results, setResults] = useState(null);
   const [page, setPage] = useState(1);
   const location = useLocation();
@@ -15,7 +16,7 @@ export default function RecommendJobs() {
   const [pageJobsDetail, setPageJobsDetail] = useState([]);
   const limit = 5;
 
-  // Gọi API /recommend
+  // Gọi API recommend trên backend, không fetch file qua URL từ client
   useEffect(() => {
     if (!cv) {
       navigate('/candidate/account/mycvs');
@@ -23,19 +24,17 @@ export default function RecommendJobs() {
     }
 
     const fetchRecommend = async () => {
-      const res = await fetch(cv.url); // cv.url từ DB
-      const blob = await res.blob();
-
-      const formData = new FormData();
-      formData.append('file', blob, cv.name);
-
-      const recommendRes = await fetch('http://localhost:8000/recommend', {
-        method: 'POST',
-        body: formData,
-      });
-
-      const data = await recommendRes.json();
-      setResults(data);
+      setLoading(true);
+      setError(null);
+      try {
+        const data = await recommendResume(cv.id);
+        setResults(data);
+      } catch (err) {
+        console.error('Lỗi recommend CV:', err);
+        setError('Không thể phân tích CV. Vui lòng thử lại sau.');
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchRecommend();
@@ -64,41 +63,127 @@ export default function RecommendJobs() {
 
   // Render
   if (loading) return <p className={styles.loading}>Đang phân tích CV...</p>;
+  if (error) return <p className={styles.loading}>{error}</p>;
   if (!results) return null;
 
-  const totalJobs = results.recommendations.length;
+  const totalJobs = results.recommendations?.length || 0;
   const totalPages = Math.ceil(totalJobs / limit);
 
   const goJobDetail = (id) => navigate(`/job/${id}`);
 
   return (
     <div className={styles.container}>
-      <h2 className={styles.title}>Gợi ý việc làm</h2>
+      <h2 className={styles.title}>Gợi ý việc làm từ CV</h2>
 
       <h3 className={styles.sectionTitle}>Kỹ năng tìm thấy:</h3>
-      <div className={styles.skills}>{results.skills_found.join(', ')}</div>
-
-      <h3 className={styles.sectionTitle}>Danh sách việc làm phù hợp ({totalJobs})</h3>
-
-      <div className={styles.jobList}>
-        {pageJobsDetail.map((job) => (
-          <JobCard
-            key={job._id}
-            job={{
-              id: job._id,
-              title: job.title,
-              company: job.company || 'Công ty đang cập nhật',
-              salary: job.salary_raw || 'Thoả thuận',
-              location: job.location?.name || 'Không rõ',
-            }}
-            isFavorite={false}
-            onToggleFavorite={() => {}}
-            onClick={() => goJobDetail(job._id)}
-          />
-        ))}
+      <div className={styles.skills}>
+        {results.skills_found.length > 0 
+          ? results.skills_found.join(', ') 
+          : 'Không tìm thấy kỹ năng'}
       </div>
 
-      <Pagination page={page} totalPages={totalPages} onChange={setPage} />
+      {results.summary && (
+        <p className={styles.summary}>{results.summary}</p>
+      )}
+
+      <h3 className={styles.sectionTitle}>
+        Danh sách việc làm phù hợp ({totalJobs})
+      </h3>
+
+      {totalJobs === 0 ? (
+        <p className={styles.noResults}>Không tìm thấy việc làm phù hợp với CV của bạn.</p>
+      ) : (
+        <>
+          <div className={styles.jobList}>
+            {pageJobsDetail.map((job, idx) => {
+              const recommendation = results.recommendations[
+                (page - 1) * limit + idx
+              ];
+              
+              return (
+                <div key={job._id} className={styles.recommendationCard}>
+                  <div className={styles.cardHeader}>
+                    <div className={styles.jobInfo}>
+                      <h4 className={styles.jobTitle}>{job.title}</h4>
+                      <p className={styles.company}>
+                        {job.company || 'Công ty đang cập nhật'}
+                      </p>
+                    </div>
+                    <div className={styles.matchScore}>
+                      <div className={styles.percentage}>
+                        {recommendation?.match_percentage || 0}%
+                      </div>
+                      <small>Match</small>
+                    </div>
+                  </div>
+
+                  <div className={styles.cardBody}>
+                    <div className={styles.infoRow}>
+                      <span className={styles.label}>Lương:</span>
+                      <span>{job.salary_raw || 'Thoả thuận'}</span>
+                    </div>
+                    <div className={styles.infoRow}>
+                      <span className={styles.label}>Địa điểm:</span>
+                      <span>{job.location?.name || 'Không rõ'}</span>
+                    </div>
+
+                    {recommendation?.reason && (
+                      <div className={styles.reason}>
+                        <strong>Lý do gợi ý:</strong> {recommendation.reason}
+                      </div>
+                    )}
+
+                    {recommendation?.matched_skills && (
+                      <div className={styles.matchedSkills}>
+                        <strong>Kỹ năng trùng khớp:</strong>
+                        {recommendation.matched_skills.required.length > 0 && (
+                          <div className={styles.skillGroup}>
+                            <span className={styles.skillLabel}>
+                              Bắt buộc ({recommendation.matched_skills.required.length}):
+                            </span>
+                            <div className={styles.skillTags}>
+                              {recommendation.matched_skills.required.map((skill) => (
+                                <span key={skill} className={styles.skillTag}>
+                                  {skill}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                        {recommendation.matched_skills.optional.length > 0 && (
+                          <div className={styles.skillGroup}>
+                            <span className={styles.skillLabel}>
+                              Tùy chọn ({recommendation.matched_skills.optional.length}):
+                            </span>
+                            <div className={styles.skillTags}>
+                              {recommendation.matched_skills.optional.map((skill) => (
+                                <span key={skill} className={styles.skillTag}>
+                                  {skill}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className={styles.cardFooter}>
+                    <button
+                      className={styles.viewBtn}
+                      onClick={() => goJobDetail(job._id)}
+                    >
+                      Xem chi tiết công việc
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <Pagination page={page} totalPages={totalPages} onChange={setPage} />
+        </>
+      )}
     </div>
   );
 }

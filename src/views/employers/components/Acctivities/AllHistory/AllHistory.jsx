@@ -75,7 +75,7 @@ export default function AllHistory() {
           </div>
         ))}
 
-        {/* 🔹 Truyền props cho component Pagination */}
+        {/* Truyền props cho component Pagination */}
         <Pagination page={page} totalPages={totalPages} onChange={setPage} />
       </div>
     </div>

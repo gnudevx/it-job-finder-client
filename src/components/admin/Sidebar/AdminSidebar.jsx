@@ -18,7 +18,7 @@ export default function AdminSidebar({ isCollapsed }) {
   const navigate = useNavigate();
   const handleLogout = async () => {
     try {
-      await authService.logoutRequest(); // 👈 gọi API logout
+      await authService.logoutRequest(); // gọi API logout
     } catch (error) {
       console.error('Logout error:', error);
     }
@@ -26,7 +26,7 @@ export default function AdminSidebar({ isCollapsed }) {
     // Xóa token, điều hướng về login
     localStorage.removeItem('authToken');
     localStorage.removeItem('refreshToken');
-    navigate('/login'); // 👈 chuyển trang
+    navigate('/login'); // chuyển trang
   };
   const menu = [
     { to: '/admin/dashboard', label: 'Trang Chủ', icon: <LayoutDashboard /> },

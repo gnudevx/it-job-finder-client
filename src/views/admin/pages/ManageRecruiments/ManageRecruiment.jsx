@@ -23,7 +23,7 @@ const ManageRecruiment = () => {
       console.log('Lỗi lấy chi tiết job:', err);
     }
   };
-  // 🔹 Lấy danh sách job từ backend
+  // Lấy danh sách job từ backend
   const loadJobs = async () => {
     setLoading(true);
     try {
@@ -42,7 +42,7 @@ const ManageRecruiment = () => {
     loadJobs();
   }, []);
 
-  // 🔹 Cập nhật trạng thái job
+  // Cập nhật trạng thái job
   const handleStatusChange = async (id, newStatus) => {
     const oldJob = jobs.find((j) => j._id === id);
     if (!oldJob) return;
@@ -89,7 +89,7 @@ const ManageRecruiment = () => {
     setShowUndo(false);
     setUndoData(null);
   };
-  // 🔹 Lọc job theo trạng thái
+  // Lọc job theo trạng thái
   const filteredJobs =
     filter === 'All'
       ? jobs

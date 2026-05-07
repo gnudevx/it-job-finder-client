@@ -14,7 +14,7 @@ import { socket } from '@/services/socket.js'; //
 
 export default function ConnectPage() {
   const { user } = useAuth();
-  const role = user?.role; // 🔥
+  const role = user?.role; //
   const [candidates, setCandidates] = useState([]);
   const [conversationId, setConversationId] = useState(null);
   const [conversations, setConversations] = useState([]);
@@ -27,23 +27,23 @@ export default function ConnectPage() {
 
     socket.emit('join-conversation', conversationId);
   }, [conversationId]);
-  // ✅ Effect 1: Chỉ xử lý connect/disconnect theo user — KHÔNG có conversationId
+  // Effect 1: Chỉ xử lý connect/disconnect theo user — KHÔNG có conversationId
   useEffect(() => {
     if (!user?._id) return;
-    console.log(' 👤', user);
+    console.log(user);
     const handleConnect = () => {
       socket.emit('user:join', user._id);
-      console.log('✅ Joined personal room:', user._id);
+      console.log('Joined personal room:', user._id);
     };
 
     // Đăng ký listener TRƯỚC khi connect
     socket.on('connect', handleConnect);
     socket.connect();
 
-    // ✅ Nếu đã connected sẵn → emit luôn, không chờ event
+    // Nếu đã connected sẵn → emit luôn, không chờ event
     if (socket.connected) {
       socket.emit('user:join', user._id);
-      console.log('✅ Already connected, joined personal room:', user._id);
+      console.log('Already connected, joined personal room:', user._id);
     }
 
     return () => {
@@ -83,7 +83,7 @@ export default function ConnectPage() {
       const fetchEmployers = async () => {
         try {
           const res = await candidateService.getApplications();
-          setEmployers(res.data); // 👈 data bạn đã format ở backend
+          setEmployers(res.data); // data bạn đã format ở backend
         } catch (err) {
           console.error(err);
         }
@@ -103,7 +103,7 @@ export default function ConnectPage() {
         console.log('🔥 conversations từ API:', res);
         setConversations(res);
 
-        // 🔥 JOIN ALL ROOM
+        // JOIN ALL ROOM
         res.forEach((c) => {
           socket.emit('join-conversation', c.conversationId);
         });
@@ -130,7 +130,7 @@ export default function ConnectPage() {
         ...employerData,
         ...convo,
       });
-      // 🔥 QUAN TRỌNG
+      // QUAN TRỌNG
       await axiosClient.post('/messages/mark-as-read', {
         conversationId: convoId,
         role: role,
@@ -158,7 +158,7 @@ export default function ConnectPage() {
       const res = await employerService.getApplications();
       console.log('data: ', res);
       const mapped = res.data.map((item) => ({
-        id: item.candidate.candidateId, // 👈 QUAN TRỌNG
+        id: item.candidate.candidateId, // QUAN TRỌNG
         name: item.candidate.fullName,
         avatar: item.candidate.avatar,
         position: item.position,
@@ -182,7 +182,7 @@ export default function ConnectPage() {
 
     setConversationId(convoId);
 
-    // 🔥 QUAN TRỌNG
+    // QUAN TRỌNG
     try {
       await axiosClient.post('/messages/mark-as-read', {
         conversationId: convoId,
@@ -216,11 +216,11 @@ export default function ConnectPage() {
       prev
         .map((c) => {
           if (c.conversationId === conversationId) {
-            // ✅ FIX ở đây
+            // FIX ở đây
             return {
               ...c,
-              lastMessage: text, // 👉 nên update luôn
-              lastMessageTime: createdAt, // 👉 nên update luôn
+              lastMessage: text, // nên update luôn
+              lastMessageTime: createdAt, // nên update luôn
               unreadCount: {
                 ...c.unreadCount,
                 [role]: 0,
@@ -240,7 +240,7 @@ export default function ConnectPage() {
           candidates={conversations}
           selectedId={conversationId}
           onSelect={handleSelectCandidate}
-          role={role} // 👈 truyền xuống
+          role={role} // truyền xuống
           currentUser={user}
         />
       )}
@@ -249,7 +249,7 @@ export default function ConnectPage() {
           employers={conversations}
           selectedId={conversationId}
           onSelect={handleSelectEmployer}
-          role={role} // 👈 truyền xuống
+          role={role} // truyền xuống
           currentUser={user}
         />
       )}
@@ -266,7 +266,7 @@ export default function ConnectPage() {
         />
       </main>
 
-      {/* 👉 CHỈ employer mới có CandidateList */}
+      {/* CHỈ employer mới có CandidateList */}
       {role === 'employer' && (
         <CandidateList candidates={candidates} onSelect={handleSelectCandidate} />
       )}

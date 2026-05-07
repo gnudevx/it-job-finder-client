@@ -17,3 +17,7 @@ export const getResumes = async () => {
 export const deleteResume = async (id) => {
   return api.delete(`/api/resumes/${id}`);
 };
+
+export const recommendResume = async (id) => {
+  return api.post(`/api/resumes/${id}/recommend`);
+};

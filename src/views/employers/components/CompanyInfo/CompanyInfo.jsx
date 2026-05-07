@@ -61,7 +61,7 @@ export default function CompanyInfo() {
       </div>
 
       <div className={styles.form}>
-        {/* 🟩 MODE: CHỌN HOẶC TẠO */}
+        {/* MODE: CHỌN HOẶC TẠO */}
         {mode === 'choose' && (
           <>
             {/* Tabs */}
@@ -108,12 +108,12 @@ export default function CompanyInfo() {
           </>
         )}
 
-        {/* 🟦 MODE: DETAIL */}
+        {/* MODE: DETAIL */}
         {mode === 'detail' && selectedCompany && (
           <CompanyDetail company={selectedCompany} onEdit={() => setMode('edit')} />
         )}
 
-        {/* 🟧 MODE: EDIT */}
+        {/* MODE: EDIT */}
         {mode === 'edit' && (
           <CreateCompany
             selectedCompany={selectedCompany}

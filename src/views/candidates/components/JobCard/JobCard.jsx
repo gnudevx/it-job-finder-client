@@ -1,34 +1,47 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import styles from './JobCard.module.scss';
 import { Heart, MapPin, DollarSign, Calendar, Building2, Briefcase } from 'lucide-react';
 
-export default function JobCard({
+// Memoize formatSalary outside component
+const formatSalary = (salaryStr) => {
+  if (!salaryStr) return '';
+  return salaryStr.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+};
+
+const STATUS_LABELS = {
+  applied: 'Đã ứng tuyển',
+  reviewed: 'Phù hợp',
+  interviewing: 'Hẹn phỏng vấn',
+  hired: 'Nhận việc',
+  rejected: 'Chưa phù hợp',
+};
+
+const JOB_TYPES = {
+  fulltime: 'Toàn thời gian',
+  parttime: 'Bán thời gian',
+  internship: 'Thực tập sinh',
+  remote: 'Remote',
+};
+
+function JobCard({
   job,
   isFavorite,
   onToggleFavorite,
   onClick,
   showStatusAndUpdate,
 }) {
-  const STATUS_LABELS = {
-    applied: 'Đã ứng tuyển',
-    reviewed: 'Phù hợp',
-    interviewing: 'Hẹn phỏng vấn',
-    hired: 'Nhận việc',
-    rejected: 'Chưa phù hợp',
-  };
-
-  const JOB_TYPES = {
-    fulltime: 'Toàn thời gian',
-    parttime: 'Bán thời gian',
-    internship: 'Thực tập sinh',
-    remote: 'Remote',
-  };
-
-  const formatSalary = (salaryStr) => {
-    if (!salaryStr) return '';
-    return salaryStr.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-  };
+  // Memoize computed values to avoid recalculation
+  const formattedSalary = useMemo(() => formatSalary(job.salary), [job.salary]);
+  const jobTypeLabel = useMemo(() => JOB_TYPES[job.jobType] || 'Hình thức không xác định', [job.jobType]);
+  const createdDate = useMemo(() => {
+    return job.createdAt ? new Date(job.createdAt).toLocaleDateString('vi-VN') : '';
+  }, [job.createdAt]);
+  const updatedDate = useMemo(() => {
+    return job.updatedAt
+      ? new Date(job.updatedAt).toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })
+      : '';
+  }, [job.updatedAt]);
 
   return (
     <div className={styles.card} onClick={onClick}>
@@ -37,7 +50,12 @@ export default function JobCard({
       <div className={styles.header}>
         <div className={styles.headerLeft}>
           <div className={styles.logoWrapper}>
-            <img src={job.logo || '/logo192.png'} alt={job.company} className={styles.logo} />
+            <img
+              src={job.logo || '/logo192.png'}
+              alt={job.company}
+              className={styles.logo}
+              loading="lazy"
+            />
           </div>
 
           <div>
@@ -68,7 +86,7 @@ export default function JobCard({
       <div className={styles.body}>
         <div className={styles.salaryBox}>
           <DollarSign size={14} className={styles.salaryIcon} />
-          {formatSalary(job.salary)}
+          {formattedSalary}
         </div>
 
         <div className={styles.locationRow}>
@@ -78,7 +96,7 @@ export default function JobCard({
 
         <div className={styles.jobTypeRow}>
           <Briefcase size={16} className={styles.jobTypeIcon} />
-          {JOB_TYPES[job.jobType] || 'Hình thức không xác định'}
+          {jobTypeLabel}
         </div>
 
         {job.tags && (
@@ -98,12 +116,7 @@ export default function JobCard({
             Trạng thái: <strong>{STATUS_LABELS[job.status] || 'Không rõ'}</strong>
           </p>
           <p className={styles.updatedAt}>
-            Cập nhật:{' '}
-            <strong>
-              {new Date(job.updatedAt).toLocaleString('vi-VN', {
-                timeZone: 'Asia/Ho_Chi_Minh',
-              })}
-            </strong>
+            Cập nhật: <strong>{updatedDate}</strong>
           </p>
         </div>
       )}
@@ -113,7 +126,7 @@ export default function JobCard({
           <Calendar size={14} className={styles.dateIcon} />
           {job.createdAt && (
             <>
-              Ngày đăng: <strong>{new Date(job.createdAt).toLocaleDateString('vi-VN')}</strong>
+              Ngày đăng: <strong>{createdDate}</strong>
             </>
           )}
         </div>
@@ -123,6 +136,8 @@ export default function JobCard({
     </div>
   );
 }
+
+export default React.memo(JobCard);
 
 JobCard.propTypes = {
   job: PropTypes.object.isRequired,

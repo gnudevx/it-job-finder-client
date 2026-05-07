@@ -31,7 +31,7 @@ $transition: all 0.2s ease;
   background: linear-gradient(180deg, $primary 0%, $primary-dark 100%);
   color: $text-white;
 
-  transition: width 0.3s ease; // 🔥 bonus animation
+  transition: width 0.3s ease; // bonus animation
 }
 
 /* COLLAPSE */
@@ -123,7 +123,7 @@ $transition: all 0.2s ease;
 
   cursor: pointer;
 
-  border-top: 1px solid rgba(255, 255, 255, 0.2); // 🔥 bonus divider
+  border-top: 1px solid rgba(255, 255, 255, 0.2); // bonus divider
 
   &:hover {
     background: $logout-hover;

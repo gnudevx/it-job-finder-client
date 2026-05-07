@@ -36,7 +36,7 @@
   width: auto;
   object-fit: contain;
   filter: brightness(0) invert(1);
-  /* 👉 đảo màu logo sang trắng nếu logo gốc tối (dễ đọc trên nền #1f2c3e) */
+  /* đảo màu logo sang trắng nếu logo gốc tối (dễ đọc trên nền #1f2c3e) */
   transition: transform 0.2s ease;
 }
 

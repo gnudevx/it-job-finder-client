@@ -1,33 +1,57 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './HomePage.module.scss';
 
 import FilterBar from '@/views/candidates/components/FilterBar/FilterBar.jsx';
 import useFavorites from '@/hooks/useFavorites';
+import useDebounce from '@/hooks/useDebounce';
 import JobCard from '@/views/candidates/components/JobCard/JobCard.jsx';
 import { getAllJobs } from '@/api/jobService';
 import Pagination from '@/components/common/Pagination/Pagination';
 import NewsSection from '@/views/candidates/components/NewsSection/NewsSection.jsx';
 import { Search, MapPin } from 'lucide-react';
 
+// // Memoize normalizeText to avoid recalculation
+// const normalizeText = (str) => {
+//   if (!str) return '';
+//   return str
+//     .normalize('NFD')
+//     .replace(/[\u0300-\u036f]/g, '')
+//     .replace(/\./g, '')
+//     .replace(/\s+/g, '')
+//     .toLowerCase();
+// };
+
 export default function HomePage() {
   const authToken = localStorage.getItem('authToken');
   const { toggleFavorite, isFavorite } = useFavorites(authToken);
 
   const [search, setSearch] = useState('');
+  const debouncedSearch = useDebounce(search, 300); // Debounce search to 300ms
   const [filters, setFilters] = useState({});
   const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const jobsPerPage = 16;
 
   const navigate = useNavigate();
 
+  // Fetch jobs only once on component mount
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const data = await getAllJobs();
+        setLoading(true);
+        const params = {
+          q: debouncedSearch,
+          location: filters.location,
+          experience: filters.experience,
+          salaryLevel: filters.salaryLevel,
+          skills: filters.skills,
+          createDate: filters.createDate,
+        };
 
-        const formatted = data.data.map((job) => ({
+        const data = await getAllJobs(params);
+        const formatted = (data.data || data).map((job) => ({
           id: job._id,
           title: job.title,
           group: job.group_id?.name || 'Không rõ',
@@ -39,84 +63,28 @@ export default function HomePage() {
           jobType: job.jobType,
         }));
 
-        const sorted = formatted.sort((a, b) => {
-          const dateA = new Date(a.createdAt);
-          const dateB = new Date(b.createdAt);
-          return dateB - dateA;
-        });
-
-        setJobs(sorted);
+        formatted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        setJobs(formatted);
       } catch (error) {
         console.error('Error loading jobs:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchJobs();
-  }, []);
+  }, [debouncedSearch, filters.location, filters.experience, filters.salaryLevel, filters.skills, filters.createDate]);
 
-  const handleFilterChange = (type, value) => {
+  const handleFilterChange = useCallback((type, value) => {
     setFilters((prev) => ({ ...prev, [type]: value }));
     setCurrentPage(1);
-  };
+  }, []);
 
-  const normalizeText = (str) => {
-    return str
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .replace(/\./g, '')
-      .replace(/\s+/g, '')
-      .toLowerCase();
-  };
-
-  const handleSearchSubmit = () => {
-    setFilters({ ...filters, keyword: search });
+  const handleSearchSubmit = useCallback(() => {
     setCurrentPage(1);
-  };
+  }, []);
 
-  const filtered = jobs.filter((job) => {
-    const keyword = filters.keyword?.toLowerCase() || '';
-
-    const searchMatch =
-      (job.title?.toLowerCase() || '').includes(keyword) ||
-      (job.group?.toLowerCase() || '').includes(keyword) ||
-      (job.location?.toLowerCase() || '').includes(keyword);
-
-    if (!searchMatch) return false;
-
-    return Object.entries(filters).every(([key, value]) => {
-      if (!value || key === 'keyword') return true;
-
-      if (key === 'experience') {
-        return Number(job.experience) >= Number(value);
-      }
-
-      if (key === 'salaryLevel') {
-        const salary = parseInt(job.salary.replace(/\D/g, ''));
-        if (!salary) return true;
-        return salary >= Number(value);
-      }
-
-      if (key === 'location') {
-        return normalizeText(job.location).includes(normalizeText(value));
-      }
-
-      if (key === 'createDate') {
-        const jobDate = new Date(job.createdAt);
-        const now = new Date();
-        const diffDays = Math.floor((now - jobDate) / (1000 * 60 * 60 * 24));
-        return diffDays < Number(value);
-      }
-
-      if (key === 'skills') {
-        if (!Array.isArray(job.skills) || !job.skills.length) return false;
-        const jobSkillNames = job.skills.map((s) => s.name);
-        const selected = Array.isArray(value) ? value : [value];
-        return selected.every((skill) => jobSkillNames.includes(skill));
-      }
-
-      return true;
-    });
-  });
+  const filtered = jobs;
 
   const totalPages = Math.ceil(filtered.length / jobsPerPage);
   const indexOfLast = currentPage * jobsPerPage;
@@ -208,21 +176,27 @@ export default function HomePage() {
       {/* -------------- END HERO SECTION ---------------- */}
 
       <FilterBar onChange={handleFilterChange} />
-      {/* 
-            <div className={styles.totalJobs}>
-                Tổng số việc làm: {filtered.length}
-            </div> */}
 
       <div className={styles['jobs-grid']}>
-        {currentJobs.map((job) => (
-          <JobCard
-            key={job.id}
-            job={job}
-            isFavorite={isFavorite(job.id)}
-            onToggleFavorite={toggleFavorite}
-            onClick={() => navigate(`/job/${job.id}`)}
-          />
-        ))}
+        {loading ? (
+          <div style={{ textAlign: 'center', gridColumn: '1/-1', padding: '40px' }}>
+            <p>Đang tải danh sách công việc...</p>
+          </div>
+        ) : currentJobs.length === 0 ? (
+          <div style={{ textAlign: 'center', gridColumn: '1/-1', padding: '40px' }}>
+            <p>Không tìm thấy công việc nào.</p>
+          </div>
+        ) : (
+          currentJobs.map((job) => (
+            <JobCard
+              key={job.id}
+              job={job}
+              isFavorite={isFavorite(job.id)}
+              onToggleFavorite={toggleFavorite}
+              onClick={() => navigate(`/job/${job.id}`)}
+            />
+          ))
+        )}
       </div>
 
       <div className={styles['pagination']}>
