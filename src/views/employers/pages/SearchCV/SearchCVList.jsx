@@ -4,96 +4,179 @@ import axiosClient from '@/services/axiosClient.js';
 import CVCard from './CVCard';
 
 const SearchCVList = () => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [filters, setFilters] = useState({
+    q: '',
+    jobTitle: '',
+    level: '',
+    location: '',
+    education: '',
+    status: '',
+    experienceMin: '',
+    experienceMax: '',
+  });
   const [cvs, setCvs] = useState([]);
   const [selectedSkills, setSelectedSkills] = useState([]);
-  const [suggestions] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     const fetchCVs = async () => {
+      setLoading(true);
       try {
-        const res = await axiosClient.get('/employer/search-cv');
-        setCvs(res);
-        console.log(res);
+        const params = {
+          ...filters,
+          skills: selectedSkills.join(','),
+        };
+        const res = await axiosClient.get('/employer/search-cv', { params });
+        setCvs(res || []);
       } catch (err) {
-        console.error(err);
+        console.error('Error fetching CVs:', err);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchCVs();
-  }, []);
+  }, [filters, selectedSkills]);
+
   const allSkills = useMemo(() => {
     const skills = new Set();
-
     cvs.forEach((cv) => {
       if (Array.isArray(cv.skills)) {
         cv.skills.forEach((s) => skills.add(s));
       }
     });
-
     return Array.from(skills);
   }, [cvs]);
+
   const toggleSkill = (skill) => {
     setSelectedSkills((prev) =>
-      prev.includes(skill) ? prev.filter((s) => s !== skill) : [...prev, skill]
+      prev.includes(skill) ? prev.filter((s) => s !== skill) : [...prev, skill],
     );
   };
-  const filteredCVs = useMemo(() => {
-    const q = searchQuery.toLowerCase();
 
-    return cvs.filter((cv) => {
-      const skills = Array.isArray(cv.skills) ? cv.skills : [];
+  const updateFilter = (name, value) => {
+    setFilters((prev) => ({ ...prev, [name]: value }));
+  };
 
-      const matchesSearch =
-        cv.fullName?.toLowerCase().includes(q) ||
-        cv.title?.toLowerCase().includes(q) ||
-        skills.some((s) => s.toLowerCase().includes(q));
-
-      const matchesSkills =
-        selectedSkills.length === 0 || selectedSkills.some((s) => skills.includes(s));
-
-      return matchesSearch && matchesSkills;
+  const clearFilters = () => {
+    setFilters({
+      q: '',
+      jobTitle: '',
+      level: '',
+      location: '',
+      education: '',
+      status: '',
+      experienceMin: '',
+      experienceMax: '',
     });
-  }, [cvs, searchQuery, selectedSkills]);
+    setSelectedSkills([]);
+  };
+
   return (
     <div className={styles.layout}>
-      {/* SIDEBAR */}
       <aside className={styles.sidebar}>
-        <div className={styles.filterBox}>
-          <h4>Lọc theo Kỹ năng CV</h4>
-          <div className={styles.skills}>
-            {allSkills.map((skill) => (
-              <button
-                key={skill}
-                onClick={() => toggleSkill(skill)}
-                className={selectedSkills.includes(skill) ? styles.skillActive : styles.skill}
-              >
-                {skill}
-              </button>
-            ))}
+        <div className={styles.filterContainer}>
+          <h3 className={styles.title}>Bộ lọc</h3>
+
+          {/* Search */}
+          <div className={styles.section}>
+            <input
+              className={styles.searchInput}
+              placeholder="Tìm CV..."
+              value={filters.q}
+              onChange={(e) => updateFilter('q', e.target.value)}
+            />
           </div>
+
+          {/* Thông tin cơ bản */}
+          <div className={styles.section}>
+            <h4>Thông tin</h4>
+
+            <div className={styles.field}>
+              <label>Tiêu đề</label>
+              <input
+                value={filters.jobTitle}
+                onChange={(e) => updateFilter('jobTitle', e.target.value)}
+              />
+            </div>
+
+            <div className={styles.field}>
+              <label>Cấp độ</label>
+              <input
+                value={filters.level}
+                onChange={(e) => updateFilter('level', e.target.value)}
+              />
+            </div>
+
+            <div className={styles.field}>
+              <label>Địa điểm</label>
+              <input
+                value={filters.location}
+                onChange={(e) => updateFilter('location', e.target.value)}
+              />
+            </div>
+          </div>
+
+          {/* Kinh nghiệm */}
+          <div className={styles.section}>
+            <h4>Kinh nghiệm</h4>
+
+            <div className={styles.fieldRow}>
+              <input
+                type="number"
+                placeholder="Từ (năm)"
+                value={filters.experienceMin}
+                onChange={(e) => updateFilter('experienceMin', e.target.value)}
+              />
+              <input
+                type="number"
+                placeholder="Đến (năm)"
+                value={filters.experienceMax}
+                onChange={(e) => updateFilter('experienceMax', e.target.value)}
+              />
+            </div>
+          </div>
+
+          {/* Skills */}
+          <div className={styles.section}>
+            <h4>Kỹ năng</h4>
+
+            <div className={styles.skills}>
+              {allSkills.map((skill) => (
+                <button
+                  key={skill}
+                  onClick={() => toggleSkill(skill)}
+                  className={
+                    selectedSkills.includes(skill)
+                      ? styles.skillActive
+                      : styles.skill
+                  }
+                  type="button"
+                >
+                  {skill}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <button className={styles.clearButton} onClick={clearFilters}>
+            Xóa bộ lọc
+          </button>
         </div>
       </aside>
-      <section className={styles.content}>
-        <input
-          className={styles.searchInput}
-          placeholder="Tìm kiếm CV theo kỹ năng, vị trí hoặc từ khóa..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
 
-        {suggestions.length > 0 && (
-          <div className={styles.suggestions}>
-            {suggestions.map((s, i) => (
-              <button key={i} onClick={() => setSearchQuery(s)}>
-                {s}
-              </button>
+      <section className={styles.content}>
+        {loading ? (
+          <p>Đang tải CV...</p>
+        ) : cvs.length === 0 ? (
+          <p>Không tìm thấy CV phù hợp.</p>
+        ) : (
+          <div className={styles.list}>
+            {cvs.map((cv) => (
+              <CVCard key={cv.id} cv={cv} />
             ))}
           </div>
         )}
-
-        {filteredCVs.map((cv) => (
-          <CVCard key={cv.id} cv={cv} />
-        ))}
       </section>
     </div>
   );
