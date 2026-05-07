@@ -8,7 +8,6 @@ export default function GuestLayout() {
   return (
     <div className={styles['layout-container']}>
       <HeaderWrapper />
-
       <div className={styles['content-wrapper']}>
         <div className={styles['main-content']}>
           <div className={styles['page-container']}>
