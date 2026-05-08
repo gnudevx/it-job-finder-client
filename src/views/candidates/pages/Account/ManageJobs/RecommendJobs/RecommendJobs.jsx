@@ -122,10 +122,45 @@ export default function RecommendJobs() {
                       <span className={styles.label}>Lương:</span>
                       <span>{job.salary_raw || 'Thoả thuận'}</span>
                     </div>
-                    <div className={styles.infoRow}>
-                      <span className={styles.label}>Địa điểm:</span>
-                      <span>{job.location?.name || 'Không rõ'}</span>
-                    </div>
+
+                    {/* Thông tin kinh nghiệm */}
+                    {recommendation?.cv_experience_years != null && (
+                      <div className={styles.infoRow}>
+                        <span className={styles.label}>Kinh nghiệm CV:</span>
+                        <span>
+                          {recommendation.cv_experience_years > 0
+                            ? `${recommendation.cv_experience_years} năm`
+                            : 'Chưa có kinh nghiệm'}
+                        </span>
+                      </div>
+                    )}
+                    {recommendation?.experience_required != null && (
+                      <div className={styles.infoRow}>
+                        <span className={styles.label}>Yêu cầu:</span>
+                        <span className={recommendation.experience_match === true ? styles.matchYes : recommendation.experience_match === false ? styles.matchNo : ''}>
+                          {recommendation.experience_required} năm
+                          {recommendation.experience_match === true && ' ✓'}
+                          {recommendation.experience_match === false && ' ⚠'}
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Thông tin địa điểm */}
+                    {recommendation?.cv_location && (
+                      <div className={styles.infoRow}>
+                        <span className={styles.label}>Địa chỉ ứng viên:</span>
+                        <span>{recommendation.cv_location}</span>
+                      </div>
+                    )}
+                    {recommendation?.job_location_text && (
+                      <div className={styles.infoRow}>
+                        <span className={styles.label}>Địa điểm công việc:</span>
+                        <span className={recommendation.location_match ? styles.matchYes : ''}>
+                          {recommendation.job_location_text}
+                          {recommendation.location_match && ' ✓'}
+                        </span>
+                      </div>
+                    )}
 
                     {recommendation?.reason && (
                       <div className={styles.reason}>
