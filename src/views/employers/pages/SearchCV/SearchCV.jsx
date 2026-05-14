@@ -2,6 +2,7 @@ import { NavLink, Routes, Route } from 'react-router-dom';
 import styles from './SearchCV.module.scss';
 import SearchCVList from './SearchCVList.jsx';
 import AIRecommendationBox from './AIRecommendationBox.jsx';
+import ModuleBased_Recommend from './ModuleBased_Recommend.jsx';
 
 const SearchCV = () => {
   return (
@@ -26,6 +27,12 @@ const SearchCV = () => {
             >
               Gợi ý CV (AI)
             </NavLink>
+            <NavLink
+              to="module"
+              className={({ isActive }) => `${styles.tab} ${isActive ? styles.activeTab : ''}`}
+            >
+              Gợi ý CV (Module)
+            </NavLink>
           </div>
         </div>
       </nav>
@@ -34,6 +41,7 @@ const SearchCV = () => {
         <Routes>
           <Route index element={<SearchCVList />} />
           <Route path="ai" element={<AIRecommendationBox />} />
+          <Route path="module" element={<ModuleBased_Recommend />} />
         </Routes>
       </main>
     </div>

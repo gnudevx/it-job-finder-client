@@ -17,7 +17,7 @@ export default function CandidateLayout() {
         </div>
       </div>
       <Footer />
-       <ChatBotWidget />
+      <ChatBotWidget />
     </div>
   );
 }

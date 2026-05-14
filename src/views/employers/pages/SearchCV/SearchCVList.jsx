@@ -50,7 +50,7 @@ const SearchCVList = () => {
 
   const toggleSkill = (skill) => {
     setSelectedSkills((prev) =>
-      prev.includes(skill) ? prev.filter((s) => s !== skill) : [...prev, skill],
+      prev.includes(skill) ? prev.filter((s) => s !== skill) : [...prev, skill]
     );
   };
 
@@ -146,11 +146,7 @@ const SearchCVList = () => {
                 <button
                   key={skill}
                   onClick={() => toggleSkill(skill)}
-                  className={
-                    selectedSkills.includes(skill)
-                      ? styles.skillActive
-                      : styles.skill
-                  }
+                  className={selectedSkills.includes(skill) ? styles.skillActive : styles.skill}
                   type="button"
                 >
                   {skill}

@@ -22,4 +22,11 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
   row-gap: 50px;
+  margin-bottom: 50px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
 }

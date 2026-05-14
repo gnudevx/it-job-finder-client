@@ -103,7 +103,9 @@ export default function AppliedJobs() {
       <div className={styles['jobs-grid']}>
         {filtered.length === 0 && (
           <p style={{ gridColumn: '1/-1', textAlign: 'center' }}>
-            {jobs.length === 0 ? 'Bạn chưa ứng tuyển công việc nào.' : 'Không tìm thấy công việc nào.'}
+            {jobs.length === 0
+              ? 'Bạn chưa ứng tuyển công việc nào.'
+              : 'Không tìm thấy công việc nào.'}
           </p>
         )}
 
@@ -121,11 +123,13 @@ export default function AppliedJobs() {
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <Pagination
-          page={currentPage}
-          totalPages={totalPages}
-          onChange={(newPage) => setCurrentPage(newPage)}
-        />
+        <div className={styles.pagination}>
+          <Pagination
+            page={currentPage}
+            totalPages={totalPages}
+            onChange={(newPage) => setCurrentPage(newPage)}
+          />
+        </div>
       )}
     </div>
   );

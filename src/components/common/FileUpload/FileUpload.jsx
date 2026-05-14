@@ -16,6 +16,8 @@ export default function FileUpload({ files, onChange, accept, note }) {
       'image/png',
       'image/bmp',
       'application/pdf',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
+      'application/msword', // .doc
     ];
 
     let newFiles = [...files];

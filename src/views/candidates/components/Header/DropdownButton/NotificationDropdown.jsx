@@ -24,11 +24,7 @@ export const NotificationDropdown = () => {
   const handleMarkRead = async (id) => {
     await notificationApiService.candidateMarkRead(id);
 
-    setNotifications((prev) =>
-      prev.map((n) =>
-        n._id === id ? { ...n, isRead: true } : n
-      )
-    );
+    setNotifications((prev) => prev.map((n) => (n._id === id ? { ...n, isRead: true } : n)));
 
     setUnreadCount((prev) => Math.max(prev - 1, 0));
   };
@@ -53,10 +49,10 @@ export const NotificationDropdown = () => {
     const handleClick = (e) => {
       if (ref.current && !ref.current.contains(e.target)) setOpen(false);
     };
-      document.addEventListener('mousedown', handleClick);
-      return () => document.removeEventListener('mousedown', handleClick);
-    }, []);
-  
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, []);
+
   useEffect(() => {
     socket.connect();
 
@@ -89,10 +85,7 @@ export const NotificationDropdown = () => {
         <div className={styles.panel}>
           <div className={styles.header}>
             <div className={styles.title}>Thông báo</div>
-            <button
-              className={styles.markAll}
-              onClick={handleMarkAllRead}
-            >
+            <button className={styles.markAll} onClick={handleMarkAllRead}>
               Đánh dấu tất cả là đã đọc
             </button>
           </div>

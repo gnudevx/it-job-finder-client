@@ -12,7 +12,8 @@ export default function ChatBotWidget() {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: 'Xin chào! Tôi có thể giúp bạn:\n• 📄 Phân tích & cải thiện CV\n• 🎯 Luyện phỏng vấn kỹ thuật IT\n• 💡 Tư vấn career path\n\nHãy gửi CV của bạn hoặc bắt đầu chat!',
+      content:
+        'Xin chào! Tôi có thể giúp bạn:\n• 📄 Phân tích & cải thiện CV\n• 🎯 Luyện phỏng vấn kỹ thuật IT\n• 💡 Tư vấn career path\n\nHãy gửi CV của bạn hoặc bắt đầu chat!',
     },
   ]);
   const [input, setInput] = useState('');
@@ -36,10 +37,7 @@ export default function ChatBotWidget() {
     if (!file) return;
 
     // Hiển thị thông báo đang xử lý
-    setMessages((prev) => [
-      ...prev,
-      { role: 'user', content: `📎 Đã tải lên: ${file.name}` },
-    ]);
+    setMessages((prev) => [...prev, { role: 'user', content: `📎 Đã tải lên: ${file.name}` }]);
 
     // Đọc file PDF as base64 để gửi lên API
     const reader = new FileReader();
@@ -79,10 +77,7 @@ export default function ChatBotWidget() {
         const data = await response.json();
         const assistantMsg = data.content?.[0]?.text || 'Không thể phân tích CV lúc này.';
         setCvText('CV đã được tải lên');
-        setMessages((prev) => [
-          ...prev,
-          { role: 'assistant', content: assistantMsg },
-        ]);
+        setMessages((prev) => [...prev, { role: 'assistant', content: assistantMsg }]);
       } catch (err) {
         setMessages((prev) => [
           ...prev,
@@ -120,7 +115,9 @@ export default function ChatBotWidget() {
         body: JSON.stringify({
           model: 'claude-sonnet-4-20250514',
           max_tokens: 1000,
-          system: SYSTEM_PROMPT + (cvText ? `\n\nNgười dùng đã upload CV. Hãy dựa vào đó để trả lời.` : ''),
+          system:
+            SYSTEM_PROMPT +
+            (cvText ? `\n\nNgười dùng đã upload CV. Hãy dựa vào đó để trả lời.` : ''),
           messages: apiMessages,
         }),
       });
@@ -197,7 +194,9 @@ export default function ChatBotWidget() {
             {isLoading && (
               <div className={`${styles.bubble} ${styles.bubbleBot}`}>
                 <div className={styles.typing}>
-                  <span /><span /><span />
+                  <span />
+                  <span />
+                  <span />
                 </div>
               </div>
             )}
@@ -224,11 +223,7 @@ export default function ChatBotWidget() {
           </div>
 
           {/* Upload CV bar */}
-          {cvText && (
-            <div className={styles.cvBadge}>
-              📄 {cvText} — sẵn sàng để phân tích
-            </div>
-          )}
+          {cvText && <div className={styles.cvBadge}>📄 {cvText} — sẵn sàng để phân tích</div>}
 
           {/* Input */}
           <div className={styles.inputArea}>

@@ -12,7 +12,7 @@ export default function SavedJobs() {
   const [jobs, setJobs] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const jobsPerPage = 12;
+  const jobsPerPage = 6;
 
   useEffect(() => {
     const fetchFavorites = async () => {

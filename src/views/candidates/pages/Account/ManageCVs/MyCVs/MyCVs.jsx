@@ -25,8 +25,14 @@ export default function MyCVs() {
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    if (file.type !== 'application/pdf') {
-      alert('Vui lòng chọn file PDF hợp lệ!');
+
+    const allowedTypes = [
+      'application/pdf',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'application/msword',
+    ];
+    if (!allowedTypes.includes(file.type)) {
+      alert('Vui lòng chọn file PDF hoặc DOCX hợp lệ!');
       return;
     }
 
@@ -76,7 +82,7 @@ export default function MyCVs() {
 
       <div className={styles.card}>
         <div className={styles.cardHeader}>
-          <h3>CV đã tải lên (PDF)</h3>
+          <h3>CV đã tải lên (PDF/DOCX)</h3>
 
           <button className={styles.uploadBtn} onClick={handleUploadClick}>
             <Upload size={18} /> Tải CV lên
@@ -85,7 +91,7 @@ export default function MyCVs() {
           <input
             type="file"
             ref={fileInputRef}
-            accept="application/pdf"
+            accept=".pdf,.docx,.doc"
             style={{ display: 'none' }}
             onChange={handleFileChange}
           />
