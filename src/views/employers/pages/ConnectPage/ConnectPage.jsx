@@ -92,7 +92,6 @@ export default function ConnectPage() {
       fetchEmployers();
     }
   }, [role]);
-
   useEffect(() => {
     const fetchConversations = async () => {
       try {
@@ -111,10 +110,8 @@ export default function ConnectPage() {
         console.error(err);
       }
     };
-
     if (role) fetchConversations();
   }, [role]);
-
   const handleSelectEmployer = async (employerId, conversationId, jobId) => {
     try {
       let convoId = conversationId;

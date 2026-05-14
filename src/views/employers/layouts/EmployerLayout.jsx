@@ -9,7 +9,6 @@ export default function EmployerLayout() {
     <div className={styles['layout-container']}>
       {/* Header nằm trên cùng */}
       <Header onToggleSidebar={() => setIsCollapsed((prev) => !prev)} />
-
       <div className={styles['content-wrapper']}>
         {/* Sidebar bên trái */}
         <div className={`${styles['sidebar']} ${isCollapsed ? styles['collapsed'] : ''}`}>
