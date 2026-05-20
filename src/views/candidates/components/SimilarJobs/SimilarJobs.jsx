@@ -17,9 +17,7 @@ export default function SimilarJobs({ jobId }) {
 
     const fetchRecommend = async () => {
       try {
-        const res = await axios.get(
-          `http://localhost:5000/api/recommend/jobs/${jobId}`
-        );
+        const res = await axios.get(`http://localhost:5000/api/recommend/jobs/${jobId}`);
 
         if (res.data.success) {
           // map dữ liệu về đúng format JobCard

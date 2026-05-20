@@ -73,7 +73,14 @@ export default function HomePage() {
     };
 
     fetchJobs();
-  }, [debouncedSearch, filters.location, filters.experience, filters.salaryLevel, filters.skills, filters.createDate]);
+  }, [
+    debouncedSearch,
+    filters.location,
+    filters.experience,
+    filters.salaryLevel,
+    filters.skills,
+    filters.createDate,
+  ]);
 
   const handleFilterChange = useCallback((type, value) => {
     setFilters((prev) => ({ ...prev, [type]: value }));

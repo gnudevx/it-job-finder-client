@@ -24,16 +24,13 @@ const JOB_TYPES = {
   remote: 'Remote',
 };
 
-function JobCard({
-  job,
-  isFavorite,
-  onToggleFavorite,
-  onClick,
-  showStatusAndUpdate,
-}) {
+function JobCard({ job, isFavorite, onToggleFavorite, onClick, showStatusAndUpdate }) {
   // Memoize computed values to avoid recalculation
   const formattedSalary = useMemo(() => formatSalary(job.salary), [job.salary]);
-  const jobTypeLabel = useMemo(() => JOB_TYPES[job.jobType] || 'Hình thức không xác định', [job.jobType]);
+  const jobTypeLabel = useMemo(
+    () => JOB_TYPES[job.jobType] || 'Hình thức không xác định',
+    [job.jobType]
+  );
   const createdDate = useMemo(() => {
     return job.createdAt ? new Date(job.createdAt).toLocaleDateString('vi-VN') : '';
   }, [job.createdAt]);

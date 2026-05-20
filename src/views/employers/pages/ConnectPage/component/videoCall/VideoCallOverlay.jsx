@@ -8,13 +8,7 @@ const ICE_SERVERS = {
   iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
 };
 
-export default function VideoCallOverlay({
-  conversationId,
-  chatUser,
-  role,
-  onClose,
-  onCallEnded,
-}) {
+export default function VideoCallOverlay({ conversationId, chatUser, role, onClose, onCallEnded }) {
   const [status, setStatus] = useState('connecting'); // connecting | in-call | ended | declined | missed
   const [isMuted, setIsMuted] = useState(false);
   const [isCamOff, setIsCamOff] = useState(false);
@@ -33,12 +27,12 @@ export default function VideoCallOverlay({
   const cleanup = useCallback(() => {
     clearInterval(timerRef.current);
     if (pcRef.current) {
-        pcRef.current.close();
-        pcRef.current = null; // THÊM DÒNG NÀY
+      pcRef.current.close();
+      pcRef.current = null; // THÊM DÒNG NÀY
     }
     localStreamRef.current?.getTracks().forEach((t) => t.stop());
     localStreamRef.current = null;
-    }, []);
+  }, []);
 
   // ── Kết thúc cuộc gọi ─────────────────────────────────────────────────────
   const endCall = useCallback(
@@ -53,138 +47,138 @@ export default function VideoCallOverlay({
 
   // ── Khởi tạo WebRTC ───────────────────────────────────────────────────────
   useEffect(() => {
-  let isCancelled = false;
+    let isCancelled = false;
 
-  const init = async () => {
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-    if (isCancelled) {
-      stream.getTracks().forEach((t) => t.stop());
-      return;
-    }
+    const init = async () => {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+      if (isCancelled) {
+        stream.getTracks().forEach((t) => t.stop());
+        return;
+      }
 
-    localStreamRef.current = stream;
-    if (localVideoRef.current) localVideoRef.current.srcObject = stream;
+      localStreamRef.current = stream;
+      if (localVideoRef.current) localVideoRef.current.srcObject = stream;
 
-    const pc = new RTCPeerConnection(ICE_SERVERS);
-    pcRef.current = pc;
-    stream.getTracks().forEach((track) => pc.addTrack(track, stream));
-    console.log(stream.getAudioTracks());
-    pc.ontrack = ({ streams }) => {
-  const remoteStream = streams[0];
+      const pc = new RTCPeerConnection(ICE_SERVERS);
+      pcRef.current = pc;
+      stream.getTracks().forEach((track) => pc.addTrack(track, stream));
+      console.log(stream.getAudioTracks());
+      pc.ontrack = ({ streams }) => {
+        const remoteStream = streams[0];
 
-  console.log('REMOTE STREAM:', remoteStream);
-  console.log('AUDIO TRACKS:', remoteStream.getAudioTracks());
+        console.log('REMOTE STREAM:', remoteStream);
+        console.log('AUDIO TRACKS:', remoteStream.getAudioTracks());
 
-  const video = remoteVideoRef.current;
+        const video = remoteVideoRef.current;
 
-  if (video) {
-    video.srcObject = remoteStream;
+        if (video) {
+          video.srcObject = remoteStream;
 
-    video.onloadedmetadata = () => {
-      video.play().catch(err => console.log('Play error:', err));
+          video.onloadedmetadata = () => {
+            video.play().catch((err) => console.log('Play error:', err));
+          };
+        }
+
+        setStatus('in-call');
+        startTimeRef.current = Date.now();
+        timerRef.current = setInterval(() => {
+          setCallDuration(Math.floor((Date.now() - startTimeRef.current) / 1000));
+        }, 1000);
+      };
+
+      pc.onicecandidate = ({ candidate }) => {
+        if (candidate) socket.emit('call:ice-candidate', { conversationId, candidate });
+      };
+
+      // ✅ Caller KHÔNG gửi offer ở đây nữa
+      // Sẽ gửi khi nhận được 'call:accepted' từ server
     };
-  }
 
-  setStatus('in-call');
-  startTimeRef.current = Date.now();
-  timerRef.current = setInterval(() => {
-    setCallDuration(Math.floor((Date.now() - startTimeRef.current) / 1000));
-  }, 1000);
-};
-    
-    pc.onicecandidate = ({ candidate }) => {
-      if (candidate) socket.emit('call:ice-candidate', { conversationId, candidate });
+    const handleOffer = async ({ sdp }) => {
+      let waited = 0;
+      while (!pcRef.current && waited < 3000) {
+        await new Promise((r) => setTimeout(r, 50));
+        waited += 50;
+      }
+      const pc = pcRef.current;
+      if (!pc || pc.signalingState === 'closed') return;
+
+      await pc.setRemoteDescription(new RTCSessionDescription(sdp));
+      const answer = await pc.createAnswer();
+      await pc.setLocalDescription(answer);
+      socket.emit('call:answer', { conversationId, sdp: answer });
     };
 
-    // ✅ Caller KHÔNG gửi offer ở đây nữa
-    // Sẽ gửi khi nhận được 'call:accepted' từ server
-  };
+    const handleAnswer = async ({ sdp }) => {
+      const pc = pcRef.current;
+      if (!pc || pc.signalingState === 'closed' || pc.signalingState === 'stable') return;
+      await pc.setRemoteDescription(new RTCSessionDescription(sdp));
+    };
 
-  const handleOffer = async ({ sdp }) => {
-    let waited = 0;
-    while (!pcRef.current && waited < 3000) {
-      await new Promise((r) => setTimeout(r, 50));
-      waited += 50;
-    }
-    const pc = pcRef.current;
-    if (!pc || pc.signalingState === 'closed') return;
+    const handleIce = async ({ candidate }) => {
+      const pc = pcRef.current;
+      if (!pc || pc.signalingState === 'closed') return;
+      try {
+        await pc.addIceCandidate(new RTCIceCandidate(candidate));
+      } catch (e) {
+        console.error('ICE error', e);
+      }
+    };
 
-    await pc.setRemoteDescription(new RTCSessionDescription(sdp));
-    const answer = await pc.createAnswer();
-    await pc.setLocalDescription(answer);
-    socket.emit('call:answer', { conversationId, sdp: answer });
-  };
+    // ✅ KEY FIX: Caller nhận 'call:accepted' → lúc này callee đã mount xong → gửi offer
+    const handleCallAccepted = async () => {
+      if (!isCaller) return; // chỉ caller xử lý
+      const pc = pcRef.current;
+      if (!pc || pc.signalingState === 'closed') return;
 
-  const handleAnswer = async ({ sdp }) => {
-    const pc = pcRef.current;
-    if (!pc || pc.signalingState === 'closed' || pc.signalingState === 'stable') return;
-    await pc.setRemoteDescription(new RTCSessionDescription(sdp));
-  };
+      const offer = await pc.createOffer();
+      await pc.setLocalDescription(offer);
+      socket.emit('call:offer', { conversationId, sdp: offer });
+    };
 
-  const handleIce = async ({ candidate }) => {
-    const pc = pcRef.current;
-    if (!pc || pc.signalingState === 'closed') return;
-    try {
-      await pc.addIceCandidate(new RTCIceCandidate(candidate));
-    } catch (e) {
-      console.error('ICE error', e);
-    }
-  };
+    const handleEnded = ({ message }) => {
+      onCallEnded?.(message);
+      cleanup();
+      setStatus('ended');
+      setTimeout(onClose, 1500);
+    };
 
-  // ✅ KEY FIX: Caller nhận 'call:accepted' → lúc này callee đã mount xong → gửi offer
-  const handleCallAccepted = async () => {
-    if (!isCaller) return; // chỉ caller xử lý
-    const pc = pcRef.current;
-    if (!pc || pc.signalingState === 'closed') return;
+    const handleDeclined = ({ message }) => {
+      onCallEnded?.(message);
+      cleanup();
+      setStatus('declined');
+      setTimeout(onClose, 2000);
+    };
 
-    const offer = await pc.createOffer();
-    await pc.setLocalDescription(offer);
-    socket.emit('call:offer', { conversationId, sdp: offer });
-  };
+    const handleMissed = ({ message }) => {
+      onCallEnded?.(message);
+      cleanup();
+      setStatus('missed');
+      setTimeout(onClose, 2000);
+    };
 
-  const handleEnded = ({ message }) => {
-    onCallEnded?.(message);
-    cleanup();
-    setStatus('ended');
-    setTimeout(onClose, 1500);
-  };
+    init().catch(console.error);
 
-  const handleDeclined = ({ message }) => {
-    onCallEnded?.(message);
-    cleanup();
-    setStatus('declined');
-    setTimeout(onClose, 2000);
-  };
+    socket.on('call:accepted', handleCallAccepted); // THÊM
+    socket.on('call:offer', handleOffer);
+    socket.on('call:answer', handleAnswer);
+    socket.on('call:ice-candidate', handleIce);
+    socket.on('call:ended', handleEnded);
+    socket.on('call:declined', handleDeclined);
+    socket.on('call:missed', handleMissed);
 
-  const handleMissed = ({ message }) => {
-    onCallEnded?.(message);
-    cleanup();
-    setStatus('missed');
-    setTimeout(onClose, 2000);
-  };
-
-  init().catch(console.error);
-
-  socket.on('call:accepted', handleCallAccepted); // THÊM
-  socket.on('call:offer', handleOffer);
-  socket.on('call:answer', handleAnswer);
-  socket.on('call:ice-candidate', handleIce);
-  socket.on('call:ended', handleEnded);
-  socket.on('call:declined', handleDeclined);
-  socket.on('call:missed', handleMissed);
-
-  return () => {
-    isCancelled = true;
-    socket.off('call:accepted', handleCallAccepted); // THÊM
-    socket.off('call:offer', handleOffer);
-    socket.off('call:answer', handleAnswer);
-    socket.off('call:ice-candidate', handleIce);
-    socket.off('call:ended', handleEnded);
-    socket.off('call:declined', handleDeclined);
-    socket.off('call:missed', handleMissed);
-    cleanup();
-  };
-}, [conversationId]);
+    return () => {
+      isCancelled = true;
+      socket.off('call:accepted', handleCallAccepted); // THÊM
+      socket.off('call:offer', handleOffer);
+      socket.off('call:answer', handleAnswer);
+      socket.off('call:ice-candidate', handleIce);
+      socket.off('call:ended', handleEnded);
+      socket.off('call:declined', handleDeclined);
+      socket.off('call:missed', handleMissed);
+      cleanup();
+    };
+  }, [conversationId]);
 
   const toggleMic = () => {
     const track = localStreamRef.current?.getAudioTracks()[0];

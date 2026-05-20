@@ -77,18 +77,14 @@ export default function RecommendJobs() {
 
       <h3 className={styles.sectionTitle}>Kỹ năng tìm thấy:</h3>
       <div className={styles.skills}>
-        {results.skills_found.length > 0 
-          ? results.skills_found.join(', ') 
+        {results.skills_found.length > 0
+          ? results.skills_found.join(', ')
           : 'Không tìm thấy kỹ năng'}
       </div>
 
-      {results.summary && (
-        <p className={styles.summary}>{results.summary}</p>
-      )}
+      {results.summary && <p className={styles.summary}>{results.summary}</p>}
 
-      <h3 className={styles.sectionTitle}>
-        Danh sách việc làm phù hợp ({totalJobs})
-      </h3>
+      <h3 className={styles.sectionTitle}>Danh sách việc làm phù hợp ({totalJobs})</h3>
 
       {totalJobs === 0 ? (
         <p className={styles.noResults}>Không tìm thấy việc làm phù hợp với CV của bạn.</p>
@@ -96,18 +92,14 @@ export default function RecommendJobs() {
         <>
           <div className={styles.jobList}>
             {pageJobsDetail.map((job, idx) => {
-              const recommendation = results.recommendations[
-                (page - 1) * limit + idx
-              ];
-              
+              const recommendation = results.recommendations[(page - 1) * limit + idx];
+
               return (
                 <div key={job._id} className={styles.recommendationCard}>
                   <div className={styles.cardHeader}>
                     <div className={styles.jobInfo}>
                       <h4 className={styles.jobTitle}>{job.title}</h4>
-                      <p className={styles.company}>
-                        {job.company || 'Công ty đang cập nhật'}
-                      </p>
+                      <p className={styles.company}>{job.company || 'Công ty đang cập nhật'}</p>
                     </div>
                     <div className={styles.matchScore}>
                       <div className={styles.percentage}>
@@ -122,10 +114,53 @@ export default function RecommendJobs() {
                       <span className={styles.label}>Lương:</span>
                       <span>{job.salary_raw || 'Thoả thuận'}</span>
                     </div>
-                    <div className={styles.infoRow}>
-                      <span className={styles.label}>Địa điểm:</span>
-                      <span>{job.location?.name || 'Không rõ'}</span>
-                    </div>
+
+                    {/* Thông tin kinh nghiệm */}
+                    {recommendation?.cv_experience_years != null && (
+                      <div className={styles.infoRow}>
+                        <span className={styles.label}>Kinh nghiệm CV:</span>
+                        <span>
+                          {recommendation.cv_experience_years > 0
+                            ? `${recommendation.cv_experience_years} năm`
+                            : 'Chưa có kinh nghiệm'}
+                        </span>
+                      </div>
+                    )}
+                    {recommendation?.experience_required != null && (
+                      <div className={styles.infoRow}>
+                        <span className={styles.label}>Yêu cầu:</span>
+                        <span
+                          className={
+                            recommendation.experience_match === true
+                              ? styles.matchYes
+                              : recommendation.experience_match === false
+                                ? styles.matchNo
+                                : ''
+                          }
+                        >
+                          {recommendation.experience_required} năm
+                          {recommendation.experience_match === true && ' ✓'}
+                          {recommendation.experience_match === false && ' ⚠'}
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Thông tin địa điểm */}
+                    {recommendation?.cv_location && (
+                      <div className={styles.infoRow}>
+                        <span className={styles.label}>Địa chỉ ứng viên:</span>
+                        <span>{recommendation.cv_location}</span>
+                      </div>
+                    )}
+                    {recommendation?.job_location_text && (
+                      <div className={styles.infoRow}>
+                        <span className={styles.label}>Địa điểm công việc:</span>
+                        <span className={recommendation.location_match ? styles.matchYes : ''}>
+                          {recommendation.job_location_text}
+                          {recommendation.location_match && ' ✓'}
+                        </span>
+                      </div>
+                    )}
 
                     {recommendation?.reason && (
                       <div className={styles.reason}>
@@ -169,10 +204,7 @@ export default function RecommendJobs() {
                   </div>
 
                   <div className={styles.cardFooter}>
-                    <button
-                      className={styles.viewBtn}
-                      onClick={() => goJobDetail(job._id)}
-                    >
+                    <button className={styles.viewBtn} onClick={() => goJobDetail(job._id)}>
                       Xem chi tiết công việc
                     </button>
                   </div>

@@ -3,22 +3,34 @@ import styles from './CVCard.module.scss';
 import PropTypes from 'prop-types';
 import axiosClient from '@/services/axiosClient.js';
 
-const CVCard = ({ cv, isRecommended }) => {
+const CVCard = ({ cv, isRecommended, jobTitle }) => {
+  const resumeId = cv.resumeId || cv.id || cv._id;
+  const candidateId =
+    typeof cv.candidateId === 'string'
+      ? cv.candidateId
+      : cv.candidateId?._id || cv.candidateId?.id || '';
+  const displayName = cv.candidateName || cv.fullName || cv.fileName || 'Ứng viên';
+  const subtitle = cv.jobTitle || jobTitle || cv.title || 'Công việc CV ứng tuyển';
+  const downloadName = cv.fileName || displayName || 'CV';
+  const matchScorePercent = cv.matchScore
+    ? (cv.matchScore > 1 ? cv.matchScore : cv.matchScore * 100).toFixed(1)
+    : null;
+
   const handleViewPDF = () => {
-    if (cv.resumeId) {
-      const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
-      window.open(`${baseUrl}api/resumes/${cv.resumeId}/view`, '_blank');
+    if (resumeId) {
+      const baseUrl = (process.env.REACT_APP_API_URL || 'http://localhost:5000').replace(/\/?$/, '');
+      window.open(`${baseUrl}/api/resumes/${resumeId}/view`, '_blank');
     } else {
       alert('Ứng viên chưa tải CV lên. Vui lòng xem lại');
     }
   };
   const handleDownload = async () => {
-    if (!cv.resumeId) {
+    if (!resumeId) {
       alert('Ứng viên chưa tải CV');
       return;
     }
 
-    const blobData = await axiosClient.get(`/api/resumes/downloads/${cv.resumeId}`, {
+    const blobData = await axiosClient.get(`/api/resumes/downloads/${resumeId}`, {
       responseType: 'blob',
     });
 
@@ -27,7 +39,7 @@ const CVCard = ({ cv, isRecommended }) => {
 
     const link = document.createElement('a');
     link.href = url;
-    link.download = `${cv.fullName}-CV.pdf`;
+    link.download = `${downloadName}`;
     document.body.appendChild(link);
     link.click();
     link.remove();
@@ -36,7 +48,7 @@ const CVCard = ({ cv, isRecommended }) => {
   };
   return (
     <div className={styles.card}>
-      {isRecommended && cv.matchScore && (
+      {isRecommended && matchScorePercent && (
         <div className={styles.matchBadge}>
           <svg className={styles.matchIcon} fill="currentColor" viewBox="0 0 20 20">
             <path
@@ -45,7 +57,7 @@ const CVCard = ({ cv, isRecommended }) => {
               clipRule="evenodd"
             />
           </svg>
-          Độ phù hợp với CV: {cv.matchScore}%
+          Độ phù hợp với CV: {matchScorePercent}%
         </div>
       )}
 
@@ -67,12 +79,12 @@ const CVCard = ({ cv, isRecommended }) => {
       <div className={styles.content}>
         <div className={styles.header}>
           <h3 className={styles.name}>
-            {cv.fullName}
-            <span className={styles.id}>ID: {cv.id}</span>
+            {displayName}
+            <span className={styles.id}>ID: {candidateId || resumeId || 'Chưa có'}</span>
           </h3>
         </div>
 
-        <p className={styles.title}>{cv.title}</p>
+        <p className={styles.title}>Vị trí đã tuyển: {subtitle}</p>
 
         <div className={styles.meta}>
           <span>{cv.experienceYears} năm KN</span>
@@ -81,7 +93,7 @@ const CVCard = ({ cv, isRecommended }) => {
         </div>
 
         <div className={styles.summaryWrapper}>
-          <p className={styles.summary}>{cv.summary}</p>
+          <p className={styles.summary}>{cv.summary || 'CV đã được phân tích và gợi ý dựa trên kỹ năng phù hợp với vị trí tuyển dụng.'}</p>
         </div>
 
         {isRecommended && cv.matchReason && (
@@ -95,7 +107,7 @@ const CVCard = ({ cv, isRecommended }) => {
         )}
 
         <div className={styles.skills}>
-          {cv.skills.map((skill, idx) => (
+          {cv.skills?.map((skill, idx) => (
             <span key={idx} className={styles.skill}>
               {skill}
             </span>
@@ -117,23 +129,35 @@ const CVCard = ({ cv, isRecommended }) => {
 };
 CVCard.propTypes = {
   cv: PropTypes.shape({
-    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-    fullName: PropTypes.string.isRequired,
-    avatar: PropTypes.string,
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    _id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     resumeId: PropTypes.string,
+    candidateId: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.shape({
+        _id: PropTypes.string,
+        id: PropTypes.string,
+      }),
+    ]),
+    candidateName: PropTypes.string,
+    fullName: PropTypes.string,
+    avatar: PropTypes.string,
+    fileName: PropTypes.string,
     fileUrl: PropTypes.string,
     fileType: PropTypes.oneOf(['pdf', 'doc', 'docx', 'CV']),
     title: PropTypes.string,
+    jobTitle: PropTypes.string,
     experienceYears: PropTypes.number,
     address: PropTypes.string,
     education: PropTypes.string,
     summary: PropTypes.string,
     matchScore: PropTypes.number,
     matchReason: PropTypes.string,
-    skills: PropTypes.arrayOf(PropTypes.string).isRequired,
+    skills: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
 
   onSave: PropTypes.func,
   isRecommended: PropTypes.bool,
+  jobTitle: PropTypes.string,
 };
 export default CVCard;

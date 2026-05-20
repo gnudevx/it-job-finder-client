@@ -8,6 +8,40 @@
   margin-bottom: 10px;
 }
 
+.cvSelector {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 30px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+
+  label {
+    font-weight: 600;
+    color: #495057;
+    font-size: 16px;
+  }
+
+  .selectInput {
+    flex: 1;
+    max-width: 400px;
+    padding: 10px 15px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 14px;
+    background: white;
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    }
+  }
+}
+
 .sectionTitle {
   margin-top: 20px;
   margin-bottom: 10px;
@@ -221,4 +255,15 @@
   &:active {
     background: #1565c0;
   }
+}
+
+// Match indicators
+.matchYes {
+  color: #2e7d32;
+  font-weight: 500;
+}
+
+.matchNo {
+  color: #d32f2f;
+  font-weight: 500;
 }

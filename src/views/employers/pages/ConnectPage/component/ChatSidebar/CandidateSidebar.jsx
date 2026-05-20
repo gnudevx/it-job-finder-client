@@ -6,7 +6,7 @@ import logo from '@assets/Logo_HireIT_Header.png';
 import { useNavigate } from 'react-router-dom';
 import { formatDistanceToNow } from 'date-fns';
 import { socket } from '@/services/socket';
-export default function ChatSidebar({ candidates, selectedId, onSelect, role, currentUser  }) {
+export default function ChatSidebar({ candidates, selectedId, onSelect, role, currentUser }) {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('all');
   // States cho Popup Cài đặt
@@ -30,7 +30,7 @@ export default function ChatSidebar({ candidates, selectedId, onSelect, role, cu
       if (!prev.length) return candidates;
 
       return prev.map((p) => {
-        const fresh = candidates.find(e => e.conversationId === p.conversationId);
+        const fresh = candidates.find((e) => e.conversationId === p.conversationId);
         if (!fresh) return p;
 
         return {
@@ -44,8 +44,8 @@ export default function ChatSidebar({ candidates, selectedId, onSelect, role, cu
     });
   }, [candidates]);
   useEffect(() => {
-  console.log('🔥 candidates từ API:', candidates);
-}, [candidates]);
+    console.log('🔥 candidates từ API:', candidates);
+  }, [candidates]);
   useEffect(() => {
     if (!currentUser?._id) return;
     socket.emit('user:join', currentUser._id);
@@ -57,29 +57,21 @@ export default function ChatSidebar({ candidates, selectedId, onSelect, role, cu
           if (String(c.conversationId) !== String(message.conversationId)) return c;
           console.log('message moi o candidate sidebar', message);
           const isMe =
-            message.senderId === currentUser?._id ||
-            message.senderId === currentUser?.userId;
+            message.senderId === currentUser?._id || message.senderId === currentUser?.userId;
 
           return {
             ...c,
-            lastMessage:
-              message.type === 'file'
-                ? '📎 File'
-                : message.text || '📎 File',
+            lastMessage: message.type === 'file' ? '📎 File' : message.text || '📎 File',
             lastMessageTime: message.createdAt,
 
             unreadCount: {
               ...c.unreadCount,
-              [role]: isMe
-                ? c.unreadCount?.[role] || 0
-                : (c.unreadCount?.[role] || 0) + 1,
+              [role]: isMe ? c.unreadCount?.[role] || 0 : (c.unreadCount?.[role] || 0) + 1,
             },
           };
         });
 
-        return updated.sort(
-          (a, b) => new Date(b.lastMessageTime) - new Date(a.lastMessageTime)
-        );
+        return updated.sort((a, b) => new Date(b.lastMessageTime) - new Date(a.lastMessageTime));
       });
     };
 
@@ -238,7 +230,9 @@ export default function ChatSidebar({ candidates, selectedId, onSelect, role, cu
 
                 <p>
                   {c.lastMessage
-                    ? (c.lastMessage.endsWith('.pdf') ? '📎 File' : c.lastMessage)
+                    ? c.lastMessage.endsWith('.pdf')
+                      ? '📎 File'
+                      : c.lastMessage
                     : 'Chưa có tin nhắn'}
                 </p>
 
