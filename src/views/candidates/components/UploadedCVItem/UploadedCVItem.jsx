@@ -2,7 +2,6 @@ import React from 'react';
 import { Eye, Trash2 } from 'lucide-react';
 import styles from './UploadedCVItem.module.scss';
 import PropTypes from 'prop-types';
-
 export default function UploadedCVItem({ cv, onView, onDelete, onSelect }) {
   return (
     <div className={styles.item}>
