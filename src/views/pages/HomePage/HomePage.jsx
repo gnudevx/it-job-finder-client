@@ -32,11 +32,13 @@ export default function HomePage() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const jobsPerPage = 16;
+  const jobsPerPage = 20;
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalJobsCount, setTotalJobsCount] = useState(0);
 
   const navigate = useNavigate();
 
-  // Fetch jobs only once on component mount
+  // Fetch jobs from server-side pagination whenever filters/search/page changes
   useEffect(() => {
     const fetchJobs = async () => {
       try {
@@ -48,10 +50,13 @@ export default function HomePage() {
           salaryLevel: filters.salaryLevel,
           skills: filters.skills,
           createDate: filters.createDate,
+          page: currentPage,
+          limit: jobsPerPage,
         };
 
-        const data = await getAllJobs(params);
-        const formatted = (data.data || data).map((job) => ({
+        const res = await getAllJobs(params);
+        const jobsArray = (res && res.data) ? res.data : (Array.isArray(res) ? res : []);
+        const formatted = jobsArray.map((job) => ({
           id: job._id,
           title: job.title,
           group: job.group_id?.name || 'Không rõ',
@@ -65,6 +70,20 @@ export default function HomePage() {
 
         formatted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         setJobs(formatted);
+
+        if (res && typeof res.total !== 'undefined') {
+          // Backend returned exact total count
+          setTotalJobsCount(Number(res.total));
+          setTotalPages(typeof res.totalPages !== 'undefined' ? res.totalPages : Math.ceil(Number(res.total) / jobsPerPage));
+        } else if (res && typeof res.totalPages !== 'undefined') {
+          // Fallback: compute total using totalPages and current page size
+          setTotalPages(res.totalPages);
+          const fallback = (res.totalPages - 1) * jobsPerPage + formatted.length;
+          setTotalJobsCount(fallback);
+        } else {
+          setTotalPages(Math.ceil((jobsArray.length || formatted.length) / jobsPerPage));
+          setTotalJobsCount(formatted.length);
+        }
       } catch (error) {
         console.error('Error loading jobs:', error);
       } finally {
@@ -80,6 +99,7 @@ export default function HomePage() {
     filters.salaryLevel,
     filters.skills,
     filters.createDate,
+    currentPage,
   ]);
 
   const handleFilterChange = useCallback((type, value) => {
@@ -91,12 +111,8 @@ export default function HomePage() {
     setCurrentPage(1);
   }, []);
 
-  const filtered = jobs;
-
-  const totalPages = Math.ceil(filtered.length / jobsPerPage);
-  const indexOfLast = currentPage * jobsPerPage;
-  const indexOfFirst = indexOfLast - jobsPerPage;
-  const currentJobs = filtered.slice(indexOfFirst, indexOfLast);
+  // With server-side pagination `jobs` already contains the current page items.
+  const currentJobs = jobs;
 
   return (
     <div className={styles['home-container']}>
@@ -166,15 +182,15 @@ export default function HomePage() {
                   className={styles.mainImage}
                 />
 
-                {/* <div className={styles.floatingBadge}>
-                                    <div className={styles.badgeIconWrapper}>
-                                        <Search size={24} />
-                                    </div>
-                                    <div>
-                                        <p className={styles.badgeLabel}>Việc làm mới</p>
-                                        <p className={styles.badgeCount}>120+</p>
-                                    </div>
-                                </div> */}
+                <div className={styles.floatingBadge}>
+                  <div className={styles.badgeIconWrapper}>
+                      <Search size={24} />
+                  </div>
+                  <div>
+                      <p className={styles.badgeLabel}>Việc làm mới</p>
+                      <p className={styles.badgeCount}>{totalJobsCount}</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
