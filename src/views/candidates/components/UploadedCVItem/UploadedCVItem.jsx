@@ -18,7 +18,6 @@ export default function UploadedCVItem({ cv, onView, onDelete, onSelect }) {
         <button className={styles.delBtn} onClick={() => onDelete(cv.id)}>
           <Trash2 size={18} /> Xóa
         </button>
-
         <button onClick={() => onSelect(cv)} className={styles.selectBtn}>
           Chọn để gợi ý
         </button>
