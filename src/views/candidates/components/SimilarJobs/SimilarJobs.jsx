@@ -11,7 +11,6 @@ export default function SimilarJobs({ jobId }) {
   const authToken = localStorage.getItem('authToken');
   const { toggleFavorite, isFavorite } = useFavorites(authToken);
   const navigate = useNavigate();
-
   useEffect(() => {
     if (!jobId) return;
 
