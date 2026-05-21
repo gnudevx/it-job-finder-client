@@ -2,7 +2,6 @@ import React from 'react';
 import { Eye, Trash2 } from 'lucide-react';
 import styles from './UploadedCVItem.module.scss';
 import PropTypes from 'prop-types';
-
 export default function UploadedCVItem({ cv, onView, onDelete, onSelect }) {
   return (
     <div className={styles.item}>
@@ -19,7 +18,6 @@ export default function UploadedCVItem({ cv, onView, onDelete, onSelect }) {
         <button className={styles.delBtn} onClick={() => onDelete(cv.id)}>
           <Trash2 size={18} /> Xóa
         </button>
-
         <button onClick={() => onSelect(cv)} className={styles.selectBtn}>
           Chọn để gợi ý
         </button>

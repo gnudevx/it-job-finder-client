@@ -280,7 +280,6 @@ export default function ChatBotWidget() {
     clearCvState();
     localStorage.removeItem('chat_session_id');
     sessionId.current = getOrCreateSessionId();
-
     cvIdRef.current = null;
     setCvStatus(null);
     setCvPreview(null);
