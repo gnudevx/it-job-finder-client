@@ -1,4 +1,4 @@
-// Simple auth helper. Tùy app bạn có token lưu ở localStorage hay context, sửa cho phù hợp.
+// Simple auth helper
 export const isAuthenticated = () => {
   try {
     const token = localStorage.getItem('authToken'); // hoặc 'accessToken' tùy project
