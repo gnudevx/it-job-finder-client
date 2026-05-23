@@ -171,11 +171,13 @@ export default function RecommendJobs() {
                     {recommendation?.matched_skills && (
                       <div className={styles.matchedSkills}>
                         <strong>Kỹ năng trùng khớp:</strong>
-                        {recommendation.matched_skills.required.length > 0 && (
+
+                        {((recommendation.matched_skills.required || []).length > 0) && (
                           <div className={styles.skillGroup}>
                             <span className={styles.skillLabel}>
                               Bắt buộc ({recommendation.matched_skills.required.length}):
                             </span>
+
                             <div className={styles.skillTags}>
                               {recommendation.matched_skills.required.map((skill) => (
                                 <span key={skill} className={styles.skillTag}>
@@ -185,11 +187,13 @@ export default function RecommendJobs() {
                             </div>
                           </div>
                         )}
-                        {recommendation.matched_skills.optional.length > 0 && (
+
+                        {((recommendation.matched_skills.optional || []).length > 0) && (
                           <div className={styles.skillGroup}>
                             <span className={styles.skillLabel}>
                               Tùy chọn ({recommendation.matched_skills.optional.length}):
                             </span>
+
                             <div className={styles.skillTags}>
                               {recommendation.matched_skills.optional.map((skill) => (
                                 <span key={skill} className={styles.skillTag}>
