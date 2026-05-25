@@ -1,8 +1,12 @@
 import React from 'react';
 import styles from './Footer.module.scss';
 import { Mail, Phone, MapPin } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Footer() {
+  const navigate = useNavigate();
+  const isLoggedIn = !!localStorage.getItem('authToken');
+
   return (
     <footer className={styles.footer}>
       <div className={styles.container}>
@@ -25,19 +29,26 @@ export default function Footer() {
             <h4 className={styles.sectionTitle}>Ứng Viên</h4>
             <ul className={styles.linkList}>
               <li>
-                <a href="" className={styles.linkItem}>
+                <button
+                  className={styles.linkItem}
+                  onClick={() => navigate(isLoggedIn ? '/candidate/home' : '/home')}
+                >
                   Tìm việc làm
-                </a>
+                </button>
               </li>
               <li>
-                <a href="" className={styles.linkItem}>
-                  Thêm việc làm yêu thích
-                </a>
+                <button
+                  className={styles.linkItem}
+                  onClick={() => navigate('/candidate/account/mycvs')}>
+                  Quản lý CV của bạn
+                </button>
               </li>
               <li>
-                <a href="" className={styles.linkItem}>
-                  Ứng tuyển ngay
-                </a>
+                <button
+                  className={styles.linkItem}
+                  onClick={() => navigate('/candidate/account/recommendjobs')}>
+                  Việc làm phù hợp với CV của bạn
+                </button>
               </li>
             </ul>
           </div>

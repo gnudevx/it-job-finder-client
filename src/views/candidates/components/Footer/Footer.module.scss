@@ -48,29 +48,9 @@
 
   .brandDesc {
     font-size: 14px;
-    line-height: 1.6;
+    line-height: 1.7;
     color: #94a3b8;
-    margin-top: 8px;
-  }
-}
-
-.socials {
-  display: flex;
-  gap: 12px;
-  margin-top: 16px;
-
-  .socialItem {
-    padding: 8px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.05);
-    color: #cbd5e1;
-    cursor: pointer;
-    transition: 0.2s;
-
-    &:hover {
-      background: rgba(255, 255, 255, 0.1);
-      color: #fff;
-    }
+    margin-top: 12px;
   }
 }
 
@@ -78,6 +58,7 @@
 .sectionTitle {
   color: #fff;
   font-weight: 700;
+  font-size: 16px;
   margin-bottom: 24px;
 }
 
@@ -87,16 +68,31 @@
   padding: 0;
   margin: 0;
 
-  .linkItem {
-    display: inline-block;
-    font-size: 14px;
+  li {
     margin-bottom: 12px;
+  }
+
+  .linkItem {
+    background: transparent;
+    border: none;
+    outline: none;
+
+    padding: 0;
+
+    display: inline-flex;
+    align-items: center;
+
+    font-size: 14px;
+    font-weight: 400;
+
     color: #cbd5e1;
+
     cursor: pointer;
-    transition: 0.2s;
+    transition: all 0.2s ease;
 
     &:hover {
       color: #22d3ee;
+      transform: translateX(2px);
     }
   }
 }
@@ -111,23 +107,32 @@
     display: flex;
     align-items: flex-start;
     gap: 12px;
+
     font-size: 14px;
+    line-height: 1.6;
+
     margin-bottom: 16px;
+
+    color: #cbd5e1;
   }
 
   .contactIcon {
     color: #22d3ee;
     flex-shrink: 0;
+    margin-top: 2px;
   }
 }
 
-/* BOTTOM LINE */
+/* BOTTOM */
 .bottom {
   border-top: 1px solid #1e293b;
+
   padding-top: 24px;
+
   display: flex;
   flex-direction: column;
-  gap: 12px;
+
+  gap: 16px;
 
   @media (min-width: 768px) {
     flex-direction: row;
@@ -139,20 +144,29 @@
 .copy {
   font-size: 12px;
   color: #64748b;
+  line-height: 1.6;
 }
 
 .bottomLinks {
   display: flex;
-  gap: 24px;
+  flex-wrap: wrap;
+  gap: 20px;
 
   .bottomLink {
+    background: transparent;
+    border: none;
+    outline: none;
+
+    padding: 0;
+
     font-size: 12px;
     color: #64748b;
+
     cursor: pointer;
-    transition: 0.2s;
+    transition: all 0.2s ease;
 
     &:hover {
-      color: white;
+      color: #ffffff;
     }
   }
 }
