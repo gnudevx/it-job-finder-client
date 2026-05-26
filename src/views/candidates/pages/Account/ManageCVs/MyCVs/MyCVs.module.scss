@@ -1,95 +1,118 @@
 .container {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding: 24px;
-  background-color: #f9fafb;
+  gap: 24px;
+  padding: 28px;
+  background: #f5f7fb;
+  min-height: 100vh;
 }
 
 .manageCV {
-  font-size: 28px;
-  font-weight: bold;
+  font-size: 42px;
+  font-weight: 800;
   color: #25216b;
 }
 
 .card {
   background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  border-radius: 24px;
+  padding: 32px;
+  border: 1px solid #edf0f5;
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
 }
 
 .cardHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 28px;
 
   h3 {
-    font-size: 20px;
-    font-weight: 600;
-    color: #222;
-  }
-
-  button {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 14px;
-    font-weight: 500;
-    border: none;
-    outline: none;
-    padding: 6px 14px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-}
-
-.createBtn {
-  background-color: #00b14f;
-  color: #fff;
-
-  &:hover {
-    background-color: #009e47;
+    font-size: 32px;
+    font-weight: 700;
+    color: #111827;
   }
 }
 
 .uploadBtn {
-  background-color: #00b14f;
-  color: #fff;
+  border: none;
+  background: #00b14f;
+  color: white;
+  height: 48px;
+  padding: 0 20px;
+  border-radius: 14px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
 
   &:hover {
-    background-color: #009e47;
+    background: #009e47;
+    transform: translateY(-2px);
   }
 }
 
 .cardBody {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 180px;
-  text-align: center;
-  color: #888;
-  gap: 20px;
+  width: 100%;
 }
 
-.imagePlaceholder {
+.cvGrid {
+  display: grid;
+
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+
+  gap: 28px;
+  align-items: start;
+}
+
+.emptyState {
+  width: 100%;
+  padding: 80px 20px;
+
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 12px;
 
   img {
-    width: 120px;
-    height: auto;
-    opacity: 0.8;
+    width: 220px;
+  }
+
+  h4 {
+    margin-top: 12px;
+    font-size: 28px;
+    color: #111827;
   }
 
   p {
-    font-size: 14px;
-    color: #888;
+    margin-top: 6px;
+    font-size: 16px;
+    color: #6b7280;
   }
+}
+
+.emptyUploadBtn {
+  margin-top: 20px;
+  border: none;
+  background: #00b14f;
+  color: white;
+
+  height: 52px;
+  padding: 0 22px;
+
+  border-radius: 14px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
 }

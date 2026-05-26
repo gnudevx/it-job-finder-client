@@ -2,11 +2,6 @@ import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './MyCVs.module.scss';
 import { Upload } from 'lucide-react';
-
-// import useCVs from "@/hooks/useCVs";
-// import CVList from "@/views/candidates/components/CVList/CVList.jsx";
-// import CVModal from "@/views/candidates/components/CVModal/CVModal.jsx";
-// import CVBuilder from "@/views/candidates/components/CVBuilder/CVBuilder.jsx";
 import useUploadedCVs from '@/hooks/useUploadedCVs';
 import { uploadResume } from '@/api/resumeService';
 
@@ -15,10 +10,8 @@ import UploadedCVItem from '@/views/candidates/components/UploadedCVItem/Uploade
 export default function MyCVs() {
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
-  // const [showCVBuilder, setShowCVBuilder] = useState(false);
 
   const { uploadedCVs, addUploadedCV, removeUploadedCV } = useUploadedCVs();
-  // const { cvs, addCV, removeCV } = useCVs();
 
   const handleUploadClick = () => fileInputRef.current.click();
 
@@ -67,18 +60,6 @@ export default function MyCVs() {
   return (
     <div className={styles.container}>
       <h2 className={styles.manageCV}>Quản lý CV của bạn</h2>
-      {/* <div className={styles.card}>
-        <div className={styles.cardHeader}>
-          <h3>CV đã tạo trên hệ thống</h3>
-
-          <button className={styles.createBtn} onClick={() => setShowCVBuilder(true)}>
-            <PlusCircle size={18} />
-            <span>Tạo CV</span>
-          </button>
-        </div>
-
-        <CVList data={cvs} onDelete={removeCV} />
-      </div> */}
 
       <div className={styles.card}>
         <div className={styles.cardHeader}>
@@ -99,35 +80,34 @@ export default function MyCVs() {
 
         <div className={styles.cardBody}>
           {uploadedCVs.length === 0 ? (
-            <div className={styles.imagePlaceholder}>
+            <div className={styles.emptyState}>
               <img
                 src="https://static.topcv.vn/v4/image/cv-manager/no-cv-upload.svg"
                 alt="placeholder"
               />
-              <p>Chưa có CV nào được tải lên.</p>
+              <h4>Chưa có CV nào</h4>
+              <p>Tải CV PDF hoặc DOCX để bắt đầu ứng tuyển nhanh hơn</p>
+
+              <button className={styles.emptyUploadBtn} onClick={handleUploadClick}>
+                <Upload size={18} />
+                Tải CV đầu tiên
+              </button>
             </div>
           ) : (
-            uploadedCVs.map((cv) => (
-              <UploadedCVItem
-                key={cv.id}
-                cv={cv}
-                onView={() => handleViewPDF(cv.id)}
-                onDelete={() => removeUploadedCV(cv.id)}
-                onSelect={() => {
-                  handleSelectCV(cv);
-                  alert('Đã chọn CV: ' + cv.name);
-                }}
-              />
-            ))
+            <div className={styles.cvGrid}>
+              {uploadedCVs.map((cv) => (
+                <UploadedCVItem
+                  key={cv.id}
+                  cv={cv}
+                  onView={() => handleViewPDF(cv.id)}
+                  onDelete={() => removeUploadedCV(cv.id)}
+                  onSelect={() => handleSelectCV(cv)}
+                />
+              ))}
+            </div>
           )}
         </div>
       </div>
-
-      {/* {showCVBuilder && (
-        <CVModal onClose={() => setShowCVBuilder(false)}>
-          <CVBuilder onSave={(data) => { addCV(data); setShowCVBuilder(false); }} />
-        </CVModal>
-      )} */}
     </div>
   );
 }
