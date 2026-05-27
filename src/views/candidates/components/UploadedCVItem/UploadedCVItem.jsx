@@ -1,20 +1,10 @@
 import React from 'react';
-import {
-  Eye,
-  Trash2,
-  Sparkles,
-  FileText,
-} from 'lucide-react';
+import { Eye, Trash2, Sparkles, FileText } from 'lucide-react';
 
 import styles from './UploadedCVItem.module.scss';
 import PropTypes from 'prop-types';
 
-export default function UploadedCVItem({
-  cv,
-  onView,
-  onDelete,
-  onSelect,
-}) {
+export default function UploadedCVItem({ cv, onView, onDelete, onSelect }) {
   const isPDF = cv.name.toLowerCase().includes('.pdf');
 
   return (
@@ -35,9 +25,7 @@ export default function UploadedCVItem({
             <FileText size={70} />
             <span>DOCX không hỗ trợ preview</span>
 
-            <button onClick={() => onView(cv.id)}>
-              Mở file
-            </button>
+            <button onClick={() => onView(cv.id)}>Mở file</button>
           </div>
         )}
 
@@ -51,30 +39,20 @@ export default function UploadedCVItem({
 
       <div className={styles.content}>
         <div className={styles.meta}>
-          <span className={styles.badge}>
-            {isPDF ? 'PDF' : 'DOCX'}
-          </span>
+          <span className={styles.badge}>{isPDF ? 'PDF' : 'DOCX'}</span>
 
-          <span className={styles.size}>
-            {(cv.size / 1024).toFixed(1)} KB
-          </span>
+          <span className={styles.size}>{(cv.size / 1024).toFixed(1)} KB</span>
         </div>
 
         <h3 title={cv.name}>{cv.name}</h3>
 
         <div className={styles.actions}>
-          <button
-            className={styles.recommendBtn}
-            onClick={() => onSelect(cv)}
-          >
+          <button className={styles.recommendBtn} onClick={() => onSelect(cv)}>
             <Sparkles size={16} />
             Gợi ý việc làm
           </button>
 
-          <button
-            className={styles.deleteBtn}
-            onClick={() => onDelete(cv.id)}
-          >
+          <button className={styles.deleteBtn} onClick={() => onDelete(cv.id)}>
             <Trash2 size={18} />
           </button>
         </div>

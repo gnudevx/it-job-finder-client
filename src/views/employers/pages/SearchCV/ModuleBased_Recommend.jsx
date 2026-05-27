@@ -73,7 +73,8 @@ export default function ModuleBased_Recommend() {
           </h2>
 
           <p className={styles.subtitle}>
-            Hãy chọn mô tả công việc mà bạn đã tạo. Hệ thống sẽ phân tích và gợi ý những CV phù hợp nhất.
+            Hãy chọn mô tả công việc mà bạn đã tạo. Hệ thống sẽ phân tích và gợi ý những CV phù hợp
+            nhất.
           </p>
         </div>
 
@@ -151,12 +152,7 @@ export default function ModuleBased_Recommend() {
 
           <div className={styles.resultGrid}>
             {recommendedCvs.map((cv) => (
-              <CVCard
-                key={cv.resumeId}
-                cv={cv}
-                isRecommended
-                jobTitle={selectedJob?.title}
-              />
+              <CVCard key={cv.resumeId} cv={cv} isRecommended jobTitle={selectedJob?.title} />
             ))}
           </div>
         </div>

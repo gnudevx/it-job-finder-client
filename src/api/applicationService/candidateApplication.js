@@ -2,10 +2,10 @@ import axiosClient from '@/services/axiosClient';
 
 const API_URL = 'http://localhost:5000/candidates/applications';
 
-export const applyJob = async ({ jobId, resumeId, coverLetter, token }) => {
+export const applyJob = async ({ jobId, resumeId, note, token }) => {
   const res = await axiosClient.post(
     `${API_URL}/apply`, // dùng backticks và ${} để interpolate
-    { jobId, resumeId, coverLetter },
+    { jobId, resumeId, note }, // gửi note
     {
       headers: { Authorization: `Bearer ${token}` },
     }

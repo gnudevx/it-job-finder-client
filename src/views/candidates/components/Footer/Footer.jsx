@@ -39,14 +39,16 @@ export default function Footer() {
               <li>
                 <button
                   className={styles.linkItem}
-                  onClick={() => navigate('/candidate/account/mycvs')}>
+                  onClick={() => navigate('/candidate/account/mycvs')}
+                >
                   Quản lý CV của bạn
                 </button>
               </li>
               <li>
                 <button
                   className={styles.linkItem}
-                  onClick={() => navigate('/candidate/account/recommendjobs')}>
+                  onClick={() => navigate('/candidate/account/recommendjobs')}
+                >
                   Việc làm phù hợp với CV của bạn
                 </button>
               </li>

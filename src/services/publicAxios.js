@@ -11,7 +11,7 @@ const publicClient = axios.create({
 // Return response.data for compatibility with other axios instances
 publicClient.interceptors.response.use(
   (response) => response.data,
-  (error) => Promise.reject(error),
+  (error) => Promise.reject(error)
 );
 
 export default publicClient;

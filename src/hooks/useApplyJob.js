@@ -38,7 +38,7 @@ export default function useApplyJob(jobId, token) {
       await applyJob({
         jobId,
         resumeId: selectedCV,
-        coverLetter: note,
+        note,
         token,
       });
       setHasApplied(true);

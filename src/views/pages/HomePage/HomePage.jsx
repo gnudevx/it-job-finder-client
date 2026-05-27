@@ -55,7 +55,7 @@ export default function HomePage() {
         };
 
         const res = await getAllJobs(params);
-        const jobsArray = (res && res.data) ? res.data : (Array.isArray(res) ? res : []);
+        const jobsArray = res && res.data ? res.data : Array.isArray(res) ? res : [];
         const formatted = jobsArray.map((job) => ({
           id: job._id,
           title: job.title,
@@ -74,7 +74,11 @@ export default function HomePage() {
         if (res && typeof res.total !== 'undefined') {
           // Backend returned exact total count
           setTotalJobsCount(Number(res.total));
-          setTotalPages(typeof res.totalPages !== 'undefined' ? res.totalPages : Math.ceil(Number(res.total) / jobsPerPage));
+          setTotalPages(
+            typeof res.totalPages !== 'undefined'
+              ? res.totalPages
+              : Math.ceil(Number(res.total) / jobsPerPage)
+          );
         } else if (res && typeof res.totalPages !== 'undefined') {
           // Fallback: compute total using totalPages and current page size
           setTotalPages(res.totalPages);
@@ -184,11 +188,11 @@ export default function HomePage() {
 
                 <div className={styles.floatingBadge}>
                   <div className={styles.badgeIconWrapper}>
-                      <Search size={24} />
+                    <Search size={24} />
                   </div>
                   <div>
-                      <p className={styles.badgeLabel}>Việc làm mới</p>
-                      <p className={styles.badgeCount}>{totalJobsCount}</p>
+                    <p className={styles.badgeLabel}>Việc làm mới</p>
+                    <p className={styles.badgeCount}>{totalJobsCount}</p>
                   </div>
                 </div>
               </div>

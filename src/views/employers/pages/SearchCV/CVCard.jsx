@@ -18,7 +18,10 @@ const CVCard = ({ cv, isRecommended, jobTitle }) => {
 
   const handleViewPDF = () => {
     if (resumeId) {
-      const baseUrl = (process.env.REACT_APP_API_URL || 'http://localhost:5000').replace(/\/?$/, '');
+      const baseUrl = (process.env.REACT_APP_API_URL || 'http://localhost:5000').replace(
+        /\/?$/,
+        ''
+      );
       window.open(`${baseUrl}/api/resumes/${resumeId}/view`, '_blank');
     } else {
       alert('Ứng viên chưa tải CV lên. Vui lòng xem lại');
@@ -93,7 +96,10 @@ const CVCard = ({ cv, isRecommended, jobTitle }) => {
         </div>
 
         <div className={styles.summaryWrapper}>
-          <p className={styles.summary}>{cv.summary || 'CV đã được phân tích và gợi ý dựa trên kỹ năng phù hợp với vị trí tuyển dụng.'}</p>
+          <p className={styles.summary}>
+            {cv.summary ||
+              'CV đã được phân tích và gợi ý dựa trên kỹ năng phù hợp với vị trí tuyển dụng.'}
+          </p>
         </div>
 
         {isRecommended && cv.matchReason && (

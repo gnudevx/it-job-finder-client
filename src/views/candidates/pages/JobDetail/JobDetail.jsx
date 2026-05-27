@@ -348,37 +348,79 @@ export default function JobDetail() {
         {showApplyForm && (
           <div className={styles.modalOverlay}>
             <div className={styles.modal}>
-              <h2>Ứng tuyển: {title}</h2>
+              {/* HEADER */}
+              <div className={styles.modalHeader}>
+                <div>
+                  <p className={styles.applyLabel}>Ứng tuyển vị trí</p>
+                  <h2>{title}</h2>
+                </div>
 
-              <label>Chọn CV</label>
-              <select
-                className={styles.select}
-                value={selectedCV}
-                onChange={(e) => setSelectedCV(e.target.value)}
-              >
-                <option value="">-- Chọn CV --</option>
-                {myCVs.map((cv) => (
-                  <option key={cv.id} value={cv.id}>
-                    {' '}
-                    {/* value = _id */}
-                    {cv.name}
-                  </option>
-                ))}
-              </select>
-
-              <label>Ghi chú</label>
-              <textarea
-                className={styles.textarea}
-                value={note}
-                onChange={(e) => setNote(e.target.value)}
-              />
-
-              <div className={styles.modalActions}>
-                <button className={styles.submitBtn} onClick={handleSubmitApplication}>
-                  Nộp hồ sơ
+                <button className={styles.closeBtn} onClick={() => setShowApplyForm(false)}>
+                  ✕
                 </button>
+              </div>
+
+              {/* BODY */}
+              <div className={styles.modalBody}>
+                <div className={styles.formGroup}>
+                  <label>Chọn CV</label>
+
+                  <select
+                    className={styles.select}
+                    value={selectedCV}
+                    onChange={(e) => setSelectedCV(e.target.value)}
+                  >
+                    <option value="">-- Chọn CV --</option>
+
+                    {myCVs.map((cv) => (
+                      <option key={cv.id} value={cv.id}>
+                        {cv.name}
+                      </option>
+                    ))}
+                  </select>
+
+                  {selectedCV && (
+                    <div className={styles.selectedCV}>
+                      <div className={styles.cvIcon}>📄</div>
+
+                      <div>
+                        <div className={styles.cvName}>
+                          {myCVs.find((x) => x.id === selectedCV)?.name}
+                        </div>
+
+                        <div className={styles.cvDesc}>CV sẽ được gửi đến nhà tuyển dụng</div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label>Ghi chú ứng tuyển</label>
+
+                  <textarea
+                    className={styles.textarea}
+                    placeholder="Ví dụ: Tôi có 2 năm kinh nghiệm ReactJS và có thể tham gia phỏng vấn ngay trong tuần này..."
+                    value={note}
+                    onChange={(e) => setNote(e.target.value)}
+                    maxLength={500}
+                  />
+
+                  <div className={styles.noteCount}>{note.length}/500</div>
+                </div>
+              </div>
+
+              {/* FOOTER */}
+              <div className={styles.modalFooter}>
                 <button className={styles.cancelBtn} onClick={() => setShowApplyForm(false)}>
                   Hủy
+                </button>
+
+                <button
+                  className={styles.submitBtn}
+                  disabled={!selectedCV}
+                  onClick={handleSubmitApplication}
+                >
+                  Nộp hồ sơ
                 </button>
               </div>
             </div>
