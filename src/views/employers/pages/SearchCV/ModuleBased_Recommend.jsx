@@ -97,7 +97,7 @@ export default function ModuleBased_Recommend() {
                 <option value="">-- Chọn công việc --</option>
                 {jobs.map((job) => (
                   <option key={job._id} value={job._id}>
-                    {job.title} - {job.location?.name || 'Chưa xác định'}
+                    {job.title}
                   </option>
                 ))}
               </select>
