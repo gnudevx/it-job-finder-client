@@ -49,9 +49,21 @@ export default function RecommendJobs() {
 
     const fetchDetails = async () => {
       try {
-        const detailPromises = currentJobs.map((job) => getJobDetail(job.id).catch(() => null));
+        // const detailPromises = currentJobs.map((job) => getJobDetail(job.id).catch(() => null));
+        const detailedList = await Promise.all(
+          currentJobs.map(async (recommendation) => {
+            try {
+              const detail = await getJobDetail(recommendation.id);
 
-        const detailedList = await Promise.all(detailPromises);
+              return {
+                recommendation,
+                detail,
+              };
+            } catch {
+              return null;
+            }
+          }),
+        );
         setPageJobsDetail(detailedList.filter(Boolean));
       } catch (e) {
         console.error('Lỗi load detail:', e);
@@ -91,9 +103,7 @@ export default function RecommendJobs() {
       ) : (
         <>
           <div className={styles.jobList}>
-            {pageJobsDetail.map((job, idx) => {
-              const recommendation = results.recommendations[(page - 1) * limit + idx];
-
+            {pageJobsDetail.map(({ detail: job, recommendation }) => {
               return (
                 <div key={job._id} className={styles.recommendationCard}>
                   <div className={styles.cardHeader}>
