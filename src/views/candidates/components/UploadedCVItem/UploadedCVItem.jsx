@@ -1,6 +1,5 @@
 import React from 'react';
 import { Eye, Trash2, Sparkles, FileText } from 'lucide-react';
-
 import styles from './UploadedCVItem.module.scss';
 import PropTypes from 'prop-types';
 
