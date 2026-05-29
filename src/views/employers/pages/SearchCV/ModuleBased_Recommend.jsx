@@ -1,16 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styles from './ModuleBased_Recommend.module.scss';
 import CVCard from './CVCard.jsx';
 import axiosClient from '@/services/axiosClient.js';
 import recommendService from '@/api/recommendService.js';
+import { Sparkles, BrainCircuit, ArrowRight, BriefcaseBusiness, ChevronDown } from 'lucide-react';
+
 export default function ModuleBased_Recommend() {
   const [selectedJobId, setSelectedJobId] = useState('');
   const [jobs, setJobs] = useState([]);
   const [isAiLoading, setIsAiLoading] = useState(false);
   const [recommendedCvs, setRecommendedCvs] = useState([]);
   const [isLoadingJobs, setIsLoadingJobs] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
-  // Load employer's jobs on component mount
   useEffect(() => {
     const loadJobs = async () => {
       try {
@@ -26,6 +29,16 @@ export default function ModuleBased_Recommend() {
     };
 
     loadJobs();
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const handleGetRecommendations = async () => {
@@ -51,6 +64,7 @@ export default function ModuleBased_Recommend() {
       setIsAiLoading(false);
     }
   };
+
   const selectedJob = jobs.find((job) => job._id === selectedJobId);
 
   return (
@@ -58,24 +72,27 @@ export default function ModuleBased_Recommend() {
       <div className={styles.card}>
         {/* Header */}
         <div className={styles.header}>
-          <h2 className={styles.title}>
-            <span className={styles.iconBox}>
-              <svg className={styles.icon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M13 10V3L4 14h7v7l9-11h-7z"
-                />
-              </svg>
-            </span>
-            Gợi ý CV thông minh
-          </h2>
+          <div className={styles.headerGlow} />
 
-          <p className={styles.subtitle}>
-            Hãy chọn mô tả công việc mà bạn đã tạo. Hệ thống sẽ phân tích và gợi ý những CV phù hợp
-            nhất.
-          </p>
+          <div className={styles.titleRow}>
+            <div className={styles.iconBox}>
+              <BrainCircuit size={34} strokeWidth={2.2} />
+            </div>
+
+            <div className={styles.titleContent}>
+              <div className={styles.badge}>
+                <Sparkles size={14} />
+                Professional CV Matching
+              </div>
+
+              <h2 className={styles.title}>Professional CV Recommendation</h2>
+
+              <p className={styles.subtitle}>
+                Hệ thống phân tích kỹ năng và kinh nghiệm để đề xuất ứng viên phù hợp nhất với vị
+                trí tuyển dụng.
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Body */}
@@ -89,18 +106,57 @@ export default function ModuleBased_Recommend() {
             {isLoadingJobs ? (
               <div className={styles.loading}>Đang tải danh sách công việc...</div>
             ) : (
-              <select
-                className={styles.select}
-                value={selectedJobId}
-                onChange={(e) => setSelectedJobId(e.target.value)}
-              >
-                <option value="">-- Chọn công việc --</option>
-                {jobs.map((job) => (
-                  <option key={job._id} value={job._id}>
-                    {job.title} - {job.location?.name || 'Chưa xác định'}
-                  </option>
-                ))}
-              </select>
+              <div className={styles.selectorCard}>
+                <div className={styles.labelRow}>
+                  <label className={styles.label}>Vị trí tuyển dụng</label>
+                  <span className={styles.hint}>AI sẽ phân tích CV theo semantic matching</span>
+                </div>
+
+                <div className={styles.customSelect} ref={dropdownRef}>
+                  <div
+                    className={`${styles.selectTrigger} ${isOpen ? styles.selectTriggerOpen : ''}`}
+                    onClick={() => setIsOpen(!isOpen)}
+                  >
+                    <BriefcaseBusiness size={20} className={styles.triggerIcon} />
+                    <span className={styles.selectValue}>
+                      {selectedJob?.title || 'Chọn vị trí cần tuyển dụng'}
+                    </span>
+                    <ChevronDown
+                      size={16}
+                      className={`${styles.chevron} ${isOpen ? styles.chevronOpen : ''}`}
+                    />
+                  </div>
+
+                  {isOpen && (
+                    <div className={styles.dropdownList}>
+                      <div
+                        className={styles.dropdownItem}
+                        onClick={() => {
+                          setSelectedJobId('');
+                          setIsOpen(false);
+                        }}
+                      >
+                        Chọn vị trí cần tuyển dụng
+                      </div>
+                      {jobs.map((job) => (
+                        <div
+                          key={job._id}
+                          className={`${styles.dropdownItem} ${
+                            selectedJobId === job._id ? styles.dropdownItemActive : ''
+                          }`}
+                          onClick={() => {
+                            setSelectedJobId(job._id);
+                            setIsOpen(false);
+                          }}
+                          title={job.title}
+                        >
+                          {job.title}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
             )}
           </div>
 
@@ -128,13 +184,16 @@ export default function ModuleBased_Recommend() {
                       fill="none"
                       stroke="currentColor"
                       strokeWidth="4"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
                     />
                   </svg>
-                  Đang tìm CV phù hợp...
+                  Neural Matching...
                 </>
               ) : (
-                'Tìm CV phù hợp với công việc'
+                <>
+                  Phân tích & gợi ý CV
+                  <ArrowRight size={18} />
+                </>
               )}
             </button>
           </div>
