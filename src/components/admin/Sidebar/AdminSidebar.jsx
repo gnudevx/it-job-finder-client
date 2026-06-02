@@ -14,6 +14,8 @@ import {
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import authService from '@/services/authService';
+import logo from '@/assets/Logo_HireIT_Header.png';
+
 export default function AdminSidebar({ isCollapsed }) {
   const navigate = useNavigate();
   const handleLogout = async () => {
@@ -45,7 +47,17 @@ export default function AdminSidebar({ isCollapsed }) {
 
   return (
     <div className={`${styles.sidebar} ${isCollapsed ? styles.collapsed : ''}`}>
-      {/* KHỐI 1: Wrapper dùng để căn giữa Menu - Chiếm hết khoảng trống còn lại */}
+      <div className={styles.logoWrapper}>
+        <img src={logo} alt="HireIT" className={styles.logo} />
+
+        {!isCollapsed && (
+          <div className={styles.logoContent}>
+            <h2 className={styles.logoTitle}>HireIT</h2>
+            <p className={styles.logoSub}>Admin Panel</p>
+          </div>
+        )}
+      </div>
+
       <div className={styles.menuCenterer}>
         <nav className={styles.nav}>
           {menu.map((item, idx) => (
@@ -57,17 +69,18 @@ export default function AdminSidebar({ isCollapsed }) {
               }
             >
               <div className={styles.icon}>{item.icon}</div>
+
               {!isCollapsed && <span className={styles.label}>{item.label}</span>}
             </NavLink>
           ))}
         </nav>
       </div>
 
-      {/* KHỐI 2: Nút Đăng xuất - Luôn nằm đáy */}
       <button className={styles.logoutButton} onClick={handleLogout} title="Đăng xuất">
         <div className={styles.icon}>
           <LogOut />
         </div>
+
         {!isCollapsed && <span className={styles.label}>Đăng xuất</span>}
       </button>
     </div>

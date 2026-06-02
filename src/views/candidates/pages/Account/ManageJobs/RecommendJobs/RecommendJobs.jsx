@@ -62,7 +62,7 @@ export default function RecommendJobs() {
             } catch {
               return null;
             }
-          }),
+          })
         );
         setPageJobsDetail(detailedList.filter(Boolean));
       } catch (e) {
