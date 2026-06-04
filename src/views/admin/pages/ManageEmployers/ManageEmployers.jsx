@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './ManageEmployers.module.scss';
-
 import RecruiterList from './RecruiterList/RecruiterList.jsx';
 import RecruiterDetail from './RecruiterDetail/RecruiterDetail.jsx';
-
 import employerService from '@/api/adminEmployer.js';
 
 export default function ManageEmployers() {
@@ -46,7 +44,17 @@ export default function ManageEmployers() {
           onBack={() => setSelected(null)}
           onStatusChange={(id, newStatus) => {
             setRecruiters((prev) =>
-              prev.map((r) => (r.id === id ? { ...r, status: newStatus } : r))
+              prev.map((r) =>
+                r._id === id
+                  ? {
+                      ...r,
+                      userId: {
+                        ...r.userId,
+                        status: newStatus,
+                      },
+                    }
+                  : r
+              )
             );
             setSelected(null); // quay về list
           }}

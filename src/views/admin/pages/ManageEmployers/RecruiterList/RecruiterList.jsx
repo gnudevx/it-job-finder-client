@@ -14,11 +14,14 @@ export default function RecruiterList({ recruiters = [], onViewDetail }) {
   const [filterStatus, setFilterStatus] = useState('all');
 
   const filtered = recruiters.filter((r) => {
-    const name = (r.companyName || '').toLowerCase();
-    const email = (r.email || '').toLowerCase();
+    const name = (r.fullName || '').toLowerCase();
+    const email = (r.userId?.email || '').toLowerCase();
     const q = (searchTerm || '').toLowerCase();
+
     const matchSearch = name.includes(q) || email.includes(q);
-    const matchStatus = filterStatus === 'all' || r.status === filterStatus;
+
+    const matchStatus = filterStatus === 'all' || r.userId?.status?.toUpperCase() === filterStatus;
+
     return matchSearch && matchStatus;
   });
 
@@ -122,8 +125,12 @@ export default function RecruiterList({ recruiters = [], onViewDetail }) {
                 </td>
 
                 <td>
-                  <span className={`${styles.statusBadge} ${getStatusClass(recruiter.status)}`}>
-                    {recruiter.userId.status}
+                  <span
+                    className={`${styles.statusBadge} ${getStatusClass(
+                      recruiter.userId?.status?.toUpperCase()
+                    )}`}
+                  >
+                    {recruiter.userId?.status || 'UNKNOWN'}
                   </span>
                 </td>
 

@@ -1,54 +1,104 @@
-/* VARIABLES (đồng bộ với Sidebar) */
-$primary: #4e73df;
-$primary-dark: #224abe;
-$text-white: #fff;
+$bg: #f4f7fb;
+$card: rgba(255, 255, 255, 0.75);
 
-$header-height: 60px;
-$transition: all 0.2s ease;
-$radius: 8px;
+$text: #0f172a;
+$text-light: #64748b;
 
-/* HEADER */
-.headerInner {
-  height: $header-height;
-  width: 100%;
+$border: rgba(255, 255, 255, 0.7);
+
+$shadow:
+  0 10px 30px rgba(15, 23, 42, 0.08),
+  0 4px 12px rgba(15, 23, 42, 0.04);
+
+$transition: all 0.25s ease;
+
+.header {
+  height: 76px;
 
   display: flex;
   align-items: center;
+  justify-content: space-between;
 
-  padding: 0 20px;
+  padding: 0 28px;
 
-  background: linear-gradient(90deg, $primary 0%, $primary-dark 100%);
-  color: $text-white;
+  background: $card;
 
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  transition: $transition;
+  backdrop-filter: blur(14px);
+
+  border-bottom: 1px solid rgba(226, 232, 240, 0.7);
+
+  box-shadow: $shadow;
 }
 
-/* MENU BUTTON */
-.menuBtn {
-  font-size: 20px;
+.left {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
 
-  background: rgba(255, 255, 255, 0.15);
-  color: $text-white;
+.menuBtn {
+  width: 44px;
+  height: 44px;
 
   border: none;
-  border-radius: $radius;
+  border-radius: 14px;
 
-  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: white;
+  color: $text;
 
   cursor: pointer;
   transition: $transition;
 
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+
   &:hover {
-    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+    background: #f8fafc;
   }
 }
 
-/* TITLE */
-.title {
-  font-size: 18px;
+.breadcrumb {
+  font-size: 12px;
   font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 
-  margin-left: 14px;
-  white-space: nowrap;
+  color: $text-light;
+
+  margin-bottom: 2px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  color: $text;
+
+  line-height: 1.2;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+}
+
+.adminAvatar {
+  width: 42px;
+  height: 42px;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+
+  color: white;
+  font-weight: 700;
+
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.35);
 }

@@ -1,52 +1,76 @@
-/* VARIABLES */
-$sidebar-width: 275px;
-$sidebar-collapsed: 80px;
+$sidebar-width: 290px;
+$sidebar-collapsed: 92px;
+$bg: #0f172a;
+$bg-secondary: #111c33;
+$text: #cbd5e1;
+$text-active: #ffffff;
+$hover: rgba(255, 255, 255, 0.06);
+$active-bg: linear-gradient(135deg, rgba(99, 102, 241, 1), rgba(139, 92, 246, 1));
+$border: rgba(255, 255, 255, 0.08);
+$transition: all 0.28s ease;
 
-$primary: #4e73df;
-$primary-dark: #224abe;
-
-$text-light: rgba(255, 255, 255, 1);
-$text-white: #fff;
-
-$hover-bg: rgba(255, 255, 255, 0.12);
-$logout-bg: rgba(255, 255, 255, 0.1);
-$logout-hover: rgba(255, 255, 255, 0.2);
-
-$radius: 8px;
-$transition: all 0.2s ease;
-
-/* SIDEBAR */
 .sidebar {
   position: fixed;
   top: 0;
   left: 0;
-  height: 100vh;
-
   width: $sidebar-width;
-  padding: 16px 0;
-
+  height: 100vh;
+  padding: 22px 14px;
   display: flex;
   flex-direction: column;
-
-  background: linear-gradient(180deg, $primary 0%, $primary-dark 100%);
-  color: $text-white;
-
-  transition: width 0.3s ease; // bonus animation
+  background:
+    radial-gradient(circle at top left, rgba(99, 102, 241, 0.22), transparent 28%),
+    linear-gradient(180deg, $bg 0%, $bg-secondary 100%);
+  border-right: 1px solid $border;
+  transition: $transition;
+  overflow: hidden;
 }
 
-/* COLLAPSE */
 .collapsed {
   width: $sidebar-collapsed;
 }
 
-/* MENU */
+.logo {
+  height: 68px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 14px;
+  margin-bottom: 24px;
+}
+
+.logoIcon {
+  width: 46px;
+  height: 46px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  font-weight: 700;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.logoText {
+  overflow: hidden;
+}
+
+.logoTitle {
+  font-size: 15px;
+  font-weight: 700;
+  color: white;
+}
+
+.logoSub {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
 .menuCenterer {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   overflow-y: auto;
-
   &::-webkit-scrollbar {
     width: 0;
   }
@@ -55,91 +79,118 @@ $transition: all 0.2s ease;
 .nav {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px;
 }
 
-/* COMMON ITEM STYLE (reuse) */
-%menu-item {
+.link {
+  position: relative;
+  height: 54px;
   display: flex;
   align-items: center;
-  gap: 12px;
-
-  padding: 12px 20px;
-  margin: 0 10px;
-
-  border-radius: $radius;
-  transition: $transition;
-}
-
-/* LINK */
-.link {
-  @extend %menu-item;
-
+  gap: 14px;
+  padding: 0 18px;
+  border-radius: 18px;
   text-decoration: none;
-  color: $text-light;
-  font-size: 14px;
-  font-weight: bold;
-
+  color: $text;
+  transition: $transition;
   &:hover {
-    background: $hover-bg;
-    color: $text-white;
+    background: $hover;
+    color: white;
+    transform: translateX(3px);
   }
 }
 
-/* ACTIVE */
 .active {
-  background: #fff;
-  color: $primary;
-  font-weight: 600;
-
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  background: $active-bg;
+  color: $text-active;
+  box-shadow:
+    0 10px 25px rgba(99, 102, 241, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-/* ICON */
 .icon {
+  width: 22px;
+  height: 22px;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  width: 24px;
   flex-shrink: 0;
-}
-
-/* TEXT */
-.label {
-  flex: 1;
-  white-space: nowrap;
-}
-
-/* LOGOUT */
-.logoutButton {
-  @extend %menu-item;
-
-  margin: 10px;
-  border: none;
-
-  background: $logout-bg;
-  color: $text-white;
-
-  cursor: pointer;
-
-  border-top: 1px solid rgba(255, 255, 255, 0.2); // bonus divider
-
-  &:hover {
-    background: $logout-hover;
+  svg {
+    width: 20px;
+    height: 20px;
   }
 }
 
-/* COLLAPSED MODE */
+.label {
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.logoutButton {
+  height: 54px;
+  margin-top: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.04);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 18px;
+  color: #fca5a5;
+  cursor: pointer;
+  transition: $transition;
+  &:hover {
+    background: rgba(239, 68, 68, 0.14);
+    color: white;
+  }
+}
+
 .collapsed {
   .link,
   .logoutButton {
     justify-content: center;
-    padding-left: 0;
-    padding-right: 0;
+    padding: 0;
   }
-
-  .label {
+  .label,
+  .logoText {
     display: none;
   }
+}
+
+.logoWrapper {
+  height: 74px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0;
+  margin-bottom: 26px;
+  flex-shrink: 0;
+}
+
+.logo {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: drop-shadow(0 8px 18px rgba(99, 102, 241, 0.28));
+}
+
+.logoContent {
+  overflow: hidden;
+}
+
+.logoTitle {
+  font-size: 20px;
+  font-weight: 800;
+  margin: 0;
+  background: linear-gradient(135deg, #ffffff, #c4b5fd);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.logoSub {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-top: 2px;
 }
