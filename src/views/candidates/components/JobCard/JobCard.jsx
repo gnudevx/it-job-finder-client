@@ -20,6 +20,14 @@ const getCompanyLogo = (job) => {
   );
 };
 
+const normalizeLogoUrl = (rawUrl) => {
+  if (!rawUrl) return '/logo192.png';
+  // already absolute
+  if (/^(https?:)?\/\//i.test(rawUrl)) return rawUrl;
+  const base = (process.env.REACT_APP_API_URL || 'http://localhost:5000').replace(/\/$/, '');
+  return `${base}${rawUrl.startsWith('/') ? '' : '/'}${rawUrl}`;
+};
+
 const STATUS_LABELS = {
   applied: 'Đã ứng tuyển',
   reviewed: 'Phù hợp',
@@ -50,7 +58,7 @@ function JobCard({ job, isFavorite, onToggleFavorite, onClick, showStatusAndUpda
       ? new Date(job.updatedAt).toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })
       : '';
   }, [job.updatedAt]);
-  const logoSrc = useMemo(() => getCompanyLogo(job), [job]);
+  const logoSrc = useMemo(() => normalizeLogoUrl(getCompanyLogo(job)), [job]);
 
   return (
     <div className={styles.card} onClick={onClick}>

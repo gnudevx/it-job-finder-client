@@ -50,6 +50,7 @@
 // ===== LOGO =====
 .logoWrapper {
   width: 56px;
+  min-width: 56px;
   height: 56px;
   border-radius: $radius-md;
   background: $bg-light;
