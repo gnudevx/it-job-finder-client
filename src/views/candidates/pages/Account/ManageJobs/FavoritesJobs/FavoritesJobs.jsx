@@ -30,6 +30,7 @@ export default function SavedJobs() {
             location: job.location?.name || 'Không rõ',
             experience: job.experience,
             createdAt: job.createdAt,
+            logo: job.employer_id?.companyId?.logo || job.employer_id?.avatar || job.logo || '',
           };
         });
 

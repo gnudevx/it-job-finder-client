@@ -9,6 +9,17 @@ const formatSalary = (salaryStr) => {
   return salaryStr.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 };
 
+const getCompanyLogo = (job) => {
+  return (
+    job?.logo ||
+    job?.company?.logo ||
+    job?.companyLogo ||
+    job?.employer_id?.companyId?.logo ||
+    job?.employer_id?.avatar ||
+    '/logo192.png'
+  );
+};
+
 const STATUS_LABELS = {
   applied: 'Đã ứng tuyển',
   reviewed: 'Phù hợp',
@@ -39,6 +50,7 @@ function JobCard({ job, isFavorite, onToggleFavorite, onClick, showStatusAndUpda
       ? new Date(job.updatedAt).toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })
       : '';
   }, [job.updatedAt]);
+  const logoSrc = useMemo(() => getCompanyLogo(job), [job]);
 
   return (
     <div className={styles.card} onClick={onClick}>
@@ -48,8 +60,8 @@ function JobCard({ job, isFavorite, onToggleFavorite, onClick, showStatusAndUpda
         <div className={styles.headerLeft}>
           <div className={styles.logoWrapper}>
             <img
-              src={job.logo || '/logo192.png'}
-              alt={job.company}
+              src={logoSrc}
+              alt={job.company || job.employer_id?.companyId?.name || job.companyName || 'Company logo'}
               className={styles.logo}
               loading="lazy"
             />

@@ -66,6 +66,7 @@ export default function HomePage() {
           createdAt: job.createdAt || job.updatedAt || null,
           skills: job.skills || [],
           jobType: job.jobType,
+          logo: job.employer_id?.companyId?.logo || job.employer_id?.avatar || job.logo || '',
         }));
 
         formatted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
