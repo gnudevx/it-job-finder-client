@@ -331,16 +331,16 @@ export default function ChatWindow({ chatUser, conversationId }) {
                 return (
                   <div key={m._id || index} className={`${styles.msg} ${isMe ? styles.me : ''}`}>
                     {/* 🟢 IMAGE */}
-                    {m.type === 'file' && isImage && (
-                      <img
-                        src={m.file.url}
-                        alt={m.file.name}
-                        className={styles.imageMsg}
-                        onClick={() =>
-                          window.open(`${API_BASE}${m.file.url}`, '_blank', 'noopener,noreferrer')
-                        }
-                      />
-                    )}
+                        {m.type === 'file' && isImage && (
+                          <img
+                            src={`${API_BASE}${m.file.url}`}
+                            alt={m.file.name}
+                            className={styles.imageMsg}
+                            onClick={() =>
+                              window.open(`${API_BASE}${m.file.url}`, '_blank', 'noopener,noreferrer')
+                            }
+                          />
+                        )}
 
                     {/* 🟢 FILE (PDF, DOC, etc) */}
                     {m.type === 'file' && !isImage && (
@@ -384,6 +384,7 @@ export default function ChatWindow({ chatUser, conversationId }) {
             ref={fileInputRef}
             style={{ display: 'none' }}
             onChange={handleSelectFile}
+            accept="image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
           />
 
           {/* icon file */}
