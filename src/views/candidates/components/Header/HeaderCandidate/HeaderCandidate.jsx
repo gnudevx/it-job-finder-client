@@ -70,7 +70,13 @@ export default function HeaderCandidate() {
     <header className={styles.headerCandidate}>
       {/* Left */}
       <div className={styles['header-left']}>
-        <img src={logo} alt="Logo" className={styles['brand-logo']} />
+        <img
+          src={logo}
+          alt="Logo"
+          className={styles['brand-logo']}
+          style={{ cursor: 'pointer' }}
+          onClick={() => navigate('/candidate/home')}
+        />
       </div>
 
       {/* Center Navigation */}

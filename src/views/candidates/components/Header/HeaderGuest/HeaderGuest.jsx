@@ -10,7 +10,13 @@ export default function HeaderGuest() {
     <header className={styles.header}>
       {/* Left */}
       <div className={styles['header-left']}>
-        <img src={logo} alt="Logo" className={styles['brand-logo']} />
+        <img
+          src={logo}
+          alt="Logo"
+          className={styles['brand-logo']}
+          style={{ cursor: 'pointer' }}
+          onClick={() => navigate('/home')}
+        />
       </div>
 
       {/* Center Navigation */}
