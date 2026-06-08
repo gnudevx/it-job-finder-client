@@ -48,7 +48,7 @@ export default function HomePage() {
           location: filters.location,
           experience: filters.experience,
           salaryLevel: filters.salaryLevel,
-          skills: filters.skills,
+          skills: Array.isArray(filters.skills) ? filters.skills.join(',') : filters.skills,
           createDate: filters.createDate,
           page: currentPage,
           limit: jobsPerPage,
