@@ -1,253 +1,357 @@
+/* ==========================================================================
+   HỆ THỐNG BIẾN MÀU SẮC CHUẨN DESIGN SYSTEM (Tông Slate/Emerald/Indigo)
+   ========================================================================== */
 :root {
-  --page-bg: #eef3f6;
-  --card-bg: #fff;
-  --muted: #6b7280;
-  --border: #e6eef0;
-  --header-text: #0f172a;
-  --accent: #16a34a;
-
-  /* Status badges */
-  --st-applied-bg: #f0fdf4;
-  --st-applied-text: #166534;
-
-  --st-reviewed-bg: #eff6ff;
-  --st-reviewed-text: #1e40af;
-
-  --st-interview-bg: #fefce8;
-  --st-interview-text: #854d0e;
-
-  --st-hired-bg: #ecfdf5;
-  --st-hired-text: #047857;
-
-  --st-rejected-bg: #fef2f2;
-  --st-rejected-text: #991b1b;
+  --page-bg: #f8fafc; /* Nền xám nhạt cao cấp giúp card nổi lên */
+  --card-bg: #ffffff;
+  --text-main: #0f172a; /* Slate 900 - Đọc chữ cực nét */
+  --text-muted: #64748b; /* Slate 500 */
+  --border-color: #e2e8f0; /* Slate 200 - Đường viền mảnh mai */
+  --primary-color: #4f46e5; /* Indigo 600 - Màu thương hiệu hiện đại, thay cho xanh dương rẻ tiền */
+  --primary-hover: #4338ca;
+  --accent-color: #059669; /* Emerald 600 - Màu xem CV */
 }
-
-/* Layout */
 
 .pageWrap {
   min-height: 100vh;
   background: var(--page-bg);
-  font-family: Inter, sans-serif;
-  overflow-x: hidden;
+  font-family:
+    'Inter',
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  padding-bottom: 80px;
 }
 
 .container {
-  max-width: 1180px;
-  margin: 22px auto;
-  padding: 0 20px;
+  max-width: 1040px; /* Độ rộng hoàn hảo cho một danh sách quản trị */
+  margin: 0 auto;
+  padding: 40px 24px;
 }
 
 .title {
-  font-size: 22px;
-  color: var(--header-text);
-  font-weight: 600;
-  margin-bottom: 18px;
+  font-size: 26px;
+  color: var(--text-main);
+  font-weight: 800;
+  margin-bottom: 28px;
+  letter-spacing: -0.03em; /* Kỹ thuật kéo chữ gần nhau của các UI xịn */
 }
 
-/* Filter Bar */
-
+/* ==========================================================================
+   BOXLỌC CAO CẤP (FILTER BAR)
+   ========================================================================== */
 .filterBar {
   background: var(--card-bg);
-  padding: 18px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  margin-bottom: 20px;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.04);
+  padding: 24px;
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  box-shadow:
+    0 1px 3px 0 rgba(0, 0, 0, 0.05),
+    0 1px 2px -1px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 32px;
 }
 
-/* Search box */
+/* Thanh tìm kiếm thanh lịch */
 .searchBox {
   display: flex;
   align-items: center;
-  margin-bottom: 14px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: #fff;
-  overflow: hidden;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  background: #f8fafc; /* Nền tối hơn card một chút để tạo độ sâu */
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  padding-right: 4px;
+
+  &:focus-within {
+    background: #fff;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+  }
 }
 
 .searchInput {
   flex: 1;
-  padding: 10px 12px;
+  padding: 14px 16px;
   border: none;
   outline: none;
   font-size: 14px;
-  background: #fff;
+  font-weight: 500;
+  color: var(--text-main);
+  background: transparent;
+
+  &::placeholder {
+    color: #94a3b8;
+  }
 }
 
 .searchBtn {
-  width: 44px;
-  height: 40px;
-  background: none;
+  width: 42px;
+  height: 42px;
+  background: transparent;
   border: none;
   cursor: pointer;
-  color: var(--muted);
-  font-size: 18px;
+  color: var(--text-muted);
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: background 0.2s;
+
+  &:hover {
+    background: #e2e8f0;
+    color: var(--text-main);
+  }
 }
 
-/* Select row */
+/* Hàng chứa các ô Select */
 .selectsRow {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 12px;
 }
 
 .select {
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  font-size: 14px;
-  background: #fff;
-  min-width: 200px;
-}
-
-.clearBtn {
-  background: #f3f4f6;
-  border: 1px solid var(--border);
   padding: 10px 14px;
-  border-radius: 8px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  font-size: 13.5px;
+  font-weight: 600; /* Chữ đậm vừa phải nhìn rất sang */
+  color: #475569;
+  background: #fff;
+  min-width: 190px;
   cursor: pointer;
-  font-size: 14px;
-  color: var(--muted);
-  transition: background 0.2s ease;
+  outline: none;
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: #cbd5e1;
+    background: #f8fafc;
+  }
+
+  &:focus {
+    border-color: var(--primary-color);
+  }
 }
 
-.clearBtn:hover {
-  background: #e5e7eb;
+/* Cụm input chọn ngày tùy chỉnh */
+.customDateWrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #f1f5f9;
+  padding: 6px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
 }
 
-/* CV List */
+.dateInput {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.dateSeparator {
+  color: #94a3b8;
+  font-weight: bold;
+}
+
+/* Nút xóa bộ lọc tinh tế */
+.clearBtn {
+  background: transparent;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #dc2626; /* Màu đỏ tinh tế */
+  margin-left: auto; /* Đẩy hẳn sang góc phải */
+  transition: all 0.2s;
+
+  &:hover {
+    background: #fef2f2;
+    transform: translateY(-0.5px);
+  }
+}
+
+/* ==========================================================================
+   CARD ỨNG VIÊN ĐẲNG CẤP (CV ITEM CARD)
+   ========================================================================== */
 .cvItem {
   background: var(--card-bg);
-  border: 1px solid var(--border);
-  padding: 18px 20px;
-  border-radius: 12px;
-  margin-bottom: 14px;
-
+  border: 1px solid var(--border-color);
+  padding: 28px; /* Tăng độ rộng để thông tin được "thở" */
+  border-radius: 20px; /* Bo góc cực tinh tế theo style iOS/Modern Web */
+  margin-bottom: 20px;
   display: grid;
   grid-template-columns: 1fr auto;
-  /* trái 1fr, phải auto */
   align-items: center;
-  gap: 12px;
+  gap: 32px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
 
-  transition:
-    box-shadow 0.18s ease,
-    transform 0.18s ease;
+  /* Hiệu ứng trỏ chuột vào card: Đổ bóng mờ mịn màng và dịch chuyển nhẹ */
+  &:hover {
+    transform: translateY(-4px);
+    border-color: #cbd5e1;
+    box-shadow:
+      0 20px 25px -5px rgba(0, 0, 0, 0.05),
+      0 8px 10px -6px rgba(0, 0, 0, 0.05);
+  }
 }
 
+/* Cột thông tin ứng viên (Bên trái) */
 .cvProfile {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px;
 }
 
 .cvName {
-  font-size: 16px;
-  font-weight: 600;
-  color: #0f172a;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.02em;
+  text-transform: capitalize; /* Tự động viết hoa chữ cái đầu nếu nhập liệu ẩu */
 }
 
 .cvJob {
-  font-size: 14px;
-  color: var(--muted);
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--primary-color); /* Cho chức danh nổi bật lên */
+  background: rgba(79, 70, 229, 0.06); /* Thêm background nhẹ sang chảnh như một cái tag */
+  padding: 4px 10px;
+  border-radius: 6px;
+  display: inline-block;
+  width: fit-content;
 }
 
+/* Hàng hiển thị ngày tháng tinh gọn */
 .cvDate {
-  font-size: 14px;
-  color: #475569;
+  font-size: 13px;
+  color: var(--text-muted);
+  display: flex;
+  gap: 24px;
+  margin-top: 4px;
+
+  span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  b {
+    color: #475569;
+  }
 }
 
+/* Cột hành động xử lý (Bên phải) */
 .cvActions {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 16px;
   align-items: flex-end;
 }
 
+.statusWrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.statusLabel {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Cụm nút bấm */
 .actionBtns {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-top: 16px;
+  gap: 10px;
 }
 
+/* Nút Lưu trạng thái - Màu Indigo vững chãi */
 .saveStatusBtn {
-  padding: 8px 16px;
-  background: #3b82f6;
-  /* màu xanh dương */
+  padding: 11px 20px;
+  background: var(--primary-color);
   color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition:
-    filter 0.2s ease,
-    transform 0.2s ease;
+  font-size: 13.5px;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2); /* Tạo chiều sâu bằng đổ bóng màu */
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    background: var(--primary-hover);
+    box-shadow: 0 6px 16px rgba(79, 70, 229, 0.3);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    background: #cbd5e1;
+    color: #94a3b8;
+    box-shadow: none;
+    cursor: not-allowed;
+    transform: none;
+  }
 }
 
-.saveStatusBtn:hover {
-  filter: brightness(0.9);
-  transform: translateY(-1px);
-}
-
-.saveStatusBtn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  filter: none;
-  transform: none;
-}
-
+/* Nút Xem CV - Tinh gọn, tối giản, chuyên nghiệp */
 .viewPdfBtn {
-  padding: 8px 16px;
-  background: var(--accent);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
+  padding: 11px 20px;
+  background: #f1f5f9;
+  color: #334155;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
   cursor: pointer;
-  font-size: 14px;
-  transition:
-    filter 0.2s ease,
-    transform 0.2s ease;
+  font-size: 13.5px;
+  font-weight: 700;
+  transition: all 0.2s;
+
+  &:hover {
+    background: #e2e8f0;
+    color: var(--text-main);
+    border-color: #cbd5e1;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
 }
 
-.viewPdfBtn:hover {
-  filter: brightness(0.9);
-  transform: translateY(-1px);
-}
-
-/* Badges */
-
-.badge {
-  padding: 5px 10px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 600;
-  display: inline-block;
-}
-
-.badge.applied {
-  background: var(--st-applied-bg);
-  color: var(--st-applied-text);
-}
-
-.badge.reviewed {
-  background: var(--st-reviewed-bg);
-  color: var(--st-reviewed-text);
-}
-
-.badge.interviewing {
-  background: var(--st-interview-bg);
-  color: var(--st-interview-text);
-}
-
-.badge.hired {
-  background: var(--st-hired-bg);
-  color: var(--st-hired-text);
-}
-
-.badge.rejected {
-  background: var(--st-rejected-bg);
-  color: var(--st-rejected-text);
+/* Trạng thái trống / Đang tải */
+.loadingText,
+.emptyText {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-muted);
+  font-size: 15px;
+  font-weight: 500;
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
 }

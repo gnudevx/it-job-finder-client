@@ -1,12 +1,11 @@
 {
   "compilerOptions": {
     "baseUrl": "src",
-    "ignoreDeprecations": "6.0",
     "paths": {
       "@/*": ["*"],
       "@assets/*": ["assets/*"],
       "@api/*": ["api/*"],
-      "@/views/*": ["views/*"],
+      "@views/*": ["views/*"],
       "@viewmodels/*": ["viewmodels/*"],
       "@models/*": ["models/*"],
       "@routers/*": ["routers/*"],

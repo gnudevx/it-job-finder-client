@@ -16,6 +16,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import RootRedirect from './RootRedirect';
 import CompanyInfoPage from '@/views/candidates/components/CompanyInfo/CompanyInfoPage';
 import ConnectPage from '@/views/employers/pages/ConnectPage/ConnectPage.jsx';
+import GlobalToast from '@components/GlobalToast.jsx';
 const LoadingScreen = () => (
   <div className="flex items-center justify-center h-screen text-lg font-medium">Loading...</div>
 );
@@ -35,6 +36,7 @@ PrivateRoute.propTypes = {
 export const AppRouter = () => {
   return (
     <>
+      <GlobalToast />
       <Toaster position="top-right" richColors />
       <Suspense fallback={<LoadingScreen />}>
         <Routes>

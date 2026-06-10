@@ -18,6 +18,7 @@ import BuyService from '@/views/employers/pages/BuyService/BuyService.jsx';
 import Payment from '@/views/employers/pages/Payment/Payment.jsx';
 import ManageAppliedCV from '@/views/employers/pages/ManageAppliedCV/ManageAppliedCV.jsx';
 import SearchCV from '@/views/employers/pages/SearchCV/SearchCV.jsx';
+import PaymentResult from '@/views/employers/pages/PaymentResult/PaymentResult.jsx';
 // import CompanyInfo from "@/views/employers/components/CompanyInfo/CompanyInfo";
 const employerRoutes = [
   { path: 'dashboard', element: <Dashboard />, meta: { title: 'Dashboard' } },
@@ -56,6 +57,7 @@ const employerRoutes = [
   },
   { path: 'buy-services/', element: <BuyService />, meta: { title: 'BuyService' } },
   { path: 'payment/:pkgId', element: <Payment />, meta: { title: 'Payment' } },
+  { path: 'payment/result', element: <PaymentResult />, meta: { title: 'Payment Result' } },
   { path: 'search-cv/*', element: <SearchCV />, meta: { title: 'SearchCV' } },
 ];
 export default employerRoutes;

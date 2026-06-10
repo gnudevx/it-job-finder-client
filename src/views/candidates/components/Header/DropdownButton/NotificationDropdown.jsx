@@ -13,11 +13,14 @@ export const NotificationDropdown = () => {
   const ref = useRef();
 
   const fetchNotifications = async () => {
-    const res = await notificationApiService.candidateList(1, 20);
+    const res =
+      role?.toUpperCase() === 'EMPLOYER'
+        ? await notificationApiService.employerList(1, 20)
+        : await notificationApiService.candidateList(1, 20);
 
-    setNotifications(res.items);
+    setNotifications(res.items || []);
 
-    const unread = res.items.filter((n) => !n.isRead).length;
+    const unread = (res.items || []).filter((n) => !n.isRead).length;
     setUnreadCount(unread);
   };
 
