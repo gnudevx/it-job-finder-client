@@ -14,6 +14,7 @@ module.exports = {
           '@layout': './src/views/layouts',
           '@utils': './src/utils',
           '@config': './src/config',
+          '@redux': './src/redux',
         },
       },
     ],

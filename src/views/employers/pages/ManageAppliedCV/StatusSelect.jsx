@@ -15,14 +15,38 @@ function StatusSelect({ currentStatus, onChange }) {
     onChange(newStatus);
   };
 
+  // Hàm map class màu động dựa trên trạng thái
+  const getStatusClass = (statusKey) => {
+    switch (statusKey) {
+      case 'applied':
+        return styles.statusApplied;
+      case 'reviewed':
+        return styles.statusReviewed;
+      case 'interviewing':
+        return styles.statusInterviewing;
+      case 'hired':
+        return styles.statusHired;
+      case 'rejected':
+        return styles.statusRejected;
+      default:
+        return '';
+    }
+  };
+
   return (
-    <select value={status} onChange={handleChange} className={styles.select}>
-      <option value="applied">Tiếp nhận</option>
-      <option value="reviewed">Phù hợp</option>
-      <option value="interviewing">Hẹn phỏng vấn</option>
-      <option value="hired">Nhận việc</option>
-      <option value="rejected">Chưa phù hợp</option>
-    </select>
+    <div className={styles.wrapper}>
+      <select
+        value={status}
+        onChange={handleChange}
+        className={`${styles.select} ${getStatusClass(status)}`}
+      >
+        <option value="applied">Tiếp nhận</option>
+        <option value="reviewed">Phù hợp</option>
+        <option value="interviewing">Hẹn phỏng vấn</option>
+        <option value="hired">Nhận việc</option>
+        <option value="rejected">Chưa phù hợp</option>
+      </select>
+    </div>
   );
 }
 

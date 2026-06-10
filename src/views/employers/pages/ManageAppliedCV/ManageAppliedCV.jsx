@@ -41,12 +41,12 @@ function CVItem({ app, onStatusUpdated }) {
         <div className={styles.cvName}>{app.candidateId?.fullName}</div>
         <div className={styles.cvJob}>{app.jobId?.title}</div>
         <div className={styles.cvDate}>
-          Ngày ứng tuyển:{' '}
-          {new Date(app.appliedAt).toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })}
-        </div>
-        <div className={styles.cvDate}>
-          Ngày cập nhật:{' '}
-          {new Date(app.updatedAt).toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })}
+          <span>
+            📅 <b>Ứng tuyển:</b> {new Date(app.appliedAt).toLocaleDateString('vi-VN')}
+          </span>
+          <span>
+            🔄 <b>Cập nhật:</b> {new Date(app.updatedAt).toLocaleDateString('vi-VN')}
+          </span>
         </div>
       </div>
 
@@ -141,7 +141,7 @@ function ManageAppliedCV() {
 
         <FilterBar filters={filters} setFilters={setFilters} campaigns={campaigns} />
 
-        <div style={{ marginTop: '24px' }}>
+        <div style={{ marginTop: '2px' }}>
           {loading && <p>Đang tải...</p>}
           {!loading && applications.length === 0 && <p>Không có ứng viên nào.</p>}
 

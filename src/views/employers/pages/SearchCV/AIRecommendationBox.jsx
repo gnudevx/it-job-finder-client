@@ -1,46 +1,74 @@
 import React, { useState } from 'react';
 import styles from './AIRecommendationBox.module.scss';
 import CVCard from './CVCard.jsx';
+import axiosClient from '@/services/axiosClient.js';
 export default function AIRecommendationBox() {
   const [jobDescription, setJobDescription] = useState('');
   const [isAiLoading, setIsAiLoading] = useState(false);
   const [recommendedCvs, setRecommendedCvs] = useState([]);
+  const [error, setError] = useState('');
+  // const handleGetRecommendations = async () => {
+  //   setIsAiLoading(true);
 
+  //   // mock AI
+  //   setTimeout(() => {
+  //     setRecommendedCvs([
+  //       {
+  //         id: 1,
+  //         fullName: 'Nguyễn Văn A',
+  //         skills: ['React', 'Node.js', 'TypeScript'],
+  //         avatar: 'https://picsum.photos/seed/1/200/200',
+  //         matchScore: 95,
+  //         matchReason: 'Có kinh nghiệm dày dặn với React và Next.js',
+  //         experienceYears: 5,
+  //         title: 'Senior Frontend Developer',
+  //       },
+  //       {
+  //         id: 2,
+  //         fullName: 'Trần Thị B',
+  //         avatar: 'https://picsum.photos/seed/1/200/200',
+  //         skills: ['Vue.js', 'JavaScript'],
+  //         matchScore: 80,
+  //         matchReason: 'Nắm vững căn bản Frontend',
+  //         experienceYears: 3,
+  //         title: 'Frontend Developer',
+  //       },
+  //     ]);
+  //     setIsAiLoading(false);
+  //   }, 1500);
+  // };
   const handleGetRecommendations = async () => {
     setIsAiLoading(true);
+    setError('');
+    setRecommendedCvs([]);
 
-    // mock AI
-    setTimeout(() => {
-      setRecommendedCvs([
-        {
-          id: 1,
-          fullName: 'Nguyễn Văn A',
-          skills: ['React', 'Node.js', 'TypeScript'],
-          avatar: 'https://picsum.photos/seed/1/200/200',
-          matchScore: 95,
-          matchReason: 'Có kinh nghiệm dày dặn với React và Next.js',
-          experienceYears: 5,
-          title: 'Senior Frontend Developer',
-        },
-        {
-          id: 2,
-          fullName: 'Trần Thị B',
-          avatar: 'https://picsum.photos/seed/1/200/200',
-          skills: ['Vue.js', 'JavaScript'],
-          matchScore: 80,
-          matchReason: 'Nắm vững căn bản Frontend',
-          experienceYears: 3,
-          title: 'Frontend Developer',
-        },
-      ]);
+    try {
+      const data = await axiosClient.post('/api/ai/recommend', {
+        // ✅ bỏ { data }
+        jobDescription,
+        topK: 3,
+      });
+
+      console.log('data:', data); // kiểm tra lần cuối
+
+      if (data.success) {
+        setRecommendedCvs(data.results);
+      } else {
+        setError('Không thể lấy kết quả từ AI. Vui lòng thử lại.');
+      }
+    } catch (err) {
+      const msg = err.response?.data?.message || err.message || 'Lỗi kết nối AI service.';
+      setError(msg);
+    } finally {
       setIsAiLoading(false);
-    }, 1500);
+    }
   };
   return (
     <div className={styles.wrapper}>
       <div className={styles.card}>
         {/* Header */}
         <div className={styles.header}>
+          {error && <p style={{ color: 'red', marginTop: '8px' }}>{error}</p>}
           <h2 className={styles.title}>
             <span className={styles.iconBox}>
               <svg className={styles.icon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -139,7 +167,7 @@ export default function AIRecommendationBox() {
 
           <div className={styles.resultGrid}>
             {recommendedCvs.map((cv) => (
-              <CVCard key={cv.id} cv={cv} isRecommended />
+              <CVCard key={cv.resumeId} cv={cv} isRecommended />
             ))}
           </div>
         </div>
