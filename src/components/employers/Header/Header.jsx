@@ -84,7 +84,7 @@ export default function Header({ onToggleSidebar }) {
         // giả sử getEmployerPersonal gọi /employer/account/settings/personal
         setCurrentEmployerId(res.user._id); // lấy employer._id
       } catch (err) {
-        console.error('Lấy thông tin employer lỗi:', err);
+        console.error('Lấy thông tin nhà tuyển dụng lỗi:', err);
       }
     };
     fetchEmployerData();

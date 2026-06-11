@@ -12,7 +12,6 @@ export default function AdminHeader({ onToggleSidebar, title }) {
         </button>
 
         <div>
-          <p className={styles.breadcrumb}>Admin Dashboard</p>
           <h1 className={styles.title}>{title}</h1>
         </div>
       </div>

@@ -36,7 +36,7 @@ export default function ManageCandidates() {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Quản Lý Candidate</h1>
+      <h1 className={styles.title}>Quản Lý Ứng viên</h1>
 
       <div className={styles.tableWrapper}>
         {loading ? (

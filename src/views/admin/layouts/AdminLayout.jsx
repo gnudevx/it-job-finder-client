@@ -12,13 +12,13 @@ export default function AdminLayout() {
   const location = useLocation();
 
   const pageTitles = {
-    '/admin/dashboard': 'Dashboard',
-    '/admin/manage/recruiment': 'Quản lý tuyển dụng',
-    '/admin/notification/candidate': 'Thông báo Candidate',
-    '/admin/notification/employer': 'Thông báo Employer',
+    '/admin/dashboard': 'Trang chính quản trị viên',
+    '/admin/manage/recruiment': 'Quản lý tin tuyển dụng',
+    '/admin/notification/candidate': 'Thông báo Ứng viên',
+    '/admin/notification/employer': 'Thông báo Nhà tuyển dụng',
     '/admin/manage/business-license': 'Giấy phép doanh nghiệp',
-    '/admin/manage/candidates': 'Quản lý Candidate',
-    '/admin/manage/employers': 'Quản lý Employer',
+    '/admin/manage/candidates': 'Quản lý Ứng viên',
+    '/admin/manage/employers': 'Quản lý Nhà tuyển dụng',
     '/admin/manage/SupportTickets': 'Yêu cầu hỗ trợ',
   };
 

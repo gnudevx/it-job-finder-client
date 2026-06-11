@@ -76,7 +76,7 @@ export default function AdminTicketList({ tickets, onViewTicket }) {
                           : styles.feedbackBadge
                       }
                     >
-                      {ticket.type === TicketType.SUPPORT ? 'Report' : 'Feedback'}
+                      {ticket.type === TicketType.SUPPORT ? 'Hỗ trợ' : 'Góp ý'}
                     </span>
                   </td>
                   <td>
@@ -94,7 +94,11 @@ export default function AdminTicketList({ tickets, onViewTicket }) {
                             : styles.statusClosed
                       }
                     >
-                      {ticket.status}
+                      {ticket.status === TicketStatus.OPEN
+                        ? 'Mới'
+                        : ticket.status === TicketStatus.RESPONDED
+                          ? 'Đã phản hồi'
+                          : 'Đã đóng'}
                     </span>
                   </td>
                   <td>
