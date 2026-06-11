@@ -26,7 +26,8 @@ const PaymentResult = () => {
       try {
         // Fetch trạng thái thanh toán từ backend qua API (nếu backend có hỗ trợ)
         // Nếu chưa có API chi tiết, ta fallback dùng query params
-        const url = `/api/payments/status/${orderId}` + (sessionId ? `?sessionId=${sessionId}` : '');
+        const url =
+          `/api/payments/status/${orderId}` + (sessionId ? `?sessionId=${sessionId}` : '');
         const response = await axiosClient.get(url).catch(() => null);
         if (response) {
           setPaymentDetails(response);

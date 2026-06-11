@@ -8,11 +8,15 @@ import {
 import StatusSelect from './StatusSelect';
 import FilterBar from './FilterBar';
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
+import employerService from '@api/employerSerivce.js';
 
 // -------------------- CV Item Component --------------------
 function CVItem({ app, onStatusUpdated }) {
   const [status, setStatus] = useState(app.status);
   const [loading, setLoading] = useState(false);
+  const [chatLoading, setChatLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleViewPDF = () => {
     if (app.resumeId) {
@@ -20,6 +24,28 @@ function CVItem({ app, onStatusUpdated }) {
     } else {
       alert('Ứng viên chưa tải CV lên.');
     }
+  };
+
+  const handleChatWithCandidate = async () => {
+    if (!app.candidateId?._id) {
+      alert('Không tìm thấy thông tin ứng viên!');
+      return;
+    }
+    if (!app.jobId?._id) {
+      alert('Không tìm thấy thông tin công việc!');
+      return;
+    }
+
+    setChatLoading(true);
+    try {
+      const res = await employerService.createConversation(app.candidateId._id, app.jobId._id);
+      const convoId = res._id;
+      navigate(`/employer/connect/${convoId}`);
+    } catch (err) {
+      console.error(err);
+      alert('Lỗi khi mở cuộc trò chuyện với ứng viên!');
+    }
+    setChatLoading(false);
   };
 
   const handleSaveStatus = async () => {
@@ -61,6 +87,14 @@ function CVItem({ app, onStatusUpdated }) {
             {loading ? 'Đang lưu...' : 'Lưu trạng thái'}
           </button>
 
+          <button
+            className={styles.chatBtn}
+            onClick={handleChatWithCandidate}
+            disabled={chatLoading}
+          >
+            {chatLoading ? 'Đang kết nối...' : 'Chat với ứng viên'}
+          </button>
+
           <button className={styles.viewPdfBtn} onClick={handleViewPDF}>
             Xem CV
           </button>
@@ -74,9 +108,11 @@ CVItem.propTypes = {
   app: PropTypes.shape({
     _id: PropTypes.string.isRequired,
     candidateId: PropTypes.shape({
+      _id: PropTypes.string.isRequired,
       fullName: PropTypes.string,
     }),
     jobId: PropTypes.shape({
+      _id: PropTypes.string.isRequired,
       title: PropTypes.string,
     }),
     appliedAt: PropTypes.string.isRequired,

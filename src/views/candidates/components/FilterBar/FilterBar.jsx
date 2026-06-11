@@ -64,21 +64,21 @@ export default function FilterBar({ onChange }) {
   // Handle selectedFilters changes asynchronously
   useEffect(() => {
     const prevSelected = prevSelectedFiltersRef.current;
-    
+
     // Check if skills changed
     if (JSON.stringify(prevSelected.skills) !== JSON.stringify(selectedFilters.skills)) {
       if (selectedFilters.skills !== undefined) {
         onChange('skills', selectedFilters.skills);
       }
     }
-    
+
     // Check other filter types
     for (const key of ['location', 'salaryLevel', 'experience', 'createDate']) {
       if (prevSelected[key] !== selectedFilters[key] && selectedFilters[key] !== undefined) {
         onChange(key, selectedFilters[key]);
       }
     }
-    
+
     prevSelectedFiltersRef.current = selectedFilters;
   }, [selectedFilters, onChange]);
 

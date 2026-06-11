@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './Header.module.scss';
 import { IoMenuSharp } from 'react-icons/io5';
 import { BsPencilSquare } from 'react-icons/bs';
@@ -16,11 +16,53 @@ import { FaUserCircle } from 'react-icons/fa';
 import { IoCaretDown, IoHelpCircleOutline, IoLogOutOutline } from 'react-icons/io5';
 import logoHIDEIT from '@assets/Logo_HireIT.png';
 import authService from '@/services/authService';
-import { useEffect } from 'react';
 import employerSerivce from '@/api/employerSerivce';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
+import { socket } from '@/services/socket';
+import { getUnreadMessageCount } from '@/api/chatService';
+
 export default function Header({ onToggleSidebar }) {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  // Real-time unread messages logic
+  useEffect(() => {
+    if (!user?._id) return;
+
+    const fetchUnread = async () => {
+      try {
+        const count = await getUnreadMessageCount('employer');
+        setUnreadCount(count);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchUnread();
+
+    if (!socket.connected) {
+      socket.connect();
+    }
+    socket.emit('user:join', user._id);
+
+    const handleReceiveMessage = () => {
+      fetchUnread();
+    };
+
+    const handleMessageRead = () => {
+      fetchUnread();
+    };
+
+    socket.on('receive-message', handleReceiveMessage);
+    socket.on('message:read', handleMessageRead);
+
+    return () => {
+      socket.off('receive-message', handleReceiveMessage);
+      socket.off('message:read', handleMessageRead);
+    };
+  }, [user]);
+
   const handleLogout = async () => {
     try {
       await authService.logoutRequest(); // gọi API logout
@@ -61,7 +103,13 @@ export default function Header({ onToggleSidebar }) {
       <div className={styles['header-right']}>
         <NavButton icon={BsPencilSquare} label="Đăng tin" to="/employer/jobs/create" />
         <NavButton icon={TbReportSearch} label="Tìm CV" to="/employer/search" />
-        <NavButton icon={BiMessageSquareDots} label="Connect" to="/employer/connect" newTab />
+        <NavButton
+          icon={BiMessageSquareDots}
+          label="Connect"
+          to="/employer/connect"
+          newTab
+          badge={unreadCount}
+        />
         <DropdownButton
           icon={FaRegLightbulb}
           label="Insights"

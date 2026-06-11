@@ -6,4 +6,9 @@ export default {
   getEmployerProgressService: () => axiosClient.get('/employer/account/settings/personal/progress'),
   getApplications: () => axiosClient.get('/employer/connect/applications'),
   getConversationsByEmployer: () => axiosClient.get('/employer/connect/conversations/employer'),
+  createConversation: (candidateId, jobId) =>
+    axiosClient.post('/employer/connect/conversations', {
+      candidateId,
+      jobId,
+    }),
 };

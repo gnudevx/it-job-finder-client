@@ -69,7 +69,9 @@ function JobCard({ job, isFavorite, onToggleFavorite, onClick, showStatusAndUpda
           <div className={styles.logoWrapper}>
             <img
               src={logoSrc}
-              alt={job.company || job.employer_id?.companyId?.name || job.companyName || 'Company logo'}
+              alt={
+                job.company || job.employer_id?.companyId?.name || job.companyName || 'Company logo'
+              }
               className={styles.logo}
               loading="lazy"
             />

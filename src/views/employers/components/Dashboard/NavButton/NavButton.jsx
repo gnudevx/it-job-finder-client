@@ -2,12 +2,17 @@ import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styles from './NavButton.module.scss';
 
-export const NavButton = ({ icon: Icon, label, to, newTab, isTransparent }) => {
+export const NavButton = ({ icon: Icon, label, to, newTab, isTransparent, badge }) => {
   const baseClass = `${styles['nav-btn']} ${isTransparent ? styles.transparent : ''}`;
+  const renderBadge = badge > 0 ? <span className={styles.badge}>{badge}</span> : null;
+
   if (newTab) {
     return (
       <button className={baseClass} onClick={() => window.open(to, '_blank')}>
-        <Icon className={styles['nav-icon']} />
+        <div style={{ position: 'relative', display: 'inline-flex' }}>
+          <Icon className={styles['nav-icon']} />
+          {renderBadge}
+        </div>
         <span className={styles.label}>{label}</span>
       </button>
     );
@@ -17,7 +22,10 @@ export const NavButton = ({ icon: Icon, label, to, newTab, isTransparent }) => {
       to={to}
       className={({ isActive }) => `${styles['nav-btn']} ${isActive ? styles['active'] : ''}`}
     >
-      <Icon className={styles['nav-icon']} />
+      <div style={{ position: 'relative', display: 'inline-flex' }}>
+        <Icon className={styles['nav-icon']} />
+        {renderBadge}
+      </div>
       <span className={styles.label}>{label}</span>
     </NavLink>
   );
@@ -29,4 +37,5 @@ NavButton.propTypes = {
   to: PropTypes.string.isRequired,
   newTab: PropTypes.bool,
   isTransparent: PropTypes.bool,
+  badge: PropTypes.number,
 };

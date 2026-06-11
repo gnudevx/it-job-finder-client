@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import styles from './ConnectPage.module.scss';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import CandidateSidebar from './component/ChatSidebar/CandidateSidebar.jsx';
 import EmployerSidebar from './component/ChatSidebar/EmployerSidebar.jsx';
@@ -15,6 +16,8 @@ import { socket } from '@/services/socket.js'; //
 export default function ConnectPage() {
   const { user } = useAuth();
   const role = user?.role; //
+  const navigate = useNavigate();
+  const { id } = useParams();
   const [candidates, setCandidates] = useState([]);
   const [conversationId, setConversationId] = useState(null);
   const [conversations, setConversations] = useState([]);
@@ -71,10 +74,48 @@ export default function ConnectPage() {
 
     socket.on('receive-message', handleReceive);
 
+    const handleMessageRead = ({ conversationId: cid, role: readerRole }) => {
+      setConversations((prev) =>
+        prev.map((c) => {
+          if (c.conversationId === cid) {
+            return {
+              ...c,
+              unreadCount: {
+                ...c.unreadCount,
+                [readerRole]: 0,
+              },
+            };
+          }
+          return c;
+        })
+      );
+    };
+
+    socket.on('message:read', handleMessageRead);
+
     return () => {
-      socket.off('receive-message', handleReceive); // chỉ off listener, không disconnect
+      socket.off('receive-message', handleReceive);
+      socket.off('message:read', handleMessageRead);
     };
   }, []);
+
+  useEffect(() => {
+    if (!conversationId || !conversations.length) return;
+    const currentConvo = conversations.find((c) => c.conversationId === conversationId);
+    if (currentConvo) {
+      setSelectedUser((prev) => {
+        if (!prev) return prev;
+        if (JSON.stringify(prev.unreadCount) !== JSON.stringify(currentConvo.unreadCount)) {
+          return {
+            ...prev,
+            unreadCount: currentConvo.unreadCount,
+          };
+        }
+        return prev;
+      });
+    }
+  }, [conversations, conversationId]);
+
   useEffect(() => {
     currentConversationRef.current = conversationId;
   }, [conversationId]);
@@ -100,52 +141,40 @@ export default function ConnectPage() {
             ? await employerService.getConversationsByEmployer()
             : await candidateService.getConversationsByCandidate();
         console.log('🔥 conversations từ API:', res);
-        setConversations(res);
+
+        setConversations((prev) => {
+          // If we have an active conversation that is not in the fetched list, preserve it
+          const activeId = id;
+          if (activeId) {
+            const activeConvo = prev.find((c) => c.conversationId === activeId);
+            if (activeConvo && !res.some((c) => c.conversationId === activeId)) {
+              return [activeConvo, ...res];
+            }
+          }
+          return res;
+        });
 
         // JOIN ALL ROOM
         res.forEach((c) => {
           socket.emit('join-conversation', c.conversationId);
         });
+        if (id) {
+          socket.emit('join-conversation', id);
+        }
       } catch (err) {
         console.error(err);
       }
     };
     if (role) fetchConversations();
-  }, [role]);
+  }, [role, id]);
   const handleSelectEmployer = async (employerId, conversationId, jobId) => {
     try {
       let convoId = conversationId;
-      const convo = conversations.find((c) => c.conversationId === convoId);
       if (!convoId) {
         const res = await candidateService.createConversation(employerId, jobId);
         convoId = res._id;
       }
-      setConversationId(convoId);
-      const employerData = employers.find((e) => e.id === employerId);
-
-      setSelectedUser({
-        ...employerData,
-        ...convo,
-      });
-      // QUAN TRỌNG
-      await axiosClient.post('/messages/mark-as-read', {
-        conversationId: convoId,
-        role: role,
-      });
-      setConversations((prev) =>
-        prev.map((c) => {
-          if (c.conversationId === convoId) {
-            return {
-              ...c,
-              unreadCount: {
-                ...c.unreadCount,
-                [role]: 0,
-              },
-            };
-          }
-          return c;
-        })
-      );
+      navigate(`/candidate/connect/${convoId}`);
     } catch (err) {
       console.error(err);
     }
@@ -156,6 +185,7 @@ export default function ConnectPage() {
       console.log('data: ', res);
       const mapped = res.data.map((item) => ({
         id: item.candidate.candidateId, // QUAN TRỌNG
+        userId: item.candidate.userId, // THÊM NÀY
         name: item.candidate.fullName,
         avatar: item.candidate.avatar,
         position: item.position,
@@ -169,40 +199,48 @@ export default function ConnectPage() {
     }
   };
   const handleSelectCandidate = async (candidateId, convoId) => {
-    const convo = conversations.find((c) => c.conversationId === convoId);
-    const candidate = candidates.find((c) => c.id === candidateId);
-
-    setSelectedUser({
-      ...convo,
-      ...candidate,
-    });
-
-    setConversationId(convoId);
-
-    // QUAN TRỌNG
-    try {
-      await axiosClient.post('/messages/mark-as-read', {
-        conversationId: convoId,
-        role: role,
-      });
-      setConversations((prev) =>
-        prev.map((c) => {
-          if (c.conversationId === convoId) {
-            return {
-              ...c,
-              unreadCount: {
-                ...c.unreadCount,
-                [role]: 0,
-              },
-            };
-          }
-          return c;
-        })
-      );
-    } catch (err) {
-      console.error(err);
-    }
+    navigate(`/employer/connect/${convoId}`);
   };
+
+  // URL id active conversation listener effect
+  useEffect(() => {
+    if (!id || !role) return;
+
+    const convo = conversations.find((c) => c.conversationId === id);
+    if (convo) {
+      setConversationId(id);
+      setSelectedUser(convo);
+      axiosClient
+        .post('/messages/mark-as-read', {
+          conversationId: id,
+          role: role,
+        })
+        .catch(console.error);
+    } else {
+      const fetchConvoDetails = async () => {
+        try {
+          const res = await axiosClient.get(`/${role}/connect/conversations/${id}`);
+          if (res) {
+            setConversations((prev) => {
+              if (!prev.some((c) => c.conversationId === id)) {
+                return [res, ...prev];
+              }
+              return prev;
+            });
+            setConversationId(id);
+            setSelectedUser(res);
+            await axiosClient.post('/messages/mark-as-read', {
+              conversationId: id,
+              role: role,
+            });
+          }
+        } catch (err) {
+          console.error('Failed to fetch conversation details:', err);
+        }
+      };
+      fetchConvoDetails();
+    }
+  }, [id, conversations.length, role]);
   useEffect(() => {
     if (role === 'employer') {
       fetchCandidates();

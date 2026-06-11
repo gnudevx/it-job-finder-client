@@ -15,8 +15,49 @@ import logo_candidate from '@/assets/logo_candidate.jpg';
 import NotificationDropdown from '@/views/candidates/components/Header/DropdownButton/NotificationDropdown.jsx';
 import authService from '@/services/authService';
 import { NavButton } from '@/views/employers/components/Dashboard/NavButton/NavButton.jsx';
-// import { BiMessageSquareDots } from "react-icons/bi";
+import { useAuth } from '@/contexts/AuthContext';
+import { socket } from '@/services/socket';
+import { getUnreadMessageCount } from '@/api/chatService';
 export default function HeaderCandidate() {
+  const { user } = useAuth();
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  // Real-time unread messages logic
+  useEffect(() => {
+    if (!user?._id) return;
+
+    const fetchUnread = async () => {
+      try {
+        const count = await getUnreadMessageCount('candidate');
+        setUnreadCount(count);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchUnread();
+
+    if (!socket.connected) {
+      socket.connect();
+    }
+    socket.emit('user:join', user._id);
+
+    const handleReceiveMessage = () => {
+      fetchUnread();
+    };
+
+    const handleMessageRead = () => {
+      fetchUnread();
+    };
+
+    socket.on('receive-message', handleReceiveMessage);
+    socket.on('message:read', handleMessageRead);
+
+    return () => {
+      socket.off('receive-message', handleReceiveMessage);
+      socket.off('message:read', handleMessageRead);
+    };
+  }, [user]);
+
   const [showDropdown, setShowDropdown] = useState(false);
   const [openSections, setOpenSections] = useState({
     jobs: false,
@@ -103,7 +144,13 @@ export default function HeaderCandidate() {
       <div className={styles['header-right']}>
         <NotificationDropdown />
 
-        <NavButton icon={MessageSquareMore} to="/candidate/connect" newTab isTransparent={true} />
+        <NavButton
+          icon={MessageSquareMore}
+          to="/candidate/connect"
+          newTab
+          isTransparent={true}
+          badge={unreadCount}
+        />
         {/* PROFILE DROPDOWN */}
         <div
           className={styles.profileWrapper}

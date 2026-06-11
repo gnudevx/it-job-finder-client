@@ -39,7 +39,8 @@ export default function AppliedJobs() {
               createdAt: job?.createdAt,
               status: app.status,
               updatedAt: app.updatedAt,
-              logo: job?.employer_id?.companyId?.logo || job?.employer_id?.avatar || job?.logo || '',
+              logo:
+                job?.employer_id?.companyId?.logo || job?.employer_id?.avatar || job?.logo || '',
             };
           })
           .filter(Boolean);
