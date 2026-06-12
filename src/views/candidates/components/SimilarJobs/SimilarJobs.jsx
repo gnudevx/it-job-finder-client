@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from './SimilarJobs.module.scss';
-import axios from 'axios';
+import recommendService from '@/api/recommendService';
 import { useNavigate } from 'react-router-dom';
 import JobCard from '../JobCard/JobCard';
 import useFavorites from '@/hooks/useFavorites';
@@ -16,16 +16,17 @@ export default function SimilarJobs({ jobId }) {
 
     const fetchRecommend = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/recommend/jobs/${jobId}`);
+        const res = await recommendService.getRecommendedJobs(jobId);
 
-        if (res.data.success) {
+        if (res?.data?.success) {
           // map dữ liệu về đúng format JobCard
           const mapped = res.data.data.map((item) => ({
             id: item._id,
             title: item.title,
             salary: item.salary_raw,
             location: item.location?.name || item.location,
-            company: 'Đang cập nhật',
+            company: item.companyName || 'Đang cập nhật',
+            logo: item.logo || '',
             jobType: 'fulltime',
             createdAt: new Date(),
           }));

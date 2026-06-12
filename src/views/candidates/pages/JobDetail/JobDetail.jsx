@@ -125,6 +125,15 @@ export default function JobDetail() {
     }
   };
 
+  const getLogoSrc = (logo) => {
+    if (!logo) return '';
+    if (logo.startsWith('http://') || logo.startsWith('https://')) return logo;
+    const base = (process.env.REACT_APP_API_URL || 'http://localhost:5000').replace(/\/$/, '');
+    const trimmed = logo.replace(/^\/+/, '');
+    const path = trimmed.startsWith('uploads/') ? `/${trimmed}` : `/uploads/${trimmed}`;
+    return `${base}${path}`;
+  };
+
   return (
     <div className={styles.pageContainer}>
       <div className={styles.mainContent}>
@@ -228,9 +237,10 @@ export default function JobDetail() {
               <>
                 <div className={styles.companyTop}>
                   <img
-                    src={company.logo || ''}
+                    src={getLogoSrc(company.logo)}
                     alt={company.name}
                     onError={(e) => {
+                      e.target.onerror = null;
                       e.target.src = '';
                     }}
                   />
