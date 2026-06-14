@@ -11,36 +11,45 @@ const PaymentResult = () => {
   const [, setLoading] = useState(true);
   const [paymentDetails, setPaymentDetails] = useState(null);
 
-  const provider = searchParams.get('provider') || 'stripe';
-  const status = searchParams.get('status') || 'success';
-  const orderId = searchParams.get('orderId') || searchParams.get('requestId');
+  const provider = searchParams.get('provider') || (searchParams.get('vnp_BankCode') ? 'vnpay' : 'momo');
+
+  const status = searchParams.get('status');
+  const orderId = searchParams.get('orderId') || searchParams.get('requestId') || searchParams.get('vnp_TxnRef');
   const sessionId = searchParams.get('sessionId');
 
   useEffect(() => {
-    // Nếu có orderId, ta fetch thông tin payment từ backend để hiển thị chính xác hơn
-    const fetchPaymentStatus = async () => {
-      if (!orderId) {
-        setLoading(false);
-        return;
-      }
+    const loadPayment = async () => {
       try {
-        // Fetch trạng thái thanh toán từ backend qua API (nếu backend có hỗ trợ)
-        // Nếu chưa có API chi tiết, ta fallback dùng query params
-        const url =
-          `/api/payments/status/${orderId}` + (sessionId ? `?sessionId=${sessionId}` : '');
-        const response = await axiosClient.get(url).catch(() => null);
-        if (response) {
-          setPaymentDetails(response);
+        setLoading(true);
+
+        // VNPAY
+        if (searchParams.get('vnp_TxnRef')) {
+          const queryString = searchParams.toString();
+
+          await axiosClient.get(
+            `/api/payments/vnpay/return?${queryString}`
+          );
+        }
+
+        // Sau khi verify xong mới lấy trạng thái
+        if (orderId) {
+          const url =
+            `/api/payments/status/${orderId}` +
+            (sessionId ? `?sessionId=${sessionId}` : '');
+
+          const payment = await axiosClient.get(url);
+
+          setPaymentDetails(payment);
         }
       } catch (err) {
-        console.error('Lỗi khi fetch chi tiết thanh toán:', err);
+        console.error(err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchPaymentStatus();
-  }, [orderId, sessionId]);
+    loadPayment();
+  }, [orderId, sessionId, searchParams]);
 
   const isSuccess =
     status === 'success' ||
@@ -105,7 +114,7 @@ const PaymentResult = () => {
           <div className={styles.detailRow}>
             <span className={styles.label}>Cổng thanh toán</span>
             <span className={styles.value}>
-              {provider.toUpperCase() === 'STRIPE' ? 'Stripe (Thẻ quốc tế)' : 'Ví điện tử MoMo'}
+              {provider.toUpperCase() === 'STRIPE' ? 'Stripe (Thẻ quốc tế)' : provider.toUpperCase() === 'MOMO' ? 'Ví điện tử MoMo' : 'Vnpay'}
             </span>
           </div>
 

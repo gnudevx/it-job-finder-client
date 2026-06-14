@@ -25,13 +25,22 @@ const Payment = () => {
         }
         window.location.href = data.payUrl;
       } else if (paymentMethod === 'stripe') {
-        // ─── STRIPE ──────────────────────
+        // STRIPE
         const data = await paymentService.createStripePayment(pkg.id);
         if (!data.url) {
           toast.error('Backend không trả về URL thanh toán Stripe');
           return;
         }
         window.location.href = data.url;
+      } else if (paymentMethod === 'vnpay') {
+        // VNPAY
+        const data =
+          await paymentService.createVNPayPayment(
+            pkg.id,
+          );
+
+        window.location.href =
+          data.payUrl;
       }
     } catch (err) {
       console.error(err);
@@ -47,11 +56,20 @@ const Payment = () => {
 
   const getPayBtnLabel = () => {
     if (isProcessing) return null;
-    if (paymentMethod === 'momo') return 'Thanh toán bằng MoMo';
-    return 'Thanh toán bằng Stripe';
+
+    switch (paymentMethod) {
+      case 'momo':
+        return 'Thanh toán bằng MoMo';
+      case 'stripe':
+        return 'Thanh toán bằng Stripe';
+      case 'vnpay':
+        return 'Thanh toán bằng VNPAY';
+      default:
+        return 'Thanh toán khi nhận hàng';
+    }
   };
 
-  const payBtnClass = paymentMethod === 'stripe' ? styles.payBtnStripe : styles.payBtn;
+  const payBtnClass = paymentMethod === 'stripe' ? styles.payBtnStripe : paymentMethod === 'vnpay' ? styles.payBtnVnpay : styles.payBtn;
 
   return (
     <div className={styles.page}>
@@ -111,17 +129,68 @@ const Payment = () => {
               <span>Thanh toán an toàn qua cổng đối tác được mã hóa SSL</span>
             </div>
 
+            {/* VNPAY */}
+            <div
+              className={`${styles.method} ${
+                paymentMethod === 'vnpay'
+                  ? styles.activeVnpay
+                  : ''
+              }`}
+              onClick={() => setPaymentMethod('vnpay')}
+            >
+              <div className={styles.methodInfo}>
+                <div
+                  className={styles.methodIcon}
+                  style={{
+                    background: '#005baa',
+                    color: '#fff',
+                    fontWeight: 700,
+                    fontSize: 12,
+                  }}
+                >
+                  VNP
+                </div>
+
+                <div>
+                  <span className={styles.methodName}>
+                    VNPAY
+                  </span>
+
+                  <span className={styles.methodDesc}>
+                    Thanh toán qua VNPAY
+                  </span>
+                </div>
+              </div>
+
+              {paymentMethod === 'vnpay' && (
+                <CheckCircle2 className={styles.checkVnpay} />
+              )}
+            </div>
+
             {/* Test Info */}
             <div className={styles.testInfo}>
-              {paymentMethod === 'momo' ? (
+              {paymentMethod === 'momo' && (
                 <>
                   <strong>Thông tin test MoMo:</strong>
                   <p>SĐT: 0000000000 | OTP: 000000 | PIN: 000000</p>
                 </>
-              ) : (
+              )}
+
+              {paymentMethod === 'stripe' && (
                 <>
                   <strong>Thông tin test Stripe:</strong>
                   <p>Card: 4242 4242 4242 4242 | Exp: 12/34 | CVC: 123</p>
+                </>
+              )}
+
+              {paymentMethod === 'vnpay' && (
+                <>
+                  <strong>Thông tin test VNPAY:</strong>
+                  <p>Ngân hàng: NCB</p>
+                  <p>Thẻ: 9704198526191432198</p>
+                  <p>Tên chủ thẻ: NGUYEN VAN A</p>
+                  <p>Ngày phát hành: 07/15</p>
+                  <p>OTP: 123456</p>
                 </>
               )}
             </div>

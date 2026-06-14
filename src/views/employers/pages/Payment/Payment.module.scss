@@ -286,3 +286,58 @@
   color: #ef4444;
   font-weight: 600;
 }
+
+.activeVnpay {
+  border-color: #005baa;
+  background: #eff6ff;
+}
+
+.checkVnpay {
+  color: #005baa;
+}
+
+.payBtn,
+.payBtnStripe,
+.payBtnVnpay {
+  width: 100%;
+  padding: 16px;
+  border-radius: 12px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}
+
+.payBtn {
+  background: #a50064;
+
+  &:hover {
+    background: #8e0055;
+  }
+}
+
+.payBtnStripe {
+  background: #635bff;
+
+  &:hover {
+    background: #4f46e5;
+  }
+}
+
+.payBtnVnpay {
+  background: #005baa;
+
+  &:hover {
+    background: #004b8d;
+  }
+}
