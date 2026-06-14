@@ -191,6 +191,7 @@ const Payment = () => {
                   <p>Tên chủ thẻ: NGUYEN VAN A</p>
                   <p>Ngày phát hành: 07/15</p>
                   <p>OTP: 123456</p>
+                  <p>Lựa chọn: Thẻ nội địa và tài khoản ngân hàng</p>
                 </>
               )}
             </div>
