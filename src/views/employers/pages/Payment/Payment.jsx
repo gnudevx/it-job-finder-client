@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { PACKAGES } from '@/views/employers/pages/BuyService/constants.js';
 import { ArrowLeft, Loader2, CheckCircle2, ShieldCheck, Wallet, CreditCard } from 'lucide-react';
 import { toast } from 'sonner';
+import QRCode from 'react-qr-code';
 import paymentService from '@/api/paymentService';
 import styles from './Payment.module.scss';
 
@@ -12,6 +13,7 @@ const Payment = () => {
   const pkg = PACKAGES.find((p) => p.id === pkgId);
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState('momo');
+  const [order, setOrder] = useState(null);
 
   const handlePayment = async () => {
     setIsProcessing(true);
@@ -41,12 +43,45 @@ const Payment = () => {
 
         window.location.href =
           data.payUrl;
+      } else if (paymentMethod === 'qr') {
+        const data =
+          await paymentService.createQRDemoPayment(
+            pkg.id,
+          );
+
+        setOrder(data.payment);
+
+        toast.success(
+          'QR đã được tạo'
+        );
       }
     } catch (err) {
       console.error(err);
       toast.error(err?.message || 'Lỗi tạo thanh toán. Vui lòng thử lại.');
     } finally {
       setIsProcessing(false);
+    }
+  };
+
+  const handleConfirmQR = async () => {
+    try {
+      await paymentService.confirmQRDemoPayment(
+        order.orderId,
+      );
+
+      toast.success(
+        'Thanh toán thành công',
+      );
+
+      navigate(
+        `/employer/payment/result?provider=qr&orderId=${order.orderId}&status=success`,
+      );
+    } catch (err) {
+      console.error(err);
+
+      toast.error(
+        'Xác nhận thanh toán thất bại',
+      );
     }
   };
 
@@ -64,12 +99,21 @@ const Payment = () => {
         return 'Thanh toán bằng Stripe';
       case 'vnpay':
         return 'Thanh toán bằng VNPAY';
+      case 'qr':
+        return 'Thanh toán QR';
       default:
         return 'Thanh toán khi nhận hàng';
     }
   };
 
-  const payBtnClass = paymentMethod === 'stripe' ? styles.payBtnStripe : paymentMethod === 'vnpay' ? styles.payBtnVnpay : styles.payBtn;
+  const payBtnClass =
+  paymentMethod === 'stripe'
+    ? styles.payBtnStripe
+    : paymentMethod === 'vnpay'
+      ? styles.payBtnVnpay
+      : paymentMethod === 'qr'
+        ? styles.payBtnQr
+        : styles.payBtn;
 
   return (
     <div className={styles.page}>
@@ -167,6 +211,43 @@ const Payment = () => {
               )}
             </div>
 
+            {/* QR */}
+            <div
+              className={`${styles.method} ${
+                paymentMethod === 'qr'
+                  ? styles.activeQr
+                  : ''
+              }`}
+              onClick={() => setPaymentMethod('qr')}
+            >
+              <div className={styles.methodInfo}>
+                <div
+                  className={styles.methodIcon}
+                  style={{
+                    background: '#16a34a',
+                    color: '#fff',
+                    fontWeight: 700,
+                  }}
+                >
+                  QR
+                </div>
+
+                <div>
+                  <span className={styles.methodName}>
+                    QR
+                  </span>
+
+                  <span className={styles.methodDesc}>
+                    Mô phỏng thanh toán QR
+                  </span>
+                </div>
+              </div>
+
+              {paymentMethod === 'qr' && (
+                <CheckCircle2 className={styles.checkQr} />
+              )}
+            </div>
+
             {/* Test Info */}
             <div className={styles.testInfo}>
               {paymentMethod === 'momo' && (
@@ -193,6 +274,27 @@ const Payment = () => {
                   <p>OTP: 123456</p>
                   <p>Lựa chọn: Thẻ nội địa và tài khoản ngân hàng</p>
                 </>
+              )}
+
+              {paymentMethod === 'qr' && order && (
+                <div className={styles.qrBox}>
+                  <QRCode
+                    value={`IT Job Finder\nMa don: ${order.orderId}\nSo tien: ${order.amount}\nNoi dung: Thanh toan ${pkg.name}`}
+                    size={180}
+                  />
+                  <p>Mã đơn: {order.orderId}</p>
+                  <p>
+                    Số tiền:
+                    {' '}
+                    {order.amount.toLocaleString('vi-VN')}đ
+                  </p>
+                  <button
+                    className={styles.payBtnQr}
+                    onClick={handleConfirmQR}
+                  >
+                    Tôi đã thanh toán
+                  </button>
+                </div>
               )}
             </div>
           </div>

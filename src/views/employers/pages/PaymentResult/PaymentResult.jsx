@@ -114,7 +114,13 @@ const PaymentResult = () => {
           <div className={styles.detailRow}>
             <span className={styles.label}>Cổng thanh toán</span>
             <span className={styles.value}>
-              {provider.toUpperCase() === 'STRIPE' ? 'Stripe (Thẻ quốc tế)' : provider.toUpperCase() === 'MOMO' ? 'Ví điện tử MoMo' : 'Vnpay'}
+              {provider.toUpperCase() === 'STRIPE'
+                ? 'Stripe (Thẻ quốc tế)'
+                : provider.toUpperCase() === 'MOMO'
+                  ? 'Ví điện tử MoMo'
+                  : provider.toUpperCase() === 'QR'
+                    ? 'QR'
+                    : 'VNPAY'}
             </span>
           </div>
 
