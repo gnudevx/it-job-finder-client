@@ -12,7 +12,7 @@ export default function UploadedCVItem({ cv, onView, onDelete, onSelect }) {
         {isPDF ? (
           <div className={styles.pdfWrapper}>
             <object
-              data={`${process.env.REACT_APP_API_BASE_URL}/api/resumes/${cv.id}/view#toolbar=0&navpanes=0&scrollbar=0`}
+              data={`${cv.url}#toolbar=0&navpanes=0&scrollbar=0`}
               type="application/pdf"
               className={styles.pdfPreview}
             >
@@ -24,12 +24,12 @@ export default function UploadedCVItem({ cv, onView, onDelete, onSelect }) {
             <FileText size={70} />
             <span>DOCX không hỗ trợ preview</span>
 
-            <button onClick={() => onView(cv.id)}>Mở file</button>
+            <button onClick={() => onView(cv)}>Mở file</button>
           </div>
         )}
 
         <div className={styles.overlay}>
-          <button onClick={() => onView(cv.id)}>
+          <button onClick={() => onView(cv)}>
             <Eye size={18} />
             Xem CV
           </button>
