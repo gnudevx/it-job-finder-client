@@ -5,6 +5,12 @@ import PropTypes from 'prop-types';
 
 export default function UploadedCVItem({ cv, onView, onDelete, onSelect }) {
   const isPDF = cv.name.toLowerCase().includes('.pdf');
+  const apiBase = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
+  
+  // Backend route sẽ set header Content-Disposition: inline
+  const previewUrl = isPDF && cv.id
+    ? `${apiBase}/api/resumes/${cv.id}/view#toolbar=0&navpanes=0&scrollbar=0`
+    : cv.url;
 
   return (
     <div className={styles.card}>
@@ -12,7 +18,7 @@ export default function UploadedCVItem({ cv, onView, onDelete, onSelect }) {
         {isPDF ? (
           <div className={styles.pdfWrapper}>
             <object
-              data={`${cv.url}#toolbar=0&navpanes=0&scrollbar=0`}
+              data={previewUrl}
               type="application/pdf"
               className={styles.pdfPreview}
             >
@@ -65,6 +71,7 @@ UploadedCVItem.propTypes = {
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     size: PropTypes.number.isRequired,
+    url: PropTypes.string.isRequired,
   }).isRequired,
 
   onView: PropTypes.func.isRequired,
