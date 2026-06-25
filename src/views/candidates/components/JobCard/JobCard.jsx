@@ -24,7 +24,7 @@ const normalizeLogoUrl = (rawUrl) => {
   if (!rawUrl) return '/logo192.png';
   // already absolute
   if (/^(https?:)?\/\//i.test(rawUrl)) return rawUrl;
-  const base = (process.env.REACT_APP_API_URL || 'http://localhost:5000').replace(/\/$/, '');
+  const base = (process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000').replace(/\/$/, '');
   return `${base}${rawUrl.startsWith('/') ? '' : '/'}${rawUrl}`;
 };
 
