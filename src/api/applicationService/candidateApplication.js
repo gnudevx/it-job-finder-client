@@ -1,6 +1,6 @@
 import axiosClient from '@/services/axiosClient';
 
-const API_URL = `${process.env.REACT_APP_API_BASE_URL}/candidate/applications`;
+const API_URL = `${process.env.REACT_APP_API_BASE_URL}/candidates/applications`;
 
 export const applyJob = async ({ jobId, resumeId, note, token }) => {
   const res = await axiosClient.post(
