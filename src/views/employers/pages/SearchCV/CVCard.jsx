@@ -18,7 +18,7 @@ const CVCard = ({ cv, isRecommended, jobTitle }) => {
 
   const handleViewPDF = () => {
     if (resumeId) {
-      const baseUrl = (process.env.REACT_APP_API_URL || 'http://localhost:5000').replace(
+      const baseUrl = (process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000').replace(
         /\/?$/,
         ''
       );
