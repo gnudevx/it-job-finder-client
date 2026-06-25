@@ -49,7 +49,7 @@ export default function MyCVs() {
   };
 
   const handleViewPDF = (id) => {
-    window.open(`http://localhost:5000/api/resumes/${id}/view`, '_blank');
+    window.open(`${process.env.REACT_APP_API_BASE_URL}/api/resumes/${id}/view`, '_blank');
   };
 
   const handleSelectCV = (cv) => {
