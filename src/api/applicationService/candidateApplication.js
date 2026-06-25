@@ -1,15 +1,16 @@
 import axiosClient from '@/services/axiosClient';
 
-const API_URL = `${process.env.REACT_APP_API_BASE_URL}/candidates/applications`;
+const API_URL = '/candidates/applications';
 
 export const applyJob = async ({ jobId, resumeId, note, token }) => {
   const res = await axiosClient.post(
-    `${API_URL}/apply`, // dùng backticks và ${} để interpolate
-    { jobId, resumeId, note }, // gửi note
+    `${API_URL}/apply`,
+    { jobId, resumeId, note },
     {
       headers: { Authorization: `Bearer ${token}` },
     }
   );
+
   return res.data;
 };
 
@@ -18,5 +19,5 @@ export const getMyAppliedJobs = async (token) => {
     headers: { Authorization: `Bearer ${token}` },
   });
 
-  return res.data; // trả về JSON trực tiếp
+  return res.data;
 };

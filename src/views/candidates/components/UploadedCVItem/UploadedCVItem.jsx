@@ -1,23 +1,54 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Eye, Trash2, Sparkles, FileText } from 'lucide-react';
 import styles from './UploadedCVItem.module.scss';
 import PropTypes from 'prop-types';
+import axiosClient from '@/services/axiosClient';
 
 export default function UploadedCVItem({ cv, onView, onDelete, onSelect }) {
   const isPDF = cv.name.toLowerCase().includes('.pdf');
+  const [previewUrl, setPreviewUrl] = useState(null);
+
+  useEffect(() => {
+    let objectUrl;
+    const fetchPreview = async () => {
+      if (!isPDF) return;
+      try {
+        const response = await axiosClient.get(`/api/resumes/${cv.id}/view`, {
+          responseType: 'blob',
+        });
+        objectUrl = window.URL.createObjectURL(response);
+        setPreviewUrl(objectUrl);
+      } catch (error) {
+        console.error('Load CV preview failed:', error);
+        setPreviewUrl(null);
+      }
+    };
+
+    fetchPreview();
+
+    return () => {
+      if (objectUrl) {
+        window.URL.revokeObjectURL(objectUrl);
+      }
+    };
+  }, [cv.id, isPDF]);
 
   return (
     <div className={styles.card}>
       <div className={styles.preview}>
         {isPDF ? (
           <div className={styles.pdfWrapper}>
-            <object
-              data={`${process.env.REACT_APP_API_BASE_URL}/api/resumes/${cv.id}/view#toolbar=0&navpanes=0&scrollbar=0`}
-              type="application/pdf"
-              className={styles.pdfPreview}
-            >
-              <p>Không thể preview PDF</p>
-            </object>
+            {previewUrl ? (
+              <iframe
+                src={previewUrl}
+                title={`Preview ${cv.name}`}
+                className={styles.pdfPreview}
+              />
+            ) : (
+              <div className={styles.previewFallback}>
+                <p>Đang tải preview CV...</p>
+              </div>
+            )}
           </div>
         ) : (
           <div className={styles.docPreview}>
