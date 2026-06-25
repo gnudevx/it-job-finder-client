@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { PACKAGES } from '@/views/employers/pages/BuyService/constants.js';
 import { ArrowLeft, Loader2, CheckCircle2, ShieldCheck, Wallet, CreditCard } from 'lucide-react';
 import { toast } from 'sonner';
+import QRCode from 'react-qr-code';
 import paymentService from '@/api/paymentService';
 import styles from './Payment.module.scss';
 
@@ -12,6 +13,7 @@ const Payment = () => {
   const pkg = PACKAGES.find((p) => p.id === pkgId);
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState('momo');
+  const [order, setOrder] = useState(null);
 
   const handlePayment = async () => {
     setIsProcessing(true);
@@ -25,13 +27,33 @@ const Payment = () => {
         }
         window.location.href = data.payUrl;
       } else if (paymentMethod === 'stripe') {
-        // ─── STRIPE ──────────────────────
+        // STRIPE
         const data = await paymentService.createStripePayment(pkg.id);
         if (!data.url) {
           toast.error('Backend không trả về URL thanh toán Stripe');
           return;
         }
         window.location.href = data.url;
+      } else if (paymentMethod === 'vnpay') {
+        // VNPAY
+        const data =
+          await paymentService.createVNPayPayment(
+            pkg.id,
+          );
+
+        window.location.href =
+          data.payUrl;
+      } else if (paymentMethod === 'qr') {
+        const data =
+          await paymentService.createQRDemoPayment(
+            pkg.id,
+          );
+
+        setOrder(data.payment);
+
+        toast.success(
+          'QR đã được tạo'
+        );
       }
     } catch (err) {
       console.error(err);
@@ -41,17 +63,57 @@ const Payment = () => {
     }
   };
 
+  const handleConfirmQR = async () => {
+    try {
+      await paymentService.confirmQRDemoPayment(
+        order.orderId,
+      );
+
+      toast.success(
+        'Thanh toán thành công',
+      );
+
+      navigate(
+        `/employer/payment/result?provider=qr&orderId=${order.orderId}&status=success`,
+      );
+    } catch (err) {
+      console.error(err);
+
+      toast.error(
+        'Xác nhận thanh toán thất bại',
+      );
+    }
+  };
+
   if (!pkg) {
     return <div className={styles.notFound}>Gói dịch vụ không tồn tại</div>;
   }
 
   const getPayBtnLabel = () => {
     if (isProcessing) return null;
-    if (paymentMethod === 'momo') return 'Thanh toán bằng MoMo';
-    return 'Thanh toán bằng Stripe';
+
+    switch (paymentMethod) {
+      case 'momo':
+        return 'Thanh toán bằng MoMo';
+      case 'stripe':
+        return 'Thanh toán bằng Stripe';
+      case 'vnpay':
+        return 'Thanh toán bằng VNPAY';
+      case 'qr':
+        return 'Thanh toán QR';
+      default:
+        return 'Thanh toán khi nhận hàng';
+    }
   };
 
-  const payBtnClass = paymentMethod === 'stripe' ? styles.payBtnStripe : styles.payBtn;
+  const payBtnClass =
+  paymentMethod === 'stripe'
+    ? styles.payBtnStripe
+    : paymentMethod === 'vnpay'
+      ? styles.payBtnVnpay
+      : paymentMethod === 'qr'
+        ? styles.payBtnQr
+        : styles.payBtn;
 
   return (
     <div className={styles.page}>
@@ -111,18 +173,128 @@ const Payment = () => {
               <span>Thanh toán an toàn qua cổng đối tác được mã hóa SSL</span>
             </div>
 
+            {/* VNPAY */}
+            <div
+              className={`${styles.method} ${
+                paymentMethod === 'vnpay'
+                  ? styles.activeVnpay
+                  : ''
+              }`}
+              onClick={() => setPaymentMethod('vnpay')}
+            >
+              <div className={styles.methodInfo}>
+                <div
+                  className={styles.methodIcon}
+                  style={{
+                    background: '#005baa',
+                    color: '#fff',
+                    fontWeight: 700,
+                    fontSize: 12,
+                  }}
+                >
+                  VNP
+                </div>
+
+                <div>
+                  <span className={styles.methodName}>
+                    VNPAY
+                  </span>
+
+                  <span className={styles.methodDesc}>
+                    Thanh toán qua VNPAY
+                  </span>
+                </div>
+              </div>
+
+              {paymentMethod === 'vnpay' && (
+                <CheckCircle2 className={styles.checkVnpay} />
+              )}
+            </div>
+
+            {/* QR */}
+            <div
+              className={`${styles.method} ${
+                paymentMethod === 'qr'
+                  ? styles.activeQr
+                  : ''
+              }`}
+              onClick={() => setPaymentMethod('qr')}
+            >
+              <div className={styles.methodInfo}>
+                <div
+                  className={styles.methodIcon}
+                  style={{
+                    background: '#16a34a',
+                    color: '#fff',
+                    fontWeight: 700,
+                  }}
+                >
+                  QR
+                </div>
+
+                <div>
+                  <span className={styles.methodName}>
+                    QR
+                  </span>
+
+                  <span className={styles.methodDesc}>
+                    Mô phỏng thanh toán QR
+                  </span>
+                </div>
+              </div>
+
+              {paymentMethod === 'qr' && (
+                <CheckCircle2 className={styles.checkQr} />
+              )}
+            </div>
+
             {/* Test Info */}
             <div className={styles.testInfo}>
-              {paymentMethod === 'momo' ? (
+              {paymentMethod === 'momo' && (
                 <>
                   <strong>Thông tin test MoMo:</strong>
                   <p>SĐT: 0000000000 | OTP: 000000 | PIN: 000000</p>
                 </>
-              ) : (
+              )}
+
+              {paymentMethod === 'stripe' && (
                 <>
                   <strong>Thông tin test Stripe:</strong>
                   <p>Card: 4242 4242 4242 4242 | Exp: 12/34 | CVC: 123</p>
                 </>
+              )}
+
+              {paymentMethod === 'vnpay' && (
+                <>
+                  <strong>Thông tin test VNPAY:</strong>
+                  <p>Ngân hàng: NCB</p>
+                  <p>Thẻ: 9704198526191432198</p>
+                  <p>Tên chủ thẻ: NGUYEN VAN A</p>
+                  <p>Ngày phát hành: 07/15</p>
+                  <p>OTP: 123456</p>
+                  <p>Lựa chọn: Thẻ nội địa và tài khoản ngân hàng</p>
+                </>
+              )}
+
+              {paymentMethod === 'qr' && order && (
+                <div className={styles.qrBox}>
+                  <QRCode
+                    value={`IT Job Finder\nMa don: ${order.orderId}\nSo tien: ${order.amount}\nNoi dung: Thanh toan ${pkg.name}`}
+                    size={180}
+                  />
+                  <p>Mã đơn: {order.orderId}</p>
+                  <p>
+                    Số tiền:
+                    {' '}
+                    {order.amount.toLocaleString('vi-VN')}đ
+                  </p>
+                  <button
+                    className={styles.payBtnQr}
+                    onClick={handleConfirmQR}
+                  >
+                    Tôi đã thanh toán
+                  </button>
+                </div>
               )}
             </div>
           </div>

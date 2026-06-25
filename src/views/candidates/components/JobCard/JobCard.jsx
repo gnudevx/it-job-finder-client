@@ -16,7 +16,7 @@ const getCompanyLogo = (job) => {
     job?.companyLogo ||
     job?.employer_id?.companyId?.logo ||
     job?.employer_id?.avatar ||
-    '/logo192.png'
+    ''
   );
 };
 
@@ -68,7 +68,7 @@ function JobCard({ job, isFavorite, onToggleFavorite, onClick, showStatusAndUpda
         <div className={styles.headerLeft}>
           <div className={styles.logoWrapper}>
             <img
-              src={logoSrc}
+              src={logoSrc || '/logo192.png'}
               alt={
                 job.company || job.employer_id?.companyId?.name || job.companyName || 'Company logo'
               }

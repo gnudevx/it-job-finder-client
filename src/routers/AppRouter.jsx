@@ -18,7 +18,7 @@ import CompanyInfoPage from '@/views/candidates/components/CompanyInfo/CompanyIn
 import ConnectPage from '@/views/employers/pages/ConnectPage/ConnectPage.jsx';
 import GlobalToast from '@components/GlobalToast.jsx';
 const LoadingScreen = () => (
-  <div className="flex items-center justify-center h-screen text-lg font-medium">Loading...</div>
+  <div className="flex items-center justify-center h-screen text-lg font-medium">Đang tải...</div>
 );
 
 const PrivateRoute = ({ element }) => {

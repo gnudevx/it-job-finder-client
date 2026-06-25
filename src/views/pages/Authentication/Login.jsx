@@ -20,7 +20,7 @@ export default function LoginPage() {
     e.preventDefault();
 
     if (!email || !password) {
-      setError('Vui lòng nhập email và mật khẩu');
+      setError('Vui lòng nhập đầy đủ email và mật khẩu');
       return;
     }
 

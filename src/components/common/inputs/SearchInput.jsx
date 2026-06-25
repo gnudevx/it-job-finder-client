@@ -17,7 +17,7 @@ export const SearchInput = ({ onFocus, className, onChange, text }) => {
       <input
         ref={inputRef}
         type="text"
-        placeholder={text || 'Search'}
+        placeholder={text || 'Tìm kiếm'}
         onChange={handleChange}
         value={inputValue}
         onFocus={onFocus}

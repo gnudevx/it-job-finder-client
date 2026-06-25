@@ -111,7 +111,7 @@ export default function RegisterPage() {
             navigate('/');
           }
         } else {
-          alert('Google login failed: ' + (data.error || data.message));
+          alert('Đăng nhập Google thất bại: ' + (data.error || data.message));
         }
       } catch (error) {
         console.error('Google login error:', error);

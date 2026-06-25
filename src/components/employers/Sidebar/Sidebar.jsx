@@ -57,11 +57,11 @@ export default function Sidebar({ isCollapsed }) {
   useEffect(() => {
     const fetchMe = async () => {
       try {
-        const data = await employerService.getMe();
-        setEmployer(data.user);
-      } catch (err) {
-        console.error('Không lấy được thông tin employer', err);
-      }
+          const data = await employerService.getMe();
+          setEmployer(data.user);
+        } catch (err) {
+          console.error('Không lấy được thông tin nhà tuyển dụng', err);
+        }
     };
 
     fetchMe();
@@ -74,7 +74,7 @@ export default function Sidebar({ isCollapsed }) {
         </div>
         <div className={styles.info}>
           <div className={styles.name}>{employer?.fullName || '—'}</div>
-          <div className={styles.role}>{employer?.role || 'Employer'}</div>
+          <div className={styles.role}>{employer?.role || 'Nhà tuyển dụng'}</div>
         </div>
       </div>
 

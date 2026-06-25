@@ -66,6 +66,7 @@ export default function HomePage() {
           createdAt: job.createdAt || job.updatedAt || null,
           skills: job.skills || [],
           jobType: job.jobType,
+          company: job.employer_id?.companyId?.name || job.company?.name || 'Đang cập nhật',
           logo: job.employer_id?.companyId?.logo || job.employer_id?.avatar || job.logo || '',
         }));
 
@@ -183,7 +184,7 @@ export default function HomePage() {
                 <div className={styles.imageGlow}></div>
                 <img
                   src="https://images.unsplash.com/photo-1586281380349-632531db7ed4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                  alt="Job Search"
+                  alt="Tìm việc"
                   className={styles.mainImage}
                 />
 

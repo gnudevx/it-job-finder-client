@@ -1,26 +1,25 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
 import styles from './Step3Form.module.scss';
+import skillService from '@api/skillService.js';
 import { CreateJobContext } from '@views/employers/pages/CreateJob/CreateJobContext';
+
 export default function Step3Form() {
   const { form, updateField, handleFieldBlur } = useContext(CreateJobContext);
-  // Dữ liệu mẫu
-  const skillOptions = [
-    { value: 'ReactJS', label: 'ReactJS' },
-    { value: 'NodeJS', label: 'NodeJS' },
-    { value: 'Python', label: 'Python' },
-    { value: 'SQL', label: 'SQL' },
-    { value: 'Communication', label: 'Giao tiếp' },
-    { value: 'Teamwork', label: 'Làm việc nhóm' },
-    { value: 'Leadership', label: 'Kỹ năng lãnh đạo' },
-  ];
+  const [skillOptions, setSkillOptions] = React.useState([]);
 
   const languageOptionsDefault = [
     { value: 'Tiếng Anh', label: 'Tiếng Anh' },
     { value: 'Tiếng Nhật', label: 'Tiếng Nhật' },
     { value: 'Tiếng Hàn', label: 'Tiếng Hàn' },
     { value: 'Tiếng Trung', label: 'Tiếng Trung' },
+    { value: 'Tiếng Pháp', label: 'Tiếng Pháp' },
+    { value: 'Tiếng Đức', label: 'Tiếng Đức' },
+    { value: 'Tiếng Tây Ban Nha', label: 'Tiếng Tây Ban Nha' },
+    { value: 'Tiếng Nga', label: 'Tiếng Nga' },
+    { value: 'Tiếng Ả Rập', label: 'Tiếng Ả Rập' },
+    { value: 'Tiếng Indonesia', label: 'Tiếng Indonesia' },
   ];
 
   const [languageOptions, setLanguageOptions] = React.useState(languageOptionsDefault);
@@ -33,6 +32,19 @@ export default function Step3Form() {
       updateField('languages', [...(form.languages || []), newOption]);
     }
   };
+
+  useEffect(() => {
+    const fetchSkills = async () => {
+      try {
+        const res = await skillService.getAllSkills();
+        setSkillOptions(res.data || []);
+      } catch (error) {
+        console.error('Load skills failed', error);
+      }
+    };
+
+    fetchSkills();
+  }, []);
 
   return (
     <section className={styles.section}>

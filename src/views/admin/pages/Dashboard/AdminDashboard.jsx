@@ -65,7 +65,7 @@ export default function AdminDashboard() {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.mainTitle}>Tổng Quan Dashboard</h1>
+      <h1 className={styles.mainTitle}>Tổng quan</h1>
 
       {/* Stats Grid */}
       <div className={styles.statsGrid}>

@@ -33,15 +33,15 @@ export default function AdminSidebar({ isCollapsed }) {
   const menu = [
     { to: '/admin/dashboard', label: 'Trang Chủ', icon: <LayoutDashboard /> },
     { to: '/admin/manage/recruiment', label: 'Quản lý tin tuyển dụng', icon: <Briefcase /> },
-    { to: '/admin/notification/candidate', label: 'Thông Báo Candidate', icon: <Bell /> },
-    { to: '/admin/notification/employer', label: 'Thông Báo Employer', icon: <Bell /> },
+    { to: '/admin/notification/candidate', label: 'Thông Báo Ứng viên', icon: <Bell /> },
+    { to: '/admin/notification/employer', label: 'Thông Báo Nhà tuyển dụng', icon: <Bell /> },
     {
       to: '/admin/manage/business-license',
       label: 'Giấy Đăng Ký Doanh Nghiệp',
       icon: <FileCheck />,
     },
-    { to: '/admin/manage/candidates', label: 'Quản Lý Candidate', icon: <Users /> },
-    { to: '/admin/manage/employers', label: 'Quản Lý Employer', icon: <IdCardLanyard /> },
+    { to: '/admin/manage/candidates', label: 'Quản Lý Ứng viên', icon: <Users /> },
+    { to: '/admin/manage/employers', label: 'Quản Lý Nhà tuyển dụng', icon: <IdCardLanyard /> },
     { to: '/admin/manage/SupportTickets', label: 'Quản Lý Yêu Cầu Hỗ Trợ', icon: <FolderKanban /> },
   ];
 
@@ -53,7 +53,7 @@ export default function AdminSidebar({ isCollapsed }) {
         {!isCollapsed && (
           <div className={styles.logoContent}>
             <h2 className={styles.logoTitle}>HireIT</h2>
-            <p className={styles.logoSub}>Admin Panel</p>
+            <p className={styles.logoSub}>Quản trị viên</p>
           </div>
         )}
       </div>

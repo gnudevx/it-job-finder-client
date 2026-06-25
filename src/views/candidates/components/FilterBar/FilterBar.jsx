@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { ChevronLeft, ChevronRight, Filter as FilterIcon } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Filter as FilterIcon, RotateCcw } from 'lucide-react';
 import styles from './FilterBar.module.scss';
 
 export default function FilterBar({ onChange }) {
@@ -90,6 +90,20 @@ export default function FilterBar({ onChange }) {
     }
   };
 
+  // Reset handler: clear local filters and inform parent once
+  const handleReset = () => {
+    // Clear local state
+    setSelectedFilters({});
+    // Reset active filter to default
+    setActiveFilter('experience');
+    // Notify parent to clear all filters
+    onChange('location', '');
+    onChange('salaryLevel', '');
+    onChange('experience', '');
+    onChange('skills', []);
+    onChange('createDate', '');
+  };
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.inner}>
@@ -164,6 +178,14 @@ export default function FilterBar({ onChange }) {
           >
             <ChevronRight size={18} />
           </button>
+
+          {/* Reset Button */}
+          <div className={styles.resetWrapper}>
+            <button className={styles.resetBtn} onClick={handleReset}>
+              <RotateCcw size={14} />
+              <span>Đặt lại</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
