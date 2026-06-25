@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import styles from './ChatBotWidget.module.scss';
+import axiosClient from '../../../../services/axiosClient';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 const generateSessionId = () => 'session-' + Math.random().toString(36).slice(2, 11);
@@ -81,12 +82,9 @@ export default function ChatBotWidget() {
     const init = async () => {
       // 1. Load lịch sử chat từ MongoDB
       try {
-        const res = await fetch(`/api/chat/history/${sessionId.current}`, {
-          credentials: 'include',
-        });
-        const data = await res.json();
+        const data = await axiosClient.get(`/api/chat/history/${sessionId.current}`);
 
-        if (data.messages?.length > 0) {
+        if (data?.messages?.length > 0) {
           setMessages(
             data.messages.map((m) => ({
               role: m.role,
@@ -135,10 +133,9 @@ export default function ChatBotWidget() {
     clearInterval(pollRef.current);
     pollRef.current = setInterval(async () => {
       try {
-        const res = await fetch(`/api/cv/status/${id}`, { credentials: 'include' });
-        const data = await res.json();
+        const data = await axiosClient.get(`/api/cv/status/${id}`);
 
-        if (data.status === 'done') {
+        if (data?.status === 'done') {
           clearInterval(pollRef.current);
           setCvStatus('done');
           saveCvState(id, 'done');
@@ -147,7 +144,7 @@ export default function ChatBotWidget() {
             'assistant',
             `✅ CV đã phân tích xong (${data.chunks_count} sections)!\nBây giờ bạn có thể hỏi tôi về CV của mình.`
           );
-        } else if (data.status === 'failed') {
+        } else if (data?.status === 'failed') {
           clearInterval(pollRef.current);
           setCvStatus('failed');
           clearCvState();
@@ -196,16 +193,16 @@ export default function ChatBotWidget() {
       const formData = new FormData();
       formData.append('file', file);
 
-      const res = await fetch('/api/cv/upload', {
-        method: 'POST',
-        body: formData,
-        credentials: 'include',
+      const token = localStorage.getItem('authToken');
+      const data = await axiosClient.post('/api/cv/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
       });
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        addMessage('assistant', `❌ Upload thất bại: ${data.detail || data.message}`);
+      if (!data?.cv_id) {
+        addMessage('assistant', `❌ Upload thất bại: ${data?.detail || data?.message}`);
         setCvPreview(null);
         return;
       }
@@ -240,24 +237,12 @@ export default function ChatBotWidget() {
     setIsLoading(true);
 
     try {
-      const res = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({
-          message: text,
-          session_id: sessionId.current,
-          mode,
-          // Không gửi cv_id — FastAPI tự tìm theo user_id
-        }),
+      const data = await axiosClient.post('/api/chat', {
+        message: text,
+        session_id: sessionId.current,
+        mode,
+        // Không gửi cv_id — FastAPI tự tìm theo user_id
       });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        addMessage('assistant', `❌ Lỗi: ${data.detail || data.message}`);
-        return;
-      }
 
       addMessage('assistant', data.reply);
       setTokenInfo({
@@ -278,10 +263,7 @@ export default function ChatBotWidget() {
     if (!window.confirm('Xóa toàn bộ lịch sử chat?')) return;
 
     try {
-      await fetch(`/api/chat/history/${sessionId.current}`, {
-        method: 'DELETE',
-        credentials: 'include',
-      });
+      await axiosClient.delete(`/api/chat/history/${sessionId.current}`);
     } catch {
       /* ignore */
     }
