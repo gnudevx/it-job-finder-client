@@ -22,8 +22,8 @@ export default function JobManagementPage() {
   const fetchJobs = async () => {
     try {
       const res = await axiosClient.get(`/employer/jobs/getHistoryEmployer`);
-      console.log('Fetched jobs:', res.data.data);
-      setJobs(res.data.data);
+      console.log('Fetched jobs:', res);
+      setJobs(res.data);
     } catch (err) {
       console.error(err);
     }
