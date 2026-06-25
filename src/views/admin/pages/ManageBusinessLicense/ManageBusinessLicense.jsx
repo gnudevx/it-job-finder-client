@@ -71,7 +71,7 @@ const ManageBusinessLicense = () => {
                       <p className={styles.text}>Email: {emp.email}</p>
                       {emp.licenseDocUrl && (
                         <a
-                          href={`http://localhost:5000${emp.licenseDocUrl}`}
+                          href={`${process.env.REACT_APP_API_BASE_URL}${emp.licenseDocUrl}`}
                           target="_blank"
                           rel="noreferrer"
                         >

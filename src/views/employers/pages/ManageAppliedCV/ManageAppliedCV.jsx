@@ -20,7 +20,7 @@ function CVItem({ app, onStatusUpdated }) {
 
   const handleViewPDF = () => {
     if (app.resumeId) {
-      window.open(`http://localhost:5000/api/resumes/${app.resumeId._id}/view`, '_blank');
+      window.open(`${process.env.REACT_APP_API_BASE_URL}/api/resumes/${app.resumeId._id}/view`, '_blank');
     } else {
       alert('Ứng viên chưa tải CV lên.');
     }

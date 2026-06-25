@@ -40,7 +40,7 @@ export default function RegisterPage() {
     }
 
     try {
-      const res = await fetch('http://localhost:5000/api/auth/register', {
+      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -83,7 +83,7 @@ export default function RegisterPage() {
   const handleGoogleLogin = () => {
     loginWithGoogle(async (code) => {
       try {
-        const res = await fetch('http://localhost:5000/api/auth/google', {
+        const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/auth/google`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ code }),
