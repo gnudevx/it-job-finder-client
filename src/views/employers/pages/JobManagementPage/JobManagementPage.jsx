@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import styles from './JobManagementPage.module.scss';
 import JobFilters from '@views/employers/components/JobManagementPage/JobFilters/JobFilters';
 import JobTable from '@views/employers/components/JobManagementPage/JobTable/JobTable';
-import axios from 'axios';
+import axiosClient from '@/services/axiosClient';
 
 export default function JobManagementPage() {
   const [filters, setFilters] = useState({
@@ -21,7 +21,7 @@ export default function JobManagementPage() {
 
   const fetchJobs = async () => {
     try {
-      const res = await axios.get(`/employer/jobs/getHistoryEmployer`);
+      const res = await axiosClient.get(`/employer/jobs/getHistoryEmployer`);
       setJobs(res.data.data);
     } catch (err) {
       console.error(err);

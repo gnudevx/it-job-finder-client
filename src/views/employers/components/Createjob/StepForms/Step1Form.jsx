@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import styles from './Step1Form.module.scss';
 import CreatableSelect from 'react-select/creatable';
 import { CreateJobContext } from '@views/employers/pages/CreateJob/CreateJobContext';
-import axios from 'axios';
+import axios from '@/services/axiosClient';
 export default function Step1Form() {
   const { form, updateField, handleFieldBlur, validatedFields } = useContext(CreateJobContext);
 

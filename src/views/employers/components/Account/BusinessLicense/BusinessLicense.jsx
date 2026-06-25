@@ -5,7 +5,7 @@ import FileUpload from '@components/common/FileUpload/FileUpload.jsx';
 import sampleLicense from '@assets/gpkd.jpg';
 import { useEmployerProgress } from '@/contexts/EmployerProgressContext.jsx';
 import { Dot } from 'lucide-react';
-import axios from 'axios';
+import axios from '@/services/axiosClient';
 export default function BusinessLicense() {
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);

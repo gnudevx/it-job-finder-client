@@ -1,6 +1,6 @@
 // utils/jobUtils.js
 
-import axios from 'axios';
+import axios from '@/services/axiosClient';
 import { toast } from 'sonner';
 
 export const checkJobLimit = async () => {

@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
+import axios from '@/services/axiosClient';
 import { toast } from 'sonner';
 import { validateStep1 } from '@/viewmodels/ValidateStepEmployer/validateStep1Fields';
 import { validateStep2 } from '@/viewmodels/ValidateStepEmployer/validateStep2Fields';
