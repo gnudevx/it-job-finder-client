@@ -39,7 +39,7 @@ export const NotificationDropdown = ({ employerId }) => {
     };
     fetchNotifications();
 
-    const socket = io('http://localhost:5000');
+    const socket = io(process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000');
     socket.emit('join', `employer:${employerId}`);
 
     socket.on('notification:new', (noti) => {
