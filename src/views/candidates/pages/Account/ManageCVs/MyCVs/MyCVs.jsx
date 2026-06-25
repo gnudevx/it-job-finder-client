@@ -49,11 +49,6 @@ export default function MyCVs() {
   };
 
   const handleViewPDF = (cv) => {
-    if (cv?.url) {
-      window.open(cv.url, '_blank');
-      return;
-    }
-
     if (cv?.id) {
       window.open(`${process.env.REACT_APP_API_BASE_URL}/api/resumes/${cv.id}/view`, '_blank');
       return;
