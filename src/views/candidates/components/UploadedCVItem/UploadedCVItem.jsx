@@ -12,7 +12,7 @@ export default function UploadedCVItem({ cv, onView, onDelete, onSelect }) {
         {isPDF ? (
           <div className={styles.pdfWrapper}>
             <object
-              data={`http://localhost:5000/api/resumes/${cv.id}/view#toolbar=0&navpanes=0&scrollbar=0`}
+              data={`${process.env.REACT_APP_API_BASE_URL}/api/resumes/${cv.id}/view#toolbar=0&navpanes=0&scrollbar=0`}
               type="application/pdf"
               className={styles.pdfPreview}
             >
