@@ -1,5 +1,5 @@
 // src/api/recommendService.js
-import axiosInstance from '@api/axiosInstance';
+import axiosInstance from '@/services/axiosClient.js';
 
 /** API service for recommendation features */
 const recommendService = {
