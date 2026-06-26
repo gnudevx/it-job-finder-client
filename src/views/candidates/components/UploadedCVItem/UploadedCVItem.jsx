@@ -55,12 +55,12 @@ export default function UploadedCVItem({ cv, onView, onDelete, onSelect }) {
             <FileText size={70} />
             <span>DOCX không hỗ trợ preview</span>
 
-            <button onClick={() => onView(cv)}>Mở file</button>
+            <button onClick={() => onView(cv.id)}>Mở file</button>
           </div>
         )}
 
         <div className={styles.overlay}>
-          <button onClick={() => onView(cv)}>
+          <button onClick={() => onView(cv.id)}>
             <Eye size={18} />
             Xem CV
           </button>

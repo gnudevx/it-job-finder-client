@@ -108,7 +108,7 @@ export default function MyCVs() {
                 <UploadedCVItem
                   key={cv.id}
                   cv={cv}
-                  onView={() => handleViewPDF(cv)}
+                  onView={() => handleViewPDF(cv.id)}
                   onDelete={() => removeUploadedCV(cv.id)}
                   onSelect={() => handleSelectCV(cv)}
                 />
