@@ -48,13 +48,17 @@ export default function MyCVs() {
     }
   };
 
-  const handleViewPDF = (cv) => {
-    if (cv?.id) {
-      window.open(`${process.env.REACT_APP_API_BASE_URL}/api/resumes/${cv.id}/view`, '_blank');
-      return;
-    }
+  const apiBaseUrl =
+    process.env.REACT_APP_API_BASE_URL?.replace(/\/+$/, '') || 'http://localhost:5000';
 
-    alert('Không tìm thấy đường dẫn CV để xem.');
+  const handleViewPDF = async (id) => {
+    try {
+      const url = new URL(`/api/resumes/${id}/view`, apiBaseUrl).toString();
+      window.open(url, '_blank');
+    } catch (err) {
+      console.error('Preview CV failed', err);
+      alert('Không thể xem CV. Vui lòng đăng nhập lại hoặc thử lại sau.');
+    }
   };
 
   const handleSelectCV = (cv) => {
