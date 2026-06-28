@@ -49,11 +49,11 @@ export default function MyCVs() {
   };
 
   const apiBaseUrl =
-    process.env.REACT_APP_API_BASE_URL?.replace(/\/+$/, '') || 'http://localhost:5000';
+    process.env.REACT_APP_API_BASE_URL?.replace(/\/\/+$/, '') || window.location.origin;
 
   const handleViewPDF = async (id) => {
     try {
-      const url = new URL(`/api/resumes/${id}/view`, apiBaseUrl).toString();
+      const url = `${apiBaseUrl}/api/resumes/${id}/view`;
       window.open(url, '_blank');
     } catch (err) {
       console.error('Preview CV failed', err);
