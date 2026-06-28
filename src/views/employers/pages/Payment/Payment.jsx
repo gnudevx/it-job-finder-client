@@ -12,21 +12,13 @@ const Payment = () => {
   const navigate = useNavigate();
   const pkg = PACKAGES.find((p) => p.id === pkgId);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState('momo');
+  const [paymentMethod, setPaymentMethod] = useState('stripe');
   const [order, setOrder] = useState(null);
 
   const handlePayment = async () => {
     setIsProcessing(true);
     try {
-      if (paymentMethod === 'momo') {
-        // ─── MOMO ────────────────────────
-        const data = await paymentService.createMoMoPayment(pkg.id);
-        if (!data.payUrl) {
-          toast.error('Backend không trả về URL thanh toán MoMo');
-          return;
-        }
-        window.location.href = data.payUrl;
-      } else if (paymentMethod === 'stripe') {
+      if (paymentMethod === 'stripe') {
         // STRIPE
         const data = await paymentService.createStripePayment(pkg.id);
         if (!data.url) {
@@ -36,24 +28,15 @@ const Payment = () => {
         window.location.href = data.url;
       } else if (paymentMethod === 'vnpay') {
         // VNPAY
-        const data =
-          await paymentService.createVNPayPayment(
-            pkg.id,
-          );
+        const data = await paymentService.createVNPayPayment(pkg.id);
 
-        window.location.href =
-          data.payUrl;
+        window.location.href = data.payUrl;
       } else if (paymentMethod === 'qr') {
-        const data =
-          await paymentService.createQRDemoPayment(
-            pkg.id,
-          );
+        const data = await paymentService.createQRDemoPayment(pkg.id);
 
         setOrder(data.payment);
 
-        toast.success(
-          'QR đã được tạo'
-        );
+        toast.success('QR đã được tạo');
       }
     } catch (err) {
       console.error(err);
@@ -65,23 +48,15 @@ const Payment = () => {
 
   const handleConfirmQR = async () => {
     try {
-      await paymentService.confirmQRDemoPayment(
-        order.orderId,
-      );
+      await paymentService.confirmQRDemoPayment(order.orderId);
 
-      toast.success(
-        'Thanh toán thành công',
-      );
+      toast.success('Thanh toán thành công');
 
-      navigate(
-        `/employer/payment/result?provider=qr&orderId=${order.orderId}&status=success`,
-      );
+      navigate(`/employer/payment/result?provider=qr&orderId=${order.orderId}&status=success`);
     } catch (err) {
       console.error(err);
 
-      toast.error(
-        'Xác nhận thanh toán thất bại',
-      );
+      toast.error('Xác nhận thanh toán thất bại');
     }
   };
 
@@ -93,8 +68,6 @@ const Payment = () => {
     if (isProcessing) return null;
 
     switch (paymentMethod) {
-      case 'momo':
-        return 'Thanh toán bằng MoMo';
       case 'stripe':
         return 'Thanh toán bằng Stripe';
       case 'vnpay':
@@ -107,13 +80,13 @@ const Payment = () => {
   };
 
   const payBtnClass =
-  paymentMethod === 'stripe'
-    ? styles.payBtnStripe
-    : paymentMethod === 'vnpay'
-      ? styles.payBtnVnpay
-      : paymentMethod === 'qr'
-        ? styles.payBtnQr
-        : styles.payBtn;
+    paymentMethod === 'stripe'
+      ? styles.payBtnStripe
+      : paymentMethod === 'vnpay'
+        ? styles.payBtnVnpay
+        : paymentMethod === 'qr'
+          ? styles.payBtnQr
+          : styles.payBtn;
 
   return (
     <div className={styles.page}>
@@ -135,22 +108,6 @@ const Payment = () => {
             </h2>
 
             {/* MoMo */}
-            <div
-              className={`${styles.method} ${paymentMethod === 'momo' ? styles.activeMomo : ''}`}
-              onClick={() => setPaymentMethod('momo')}
-            >
-              <div className={styles.methodInfo}>
-                <div className={styles.methodIcon} style={{ background: '#a50064' }}>
-                  <span style={{ color: '#fff', fontWeight: 700, fontSize: 14 }}>M</span>
-                </div>
-                <div>
-                  <span className={styles.methodName}>Ví MoMo</span>
-                  <span className={styles.methodDesc}>Thanh toán qua ví điện tử MoMo</span>
-                </div>
-              </div>
-              {paymentMethod === 'momo' && <CheckCircle2 className={styles.checkMomo} />}
-            </div>
-
             {/* Stripe */}
             <div
               className={`${styles.method} ${paymentMethod === 'stripe' ? styles.activeStripe : ''}`}
@@ -175,11 +132,7 @@ const Payment = () => {
 
             {/* VNPAY */}
             <div
-              className={`${styles.method} ${
-                paymentMethod === 'vnpay'
-                  ? styles.activeVnpay
-                  : ''
-              }`}
+              className={`${styles.method} ${paymentMethod === 'vnpay' ? styles.activeVnpay : ''}`}
               onClick={() => setPaymentMethod('vnpay')}
             >
               <div className={styles.methodInfo}>
@@ -196,28 +149,18 @@ const Payment = () => {
                 </div>
 
                 <div>
-                  <span className={styles.methodName}>
-                    VNPAY
-                  </span>
+                  <span className={styles.methodName}>VNPAY</span>
 
-                  <span className={styles.methodDesc}>
-                    Thanh toán qua VNPAY
-                  </span>
+                  <span className={styles.methodDesc}>Thanh toán qua VNPAY</span>
                 </div>
               </div>
 
-              {paymentMethod === 'vnpay' && (
-                <CheckCircle2 className={styles.checkVnpay} />
-              )}
+              {paymentMethod === 'vnpay' && <CheckCircle2 className={styles.checkVnpay} />}
             </div>
 
             {/* QR */}
             <div
-              className={`${styles.method} ${
-                paymentMethod === 'qr'
-                  ? styles.activeQr
-                  : ''
-              }`}
+              className={`${styles.method} ${paymentMethod === 'qr' ? styles.activeQr : ''}`}
               onClick={() => setPaymentMethod('qr')}
             >
               <div className={styles.methodInfo}>
@@ -233,30 +176,17 @@ const Payment = () => {
                 </div>
 
                 <div>
-                  <span className={styles.methodName}>
-                    QR
-                  </span>
+                  <span className={styles.methodName}>QR</span>
 
-                  <span className={styles.methodDesc}>
-                    Mô phỏng thanh toán QR
-                  </span>
+                  <span className={styles.methodDesc}>Mô phỏng thanh toán QR</span>
                 </div>
               </div>
 
-              {paymentMethod === 'qr' && (
-                <CheckCircle2 className={styles.checkQr} />
-              )}
+              {paymentMethod === 'qr' && <CheckCircle2 className={styles.checkQr} />}
             </div>
 
             {/* Test Info */}
             <div className={styles.testInfo}>
-              {paymentMethod === 'momo' && (
-                <>
-                  <strong>Thông tin test MoMo:</strong>
-                  <p>SĐT: 0000000000 | OTP: 000000 | PIN: 000000</p>
-                </>
-              )}
-
               {paymentMethod === 'stripe' && (
                 <>
                   <strong>Thông tin test Stripe:</strong>
@@ -283,15 +213,8 @@ const Payment = () => {
                     size={180}
                   />
                   <p>Mã đơn: {order.orderId}</p>
-                  <p>
-                    Số tiền:
-                    {' '}
-                    {order.amount.toLocaleString('vi-VN')}đ
-                  </p>
-                  <button
-                    className={styles.payBtnQr}
-                    onClick={handleConfirmQR}
-                  >
+                  <p>Số tiền: {order.amount.toLocaleString('vi-VN')}đ</p>
+                  <button className={styles.payBtnQr} onClick={handleConfirmQR}>
                     Tôi đã thanh toán
                   </button>
                 </div>

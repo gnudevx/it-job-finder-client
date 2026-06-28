@@ -4,9 +4,7 @@ import { Send, Image, Calendar, FileText, CheckCheck } from 'lucide-react';
 import PropTypes from 'prop-types';
 import axiosClient from '@/services/axiosClient.js';
 import { useAuth } from '@/contexts/AuthContext';
-import VideoCallOverlay from './videoCall/VideoCallOverlay';
 import { socket } from '@/services/socket.js';
-import { API_BASE } from '@/config/config.js';
 export default function ChatWindow({ chatUser, conversationId }) {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState('');
@@ -17,12 +15,6 @@ export default function ChatWindow({ chatUser, conversationId }) {
   const isFirstLoad = useRef(true);
   const [sending, setSending] = useState(false);
   const shouldAutoScrollRef = useRef(true);
-  const [incomingCall, setIncomingCall] = useState(false);
-  const [callerIdRef, setCallerIdRef] = useState(null); // lưu callerId
-  const [showOverlay, setShowOverlay] = useState(false); // mở overlay
-  const [incomingCallConvoId, setIncomingCallConvoId] = useState(null);
-  const [myRole, setMyRole] = useState(null);
-  const [callerUser, setCallerUser] = useState(null);
   const fileInputRef = useRef(null);
   const imageInputRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -264,18 +256,6 @@ export default function ChatWindow({ chatUser, conversationId }) {
   };
 
   useEffect(() => {
-    const handleRing = ({ conversationId: cid, callerId, callerName, callerAvatar }) => {
-      if (callerId === currentUser?._id) return;
-      setCallerIdRef(callerId);
-      setIncomingCallConvoId(cid);
-      setIncomingCall(true);
-      setCallerUser({ name: callerName, avatar: callerAvatar }); // ✅
-    };
-    socket.on('call:ring', handleRing);
-    return () => socket.off('call:ring', handleRing);
-  }, [currentUser]);
-
-  useEffect(() => {
     const fetchFirstMessages = async () => {
       if (!conversationId) return;
       isFirstLoad.current = true;
@@ -370,45 +350,7 @@ export default function ChatWindow({ chatUser, conversationId }) {
 
     console.log('JOIN CONVERSATION:', conversationId);
   }, [conversationId]);
-  const handleStartCall = () => {
-    if (!conversationId) return;
-    socket.emit('join-conversation', conversationId);
-    console.log('🚀 START CALL with', chatUser, currentUser);
-    socket.emit('call:ring', {
-      conversationId,
-      callerId: currentUser?._id,
-    });
-    setMyRole('caller');
-    setShowOverlay(true); // mở overlay thay vì window.open
-  };
-  const handleAcceptCall = () => {
-    socket.emit('call:accepted', { conversationId: incomingCallConvoId });
-    socket.emit('join-conversation', incomingCallConvoId);
-    setMyRole('callee');
-    setIncomingCall(false);
-    setShowOverlay(true);
-  };
 
-  const handleDeclineCall = () => {
-    socket.emit('call:decline', { conversationId: incomingCallConvoId });
-    setIncomingCall(false);
-  };
-
-  // ── Nhận call message realtime → thêm vào chat ─────────────
-  useEffect(() => {
-    const addCallMessage = ({ message, conversationId: cid }) => {
-      if (cid !== conversationId) return;
-      setMessages((prev) => [...prev, message]);
-      setTimeout(() => {
-        scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
-      }, 50);
-    };
-    return () => {
-      socket.off('call:ended', addCallMessage);
-      socket.off('call:declined', addCallMessage);
-      socket.off('call:missed', addCallMessage);
-    };
-  }, [conversationId]);
   // Load messages khi conversationId thay đổi
   useEffect(() => {
     setMessages([]);
@@ -486,27 +428,6 @@ export default function ChatWindow({ chatUser, conversationId }) {
   };
   return (
     <>
-      {incomingCall && (
-        <div className={styles.incomingCall}>
-          {/* dùng callerUser thay vì chatUser */}
-          <span>📲 Có cuộc gọi đến từ {callerUser?.name || 'Ai đó'}</span>
-          <button onClick={handleAcceptCall}>✅ Nghe</button>
-          <button onClick={handleDeclineCall}>❌ Từ chối</button>
-        </div>
-      )}
-      {showOverlay && (
-        <VideoCallOverlay
-          conversationId={incomingCallConvoId || conversationId}
-          chatUser={myRole === 'callee' ? callerUser : chatUser}
-          callerId={callerIdRef || currentUser?._id}
-          currentUser={currentUser}
-          onClose={() => {
-            setShowOverlay(false);
-            setMyRole(null); // reset khi đóng
-          }}
-          role={myRole}
-        />
-      )}
       {!chatUser ? (
         // Early return logic nằm ở đây thay vì return sớm
         <div className={styles.empty}>
@@ -525,11 +446,6 @@ export default function ChatWindow({ chatUser, conversationId }) {
                 <span>{formatLastSeen(onlineStatus)}</span>
               </div>
             </div>
-            <button className={styles.callBtn} onClick={handleStartCall} aria-label="Video Call">
-              <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z" />
-              </svg>
-            </button>
           </div>
 
           <div ref={scrollRef} className={styles.messages} onScroll={handleScroll}>
@@ -541,28 +457,6 @@ export default function ChatWindow({ chatUser, conversationId }) {
                 m.senderId === currentUser._id ||
                 m.senderId === currentUser.id;
 
-              if (m.type === 'call') {
-                const icons = {
-                  completed: '📞',
-                  missed: '📵',
-                  declined: '🚫',
-                };
-                const labels = {
-                  completed: `Cuộc gọi video · ${Math.floor(m.callDuration / 60)}:${String(m.callDuration % 60).padStart(2, '0')}`,
-                  missed: 'Cuộc gọi nhỡ',
-                  declined: 'Cuộc gọi bị từ chối',
-                };
-                return (
-                  <div key={m._id || index} className={styles.callRecord}>
-                    <span className={styles.callIcon}>{icons[m.callStatus]}</span>
-                    <span className={styles.callLabel}>{labels[m.callStatus]}</span>
-                    <span className={styles.callTime}>
-                      {new Date(m.createdAt).toLocaleTimeString()}
-                    </span>
-                  </div>
-                );
-              }
-
               if (m.type === 'file') {
                 const isImage = m.file?.mimeType?.startsWith('image/');
 
@@ -571,20 +465,16 @@ export default function ChatWindow({ chatUser, conversationId }) {
                     {/* 🟢 IMAGE */}
                     {isImage ? (
                       <img
-                        src={`${API_BASE}${m.file.url}`}
+                        src={m.file.url}
                         alt={m.file.name}
                         className={styles.imageMsg}
-                        onClick={() =>
-                          window.open(`${API_BASE}${m.file.url}`, '_blank', 'noopener,noreferrer')
-                        }
+                        onClick={() => window.open(m.file.url, '_blank', 'noopener,noreferrer')}
                       />
                     ) : (
                       /* 🟢 FILE (PDF, DOC, etc) */
                       <div
                         className={styles.fileCard}
-                        onClick={() =>
-                          window.open(`${API_BASE}${m.file.url}`, '_blank', 'noopener,noreferrer')
-                        }
+                        onClick={() => window.open(m.file.url, '_blank', 'noopener,noreferrer')}
                       >
                         <span>📄</span>
                         <div>
@@ -772,6 +662,13 @@ export default function ChatWindow({ chatUser, conversationId }) {
               <div className={styles.filePreview}>
                 {selectedFile.type.startsWith('image/') ? (
                   <img src={URL.createObjectURL(selectedFile)} />
+                ) : selectedFile.type === 'application/pdf' ? (
+                  <iframe
+                    src={URL.createObjectURL(selectedFile)}
+                    width="100%"
+                    height="200px"
+                    title="preview"
+                  />
                 ) : (
                   <div className={styles.fileItem}>📄 {selectedFile.name}</div>
                 )}
