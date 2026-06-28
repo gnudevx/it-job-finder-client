@@ -9,7 +9,7 @@ const recommendService = {
    * @returns {Promise} API response with similar jobs
    */
   getRecommendedJobs: (jobId) => {
-    return axiosInstance.get(`/recommend/jobs/${jobId}`);
+    return axiosInstance.get(`/api/recommend/jobs/${jobId}`);
   },
 
   /**
@@ -18,7 +18,7 @@ const recommendService = {
    * @returns {Promise} API response with matching CVs
    */
   getRecommendedCvs: (jobId) => {
-    return axiosInstance.get(`/recommend/jobs/${jobId}/cvs`);
+    return axiosInstance.get(`/api/recommend/jobs/${jobId}/cvs`);
   },
 };
 

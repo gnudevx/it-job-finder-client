@@ -52,9 +52,10 @@ export default function ModuleBased_Recommend() {
 
     try {
       const response = await recommendService.getRecommendedCvs(selectedJobId);
-      if (response.data.success) {
-        setRecommendedCvs(response.data.data);
+      if (response.success) {
+        setRecommendedCvs(response.data);
       } else {
+        console.log('Error getting recommendations:', response.data);
         alert('Không thể tải danh sách CV được gợi ý');
       }
     } catch (error) {
