@@ -25,7 +25,7 @@ export default function ManageCandidates() {
   }, []);
 
   const handleDelete = async (id) => {
-    if (!confirm('Bạn có chắc muốn xóa ứng viên này? vui lòng xác nhận')) return;
+    if (!confirm('Bạn có chắc muốn khóa tài khoản ứng viên này?')) return;
     try {
       await adminService.DeleteCandidate(id);
       setCandidates(candidates.filter((c) => c._id !== id));
