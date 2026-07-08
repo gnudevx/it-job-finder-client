@@ -33,7 +33,7 @@ const PackagesSection = () => {
       setNotice('Đang cập nhật gói Khởi Đầu...');
 
       try {
-        await employerSerivce.selectPackage(pkg.tier);
+        await employerSerivce.update({ tier: pkg.tier, subscriptionExpiresAt: null });
         setSelectedPackageId(pkg.id); // lưu gói đang chọn sau khi DB cập nhật thành công
         setNotice('Đã chọn gói Khởi Đầu');
         toast.success('Đã chọn gói Khởi Đầu');
