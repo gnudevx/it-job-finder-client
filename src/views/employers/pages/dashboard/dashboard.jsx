@@ -82,7 +82,7 @@ export default function Dashboard() {
     <div className={styles.dashboard}>
       {/* Section 1 */}
       <div className={styles.section}>
-        <GreetingCard username={employer.fullName} points={8} progress={progressPercent} />
+        <GreetingCard username={employer.fullName} /* points={8} */ progress={progressPercent} />
         <div className={styles.cardGrid}>
           {actions.map((item, i) => {
             const isLast = i === actions.length - 1;

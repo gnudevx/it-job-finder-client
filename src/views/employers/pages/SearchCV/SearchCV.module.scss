@@ -84,6 +84,11 @@
   border-radius: 12px;
 }
 
+.tabDisabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
 /* TAB BASE */
 .tab {
   padding: 8px 16px;
@@ -101,4 +106,55 @@
   background: #4633f0;
   color: #ffffff;
   font-weight: 600;
+}
+
+.loadingState,
+.lockedState {
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  text-align: center;
+}
+
+.lockedCard {
+  max-width: 560px;
+  padding: 32px;
+  border-radius: 24px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+}
+
+.lockedKicker {
+  margin: 0 0 8px;
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.lockedTitle {
+  margin: 0 0 12px;
+  color: #111827;
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.lockedMessage {
+  margin: 0 0 24px;
+  color: #4b5563;
+  line-height: 1.7;
+}
+
+.upgradeButton {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 12px;
+  background: #4633f0;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
 }

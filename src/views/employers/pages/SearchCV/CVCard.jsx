@@ -87,13 +87,13 @@ const CVCard = ({ cv, isRecommended, jobTitle }) => {
           </h3>
         </div>
 
-        <p className={styles.title}>Vị trí đã tuyển: {subtitle}</p>
+        <p className={styles.title}>Vị trí cần tuyển: {subtitle}</p>
 
-        <div className={styles.meta}>
-          <span>{cv.experienceYears} năm KN</span>
+        {/* <div className={styles.meta}>
+          <span>{cv.experienceYears || 0} năm KN</span>
           <span>{cv.address ?? ''}</span>
           <span>{cv.education ?? ''}</span>
-        </div>
+        </div> */}
 
         <div className={styles.summaryWrapper}>
           <p className={styles.summary}>

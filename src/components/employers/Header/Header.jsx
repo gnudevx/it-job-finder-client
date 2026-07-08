@@ -4,12 +4,12 @@ import { IoMenuSharp } from 'react-icons/io5';
 import { BsPencilSquare } from 'react-icons/bs';
 import { TbReportSearch } from 'react-icons/tb';
 import { BiMessageSquareDots } from 'react-icons/bi';
-import { FaRegLightbulb } from 'react-icons/fa';
+// import { FaRegLightbulb } from 'react-icons/fa';
 // import { FaBell } from "react-icons/fa6";
-import { HiShoppingCart } from 'react-icons/hi2';
+// import { HiShoppingCart } from 'react-icons/hi2';
 import { NavButton } from '@/views/employers/components/Dashboard/NavButton/NavButton.jsx';
-import { DropdownButton } from '@/views/employers/components/Dashboard/DropdownButton/DropdownButton.jsx';
-import { InsightDropdownContent } from '@/views/employers/components/Dashboard/InsightDropdownContent/InsightDropdownContent.jsx';
+// import { DropdownButton } from '@/views/employers/components/Dashboard/DropdownButton/DropdownButton.jsx';
+// import { InsightDropdownContent } from '@/views/employers/components/Dashboard/InsightDropdownContent/InsightDropdownContent.jsx';
 import NotificationDropdown from '@/views/employers/components/Dashboard/DropdownButton/NotificationDropdown.jsx';
 import PropTypes from 'prop-types';
 import { FaUserCircle } from 'react-icons/fa';
@@ -110,18 +110,18 @@ export default function Header({ onToggleSidebar }) {
           newTab
           badge={unreadCount}
         />
-        <DropdownButton
+        {/* <DropdownButton
           icon={FaRegLightbulb}
           label="Insights"
           content={<InsightDropdownContent />}
-        />
+        /> */}
 
         <NotificationDropdown employerId={currentEmployerId} />
 
-        <button className={`${styles['icon-button']} ${styles['cart-button']}`}>
+        {/* <button className={`${styles['icon-button']} ${styles['cart-button']}`}>
           <HiShoppingCart />
           <span className={styles['badge']}>0</span>
-        </button>
+        </button> */}
         {/* 2. Nút Avatar và Dropdown (Mới) */}
         <div className={styles['profile-menu-wrapper']}>
           {/* Nút bấm để mở dropdown */}
@@ -137,7 +137,7 @@ export default function Header({ onToggleSidebar }) {
           {isDropdownOpen && (
             <div className={styles['profile-dropdown']}>
               <ul>
-                <li>
+                <li onClick={() => navigate('/employer/support-box')}>
                   <IoHelpCircleOutline />
                   <span>Hỗ trợ</span>
                 </li>

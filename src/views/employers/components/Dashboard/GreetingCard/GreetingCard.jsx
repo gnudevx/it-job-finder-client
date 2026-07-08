@@ -1,10 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Trophy } from 'lucide-react';
+// import { Trophy } from 'lucide-react';
 import styles from './GreetingCard.module.scss';
 import PropTypes from 'prop-types';
 
-export default function GreetingCard({ username, points, progress }) {
+export default function GreetingCard({ username, progress }) {
   return (
     <motion.div
       className={styles.greetingCard}
@@ -19,8 +19,7 @@ export default function GreetingCard({ username, points, progress }) {
         </h2>
         <p>
           Hồ sơ của bạn đã hoàn thành <strong>{progress}%</strong>. Hãy thực hiện các bước sau để
-          gia tăng tính bảo mật cho tài khoản của bạn và nhận ngay{' '}
-          <strong>+{points} Top Points</strong>.
+          gia tăng tính bảo mật cho tài khoản của bạn
         </p>
 
         <div className={styles.progressWrapper}>
@@ -36,12 +35,12 @@ export default function GreetingCard({ username, points, progress }) {
         </div>
       </div>
 
-      <div className={styles.right}>
+      {/* <div className={styles.right}>
         <div className={styles.pointsBadge}>
           <Trophy size={22} />
           <span>+{points}</span>
         </div>
-      </div>
+      </div> */}
     </motion.div>
   );
 }

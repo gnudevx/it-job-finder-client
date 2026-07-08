@@ -3,9 +3,9 @@ import { NavLink } from 'react-router-dom';
 import {
   Home,
   ShoppingCart,
-  Briefcase,
+  // Briefcase,
   FileText,
-  BarChart,
+  // BarChart,
   ClipboardList, // <-- Icon mới cho "Tin tuyển dụng"
   ChevronDown, // <-- Icon mới cho mũi tên sub-menu
   History,
@@ -21,11 +21,11 @@ import employerService from '@/api/employerSerivce.js';
 // Chúng ta thêm 'type', 'id', 'children', 'badge'
 const menuItems = [
   { name: 'Bảng tin', icon: Home, to: 'dashboard' },
-  { name: 'HireIT Insights', icon: BarChart, to: 'insights' },
+  // { name: 'HireIT Insights', icon: BarChart, to: 'insights' },
   { name: 'Mua dịch vụ', icon: ShoppingCart, to: 'buy-services' },
   // Thêm một đường phân cách
   { type: 'divider' },
-  { name: 'Chiến dịch tuyển dụng', icon: Briefcase, to: 'recruitment-campaigns' },
+  // { name: 'Chiến dịch tuyển dụng', icon: Briefcase, to: 'recruitment-campaigns' },
   // Mục mới "Tin tuyển dụng"
   { name: 'Tin tuyển dụng', icon: ClipboardList, to: 'jobs' },
   // Mục "Quản lý CV" được cập nhật với 'children'

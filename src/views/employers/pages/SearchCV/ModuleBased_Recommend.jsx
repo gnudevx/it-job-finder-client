@@ -110,7 +110,7 @@ export default function ModuleBased_Recommend() {
               <div className={styles.selectorCard}>
                 <div className={styles.labelRow}>
                   <label className={styles.label}>Vị trí tuyển dụng</label>
-                  <span className={styles.hint}>AI sẽ phân tích CV theo semantic matching</span>
+                  <span className={styles.hint}>Hệ thống sẽ phân tích CV theo semantic matching</span>
                 </div>
 
                 <div className={styles.customSelect} ref={dropdownRef}>

@@ -2,10 +2,10 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import PropTypes from 'prop-types';
 import styles from './EmployerMemberCard.module.scss';
-import { getRankInfo } from '@viewmodels/EmployerViewModel';
+// import { getRankInfo } from '@viewmodels/EmployerViewModel';
 import img from '@/assets/logo.jpg';
 export default function EmployerMemberCard({ employer }) {
-  const { ranks, current, progress } = getRankInfo(employer.tpPoint);
+  // const { ranks, current, progress } = getRankInfo(employer.tpPoint);
 
   return (
     <motion.div
@@ -24,13 +24,13 @@ export default function EmployerMemberCard({ employer }) {
             {employer.email} · {employer.phone}
           </p>
         </div>
-        <div className={styles.rankBadge}>
+        {/* <div className={styles.rankBadge}>
           <img src="https://cdn-icons-png.flaticon.com/512/1040/1040230.png" alt="medal" />
           <span>{current.label}</span>
-        </div>
+        </div> */}
       </div>
 
-      {/* Rank Bar */}
+      {/* Rank Bar
       <div className={styles.rankSection}>
         <div className={styles.levels}>
           {ranks.map((lvl) => (
@@ -49,9 +49,9 @@ export default function EmployerMemberCard({ employer }) {
             <div className={styles.dot}></div>
           </div>
         </div>
-      </div>
+      </div> */}
 
-      {/* Điểm xét hạng & Ưu đãi */}
+      {/* Điểm xét hạng & Ưu đãi
       <div className={styles.benefitBox}>
         <div className={styles.benefitHeader}>
           <div>
@@ -84,7 +84,7 @@ export default function EmployerMemberCard({ employer }) {
             </div>
           </>
         )}
-      </div>
+      </div> */}
     </motion.div>
   );
 }

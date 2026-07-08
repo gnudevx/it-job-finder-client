@@ -3,6 +3,8 @@ import axiosClient from '@/services/axiosClient.js';
 export default {
   update: (data) => axiosClient.put('/employer/account/settings/personal', data),
   getMe: () => axiosClient.get('/employer/account/settings/personal'),
+  selectPackage: (tier) =>
+    axiosClient.post('/employer/account/settings/personal/package/select', { tier }),
   getEmployerProgressService: () => axiosClient.get('/employer/account/settings/personal/progress'),
   getApplications: () => axiosClient.get('/employer/connect/applications'),
   getConversationsByEmployer: () => axiosClient.get('/employer/connect/conversations/employer'),
