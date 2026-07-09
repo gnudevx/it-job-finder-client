@@ -18,9 +18,9 @@ export default function SimilarJobs({ jobId }) {
       try {
         const res = await recommendService.getRecommendedJobs(jobId);
 
-        if (res?.data?.success) {
+        if (res?.success) {
           // map dữ liệu về đúng format JobCard
-          const mapped = res.data.data.map((item) => ({
+          const mapped = res.data.map((item) => ({
             id: item._id,
             title: item.title,
             salary: item.salary_raw,
