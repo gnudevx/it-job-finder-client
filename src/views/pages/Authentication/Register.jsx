@@ -4,6 +4,7 @@ import styles from './Authentication.module.scss';
 import { useAuth } from '@/contexts/AuthContext';
 import { FcGoogle } from 'react-icons/fc';
 import { loginWithGoogle } from '@/utils/googleAuth';
+import authService from '@/services/authService';
 
 export default function RegisterPage() {
   const [fullname, setFullname] = useState('');
@@ -40,28 +41,22 @@ export default function RegisterPage() {
     }
 
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/auth/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          fullname,
-          email,
-          password: pass,
-          role,
-          gender,
-        }),
-        credentials: 'include',
+      const data = await authService.register({
+        fullname,
+        email,
+        password: pass,
+        role,
+        gender,
       });
 
-      const data = await res.json();
-
-      if (!res.ok || !data.success) {
+      if (!data?.success) {
         setError(data.message || 'Đăng ký thất bại');
         setLoading(false);
         return;
       }
 
-      login(data.user);
+      login({ token: data.accessToken, user: data.user, id: data.user._id });
+      localStorage.setItem('authToken', data.accessToken);
       // Show success message
       alert('Đăng ký thành công! Đang chuyển hướng...');
 
@@ -83,22 +78,13 @@ export default function RegisterPage() {
   const handleGoogleLogin = () => {
     loginWithGoogle(async (code) => {
       try {
-        const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/auth/google`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ code }),
-          credentials: 'include',
-        });
-
-        const data = await res.json();
+        const data = code?.accessToken ? code : await authService.googleLogin(code);
 
         if (data.success) {
+          login({ token: data.accessToken, user: data.user, id: data.user._id });
+          localStorage.setItem('authToken', data.accessToken);
           // Save user info
           localStorage.setItem('user', JSON.stringify(data.user));
-
-          if (data.accessToken) {
-            localStorage.setItem('accessToken', data.accessToken);
-          }
 
           alert('Đăng nhập bằng Google thành công!');
 

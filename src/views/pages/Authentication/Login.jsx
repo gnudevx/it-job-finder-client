@@ -43,8 +43,7 @@ export default function LoginPage() {
   const handleGoogleLogin = () => {
     loginWithGoogle(async (code) => {
       try {
-        const res = await authService.googleLogin(code);
-        const data = res;
+        const data = code?.accessToken ? code : await authService.googleLogin(code);
 
         if (data.success) {
           login({ token: data.accessToken, user: data.user, id: data.user._id });
@@ -53,7 +52,9 @@ export default function LoginPage() {
 
           alert('Đăng nhập Google thành công!');
 
-          navigate('/candidate/home', { replace: true });
+          if (data.user.role === 'employer') navigate('/employer/');
+          else if (data.user.role === 'admin') navigate('/admin');
+          else navigate('/candidate/home', { replace: true });
         }
       } catch (error) {
         console.error(error);

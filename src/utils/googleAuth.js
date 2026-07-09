@@ -1,4 +1,39 @@
+const PRODUCTION_FRONTEND_ORIGIN = 'https://it-job-finder-client-five.vercel.app';
+const PRODUCTION_BACKEND_ORIGIN = 'https://it-job-finder-server.onrender.com';
+
 export function loginWithGoogle(callback) {
+  const isProductionClient = window.location.origin === PRODUCTION_FRONTEND_ORIGIN;
+
+  if (isProductionClient) {
+    const popup = window.open(
+      `${PRODUCTION_BACKEND_ORIGIN}/api/auth/google/start`,
+      'google-login',
+      'width=500,height=700'
+    );
+
+    if (!popup) {
+      alert('Trình duyệt đang chặn popup. Hãy cho phép popup rồi thử lại.');
+      return;
+    }
+
+    const messageHandler = (event) => {
+      if (event.origin !== PRODUCTION_FRONTEND_ORIGIN && event.origin !== PRODUCTION_BACKEND_ORIGIN) {
+        return;
+      }
+
+      if (event.data?.type !== 'google-auth-success') {
+        return;
+      }
+
+      window.removeEventListener('message', messageHandler);
+      if (!popup.closed) popup.close();
+      callback(event.data.payload);
+    };
+
+    window.addEventListener('message', messageHandler);
+    return;
+  }
+
   // Kiểm tra Google SDK đã load chưa
   if (!window.google || !window.google.accounts) {
     console.error('❌ Google SDK chưa được load!');
