@@ -1,12 +1,22 @@
-const PRODUCTION_FRONTEND_ORIGIN = 'https://it-job-finder-client-five.vercel.app';
-const PRODUCTION_BACKEND_ORIGIN = 'https://it-job-finder-server.onrender.com';
+const PRODUCTION_FRONTEND_ORIGIN =
+  process.env.REACT_APP_FRONTEND_URL ||
+  process.env.REACT_APP_CLIENT_URL ||
+  'https://it-job-finder-client-five.vercel.app';
+const PRODUCTION_BACKEND_ORIGIN =
+  process.env.REACT_APP_API_BASE_URL ||
+  process.env.REACT_APP_API_URL ||
+  process.env.REACT_APP_BACKEND_URL ||
+  'https://it-job-finder-server.onrender.com';
 
 export function loginWithGoogle(callback) {
-  const isProductionClient = window.location.origin === PRODUCTION_FRONTEND_ORIGIN;
+  const isProductionClient =
+    window.location.origin === PRODUCTION_FRONTEND_ORIGIN ||
+    !window.location.hostname.includes('localhost');
 
   if (isProductionClient) {
+    const googleStartUrl = new URL('/api/auth/google/start', PRODUCTION_BACKEND_ORIGIN).toString();
     const popup = window.open(
-      `${PRODUCTION_BACKEND_ORIGIN}/api/auth/google/start`,
+      googleStartUrl,
       'google-login',
       'width=500,height=700'
     );
@@ -17,7 +27,13 @@ export function loginWithGoogle(callback) {
     }
 
     const messageHandler = (event) => {
-      if (event.origin !== PRODUCTION_FRONTEND_ORIGIN && event.origin !== PRODUCTION_BACKEND_ORIGIN) {
+      const allowedOrigins = [
+        new URL(PRODUCTION_BACKEND_ORIGIN).origin,
+        window.location.origin,
+        PRODUCTION_FRONTEND_ORIGIN,
+      ];
+
+      if (!allowedOrigins.includes(event.origin)) {
         return;
       }
 
