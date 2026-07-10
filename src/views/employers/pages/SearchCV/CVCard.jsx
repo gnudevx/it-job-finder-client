@@ -83,7 +83,21 @@ const CVCard = ({ cv, isRecommended, jobTitle }) => {
         <div className={styles.header}>
           <h3 className={styles.name}>
             {displayName}
-            {email && <p className={styles.email}>{email}</p>}
+            {email && (
+              <p className={styles.email}>
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  className={styles.emailIcon}
+                >
+                  <path d="M2 5a2 2 0 012-2h12a2 2 0 012 2v.4l-8 5.2-8-5.2V5zm16 2.1l-7.46 4.85a1 1 0 01-1.08 0L2 7.1V15a2 2 0 002 2h12a2 2 0 002-2V7.1z" />
+                </svg>
+
+                {email}
+              </p>
+            )}
             <span className={styles.id}>ID: {candidateId || resumeId || 'Chưa có'}</span>
           </h3>
         </div>

@@ -36,7 +36,9 @@ export default function BusinessLicense() {
       const res = await axios.post(`/employer/account/settings/license`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
-
+      console.log('Upload thành công:', res.data);
+      console.log(res);
+      console.log(res.data);
       dispatch(setNotification({ message: 'Upload thành công!', type: 'success' }));
       console.log(res.data); // có license mới
       setFiles([files[0]]);
@@ -53,6 +55,7 @@ export default function BusinessLicense() {
     const fetchLicense = async () => {
       try {
         const res = await axios.get('/employer/account/settings/license-info');
+        console.log('License info:', res.data);
         if (res.data?.license) {
           setLicense(res.data.license);
         }
