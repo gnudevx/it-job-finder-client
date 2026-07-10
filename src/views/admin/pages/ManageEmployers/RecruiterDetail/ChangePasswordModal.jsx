@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setNotification } from '@/redux/slices/globalSlice';
 import styles from './ChangePasswordModal.module.scss';
 import employerService from '@api/adminEmployer.js';
 import PropTypes from 'prop-types';
@@ -6,18 +8,19 @@ export default function ChangePasswordModal({ recruiter, onClose }) {
   const [newPassword, setNewPassword] = useState('');
   const [reNewPassword, setReNewPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const handleChangePassword = async () => {
-    if (!newPassword || !reNewPassword) return alert('Vui lòng nhập đủ password để thay đổi');
-    if (newPassword !== reNewPassword) return alert('Mật khẩu không khớp với mật khẩu cũ');
+    if (!newPassword || !reNewPassword) return dispatch(setNotification({ message: 'Vui lòng nhập đủ password để thay đổi', type: 'info' }));
+    if (newPassword !== reNewPassword) return dispatch(setNotification({ message: 'Mật khẩu không khớp với mật khẩu cũ', type: 'error' }));
 
     try {
       setLoading(true);
       await employerService.adminChangePassword(recruiter.id, { newPassword, reNewPassword });
-      alert('Đổi mật khẩu thành công!');
+      dispatch(setNotification({ message: 'Đổi mật khẩu thành công!', type: 'success' }));
       onClose();
     } catch (err) {
-      alert('Lỗi: ' + err.response?.data?.message);
+      dispatch(setNotification({ message: 'Lỗi: ' + err.response?.data?.message, type: 'error' }));
     } finally {
       setLoading(false);
     }

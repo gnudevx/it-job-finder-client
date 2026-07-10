@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setNotification } from '@/redux/slices/globalSlice';
 import styles from './CompanyInfo.module.scss';
 import SearchCompany from './SearchCompany/SearchCompany.jsx';
 import CreateCompany from './CreateCompany/CreateCompany.jsx';
@@ -14,6 +16,7 @@ export default function CompanyInfo() {
 
   const [activeTab, setActiveTab] = useState('search');
   const [selectedCompany, setSelectedCompany] = useState(null);
+  const dispatch = useDispatch();
 
   // Load company saved trước đó
   useEffect(() => {
@@ -44,7 +47,7 @@ export default function CompanyInfo() {
       setMode('detail');
     } catch (err) {
       console.error('Lỗi khi chọn công ty:', err);
-      alert('Lỗi khi chọn công ty');
+      dispatch(setNotification({ message: 'Lỗi khi chọn công ty', type: 'error' }));
     }
   };
   const handleSaveComplete = async () => {

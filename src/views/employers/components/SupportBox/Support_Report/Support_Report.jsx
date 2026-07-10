@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setNotification } from '@/redux/slices/globalSlice';
 import styles from './Support_Report.module.scss';
 import FileUpload from '@components/common/FileUpload/FileUpload.jsx';
 import supportService from '@/api/supportService.js';
@@ -11,6 +13,7 @@ export default function Support_Report() {
     files: [],
   });
   const [status, setStatus] = useState('');
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,7 +38,7 @@ export default function Support_Report() {
     e.preventDefault();
 
     if (!formData.title || !formData.type || !formData.description) {
-      alert('Vui lòng nhập đầy đủ thông tin!');
+      dispatch(setNotification({ message: 'Vui lòng nhập đầy đủ thông tin!', type: 'info' }));
       return;
     }
 
@@ -50,11 +53,11 @@ export default function Support_Report() {
 
     try {
       await supportService.createSupport(fd);
-      alert('Gửi báo cáo thành công!');
+      dispatch(setNotification({ message: 'Gửi báo cáo thành công!', type: 'success' }));
       setStatus('success');
     } catch (err) {
       console.error(err);
-      alert('Gửi báo cáo thất bại!');
+      dispatch(setNotification({ message: 'Gửi báo cáo thất bại!', type: 'error' }));
       setStatus('error');
     }
   };

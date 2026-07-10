@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setNotification } from '@/redux/slices/globalSlice';
 import FileUpload from '@components/common/FileUpload/FileUpload.jsx';
 import FormLabel from '@components/common/FormLabel/FormLabel.jsx';
 import styles from './FeedbackProduction.module.scss';
@@ -8,6 +10,7 @@ export default function FeedbackProduction() {
   const [category, setCategory] = useState('');
   const [content, setContent] = useState('');
   const [files, setFiles] = useState([]);
+  const dispatch = useDispatch();
 
   const removeFile = (index) => {
     const newFiles = [...files];
@@ -22,12 +25,12 @@ export default function FeedbackProduction() {
     e.preventDefault();
 
     if (!category) {
-      alert('Vui lòng chọn loại báo cáo!');
+      dispatch(setNotification({ message: 'Vui lòng chọn loại báo cáo!', type: 'info' }));
       return;
     }
 
     if (!content.trim()) {
-      alert('Vui lòng nhập nội dung góp ý!');
+      dispatch(setNotification({ message: 'Vui lòng nhập nội dung góp ý!', type: 'info' }));
       return;
     }
 
@@ -38,10 +41,10 @@ export default function FeedbackProduction() {
 
     try {
       await supportService.createFeedback(fd);
-      alert('Gửi góp ý thành công!');
+      dispatch(setNotification({ message: 'Gửi góp ý thành công!', type: 'success' }));
     } catch (err) {
       console.error(err);
-      alert('Đã xảy ra lỗi!');
+      dispatch(setNotification({ message: 'Đã xảy ra lỗi!', type: 'error' }));
     }
   };
 

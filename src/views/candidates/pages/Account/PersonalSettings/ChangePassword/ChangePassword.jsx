@@ -1,4 +1,6 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { setNotification } from '@/redux/slices/globalSlice';
 import useChangePassword from '@/hooks/useChangePassword';
 import { useAuth } from '@/contexts/AuthContext.jsx';
 import styles from './ChangePassword.module.scss';
@@ -6,6 +8,7 @@ import styles from './ChangePassword.module.scss';
 export default function ChangePassword() {
   const { user, initialized } = useAuth();
   const { formData, updateField, changePassword, loading } = useChangePassword();
+  const dispatch = useDispatch();
 
   if (!initialized) return 'Đang tải...';
 
@@ -20,10 +23,10 @@ export default function ChangePassword() {
     e.preventDefault();
     const result = await changePassword();
     if (!result.ok) {
-      window.alert(result.message);
+      dispatch(setNotification({ message: result.message, type: 'error' }));
       return;
     }
-    window.alert('Đổi mật khẩu thành công!');
+    dispatch(setNotification({ message: 'Đổi mật khẩu thành công!', type: 'success' }));
   };
 
   return (

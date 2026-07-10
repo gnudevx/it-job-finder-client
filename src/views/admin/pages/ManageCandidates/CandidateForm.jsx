@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setNotification } from '@/redux/slices/globalSlice';
 import adminService from '@/api/adminService';
 import styles from './CandidateForm.module.scss';
 import PropTypes from 'prop-types';
 
 export default function CandidateForm({ mode = 'create', initialData = {}, onSuccess }) {
+  const dispatch = useDispatch();
   const [form, setForm] = useState({
     fullName: '',
     email: '',
@@ -35,7 +38,7 @@ export default function CandidateForm({ mode = 'create', initialData = {}, onSuc
         await adminService.UpdateCandidate(form._id, form);
       }
 
-      alert(mode === 'create' ? 'Thêm ứng viên thành công!' : 'Cập nhật thành công!');
+      dispatch(setNotification({ message: mode === 'create' ? 'Thêm ứng viên thành công!' : 'Cập nhật thành công!', type: 'success' }));
       if (onSuccess) onSuccess();
     } catch (err) {
       console.error(err);
@@ -48,7 +51,7 @@ export default function CandidateForm({ mode = 'create', initialData = {}, onSuc
         msg = err.message;
       }
 
-      alert('Lỗi khi lưu ứng viên: ' + msg);
+      dispatch(setNotification({ message: 'Lỗi khi lưu ứng viên: ' + msg, type: 'error' }));
     }
   };
 

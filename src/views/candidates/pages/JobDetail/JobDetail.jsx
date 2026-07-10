@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setNotification } from '@/redux/slices/globalSlice';
 import { useParams } from 'react-router-dom';
 import styles from './JobDetail.module.scss';
 import useFavorites from '@/hooks/useFavorites';
@@ -32,6 +34,7 @@ export default function JobDetail() {
 
   const { myCVs, hasApplied, selectedCV, setSelectedCV, note, setNote, submitApplication } =
     useApplyJob(id, authToken);
+  const dispatch = useDispatch();
 
   // Fetch job
   useEffect(() => {
@@ -118,10 +121,10 @@ export default function JobDetail() {
   const handleSubmitApplication = async () => {
     const ok = await submitApplication();
     if (ok) {
-      alert('Ứng tuyển thành công!');
+      dispatch(setNotification({ message: 'Ứng tuyển thành công!', type: 'success' }));
       setShowApplyForm(false);
     } else {
-      alert('Ứng tuyển thất bại!');
+      dispatch(setNotification({ message: 'Ứng tuyển thất bại!', type: 'error' }));
     }
   };
 
@@ -193,7 +196,7 @@ export default function JobDetail() {
             disabled={hasApplied}
             onClick={() => {
               if (!authToken) {
-                alert('Vui lòng đăng nhập để sử dụng chức năng ứng tuyển!');
+                dispatch(setNotification({ message: 'Vui lòng đăng nhập để sử dụng chức năng ứng tuyển!', type: 'info' }));
                 return;
               }
               if (!hasApplied) setShowApplyForm(true);

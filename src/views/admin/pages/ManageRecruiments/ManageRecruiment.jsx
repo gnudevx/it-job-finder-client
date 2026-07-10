@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setNotification } from '@/redux/slices/globalSlice';
 import { JobStatus } from './types';
 import { Check, X, Eye, Filter } from 'lucide-react';
 import styles from './ManageRecruiment.module.scss';
@@ -13,6 +15,7 @@ const ManageRecruiment = () => {
   const [undoData, setUndoData] = useState(null);
   const [showUndo, setShowUndo] = useState(false);
   let undoTimer = null;
+  const dispatch = useDispatch();
   const handleViewJob = async (id) => {
     try {
       const detail = await jobApiService.getJobDetail(id);
@@ -33,7 +36,7 @@ const ManageRecruiment = () => {
       setJobs(res.jobs || []); // ✅ chắc chắn jobs là mảng
     } catch (err) {
       console.error('Lấy danh sách job lỗi:   ', err);
-      alert('Không thể tải danh sách job');
+      dispatch(setNotification({ message: 'Không thể tải danh sách job', type: 'error' }));
     } finally {
       setLoading(false);
     }
@@ -67,7 +70,7 @@ const ManageRecruiment = () => {
       try {
         await jobApiService.updateJobStatus(id, newStatus);
       } catch (err) {
-        alert('Cập nhật lỗi, khôi phục trạng thái cũ.');
+        dispatch(setNotification({ message: 'Cập nhật lỗi, khôi phục trạng thái cũ.', type: 'error' }));
         setJobs((prev) =>
           prev.map((job) => (job._id === id ? { ...job, publishStatus: oldStatus } : job))
         );

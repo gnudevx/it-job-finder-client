@@ -5,6 +5,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { FcGoogle } from 'react-icons/fc';
 import { loginWithGoogle } from '@/utils/googleAuth';
 import authService from '@/services/authService';
+import { useDispatch } from 'react-redux';
+import { setNotification } from '@/redux/slices/globalSlice';
 
 export default function RegisterPage() {
   const [fullname, setFullname] = useState('');
@@ -17,6 +19,7 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { login } = useAuth();
+  const dispatch = useDispatch();
   const handleRegister = async (e) => {
     e.preventDefault();
     setError('');
@@ -58,7 +61,7 @@ export default function RegisterPage() {
       login({ token: data.accessToken, user: data.user, id: data.user._id });
       localStorage.setItem('authToken', data.accessToken);
       // Show success message
-      alert('Đăng ký thành công! Đang chuyển hướng...');
+      dispatch(setNotification({ message: 'Đăng ký thành công! Đang chuyển hướng...', type: 'success' }));
 
       // Navigate based on role - AUTO LOGIN COMPLETE
       if (data.user.role === 'candidate') {
@@ -86,7 +89,7 @@ export default function RegisterPage() {
           // Save user info
           localStorage.setItem('user', JSON.stringify(data.user));
 
-          alert('Đăng nhập bằng Google thành công!');
+          dispatch(setNotification({ message: 'Đăng nhập bằng Google thành công!', type: 'success' }));
 
           // Navigate based on user role from response
           if (data.user.role === 'candidate') {
@@ -97,11 +100,11 @@ export default function RegisterPage() {
             navigate('/');
           }
         } else {
-          alert('Đăng nhập Google thất bại: ' + (data.error || data.message));
+          dispatch(setNotification({ message: 'Đăng nhập Google thất bại: ' + (data.error || data.message), type: 'error' }));
         }
       } catch (error) {
         console.error('Google login error:', error);
-        alert('Lỗi kết nối server');
+        dispatch(setNotification({ message: 'Lỗi kết nối server', type: 'error' }));
       }
     });
   };

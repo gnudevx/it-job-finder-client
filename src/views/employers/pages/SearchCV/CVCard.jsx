@@ -1,9 +1,12 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { setNotification } from '@/redux/slices/globalSlice';
 import styles from './CVCard.module.scss';
 import PropTypes from 'prop-types';
 import axiosClient from '@/services/axiosClient.js';
 
 const CVCard = ({ cv, isRecommended, jobTitle }) => {
+  const dispatch = useDispatch();
   const resumeId = cv.resumeId || cv.id || cv._id;
   const candidateId =
     typeof cv.candidateId === 'string'
@@ -24,12 +27,12 @@ const CVCard = ({ cv, isRecommended, jobTitle }) => {
       );
       window.open(`${baseUrl}/api/resumes/${resumeId}/view`, '_blank');
     } else {
-      alert('Ứng viên chưa tải CV lên. Vui lòng xem lại');
+      dispatch(setNotification({ message: 'Ứng viên chưa tải CV lên. Vui lòng xem lại', type: 'info' }));
     }
   };
   const handleDownload = async () => {
     if (!resumeId) {
-      alert('Ứng viên chưa tải CV');
+      dispatch(setNotification({ message: 'Ứng viên chưa tải CV', type: 'info' }));
       return;
     }
 

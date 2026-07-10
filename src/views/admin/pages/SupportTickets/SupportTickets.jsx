@@ -57,7 +57,10 @@ export default function SupportTickets() {
 
   const handleReply = async (ticketId, content) => {
     try {
-      const res = await ticketService.replyToTicket(ticketId, { content });
+      const res = await ticketService.replyToTicket(ticketId, {
+        content,
+        type: selectedTicket?.type || 'SUPPORT',
+      });
       console.log(res);
       // Sau khi reply xong → cập nhật lại ticket đang xem
       setSelectedTicket((prev) => ({
@@ -79,7 +82,10 @@ export default function SupportTickets() {
 
   const handleStatusChange = async (ticketId, newStatus) => {
     try {
-      await ticketService.changeStatus(ticketId, { status: newStatus });
+      await ticketService.changeStatus(ticketId, {
+        status: newStatus,
+        type: selectedTicket?.type || 'SUPPORT',
+      });
 
       setSelectedTicket((prev) => ({
         ...prev,
