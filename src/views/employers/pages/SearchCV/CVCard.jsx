@@ -9,7 +9,7 @@ const CVCard = ({ cv, isRecommended, jobTitle }) => {
     typeof cv.candidateId === 'string'
       ? cv.candidateId
       : cv.candidateId?._id || cv.candidateId?.id || '';
-  const displayName = cv.candidateName || cv.fullName || cv.fileName || 'Ứng viên';
+  const displayName = cv.candidateName || cv.fullName || cv.fileName || 'Chưa có tên';
   const subtitle = cv.jobTitle || jobTitle || cv.title || 'Công việc CV ứng tuyển';
   const downloadName = cv.fileName || displayName || 'CV';
   const matchScorePercent = cv.matchScore
