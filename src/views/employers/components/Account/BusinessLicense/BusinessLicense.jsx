@@ -37,12 +37,11 @@ export default function BusinessLicense() {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       console.log('Upload thành công:', res.data);
-      console.log(res);
-      console.log(res.data);
+      console.log('upload', res);
       dispatch(setNotification({ message: 'Upload thành công!', type: 'success' }));
       console.log(res.data); // có license mới
       setFiles([files[0]]);
-      setLicense(res.data.license);
+      setLicense(res.license);
       await fetchSteps();
     } catch (err) {
       console.error(err);
