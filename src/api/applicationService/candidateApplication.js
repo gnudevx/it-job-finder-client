@@ -11,7 +11,7 @@ export const applyJob = async ({ jobId, resumeId, note, token }) => {
     }
   );
 
-  return res.data;
+  return res?.data ?? res;
 };
 
 export const getMyAppliedJobs = async (token) => {
@@ -19,5 +19,6 @@ export const getMyAppliedJobs = async (token) => {
     headers: { Authorization: `Bearer ${token}` },
   });
 
-  return res.data;
+  if (Array.isArray(res)) return res;
+  return res?.data ?? [];
 };
