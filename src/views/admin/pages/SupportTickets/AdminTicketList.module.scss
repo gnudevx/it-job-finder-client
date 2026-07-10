@@ -129,5 +129,9 @@
 .statusResolved {
   background: #d1fae5;
   color: #059669;
-  // giữ đồng bộ padding/border-radius với các class status khác
+  padding: 2px 6px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
 }

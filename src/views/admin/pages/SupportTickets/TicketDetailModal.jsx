@@ -89,18 +89,42 @@ export default function TicketDetailModal({
                     <span>Đính kèm ({ticket.files.length})</span>
 
                     <div className={styles.files}>
-                      {ticket.files.map((file, idx) => (
-                        <a
-                          key={idx}
-                          href={file.fileUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={styles.fileItem}
-                        >
-                          <Paperclip size={14} />
-                          <span>{file.fileName}</span>
-                        </a>
-                      ))}
+                      {ticket.files.map((file, idx) => {
+                        // Hỗ trợ cả 2 kiểu field name (fileUrl/fileName hoặc url/name)
+                        // để không phụ thuộc vào format dữ liệu trả về từ API
+                        const fileUrl = file.fileUrl || file.url || '';
+                        const fileName = file.fileName || file.name || 'Tệp đính kèm';
+                        const hasValidUrl = Boolean(fileUrl && fileUrl.trim());
+
+                        if (!hasValidUrl) {
+                          // Không có URL hợp lệ -> không render thành link để tránh
+                          // trình duyệt điều hướng về trang chủ khi href rỗng/undefined
+                          return (
+                            <span
+                              key={idx}
+                              className={styles.fileItem}
+                              title="Không tìm thấy đường dẫn tệp"
+                              style={{ opacity: 0.6, cursor: 'not-allowed' }}
+                            >
+                              <Paperclip size={14} />
+                              <span>{fileName}</span>
+                            </span>
+                          );
+                        }
+
+                        return (
+                          <a
+                            key={idx}
+                            href={fileUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={styles.fileItem}
+                          >
+                            <Paperclip size={14} />
+                            <span>{fileName}</span>
+                          </a>
+                        );
+                      })}
                     </div>
                   </div>
                 )}
@@ -198,8 +222,10 @@ TicketDetailModal.propTypes = {
     content: PropTypes.string.isRequired,
     files: PropTypes.arrayOf(
       PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        url: PropTypes.string.isRequired,
+        fileName: PropTypes.string,
+        fileUrl: PropTypes.string,
+        name: PropTypes.string,
+        url: PropTypes.string,
       })
     ),
     createdAt: PropTypes.instanceOf(Date).isRequired,
