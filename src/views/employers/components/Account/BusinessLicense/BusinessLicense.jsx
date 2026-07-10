@@ -56,8 +56,8 @@ export default function BusinessLicense() {
       try {
         const res = await axios.get('/employer/account/settings/license-info');
         console.log('License info:', res);
-        if (res.data?.license) {
-          setLicense(res.data.license);
+        if (res.license) {
+          setLicense(res.license);
         }
       } catch (err) {
         console.error(err);
