@@ -25,8 +25,11 @@ export default function AppliedJobs() {
       try {
         setLoading(true);
         const appliedJobs = await getMyAppliedJobs(authToken);
+        const applicationList = Array.isArray(appliedJobs)
+          ? appliedJobs
+          : appliedJobs?.data ?? [];
 
-        const jobDetails = appliedJobs
+        const jobDetails = applicationList
           .map((app) => {
             const job = app.jobId;
             return {

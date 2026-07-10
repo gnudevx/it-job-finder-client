@@ -28,7 +28,12 @@ export default function useApplyJob(jobId, token) {
     // load applied jobs
     (async () => {
       const applications = await getMyAppliedJobs(token);
-      const applied = applications.some((app) => String(app.jobId._id) === String(jobId));
+      const applicationList = Array.isArray(applications)
+        ? applications
+        : applications?.data || [];
+      const applied = applicationList.some(
+        (app) => String(app.jobId._id) === String(jobId),
+      );
       setHasApplied(applied);
     })();
   }, [jobId, token]);
