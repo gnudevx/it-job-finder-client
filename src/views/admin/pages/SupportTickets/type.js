@@ -1,26 +1,25 @@
 export const SupportTicketStatus = {
   OPEN: 'OPEN',
   RESPONDED: 'RESPONDED',
-  CLOSED: 'CLOSED',
-  PENDING: 'PENDING',
-  REVIEWING: 'REVIEWING',
   RESOLVED: 'RESOLVED',
+  CLOSED: 'CLOSED',
 };
 
 export const normalizeSupportTicketStatus = (status) => {
   const normalized = String(status || '').toUpperCase();
+
   switch (normalized) {
-    case SupportTicketStatus.PENDING:
+    case 'PENDING':
     case 'NEW':
     case 'WAITING':
     case SupportTicketStatus.OPEN:
       return SupportTicketStatus.OPEN;
-    case SupportTicketStatus.REVIEWING:
+    case 'REVIEWING':
     case SupportTicketStatus.RESPONDED:
     case 'ANSWERED':
     case 'IN_PROGRESS':
       return SupportTicketStatus.RESPONDED;
-    case SupportTicketStatus.RESOLVED: // 👈 tách riêng
+    case SupportTicketStatus.RESOLVED:
     case 'DONE':
       return SupportTicketStatus.RESOLVED;
     case SupportTicketStatus.CLOSED:
@@ -29,12 +28,15 @@ export const normalizeSupportTicketStatus = (status) => {
       return SupportTicketStatus.OPEN;
   }
 };
+
 export const getSupportTicketStatusLabel = (status) => {
   const normalized = normalizeSupportTicketStatus(status);
 
   switch (normalized) {
     case SupportTicketStatus.RESPONDED:
-      return 'Đã phản hồi';
+      return 'Đang xem xét';
+    case SupportTicketStatus.RESOLVED:
+      return 'Đã giải quyết';
     case SupportTicketStatus.CLOSED:
       return 'Đã đóng';
     default:

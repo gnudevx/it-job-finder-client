@@ -40,7 +40,8 @@ export default function AdminTicketList({ tickets, onViewTicket }) {
             <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
               <option value="ALL">Tất cả trạng thái</option>
               <option value={SupportTicketStatus.OPEN}>Mới</option>
-              <option value={SupportTicketStatus.RESPONDED}>Đã phản hồi</option>
+              <option value={SupportTicketStatus.RESPONDED}>Đang xem xét</option>
+              <option value={SupportTicketStatus.RESOLVED}>Đã giải quyết</option>
               <option value={SupportTicketStatus.CLOSED}>Đã đóng</option>
             </select>
           </div>
@@ -94,7 +95,9 @@ export default function AdminTicketList({ tickets, onViewTicket }) {
                             ? styles.statusOpen
                             : normalizedStatus === SupportTicketStatus.RESPONDED
                               ? styles.statusResponded
-                              : styles.statusClosed
+                              : normalizedStatus === SupportTicketStatus.RESOLVED
+                                ? styles.statusResolved
+                                : styles.statusClosed
                         }
                       >
                         {getSupportTicketStatusLabel(normalizedStatus)}

@@ -126,3 +126,8 @@
 .viewBtn:hover {
   background: #f0f9ff;
 }
+.statusResolved {
+  background: #d1fae5;
+  color: #059669;
+  // giữ đồng bộ padding/border-radius với các class status khác
+}

@@ -54,7 +54,9 @@ export default function TicketDetailModal({
                     ? styles.statusOpen
                     : normalizedStatus === SupportTicketStatus.RESPONDED
                       ? styles.statusResponded
-                      : styles.statusClosed
+                      : normalizedStatus === SupportTicketStatus.RESOLVED
+                        ? styles.statusResolved
+                        : styles.statusClosed
                 }
               >
                 {getSupportTicketStatusLabel(normalizedStatus)}
@@ -90,13 +92,13 @@ export default function TicketDetailModal({
                       {ticket.files.map((file, idx) => (
                         <a
                           key={idx}
-                          href={file.url}
+                          href={file.fileUrl}
                           target="_blank"
                           rel="noopener noreferrer"
                           className={styles.fileItem}
                         >
                           <Paperclip size={14} />
-                          <span>{file.name}</span>
+                          <span>{file.fileName}</span>
                         </a>
                       ))}
                     </div>
@@ -114,9 +116,10 @@ export default function TicketDetailModal({
                     onStatusChange && onStatusChange(ticket._id || ticket.id, e.target.value)
                   }
                 >
-                  <option value={SupportTicketStatus.OPEN}>OPEN (Mới)</option>
-                  <option value={SupportTicketStatus.RESPONDED}>RESPONDED (Đã phản hồi)</option>
-                  <option value={SupportTicketStatus.CLOSED}>CLOSED (Đã đóng)</option>
+                  <option value={SupportTicketStatus.OPEN}>Mới</option>
+                  <option value={SupportTicketStatus.RESPONDED}>Đang xem xét</option>
+                  <option value={SupportTicketStatus.RESOLVED}>Đã giải quyết</option>
+                  <option value={SupportTicketStatus.CLOSED}>Đã đóng</option>
                 </select>
               </div>
             )}

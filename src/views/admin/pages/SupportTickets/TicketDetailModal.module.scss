@@ -281,3 +281,8 @@
     transform: translateY(0);
   }
 }
+.statusResolved {
+  background: #d1fae5;
+  color: #059669;
+  // giữ đồng bộ padding/border-radius với các class status khác
+}
