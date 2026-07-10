@@ -1,13 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { X, Send, User, ShieldCheck, Paperclip } from 'lucide-react';
 import styles from './TicketDetailModal.module.scss';
-
-const TicketStatus = {
-  PENDING: 'PENDING',
-  REVIEWING: 'REVIEWING',
-  RESOLVED: 'RESOLVED',
-};
 import PropTypes from 'prop-types';
+import {
+  SupportTicketStatus,
+  normalizeSupportTicketStatus,
+  getSupportTicketStatusLabel,
+} from './type';
+
 export default function TicketDetailModal({
   ticket,
   currentUserRole = 'ADMIN', // 'ADMIN' hoặc 'USER'
@@ -23,6 +23,8 @@ export default function TicketDetailModal({
   }, [ticket?.replies]);
 
   if (!ticket) return null;
+
+  const normalizedStatus = normalizeSupportTicketStatus(ticket.status);
 
   const handleSendReply = () => {
     console.log('SEND REPLY CLICKED, ticket =', ticket);
@@ -48,14 +50,14 @@ export default function TicketDetailModal({
             <div className={styles.subInfo}>
               <span
                 className={
-                  ticket.status === TicketStatus.PENDING
+                  normalizedStatus === SupportTicketStatus.OPEN
                     ? styles.statusOpen
-                    : ticket.status === TicketStatus.REVIEWING
+                    : normalizedStatus === SupportTicketStatus.RESPONDED
                       ? styles.statusResponded
                       : styles.statusClosed
                 }
               >
-                {ticket.status}
+                {getSupportTicketStatusLabel(normalizedStatus)}
               </span>
               <span className={styles.date}>{ticket.createdAt.toLocaleString('vi-VN')}</span>
             </div>
@@ -100,12 +102,14 @@ export default function TicketDetailModal({
               <div className={styles.infoSection}>
                 <h4>Cập nhật trạng thái</h4>
                 <select
-                  value={ticket.status}
-                  onChange={(e) => onStatusChange && onStatusChange(ticket._id || ticket.id, e.target.value)}
+                  value={normalizedStatus}
+                  onChange={(e) =>
+                    onStatusChange && onStatusChange(ticket._id || ticket.id, e.target.value)
+                  }
                 >
-                  <option value={TicketStatus.PENDING}>PENDING (Chờ xử lý)</option>
-                  <option value={TicketStatus.REVIEWING}>REVIEWING (Đang xử lí)</option>
-                  <option value={TicketStatus.RESOLVED}>RESOLVED (Đã xử lí)</option>
+                  <option value={SupportTicketStatus.OPEN}>OPEN (Mới)</option>
+                  <option value={SupportTicketStatus.RESPONDED}>RESPONDED (Đã phản hồi)</option>
+                  <option value={SupportTicketStatus.CLOSED}>CLOSED (Đã đóng)</option>
                 </select>
               </div>
             )}
@@ -149,7 +153,7 @@ export default function TicketDetailModal({
 
             {/* Reply Input */}
             <div className={styles.replyBox}>
-              {ticket.status === TicketStatus.CLOSED ? (
+              {normalizedStatus === SupportTicketStatus.CLOSED ? (
                 <div className={styles.closedNotice}>
                   Ticket này đã đóng, không thể gửi thêm phản hồi.
                 </div>
@@ -178,8 +182,7 @@ TicketDetailModal.propTypes = {
     id: PropTypes.string.isRequired,
     _id: PropTypes.string,
     type: PropTypes.oneOf(['SUPPORT', 'FEEDBACK']).isRequired,
-    status: PropTypes.oneOf([TicketStatus.OPEN, TicketStatus.RESPONDED, TicketStatus.CLOSED])
-      .isRequired,
+    status: PropTypes.string.isRequired,
     title: PropTypes.string,
     category: PropTypes.string,
     content: PropTypes.string.isRequired,

@@ -2,16 +2,15 @@ import React, { useState } from 'react';
 import { Eye } from 'lucide-react';
 import styles from './AdminTicketList.module.scss';
 import PropTypes from 'prop-types';
+import {
+  SupportTicketStatus,
+  normalizeSupportTicketStatus,
+  getSupportTicketStatusLabel,
+} from './type';
 
 const TicketType = {
   SUPPORT: 'SUPPORT',
   FEEDBACK: 'FEEDBACK',
-};
-
-const TicketStatus = {
-  OPEN: 'OPEN',
-  RESPONDED: 'RESPONDED',
-  CLOSED: 'CLOSED',
 };
 
 export default function AdminTicketList({ tickets, onViewTicket }) {
@@ -19,8 +18,9 @@ export default function AdminTicketList({ tickets, onViewTicket }) {
   const [filterStatus, setFilterStatus] = useState('ALL');
 
   const filteredTickets = tickets.filter((t) => {
+    const normalizedStatus = normalizeSupportTicketStatus(t.status);
     const typeMatch = filterType === 'ALL' || t.type === filterType;
-    const statusMatch = filterStatus === 'ALL' || t.status === filterStatus;
+    const statusMatch = filterStatus === 'ALL' || normalizedStatus === filterStatus;
     return typeMatch && statusMatch;
   });
 
@@ -39,9 +39,9 @@ export default function AdminTicketList({ tickets, onViewTicket }) {
           <div className={styles.filter}>
             <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
               <option value="ALL">Tất cả trạng thái</option>
-              <option value={TicketStatus.OPEN}>Mới</option>
-              <option value={TicketStatus.RESPONDED}>Đã phản hồi</option>
-              <option value={TicketStatus.CLOSED}>Đóng</option>
+              <option value={SupportTicketStatus.OPEN}>Mới</option>
+              <option value={SupportTicketStatus.RESPONDED}>Đã phản hồi</option>
+              <option value={SupportTicketStatus.CLOSED}>Đã đóng</option>
             </select>
           </div>
         </div>
@@ -66,52 +66,52 @@ export default function AdminTicketList({ tickets, onViewTicket }) {
                 </td>
               </tr>
             ) : (
-              filteredTickets.map((ticket) => (
-                <tr key={ticket._id}>
-                  <td>
-                    <span
-                      className={
-                        ticket.type === TicketType.SUPPORT
-                          ? styles.supportBadge
-                          : styles.feedbackBadge
-                      }
-                    >
-                      {ticket.type === TicketType.SUPPORT ? 'Hỗ trợ' : 'Góp ý'}
-                    </span>
-                  </td>
-                  <td>
-                    <div className={styles.title}>{ticket.title || ticket.category}</div>
-                    <div className={styles.content}>{ticket.content}</div>
-                  </td>
-                  <td>{ticket.createdAt.toLocaleDateString('vi-VN')}</td>
-                  <td>
-                    <span
-                      className={
-                        ticket.status === TicketStatus.OPEN
-                          ? styles.statusOpen
-                          : ticket.status === TicketStatus.RESPONDED
-                            ? styles.statusResponded
-                            : styles.statusClosed
-                      }
-                    >
-                      {ticket.status === TicketStatus.OPEN
-                        ? 'Mới'
-                        : ticket.status === TicketStatus.RESPONDED
-                          ? 'Đã phản hồi'
-                          : 'Đã đóng'}
-                    </span>
-                  </td>
-                  <td>
-                    <button
-                      className={styles.viewBtn}
-                      onClick={() => onViewTicket(ticket)}
-                      title="Xem chi tiết & Phản hồi"
-                    >
-                      <Eye size={18} />
-                    </button>
-                  </td>
-                </tr>
-              ))
+              filteredTickets.map((ticket) => {
+                const normalizedStatus = normalizeSupportTicketStatus(ticket.status);
+
+                return (
+                  <tr key={ticket._id}>
+                    <td>
+                      <span
+                        className={
+                          ticket.type === TicketType.SUPPORT
+                            ? styles.supportBadge
+                            : styles.feedbackBadge
+                        }
+                      >
+                        {ticket.type === TicketType.SUPPORT ? 'Hỗ trợ' : 'Góp ý'}
+                      </span>
+                    </td>
+                    <td>
+                      <div className={styles.title}>{ticket.title || ticket.category}</div>
+                      <div className={styles.content}>{ticket.content}</div>
+                    </td>
+                    <td>{ticket.createdAt.toLocaleDateString('vi-VN')}</td>
+                    <td>
+                      <span
+                        className={
+                          normalizedStatus === SupportTicketStatus.OPEN
+                            ? styles.statusOpen
+                            : normalizedStatus === SupportTicketStatus.RESPONDED
+                              ? styles.statusResponded
+                              : styles.statusClosed
+                        }
+                      >
+                        {getSupportTicketStatusLabel(normalizedStatus)}
+                      </span>
+                    </td>
+                    <td>
+                      <button
+                        className={styles.viewBtn}
+                        onClick={() => onViewTicket(ticket)}
+                        title="Xem chi tiết & Phản hồi"
+                      >
+                        <Eye size={18} />
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })
             )}
           </tbody>
         </table>
@@ -129,8 +129,7 @@ AdminTicketList.propTypes = {
       title: PropTypes.string,
       content: PropTypes.string.isRequired,
       createdAt: PropTypes.instanceOf(Date).isRequired,
-      status: PropTypes.oneOf([TicketStatus.OPEN, TicketStatus.RESPONDED, TicketStatus.CLOSED])
-        .isRequired,
+      status: PropTypes.string.isRequired,
     })
   ).isRequired,
 };

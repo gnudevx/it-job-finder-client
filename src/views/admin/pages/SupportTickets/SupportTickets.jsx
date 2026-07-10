@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import AdminTicketList from './AdminTicketList.jsx';
 import TicketDetailModal from './TicketDetailModal';
 import ticketService from '@/api/ticketService';
+import { normalizeSupportTicketStatus } from './type';
 
 export default function SupportTickets() {
   const [tickets, setTickets] = useState([]);
@@ -18,6 +19,7 @@ export default function SupportTickets() {
       (res.data || []).map((t) => ({
         ...t,
         _id: t._id || t.id, // fallback
+        status: normalizeSupportTicketStatus(t.status),
         createdAt: new Date(t.createdAt),
         replies: (t.replies || []).map((r) => ({
           ...r,
@@ -37,6 +39,7 @@ export default function SupportTickets() {
       setSelectedTicket({
         ...t,
         _id: t._id || t.id,
+        status: normalizeSupportTicketStatus(t.status),
         createdAt: new Date(t.createdAt),
         replies: (t.replies || []).map((r) => ({
           ...r,
@@ -87,12 +90,14 @@ export default function SupportTickets() {
         type: selectedTicket?.type || 'SUPPORT',
       });
 
+      const normalizedStatus = normalizeSupportTicketStatus(newStatus);
+
       setSelectedTicket((prev) => ({
         ...prev,
-        status: newStatus,
+        status: normalizedStatus,
       }));
       setTickets((prevTickets) =>
-        prevTickets.map((t) => (t._id === ticketId ? { ...t, status: newStatus } : t))
+        prevTickets.map((t) => (t._id === ticketId ? { ...t, status: normalizedStatus } : t))
       );
     } catch (err) {
       console.error('Update status fail:', err);
