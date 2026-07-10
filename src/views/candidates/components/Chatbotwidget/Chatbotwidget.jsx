@@ -140,10 +140,11 @@ export default function ChatBotWidget() {
           setCvStatus('done');
           saveCvState(id, 'done');
           setIsAnalyzing(false);
-          addMessage(
-            'assistant',
-            `✅ CV đã phân tích xong (${data.chunks_count} sections)!\nBây giờ bạn có thể hỏi tôi về CV của mình.`
-          );
+          // Dùng intro_message từ API (được generate_cv_intro_message tạo) nếu có
+          const introMsg =
+            data.intro_message ||
+            `✅ CV đã phân tích xong (${data.chunks_count ?? '?'} sections)!\nBây giờ bạn có thể hỏi tôi về CV của mình.`;
+          addMessage('assistant', introMsg);
         } else if (data?.status === 'failed') {
           clearInterval(pollRef.current);
           setCvStatus('failed');
@@ -166,6 +167,87 @@ export default function ChatBotWidget() {
     if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
     return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
   };
+
+  /**
+   * parseMessageContent — render nội dung tin nhắn:
+   * - **text** → <strong>
+   * - [text](url) hoặc /jobs/{id} → <a> clickable
+   * - \n → <br />
+   */
+  const parseMessageContent = (content) => {
+    if (!content) return null;
+
+    // Tách theo dòng trước
+    const lines = content.split('\n');
+
+    return lines.map((line, lineIdx) => {
+      // Tokenize mỗi dòng: chia theo pattern markdown bold và link
+      const tokens = [];
+      // Regex khớp: **bold**, [text](/path), /jobs/{id}
+      const tokenPattern = /(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\)|\/jobs\/[a-zA-Z0-9_-]+)/g;
+      let lastIndex = 0;
+      let match;
+
+      while ((match = tokenPattern.exec(line)) !== null) {
+        // Phần text trước match
+        if (match.index > lastIndex) {
+          tokens.push(<span key={`t-${lineIdx}-${lastIndex}`}>{line.slice(lastIndex, match.index)}</span>);
+        }
+
+        const raw = match[0];
+
+        if (raw.startsWith('**') && raw.endsWith('**')) {
+          // Bold
+          tokens.push(<strong key={`b-${lineIdx}-${match.index}`}>{raw.slice(2, -2)}</strong>);
+        } else if (raw.startsWith('[')) {
+          // Markdown link [text](url)
+          const textMatch = raw.match(/\[([^\]]+)\]\(([^)]+)\)/);
+          if (textMatch) {
+            const [, linkText, linkUrl] = textMatch;
+            const isExternal = linkUrl.startsWith('http');
+            tokens.push(
+              <a
+                key={`l-${lineIdx}-${match.index}`}
+                href={linkUrl}
+                target={isExternal ? '_blank' : '_self'}
+                rel={isExternal ? 'noopener noreferrer' : undefined}
+                style={{ color: '#4f8ef7', textDecoration: 'underline', fontWeight: 500 }}
+              >
+                {linkText}
+              </a>
+            );
+          }
+        } else if (raw.startsWith('/jobs/')) {
+          // Bare /jobs/{id} link
+          tokens.push(
+            <a
+              key={`j-${lineIdx}-${match.index}`}
+              href={raw}
+              target="_self"
+              style={{ color: '#4f8ef7', textDecoration: 'underline', fontWeight: 500 }}
+            >
+              Xem chi tiết
+            </a>
+          );
+        }
+
+        lastIndex = match.index + raw.length;
+      }
+
+      // Phần còn lại sau match cuối
+      if (lastIndex < line.length) {
+        tokens.push(<span key={`t-${lineIdx}-end`}>{line.slice(lastIndex)}</span>);
+      }
+
+      return (
+        <span key={`line-${lineIdx}`}>
+          {tokens.length > 0 ? tokens : line}
+          {lineIdx < lines.length - 1 && <br />}
+        </span>
+      );
+    });
+  };
+
 
   // ── Upload CV ────────────────────────────────────────────────────────────────
   const handleFileUpload = async (e) => {
@@ -412,12 +494,7 @@ export default function ChatBotWidget() {
                 }`}
               >
                 <div className={styles.bubbleContent}>
-                  {msg.content.split('\n').map((line, j, arr) => (
-                    <span key={j}>
-                      {line}
-                      {j < arr.length - 1 && <br />}
-                    </span>
-                  ))}
+                  {parseMessageContent(msg.content)}
                 </div>
               </div>
             ))}
