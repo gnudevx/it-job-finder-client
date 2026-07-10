@@ -1,12 +1,9 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { setNotification } from '@/redux/slices/globalSlice';
 import styles from './CVCard.module.scss';
 import PropTypes from 'prop-types';
 import axiosClient from '@/services/axiosClient.js';
 
 const CVCard = ({ cv, isRecommended, jobTitle }) => {
-  const dispatch = useDispatch();
   const resumeId = cv.resumeId || cv.id || cv._id;
   const candidateId =
     typeof cv.candidateId === 'string'
@@ -18,7 +15,7 @@ const CVCard = ({ cv, isRecommended, jobTitle }) => {
   const matchScorePercent = cv.matchScore
     ? (cv.matchScore > 1 ? cv.matchScore : cv.matchScore * 100).toFixed(1)
     : null;
-
+  const email = cv.email || cv.candidateEmail || cv.candidateId?.email || '';
   const handleViewPDF = () => {
     if (resumeId) {
       const baseUrl = (process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000').replace(
@@ -27,12 +24,12 @@ const CVCard = ({ cv, isRecommended, jobTitle }) => {
       );
       window.open(`${baseUrl}/api/resumes/${resumeId}/view`, '_blank');
     } else {
-      dispatch(setNotification({ message: 'Ứng viên chưa tải CV lên. Vui lòng xem lại', type: 'info' }));
+      alert('Ứng viên chưa tải CV lên. Vui lòng xem lại');
     }
   };
   const handleDownload = async () => {
     if (!resumeId) {
-      dispatch(setNotification({ message: 'Ứng viên chưa tải CV', type: 'info' }));
+      alert('Ứng viên chưa tải CV');
       return;
     }
 
@@ -86,6 +83,7 @@ const CVCard = ({ cv, isRecommended, jobTitle }) => {
         <div className={styles.header}>
           <h3 className={styles.name}>
             {displayName}
+            {email && <p className={styles.email}>{email}</p>}
             <span className={styles.id}>ID: {candidateId || resumeId || 'Chưa có'}</span>
           </h3>
         </div>
@@ -146,10 +144,13 @@ CVCard.propTypes = {
       PropTypes.shape({
         _id: PropTypes.string,
         id: PropTypes.string,
+        email: PropTypes.string,
       }),
     ]),
     candidateName: PropTypes.string,
     fullName: PropTypes.string,
+    email: PropTypes.string,
+    candidateEmail: PropTypes.string,
     avatar: PropTypes.string,
     fileName: PropTypes.string,
     fileUrl: PropTypes.string,
