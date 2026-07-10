@@ -101,7 +101,7 @@ export default function TicketDetailModal({
                 <h4>Cập nhật trạng thái</h4>
                 <select
                   value={ticket.status}
-                  onChange={(e) => onStatusChange && onStatusChange(ticket.id, e.target.value)}
+                  onChange={(e) => onStatusChange && onStatusChange(ticket._id || ticket.id, e.target.value)}
                 >
                   <option value={TicketStatus.PENDING}>PENDING (Chờ xử lý)</option>
                   <option value={TicketStatus.REVIEWING}>REVIEWING (Đang xử lí)</option>

@@ -1,5 +1,7 @@
 // ManageAppliedCV.jsx
 import React, { useState, useEffect, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
+import { setNotification } from '@/redux/slices/globalSlice';
 import styles from './ManageAppliedCV.module.scss';
 import {
   getEmployerApplications,
@@ -17,22 +19,23 @@ function CVItem({ app, onStatusUpdated }) {
   const [loading, setLoading] = useState(false);
   const [chatLoading, setChatLoading] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleViewPDF = () => {
     if (app.resumeId) {
       window.open(`${process.env.REACT_APP_API_BASE_URL}/api/resumes/${app.resumeId._id}/view`, '_blank');
     } else {
-      alert('Ứng viên chưa tải CV lên.');
+      dispatch(setNotification({ message: 'Ứng viên chưa tải CV lên.', type: 'info' }));
     }
   };
 
   const handleChatWithCandidate = async () => {
     if (!app.candidateId?._id) {
-      alert('Không tìm thấy thông tin ứng viên!');
+      dispatch(setNotification({ message: 'Không tìm thấy thông tin ứng viên!', type: 'error' }));
       return;
     }
     if (!app.jobId?._id) {
-      alert('Không tìm thấy thông tin công việc!');
+      dispatch(setNotification({ message: 'Không tìm thấy thông tin công việc!', type: 'error' }));
       return;
     }
 
@@ -43,7 +46,7 @@ function CVItem({ app, onStatusUpdated }) {
       navigate(`/employer/connect/${convoId}`);
     } catch (err) {
       console.error(err);
-      alert('Lỗi khi mở cuộc trò chuyện với ứng viên!');
+      dispatch(setNotification({ message: 'Lỗi khi mở cuộc trò chuyện với ứng viên!', type: 'error' }));
     }
     setChatLoading(false);
   };
@@ -55,7 +58,7 @@ function CVItem({ app, onStatusUpdated }) {
       // Truyền cả updatedAt mới về ManageAppliedCV
       onStatusUpdated(app._id, updatedApp.status, updatedApp.updatedAt);
     } catch (err) {
-      alert('Lỗi khi cập nhật trạng thái!');
+      dispatch(setNotification({ message: 'Lỗi khi cập nhật trạng thái!', type: 'error' }));
       console.error(err);
     }
     setLoading(false);
@@ -137,6 +140,7 @@ function ManageAppliedCV() {
   const [loading, setLoading] = useState(false);
 
   const campaigns = []; // TODO: load job campaigns từ API
+  const dispatch = useDispatch();
 
   // Debounce load API
   const loadData = useCallback(
@@ -167,7 +171,7 @@ function ManageAppliedCV() {
     setApplications((prev) =>
       prev.map((item) => (item._id === id ? { ...item, status: newStatus, updatedAt } : item))
     );
-    alert('Cập nhật trạng thái CV thành công');
+    dispatch(setNotification({ message: 'Cập nhật trạng thái CV thành công', type: 'success' }));
   };
 
   return (

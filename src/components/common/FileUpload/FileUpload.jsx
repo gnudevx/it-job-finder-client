@@ -1,9 +1,12 @@
 import React, { useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import { setNotification } from '@/redux/slices/globalSlice';
 import styles from './FileUpload.module.scss';
 import PropTypes from 'prop-types';
 
 export default function FileUpload({ files, onChange, accept, note }) {
   const inputRef = useRef();
+  const dispatch = useDispatch();
 
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
@@ -24,18 +27,18 @@ export default function FileUpload({ files, onChange, accept, note }) {
 
     for (let file of selectedFiles) {
       if (!validFormats.includes(file.type)) {
-        alert(`File ${file.name} có định dạng không hợp lệ.`);
+        dispatch(setNotification({ message: `File ${file.name} có định dạng không hợp lệ.`, type: 'error' }));
         continue;
       }
       if (file.size > 5 * 1024 * 1024) {
-        alert(`File ${file.name} vượt quá 5MB.`);
+        dispatch(setNotification({ message: `File ${file.name} vượt quá 5MB.`, type: 'error' }));
         continue;
       }
       newFiles.push(file);
     }
 
     if (newFiles.length > 2) {
-      alert('Chỉ được tải tối đa 2 file!');
+      dispatch(setNotification({ message: 'Chỉ được tải tối đa 2 file!', type: 'error' }));
       newFiles = newFiles.slice(0, 2);
     }
 

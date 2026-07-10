@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setNotification } from '@/redux/slices/globalSlice';
 import { CheckCircle, XCircle, FileText } from 'lucide-react';
 import styles from './ManageBusinessLicense.module.scss';
 import adminLicenseApi from '@/api/jobApiAdminService.js';
@@ -13,6 +15,7 @@ const ManageBusinessLicense = () => {
   const [pending, setPending] = useState([]);
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   // Lấy data từ backend
   const fetchData = async () => {
@@ -24,7 +27,7 @@ const ManageBusinessLicense = () => {
       setHistory(resHistory.history || []);
     } catch (err) {
       console.error(err);
-      alert('Lỗi khi tải dữ liệu lên');
+      dispatch(setNotification({ message: 'Lỗi khi tải dữ liệu lên', type: 'error' }));
     }
   };
 
@@ -42,7 +45,7 @@ const ManageBusinessLicense = () => {
       setHistory((prev) => [res.employer, ...prev]);
     } catch (err) {
       console.error(err);
-      alert('Đánh giá thất bại');
+      dispatch(setNotification({ message: 'Đánh giá thất bại', type: 'error' }));
     } finally {
       setLoading(false);
     }

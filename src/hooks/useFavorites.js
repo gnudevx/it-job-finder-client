@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setNotification } from '@/redux/slices/globalSlice';
 import { getMyFavorites, addFavorite, removeFavorite } from '@/api/favoriteService';
 
 export default function useFavorites() {
   const [favorites, setFavorites] = useState([]);
   const token = localStorage.getItem('authToken');
+  const dispatch = useDispatch();
 
   // Load danh sách favorites từ DB khi login
   useEffect(() => {
@@ -27,7 +30,7 @@ export default function useFavorites() {
   // Toggle yêu thích
   const toggleFavorite = async (jobID) => {
     if (!token) {
-      alert('Vui lòng đăng nhập để lưu việc làm!');
+      dispatch(setNotification({ message: 'Vui lòng đăng nhập để lưu việc làm!', type: 'info' }));
       return;
     }
 

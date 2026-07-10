@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setNotification } from '@/redux/slices/globalSlice';
 import VerificationForm from '../../../Verification/VerificationForm';
 import styles from './PersonalInfo.module.scss';
 import avt from '@assets/logo.jpg';
 import employerService from '@/api/employerSerivce.js';
 
 export default function PersonalInfoForm() {
+  const dispatch = useDispatch();
   const [form, setForm] = useState({
     fullName: '',
     gender: '',
@@ -45,10 +48,10 @@ export default function PersonalInfoForm() {
       // cập nhật user trong context luôn
       setUser(res.user);
 
-      alert('Cập nhật thông tin thành công!');
+      dispatch(setNotification({ message: 'Cập nhật thông tin thành công!', type: 'success' }));
     } catch (err) {
       console.error(err);
-      alert('Không thể cập nhật thông tin!');
+      dispatch(setNotification({ message: 'Không thể cập nhật thông tin!', type: 'error' }));
     }
   };
 

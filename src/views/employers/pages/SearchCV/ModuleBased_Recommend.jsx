@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import { setNotification } from '@/redux/slices/globalSlice';
 import styles from './ModuleBased_Recommend.module.scss';
 import CVCard from './CVCard.jsx';
 import axiosClient from '@/services/axiosClient.js';
@@ -13,6 +15,7 @@ export default function ModuleBased_Recommend() {
   const [isLoadingJobs, setIsLoadingJobs] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const loadJobs = async () => {
@@ -43,7 +46,7 @@ export default function ModuleBased_Recommend() {
 
   const handleGetRecommendations = async () => {
     if (!selectedJobId) {
-      alert('Vui lòng chọn công việc trước khi tìm CV phù hợp');
+      dispatch(setNotification({ message: 'Vui lòng chọn công việc trước khi tìm CV phù hợp', type: 'info' }));
       return;
     }
 
@@ -54,13 +57,13 @@ export default function ModuleBased_Recommend() {
       const response = await recommendService.getRecommendedCvs(selectedJobId);
       if (response.success) {
         setRecommendedCvs(response.data);
-      } else {
+        } else {
         console.log('Error getting recommendations:', response.data);
-        alert('Không thể tải danh sách CV được gợi ý');
+        dispatch(setNotification({ message: 'Không thể tải danh sách CV được gợi ý', type: 'error' }));
       }
     } catch (error) {
       console.error('Error getting recommendations:', error);
-      alert('Có lỗi xảy ra khi tải danh sách CV được gợi ý');
+      dispatch(setNotification({ message: 'Có lỗi xảy ra khi tải danh sách CV được gợi ý', type: 'error' }));
     } finally {
       setIsAiLoading(false);
     }

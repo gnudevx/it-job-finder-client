@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setNotification } from '@/redux/slices/globalSlice';
 import styles from './BusinessLicense.module.scss';
 import FormLabel from '@components/common/FormLabel/FormLabel.jsx';
 import FileUpload from '@components/common/FileUpload/FileUpload.jsx';
@@ -9,15 +11,21 @@ import axios from '@/services/axiosClient';
 export default function BusinessLicense() {
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [license, setLicense] = useState([]);
+  const [license, setLicense] = useState({
+    fileUrl: null,
+    status: null,
+    uploadedAt: null,
+    reviewedAt: null,
+  });
   const { fetchSteps } = useEmployerProgress();
+  const dispatch = useDispatch();
   // const handleFileChange = (e) => {
   //     const selected = e.target.files[0];
   //     if (selected) setFile(selected);
   // };
   const handleUpload = async () => {
     if (files.length === 0) {
-      alert('Vui lòng chọn file trước khi lưu');
+      dispatch(setNotification({ message: 'Vui lòng chọn file trước khi lưu', type: 'info' }));
       return;
     }
     const formData = new FormData();
@@ -29,14 +37,14 @@ export default function BusinessLicense() {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 
-      alert('Upload thành công!');
+      dispatch(setNotification({ message: 'Upload thành công!', type: 'success' }));
       console.log(res.data); // có license mới
       setFiles([files[0]]);
       setLicense(res.data.license);
       await fetchSteps();
     } catch (err) {
       console.error(err);
-      alert('Upload thất bại!');
+      dispatch(setNotification({ message: 'Upload thất bại!', type: 'error' }));
     } finally {
       setLoading(false);
     }
@@ -45,9 +53,12 @@ export default function BusinessLicense() {
     const fetchLicense = async () => {
       try {
         const res = await axios.get('/employer/account/settings/license-info');
-        setLicense(res.data.license);
+        if (res.data?.license) {
+          setLicense(res.data.license);
+        }
       } catch (err) {
         console.error(err);
+        // Không cần set lại vì đã có default value
       }
     };
     fetchLicense();

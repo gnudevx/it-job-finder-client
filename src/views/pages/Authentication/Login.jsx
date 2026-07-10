@@ -6,8 +6,11 @@ import { FcGoogle } from 'react-icons/fc';
 import { loginWithGoogle } from '@/utils/googleAuth';
 import { useAuth } from '@/contexts/AuthContext';
 import authService from '@/services/authService';
+import { useDispatch } from 'react-redux';
+import { setNotification } from '@/redux/slices/globalSlice';
 export default function LoginPage() {
   const { login } = useAuth();
+  const dispatch = useDispatch();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -29,7 +32,7 @@ export default function LoginPage() {
       const data = res;
       // data.user có thông tin người dùng
       login({ token: data.accessToken, user: data.user, id: data.user._id });
-      alert(data.message);
+      dispatch(setNotification({ message: data.message, type: 'success' }));
 
       if (data.user.role === 'employer') navigate('/employer/');
       else if (data.user.role == 'admin') navigate('/admin');
@@ -50,7 +53,7 @@ export default function LoginPage() {
 
           localStorage.setItem('authToken', data.accessToken);
 
-          alert('Đăng nhập Google thành công!');
+          dispatch(setNotification({ message: 'Đăng nhập Google thành công!', type: 'success' }));
 
           if (data.user.role === 'employer') navigate('/employer/');
           else if (data.user.role === 'admin') navigate('/admin');
@@ -58,7 +61,7 @@ export default function LoginPage() {
         }
       } catch (error) {
         console.error(error);
-        alert('Google login lỗi');
+          dispatch(setNotification({ message: 'Google login lỗi', type: 'error' }));
       }
     });
   };

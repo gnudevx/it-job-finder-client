@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setNotification } from '@/redux/slices/globalSlice';
 import { ArrowLeft, Sparkles, TrendingUp, ShieldAlert } from 'lucide-react';
 import styles from './RecruiterDetail.module.scss';
 import PropTypes from 'prop-types';
@@ -9,17 +11,18 @@ import ChangePasswordModal from './ChangePasswordModal';
 export default function RecruiterDetail({ recruiter, onBack, onStatusChange }) {
   const [analysis, setAnalysis] = useState(null);
   const [analyzing] = useState(false);
+  const dispatch = useDispatch();
   async function handleUpdateStatus(employerId, newStatus) {
     if (!confirm(`Bạn có chắc muốn đổi trạng thái thành ${newStatus}?`)) return;
 
     try {
       await employerService.updateEmployerStatus(employerId, { status: newStatus });
-      alert(`Đã cập nhật trạng thái thành công!`);
+      dispatch(setNotification({ message: `Đã cập nhật trạng thái thành công!`, type: 'success' }));
 
       // Báo cho component cha cập nhật state
       onStatusChange(employerId, newStatus);
     } catch (err) {
-      alert('Lỗi: ' + err.response?.data?.message);
+      dispatch(setNotification({ message: 'Lỗi: ' + err.response?.data?.message, type: 'error' }));
     }
   }
   const [showChangePassword, setShowChangePassword] = useState(false);

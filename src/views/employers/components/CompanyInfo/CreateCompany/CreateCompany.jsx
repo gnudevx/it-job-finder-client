@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setNotification } from '@/redux/slices/globalSlice';
 import PropTypes from 'prop-types';
 import styles from './CreateCompany.module.scss';
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
 import companyService from '@/api/companyService';
 export default function CreateCompany({ selectedCompany, onSaveComplete }) {
+  const dispatch = useDispatch();
   const [form, setForm] = useState({
     taxCode: '',
     companyName: '',
@@ -39,7 +42,7 @@ export default function CreateCompany({ selectedCompany, onSaveComplete }) {
 
   const handleSave = async () => {
     if (!form.companyName || !form.email) {
-      alert('Vui lòng nhập Tên công ty và Email!');
+      dispatch(setNotification({ message: 'Vui lòng nhập Tên công ty và Email!', type: 'info' }));
       return;
     }
 
@@ -67,10 +70,10 @@ export default function CreateCompany({ selectedCompany, onSaveComplete }) {
       }
 
       if (onSaveComplete) onSaveComplete(res.company);
-      alert(selectedCompany ? 'Cập nhật thành công!' : 'Tạo công ty thành công!');
+      dispatch(setNotification({ message: selectedCompany ? 'Cập nhật thành công!' : 'Tạo công ty thành công!', type: 'success' }));
     } catch (err) {
       console.error(err);
-      alert(err?.response?.data?.message || 'Lỗi khi lưu dữ liệu');
+      dispatch(setNotification({ message: err?.response?.data?.message || 'Lỗi khi lưu dữ liệu', type: 'error' }));
     }
   };
 

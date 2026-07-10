@@ -1,4 +1,6 @@
 import React, { useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import { setNotification } from '@/redux/slices/globalSlice';
 import { useNavigate } from 'react-router-dom';
 import styles from './MyCVs.module.scss';
 import { Upload } from 'lucide-react';
@@ -12,6 +14,7 @@ export default function MyCVs() {
   const navigate = useNavigate();
 
   const { uploadedCVs, addUploadedCV, removeUploadedCV } = useUploadedCVs();
+  const dispatch = useDispatch();
 
   const handleUploadClick = () => fileInputRef.current.click();
 
@@ -25,7 +28,7 @@ export default function MyCVs() {
       'application/msword',
     ];
     if (!allowedTypes.includes(file.type)) {
-      alert('Vui lòng chọn file PDF hoặc DOCX hợp lệ!');
+      dispatch(setNotification({ message: 'Vui lòng chọn file PDF hoặc DOCX hợp lệ!', type: 'info' }));
       return;
     }
 
@@ -38,11 +41,10 @@ export default function MyCVs() {
         size: response.resume.size,
         url: response.resume.fileUrl,
       });
-
-      alert('Upload CV thành công!');
+      dispatch(setNotification({ message: 'Upload CV thành công!', type: 'success' }));
     } catch (err) {
       console.error(err);
-      alert('Upload thất bại, thử lại sau.');
+      dispatch(setNotification({ message: 'Upload thất bại, thử lại sau.', type: 'error' }));
     } finally {
       fileInputRef.current.value = null;
     }
@@ -57,7 +59,7 @@ export default function MyCVs() {
       window.open(url, '_blank');
     } catch (err) {
       console.error('Preview CV failed', err);
-      alert('Không thể xem CV. Vui lòng đăng nhập lại hoặc thử lại sau.');
+      dispatch(setNotification({ message: 'Không thể xem CV. Vui lòng đăng nhập lại hoặc thử lại sau.', type: 'error' }));
     }
   };
 

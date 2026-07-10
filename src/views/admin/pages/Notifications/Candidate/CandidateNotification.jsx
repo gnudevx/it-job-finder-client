@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setNotification } from '@/redux/slices/globalSlice';
 import styles from './CandidateNotification.module.scss';
 
 import NotificationForm from './NotificationForm';
@@ -52,9 +54,11 @@ const CandidateNotification = ({ targetAudience }) => {
   /** ---------------------------------------
    * SEND NOTIFICATION
    ----------------------------------------*/
+  const dispatch = useDispatch();
+
   const handleSend = async () => {
     if (!title.trim() || !message.trim()) {
-      alert('Vui lòng nhập tiêu đề và nội dung!');
+      dispatch(setNotification({ message: 'Vui lòng nhập tiêu đề và nội dung!', type: 'info' }));
       return;
     }
 
