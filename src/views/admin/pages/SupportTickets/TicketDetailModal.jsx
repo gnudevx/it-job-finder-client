@@ -85,12 +85,19 @@ export default function TicketDetailModal({
                 {ticket.files?.length > 0 && (
                   <div>
                     <span>Đính kèm ({ticket.files.length})</span>
+
                     <div className={styles.files}>
                       {ticket.files.map((file, idx) => (
-                        <div key={idx} className={styles.fileItem}>
+                        <a
+                          key={idx}
+                          href={file.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={styles.fileItem}
+                        >
                           <Paperclip size={14} />
                           <span>{file.name}</span>
-                        </div>
+                        </a>
                       ))}
                     </div>
                   </div>
