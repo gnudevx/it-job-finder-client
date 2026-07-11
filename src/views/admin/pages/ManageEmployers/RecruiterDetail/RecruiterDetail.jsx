@@ -193,7 +193,7 @@ export default function RecruiterDetail({ recruiter, onBack, onStatusChange }) {
         </div>
 
         {/* Right Column — AI Analysis */}
-        <div className={styles.aiCol}>
+        <div className={styles.aiCol} style={{ display: 'none' }}>
           <div className={styles.aiCard}>
             <div className={styles.sparkleBg}>
               <Sparkles className={styles.sparkleLarge} />
