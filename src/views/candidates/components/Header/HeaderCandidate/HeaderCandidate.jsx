@@ -79,11 +79,16 @@ export default function HeaderCandidate() {
           setProfile(data || null);
         }
       } catch (err) {
-        console.error('Failed to load candidate profile:', err);
+        console.warn('Failed to load candidate profile, using fallback:', err?.message);
+        if (isMounted) {
+          setProfile(null);
+        }
       }
     };
 
-    fetchProfile();
+    if (user?._id) {
+      fetchProfile();
+    }
 
     return () => {
       isMounted = false;
