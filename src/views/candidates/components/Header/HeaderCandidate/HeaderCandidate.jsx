@@ -18,9 +18,12 @@ import { NavButton } from '@/views/employers/components/Dashboard/NavButton/NavB
 import { useAuth } from '@/contexts/AuthContext';
 import { socket } from '@/services/socket';
 import { getUnreadMessageCount } from '@/api/chatService';
+import { loadPersonalInfo } from '@/api/personalInfoService';
+
 export default function HeaderCandidate() {
   const { user } = useAuth();
   const [unreadCount, setUnreadCount] = useState(0);
+  const [profile, setProfile] = useState(null);
 
   // Real-time unread messages logic
   useEffect(() => {
@@ -66,9 +69,33 @@ export default function HeaderCandidate() {
     general_settings: false,
   });
 
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchProfile = async () => {
+      try {
+        const data = await loadPersonalInfo();
+        if (isMounted) {
+          setProfile(data || null);
+        }
+      } catch (err) {
+        console.error('Failed to load candidate profile:', err);
+      }
+    };
+
+    fetchProfile();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [user?._id]);
+
   const dropdownRef = useRef(null);
   const profileRef = useRef(null);
   const navigate = useNavigate();
+
+  const avatarSrc = profile?.avatar || user?.avatar || logo_candidate;
+  const displayName = profile?.fullName || user?.fullName || user?.name || user?.userName || 'Ứng viên';
 
   const toggleSection = (section) => {
     setOpenSections((prev) => ({
@@ -157,8 +184,16 @@ export default function HeaderCandidate() {
           ref={profileRef}
           onClick={() => setShowDropdown((prev) => !prev)}
         >
-          <img src={logo_candidate} className={styles.avatarIcon} />
-          <span className={styles.username}>Ứng viên</span>
+          <img
+            src={avatarSrc}
+            className={styles.avatarIcon}
+            alt={displayName}
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = logo_candidate;
+            }}
+          />
+          <span className={styles.username}>{displayName}</span>
           <ChevronDown className={styles.caretIcon} />
 
           {showDropdown && (
