@@ -54,15 +54,46 @@ export default function ChatBotWidget() {
     const s = loadCvState();
     return s.cvName ? { name: s.cvName, size: s.cvSize, url: null } : null;
   });
-  const [isAnalyzing, setIsAnalyzing] = useState(
-    savedCv.cvStatus === 'processing'
-  );
+  const [isAnalyzing, setIsAnalyzing] = useState(savedCv.cvStatus === 'processing');
 
   const sessionId = useRef(getOrCreateSessionId());
   const messagesEndRef = useRef(null);
   const fileInputRef = useRef(null);
   const textareaRef = useRef(null);
   const pollRef = useRef(null);
+  const historyLoadedRef = useRef(false);
+  const [isLoadingHistory, setIsLoadingHistory] = useState(false);
+  const [isServerWakingUp, setIsServerWakingUp] = useState(false);
+
+  const loadHistory = useCallback(async ({ silent = false } = {}) => {
+    if (!silent) setIsLoadingHistory(true);
+    setIsServerWakingUp(false);
+
+    try {
+      const data = await axiosClient.get(`/api/chat/history/${sessionId.current}`);
+      historyLoadedRef.current = true;
+
+      if (data?.messages?.length > 0) {
+        setMessages(data.messages.map((m) => ({ role: m.role, content: m.content })));
+      } else {
+        setMessages([
+          {
+            role: 'assistant',
+            content:
+              'Xin chào! Tôi có thể giúp bạn:\n• 📄 Phân tích & cải thiện CV\n• 🎯 Luyện phỏng vấn IT\n• 💡 Tư vấn career path\n\nHãy upload CV hoặc bắt đầu chat!',
+          },
+        ]);
+      }
+    } catch {
+      historyLoadedRef.current = false;
+      setIsServerWakingUp(true);
+      if (!silent) {
+        setMessages([{ role: 'assistant', content: 'Xin chào! Upload CV hoặc bắt đầu chat nhé!' }]);
+      }
+    } finally {
+      if (!silent) setIsLoadingHistory(false);
+    }
+  }, []);
 
   // ── Auto scroll ─────────────────────────────────────────────────────────────
   useEffect(() => {
@@ -80,24 +111,7 @@ export default function ChatBotWidget() {
     if (!isOpen) return;
 
     const init = async () => {
-      // 1. Load lịch sử chat từ MongoDB
-      // Node.js server tự query MongoDB trực tiếp — không cần Render wake up
-      try {
-        const data = await axiosClient.get(`/api/chat/history/${sessionId.current}`);
-        if (data?.messages?.length > 0) {
-          setMessages(data.messages.map((m) => ({ role: m.role, content: m.content })));
-        } else {
-          setMessages([
-            {
-              role: 'assistant',
-              content:
-                'Xin chào! Tôi có thể giúp bạn:\n• 📄 Phân tích & cải thiện CV\n• 🎯 Luyện phỏng vấn IT\n• 💡 Tư vấn career path\n\nHãy upload CV hoặc bắt đầu chat!',
-            },
-          ]);
-        }
-      } catch {
-        setMessages([{ role: 'assistant', content: 'Xin chào! Upload CV hoặc bắt đầu chat nhé!' }]);
-      }
+      await loadHistory({ silent: false });
 
       // 2. Nếu CV đang processing từ lần trước → resume poll
       const { cvId: savedId, cvStatus: savedStatus, cvName, cvSize } = loadCvState();
@@ -110,7 +124,7 @@ export default function ChatBotWidget() {
     };
 
     init();
-  }, [isOpen]);
+  }, [isOpen, loadHistory]);
 
   // ── Polling CV status ────────────────────────────────────────────────────────
   const startPolling = (id) => {
@@ -175,7 +189,9 @@ export default function ChatBotWidget() {
       while ((match = tokenPattern.exec(line)) !== null) {
         // Phần text trước match
         if (match.index > lastIndex) {
-          tokens.push(<span key={`t-${lineIdx}-${lastIndex}`}>{line.slice(lastIndex, match.index)}</span>);
+          tokens.push(
+            <span key={`t-${lineIdx}-${lastIndex}`}>{line.slice(lastIndex, match.index)}</span>
+          );
         }
 
         const raw = match[0];
@@ -231,7 +247,6 @@ export default function ChatBotWidget() {
       );
     });
   };
-
 
   // ── Upload CV ────────────────────────────────────────────────────────────────
   const handleFileUpload = async (e) => {
@@ -329,10 +344,7 @@ export default function ChatBotWidget() {
           faq: '💼 Tìm việc',
         };
         const newLabel = modeLabels[data.detected_intent] || data.detected_intent;
-        addMessage(
-          'assistant',
-          `*(Đã chuyển sang chế độ **${newLabel}**)*`
-        );
+        addMessage('assistant', `*(Đã chuyển sang chế độ **${newLabel}**)*`);
       }
 
       // ── Nếu history chưa load được (server vừa wake up) → load lại silent ──
@@ -346,7 +358,6 @@ export default function ChatBotWidget() {
       setIsLoading(false);
     }
   }, [input, isLoading, isAnalyzing, mode, loadHistory]);
-
 
   // ── Reset conversation ───────────────────────────────────────────────────────
   const handleReset = async () => {
@@ -370,6 +381,7 @@ export default function ChatBotWidget() {
     setTokenInfo(null);
     setMode('cv_advisor');
     historyLoadedRef.current = false; // cho phép load history session mới
+    setIsServerWakingUp(false);
     setMessages([
       {
         role: 'assistant',
@@ -377,7 +389,6 @@ export default function ChatBotWidget() {
       },
     ]);
   };
-
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -542,9 +553,7 @@ export default function ChatBotWidget() {
                   msg.role === 'user' ? styles.bubbleUser : styles.bubbleBot
                 }`}
               >
-                <div className={styles.bubbleContent}>
-                  {parseMessageContent(msg.content)}
-                </div>
+                <div className={styles.bubbleContent}>{parseMessageContent(msg.content)}</div>
               </div>
             ))}
 
