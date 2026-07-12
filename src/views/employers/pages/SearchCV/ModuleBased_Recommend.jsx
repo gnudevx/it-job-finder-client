@@ -20,7 +20,8 @@ export default function ModuleBased_Recommend() {
   useEffect(() => {
     const loadJobs = async () => {
       try {
-        const response = await axiosClient.get('/employer/jobs/getHistoryEmployer');
+        // Load only active jobs for the employer recommendation dropdown
+        const response = await axiosClient.get('/employer/jobs/getHistoryEmployer/active');
         if (response.success) {
           setJobs(response.data);
         }
