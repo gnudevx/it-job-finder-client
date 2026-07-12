@@ -6,13 +6,11 @@ import axiosClient from '../../../../services/axiosClient';
 const generateSessionId = () => 'session-' + Math.random().toString(36).slice(2, 11);
 
 const getOrCreateSessionId = () => {
-  let id = localStorage.getItem('chat_session_id');
-  if (!id) {
-    id = generateSessionId();
-    localStorage.setItem('chat_session_id', id);
-  }
-  return id;
+  // Sử dụng session 'default' cố định cho mỗi user để lịch sử chat luôn ổn định
+  // qua tất cả các phiên đăng nhập (backend tự map thành user:{userId}:default)
+  return 'default';
 };
+
 
 // Persist CV state vào localStorage để survive reload
 const saveCvState = (cvId, cvStatus, cvName = null, cvSize = null) => {
