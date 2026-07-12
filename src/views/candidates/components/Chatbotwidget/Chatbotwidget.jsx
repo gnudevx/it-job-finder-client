@@ -55,7 +55,7 @@ export default function ChatBotWidget() {
     return s.cvName ? { name: s.cvName, size: s.cvSize, url: null } : null;
   });
   const [isAnalyzing, setIsAnalyzing] = useState(
-    savedCv.cvStatus === 'processing' // nếu đang xử lý thì hiện lại trạng thái
+    savedCv.cvStatus === 'processing'
   );
 
   const sessionId = useRef(getOrCreateSessionId());
@@ -81,18 +81,12 @@ export default function ChatBotWidget() {
 
     const init = async () => {
       // 1. Load lịch sử chat từ MongoDB
+      // Node.js server tự query MongoDB trực tiếp — không cần Render wake up
       try {
         const data = await axiosClient.get(`/api/chat/history/${sessionId.current}`);
-
         if (data?.messages?.length > 0) {
-          setMessages(
-            data.messages.map((m) => ({
-              role: m.role,
-              content: m.content,
-            }))
-          );
+          setMessages(data.messages.map((m) => ({ role: m.role, content: m.content })));
         } else {
-          // Tin nhắn chào mặc định nếu chưa có history
           setMessages([
             {
               role: 'assistant',
@@ -102,27 +96,17 @@ export default function ChatBotWidget() {
           ]);
         }
       } catch {
-        setMessages([
-          {
-            role: 'assistant',
-            content: 'Xin chào! Upload CV hoặc bắt đầu chat nhé!',
-          },
-        ]);
+        setMessages([{ role: 'assistant', content: 'Xin chào! Upload CV hoặc bắt đầu chat nhé!' }]);
       }
 
       // 2. Nếu CV đang processing từ lần trước → resume poll
       const { cvId: savedId, cvStatus: savedStatus, cvName, cvSize } = loadCvState();
-      // Restore preview nếu chưa có (sau reload cvPreview = null)
-      if (savedId && cvName) {
-        setCvPreview({ name: cvName, size: cvSize, url: null });
-      }
+      if (savedId && cvName) setCvPreview({ name: cvName, size: cvSize, url: null });
       if (savedId && savedStatus === 'processing') {
         setIsAnalyzing(true);
         startPolling(savedId);
       }
-      if (savedId && savedStatus === 'done') {
-        setCvStatus('done');
-      }
+      if (savedId && savedStatus === 'done') setCvStatus('done');
     };
 
     init();
@@ -333,12 +317,36 @@ export default function ChatBotWidget() {
         warning: data.warning,
       });
       if (data.warning) addMessage('assistant', data.warning);
+
+      // ── Auto-sync mode với detected_intent của server ─────────────────────
+      // Server có thể phát hiện user muốn chuyển mode (vd: cv_advisor → mock_interview)
+      // FE phải cập nhật mode để request tiếp theo gửi đúng mode lên backend
+      if (data.detected_intent && data.detected_intent !== mode) {
+        setMode(data.detected_intent);
+        const modeLabels = {
+          mock_interview: '🎯 Mock Interview',
+          cv_advisor: '📄 CV Advisor',
+          faq: '💼 Tìm việc',
+        };
+        const newLabel = modeLabels[data.detected_intent] || data.detected_intent;
+        addMessage(
+          'assistant',
+          `*(Đã chuyển sang chế độ **${newLabel}**)*`
+        );
+      }
+
+      // ── Nếu history chưa load được (server vừa wake up) → load lại silent ──
+      // Server đã online (mới reply) → giờ có thể lấy history thành công
+      if (!historyLoadedRef.current) {
+        loadHistory({ silent: true });
+      }
     } catch {
       addMessage('assistant', '❌ Có lỗi xảy ra. Vui lòng thử lại.');
     } finally {
       setIsLoading(false);
     }
-  }, [input, isLoading, isAnalyzing, mode]);
+  }, [input, isLoading, isAnalyzing, mode, loadHistory]);
+
 
   // ── Reset conversation ───────────────────────────────────────────────────────
   const handleReset = async () => {
@@ -361,6 +369,7 @@ export default function ChatBotWidget() {
     setIsAnalyzing(false);
     setTokenInfo(null);
     setMode('cv_advisor');
+    historyLoadedRef.current = false; // cho phép load history session mới
     setMessages([
       {
         role: 'assistant',
@@ -368,6 +377,7 @@ export default function ChatBotWidget() {
       },
     ]);
   };
+
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -461,6 +471,45 @@ export default function ChatBotWidget() {
                       ? '❌ Thất bại'
                       : ''}
               </span>
+            </div>
+          )}
+
+          {/* ── Loading history banner ── */}
+          {isLoadingHistory && (
+            <div
+              style={{
+                padding: '8px 12px',
+                background: '#f1f3f4',
+                fontSize: 12,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+                borderBottom: '1px solid #dadce0',
+              }}
+            >
+              <span style={{ display: 'inline-block', animation: 'spin 1s linear infinite' }}>
+                ⏳
+              </span>
+              Đang tải lịch sử hội thoại...
+            </div>
+          )}
+
+          {/* ── Server wake-up banner (Render cold start) ── */}
+          {isServerWakingUp && (
+            <div
+              style={{
+                padding: '8px 12px',
+                background: '#fff8e1',
+                fontSize: 12,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+                borderBottom: '1px solid #ffe082',
+                color: '#795548',
+              }}
+            >
+              <span>☕</span>
+              Server đang khởi động (thường mất 30–60 giây)... Lịch sử sẽ hiển thị sau.
             </div>
           )}
 
